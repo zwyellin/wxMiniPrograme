@@ -55,7 +55,7 @@
 	  		<view class="order-food">
 	  			<text wx:if="{{item.orderFlowStatus === 1}}" class="food-txt fr" style="margin-left: 20rpx;color:#fd483f" data-food="{{item}}" bindtap="payMoney">去支付 ({{item.timestamp}})</text>
 	  			<text wx:if="{{item.orderFlowStatus === 7 && item.hasComments === 0}}" style="margin-left: 20rpx;color:#fd483f" class="food-txt fr" data-food="{{item}}" bindtap="evaluateOrder">立即评价</text>
-	  			<text wx:if="{{item.orderFlowStatus != 1}}" style="{{item.orderFlowStatus === 7 && item.hasComments === 0 ? 'color:#333;border-color: #cccccc' : ''}}" class="food-txt fr" data-food="{{item}}" bindtap="nextOrder">再来一单</text>
+	  			<text wx:if="{{item.orderFlowStatus != 1}}" style="color:#333;border-color: #cccccc" class="food-txt fr" data-food="{{item}}" bindtap="nextOrder">再来一单</text>
 	  		</view>
 	  	</view>
 		<view class="loading-info" wx:if="{{!loading && orderList.length > 5}}">

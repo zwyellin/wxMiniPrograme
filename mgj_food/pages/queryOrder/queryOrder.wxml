@@ -58,7 +58,7 @@
 			<view class="fr">
 				<text wx:if="{{redBagUsableCount===0}}" style="color:#999">{{redText}}</text>
 				<text wx:if="{{redBagUsableCount&& redBagMoney === 0}}" style="color:#999">{{redBagUsableCount}}个红包可用</text>
-				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">红包金额为{{redBagMoney}}￥</text>
+				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">红包金额为{{redBagMoney}}元</text>
 				<image class="query-img fr" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>
 			</view>
 		</view>
@@ -109,7 +109,7 @@
 			<text wx:if="{{promotion.discountAmt}}" style="color:#ff9900">- ￥{{promotion.discountAmt}}</text>	
 		</view>
 	</view>
-	<view wx:if="{{payIndex=== 0 && useRedBagList.length != 0}}" class="query-message font-12 clearfix">
+	<view wx:if="{{payIndex=== 0 && useRedBagList.length != 0 && useRedBagList.length != null}}" class="query-message font-12 clearfix">
 		<view class="fl font-14">
 			<image class="bran-img" src="../../images/images/icon_red.png"></image>
 			<text>红包抵扣</text>
@@ -122,11 +122,11 @@
 		<view class="check-left font-16">
 			<text class="query-check-text" >
 				<text>待支付</text>
-				<text class="font-18">￥ {{totalPrice}}</text>
+				<text class="font-18">￥ {{orderMessage.totalPrice}}</text>
 			</text>
 			<text wx:if="{{discountAmt != 0}}" class="txt-pay" >
 				<text>已优惠</text>
-				<text>￥ {{discountAmt}}</text>
+				<text>￥ {{orderMessage.discountAmt}}</text>
 			</text>
 		</view>
 		<view class="check-right font-18" bindtap="postOrder">

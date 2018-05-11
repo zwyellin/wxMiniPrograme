@@ -14,7 +14,7 @@ Page({
 	    let prevPage = pages[pages.length - 2];
 		this.setData({
 			redBagList:prevPage.data.redBagList,
-			useRedBagList:prevPage.data.useRedBagList,
+			useRedBagList:prevPage.data.useRedBagList || [],
 			select:prevPage.data.select,
 		});	
 	},

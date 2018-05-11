@@ -19,12 +19,13 @@
             <image wx:if="{{sortShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
             <image wx:if="{{!sortShow}}" src="../../images/images/down_1.png" class="arrow_down" />
         </view>
-        <view class="goods-item"
+        <view class="goods-item {{shipShow ? 'item-active' : ''}}"
       		data-index="2"
             bindtap="setBfilterType"
             >
             {{type3}}
-            <image src="../../images/images/down_1.png" class="arrow_down" />
+            <image wx:if="{{shipShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!shipShow}}" src="../../images/images/down_1.png" class="arrow_down" />
         </view>
 	</View>
 	<view class="top-40">

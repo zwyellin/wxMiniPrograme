@@ -9,7 +9,8 @@
 .share-content {
 	position: relative;
 	width: 100%;
-	top: 640rpx;
+	/*top: 640rpx;*/
+	top: 684rpx;
 }
 .share-box {
 	display: flex;

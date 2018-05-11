@@ -30,16 +30,33 @@ Page({
 	onLoad(options){
 		let tagId = null
 		if (options.id != "null") {
-			 tagId = options.id;
+			tagId = options.id;
 		}
-		let type1 = options.name;
+		let type1 = '分类';
 		this.setData({
-			tagId:tagId,
-			type1:type1
+			tagId:tagId
 		})
-		// this.data.tagParentId = tagParentId
-		this.getDataList();
-		this.findTagCategory()
+		this.findTagCategory().then(res=> {
+        	if (res.data.code === 0) { 
+        		let classList = res.data.value
+        		classList.map((item,index)=>{
+        			if(item.id === tagId) {
+        				let timeIndex = index
+						item.childTagCategoryList.map((childItem)=>{
+							if(childItem.id === tagId) {
+								type1 = childItem.name
+							}
+						})
+        			}
+        		})
+				this.setData({
+					timeIndex:0,
+					type1:type1,
+					classList: res.data.value
+				})
+				this.getDataList();
+        	}
+        });
 	},
 	moveDown(e){
 		let { item, index } = e.currentTarget.dataset;
@@ -250,7 +267,7 @@ Page({
 	},
 	//根据地理位置初始化分类选项数据
 	findTagCategory(){
-		wxRequest({
+		return wxRequest({
         	url:'/merchant/userClient?m=findTagCategory',
         	method:'POST',
         	data:{
@@ -258,17 +275,11 @@ Page({
         		params:{
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
-        			latitude:app.globalData.latitude
+        			latitude:app.globalData.latitude,
+        			tagCategoryType: 1
         		}	
         	},
-        }).then(res=> {
-        	console.log(res)
-        	if (res.data.code ===0) {
-				this.setData({
-					classList: res.data.value
-				})
-        	}
-        });
+        })
 	},
 	//商家配送方式
 	selectShip(e){

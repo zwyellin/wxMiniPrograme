@@ -13,7 +13,7 @@ Page({
 		expectedArrivalTime:1,
 		redBagUsableCount:0,    //可用红包个数
 		redBagList:[],
-		useRedBagList:[],       //本次订单使用的红包列表
+		useRedBagList:null,       //本次订单使用的红包列表
 		select:true,            //红包使用状态
 		redBagMoney:0,
 		promoInfoJson:[],       //本次订单使用的红包信息  不明字段
@@ -47,8 +47,6 @@ Page({
 			initTime:prevPage.data.value.deliveryTimes[0].times[0]['1'],
 			timeArr:prevPage.data.value.deliveryTimes[0].times[0]
 		});
-		console.log(typeof this.data.initTime)
-
 		let arr = prevPage.data.value.deliveryTimes[this.data.timeIndex].times;
 		let sendTime = [];
 		for (let i = 0; i < arr.length; i++) {
@@ -73,19 +71,25 @@ Page({
 		this.filterUsableRedBagList();
 	},
 	onShow(){
-		let redBagMoney = 0;
-		this.data.totalPrice = this.data.orderMessage.totalPrice;
-		this.data.discountAmt = this.data.orderMessage.discountAmt;
-		this.data.useRedBagList.map(item=>{
-			redBagMoney += item.amt;
-		});
-		let totalPrice = this.data.totalPrice - redBagMoney;
-		let discountAmt = this.data.discountAmt + redBagMoney;
-		this.setData({
-			redBagMoney:redBagMoney,
-			totalPrice:totalPrice,
-			discountAmt:discountAmt
-		});
+		if (this.data.useRedBagList != null ) {
+			let redBagMoney = 0;
+			this.orderPreview().then(res=>{
+				if (res.data.code === 0) {
+					let orderMessage = res.data.value
+					this.setData({
+						orderMessage:orderMessage
+					})
+				}
+	        }).finally(()=>{
+	        	wx.hideLoading()
+	        });	
+			this.data.useRedBagList.map(item=>{
+				redBagMoney += item.amt;
+			});
+			this.setData({
+				redBagMoney:redBagMoney
+			});
+		}
 	},
 	//获取可用红包
 	filterUsableRedBagList(){
@@ -179,38 +183,37 @@ Page({
 	bindPayChange(e){
 		let payIndex = parseInt(e.detail.value)
 		if (payIndex === this.data.payIndex) return
-		let totalPrice = 0
-		let discountAmt = 0
-		wx.showToast({
-	        title: '正在更新订单',
-	        icon: 'loading',
-	        duration: 200000,
-	        mask: true
-	    });
 	    if (payIndex === 0) {
-			let redBagMoney = 0;
-			this.data.totalPrice = this.data.orderMessage.totalPrice;
-			this.data.discountAmt = this.data.orderMessage.discountAmt;
-			this.data.useRedBagList.map(item=>{
-				redBagMoney += item.amt;
+			this.setData({
+				payIndex:payIndex,
 			});
-			totalPrice = this.data.totalPrice - redBagMoney;
-			discountAmt = this.data.discountAmt + redBagMoney;
+			this.orderPreview().then(res=>{
+				if (res.data.code === 0) {
+					let orderMessage = res.data.value
+					this.setData({
+						orderMessage:orderMessage
+					})
+				}
+	        }).finally(()=>{
+	        	wx.hideLoading()
+	        });	
 	    }
 	    if (payIndex === 1) {
-			totalPrice = this.data.orderMessage.totalPrice + this.data.orderMessage.discountAmt;
-	    }
-	    setTimeout(()=>{
 	    	this.setData({
 				payIndex:payIndex,
-				totalPrice:totalPrice,
-				discountAmt:discountAmt
 			});
-			wx.hideLoading();
-			if (payIndex === 1) {
-				feedbackApi.showToast({title:'货到付款无法享受优惠活动'});
-			}
-	    },1500);
+			this.orderPreview().then(res=>{
+				if (res.data.code === 0) {
+					let orderMessage = res.data.value
+					this.setData({
+						orderMessage:orderMessage
+					})
+				}
+	        }).finally(()=>{
+	        	wx.hideLoading()
+	        	feedbackApi.showToast({title:'货到付款无法享受优惠活动'});
+	        });
+	    }
 	},
 	redPage(){
 		if (!this.data.redBagUsableCount) return;
@@ -289,4 +292,30 @@ Page({
 			url: '/pages/address/add/add?item='+JSON.stringify(this.data.addressInfo)
 		}); 
 	},
+	//请求订单
+	orderPreview(){
+		wx.showToast({
+	        title: '正在更新订单',
+	        icon: 'loading',
+	        duration: 200000,
+	        mask: true
+	    });
+		let orderItems = [];
+		let data = {loginToken:app.globalData.token,userId:app.globalData.userId,merchantId:this.data.merchantId};
+		data.orderItems = this.data.orderMessage.orderItems;
+		data.redBags = this.data.useRedBagList;
+		data.orderPayType = this.data.payIndex+1;
+		return wxRequest({
+        	url:'/merchant/userClient?m=orderPreview',
+        	method:'POST',
+        	data:{
+        		params:{
+        			data:JSON.stringify(data),
+        			longitude:app.globalData.longitude,
+        			latitude:app.globalData.latitude
+        		},
+        		token:app.globalData.token	
+        	},
+        })
+	}
 });

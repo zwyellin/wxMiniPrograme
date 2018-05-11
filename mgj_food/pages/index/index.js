@@ -275,6 +275,7 @@ Page(Object.assign({}, {
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
         			latitude:app.globalData.latitude,
+        			tagCategoryType: 1,
         			versionCode:46
         		}	
         	},
@@ -304,7 +305,8 @@ Page(Object.assign({}, {
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
         			latitude:app.globalData.latitude,
-        			versionCode:1
+        			tagCategoryType: 1,
+        			versionCode:46
         		}	
         	},
         }).then(res=> {
@@ -455,7 +457,9 @@ Page(Object.assign({}, {
 	},
 	setBfilterType(e){
 		let { index } = e.currentTarget.dataset;
-		this.maskShowAnimation(); 
+		if (!this.data.maskShow) {
+			this.maskShowAnimation();
+		}
 		if (index == 0) {
 			this.setData({
 				classShow:true,

@@ -191,6 +191,32 @@
 	
 
 	<!-- 分类开始 -->
+	<view wx:if="{{sortShow || classShow || shipShow}}" class="goods goods-header-top flex">
+		<view class="goods-item {{classShow ? 'item-active' : ''}}"
+      		data-index="0"
+            bindtap="setBfilterType"
+            >
+           {{type1}}
+            <image wx:if="{{classShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!classShow}}" src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+        <view class="goods-item {{sortShow ? 'item-active' : ''}}"
+      		data-index="1"
+            bindtap="setBfilterType"
+            >
+           {{type2}}
+            <image wx:if="{{sortShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!sortShow}}" src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+        <view class="goods-item {{shipShow ? 'item-active' : ''}}"
+      		data-index="2"
+            bindtap="setBfilterType"
+            >
+            {{type3}}
+            <image wx:if="{{shipShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!shipShow}}" src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+	</view>
 	<view wx:if="{{classShow}}">
 		<template is="class-common" data="{{classList,childTagCategoryList,timeIndex:timeIndex}}"></template>
 	</view>

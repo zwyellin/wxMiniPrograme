@@ -32,6 +32,10 @@
 	margin-right: 20rpx;
 	overflow: hidden;
 }
+.lottery-icon-img {
+	width: 110rpx;
+	height: 110rpx;
+}
 .lottery-img {
 	width: 110rpx;
 	height: 110rpx;
