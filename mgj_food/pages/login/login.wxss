@@ -1,0 +1,72 @@
+@import "../../components/showToast/showToast.wxss";
+
+.page-login {
+  position: relative;
+  background:#f4f4f4
+}
+.login-tip {
+	height: 62rpx;
+	line-height: 62rpx;
+	background: #a9adb3;
+	color: #fff;
+	text-indent: 20rpx;
+}
+.pad {
+	position: relative;
+	padding: 0 28rpx;
+	background: #fff;
+}
+.mobile {
+	height: 86rpx;
+	line-height: 86rpx;
+	border-bottom: 1rpx solid #eaeaea;
+
+}
+.form-label {
+	width: 120rpx;
+	height: 86rpx;
+	line-height: 86rpx;
+}
+.mobile input {
+	height: 86rpx;
+	line-height: 86rpx;
+	width: 350rpx;
+}
+.send-ma {
+	position: absolute;
+	top:6rpx;
+	right:30rpx;
+	width: 215rpx;
+	height:68rpx;
+	border:2rpx solid #f9f9f9;
+	line-height: 68rpx;
+	background: #f4f4f4;
+	text-align: center;
+
+}
+.mobile-ma {
+	display: inline-block;
+}
+.get-ma input{
+	width: 100%;
+	height: 86rpx;
+	line-height: 86rpx;
+}
+.pad-send {
+	padding: 0 28rpx;
+}
+.send {
+	width: 100%;
+	height: 84rpx;
+	line-height: 84rpx;
+	margin-top: 130rpx;
+	text-align: center;
+	letter-spacing: 8rpx;
+	background: #ff9300;
+	color:#fff;
+	border-radius: 10rpx;
+}
+.login-active {
+	background: #FF5A59;
+	color:#fff;
+}

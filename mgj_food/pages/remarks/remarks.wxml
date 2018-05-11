@@ -1,0 +1,13 @@
+<import src="../../components/showToast/showToast.wxml" />
+<view class="container page-common">
+	<view class="section">
+  		<textarea bindinput="bindTextAreaBlur" focus="{{true}}" maxlength="50" value="{{remarks}}" placeholder="请输入备注内容(可不填)" placeholder-class="txtarea" />
+  		<text class="txt">最多15个字符</text>
+	</view>
+	<view class="pad-send">
+		<view class="send" bindtap="bindTextAreaOut">
+			<text>确定</text>
+		</view>
+	</view>
+	<template is="showToast" data="{{showToast: showToast}}" />
+</view>

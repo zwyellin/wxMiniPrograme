@@ -1,0 +1,16 @@
+<view class="container service-text">
+	<view class="send-time">
+		<text>{{itemObject.title}}</text>
+	</view>
+	<view class="font-12" style="color:#666">
+		<view class="send-title"
+			wx:for="{{itemObject.content}}" 
+			wx:for-index="index" 
+			wx:for-item="item"
+			wx:key="index">
+			<text>
+				{{item}}
+			</text>
+		</view>
+	</view>
+</view>

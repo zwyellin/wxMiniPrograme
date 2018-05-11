@@ -1,0 +1,220 @@
+<import src="../../components/star/star.wxml" />
+<import src="../../components/common/common.wxml" />
+<wxs module="fixed" src="../../utils/star.wxs"></wxs>
+
+<!--index.wxml-->
+<View class="container {{maskShow ? 'posi' : ''}} {{isAgentId ? 'no-goods' : ''}}" >
+	<view class="page">
+		<!-- 地点 开始 -->
+		<view class="search-view">
+		    <navigator class="adress-box" url="/pages/address/address/address?switch=index">
+		      	<view class="left-img">
+	              <image src="/images/images/map.png" class="icon-adress"></image>
+	            </view>
+	            <view class="adress-content" style="color:#fff">
+	              <view class="adress-move" style="{{orientation}}:{{marqueeDistance2}}px;font-size: 11px">
+	                <text class="adress-text" style="margin-left:{{first_left}}px">{{city.cityName}}</text>
+	                <text wx:if="{{marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;font-size:11px">{{city.cityName}}</text>
+	              </view>
+	            </view>
+	            <view class="right-img">
+	              <image src="/images/images/down_fff.png" class="icon-adress-right"></image>
+	            </view>
+		    </navigator>
+		    <view class="search-box">
+			    <view class="icon-search">
+			    	<image src="/images/images/search.png" class="icon-adress_search"></image>
+			   	</view>
+			   	<view class="search-input">
+			   		<input placeholder="想吃啥，搜啥" placeholder-class="search-placeholder" bindfocus="focusToSearch" />
+			   	</view>
+	    	</view>
+		</view>
+		<!-- 地点 结束 -->
+
+		<!-- 轮播图 开始 -->
+		<swiper 
+			wx:if="{{!isAgentId}}"
+		    class="swiper-banner"
+		    indicator-dots="{{swiper.indicatorDots}}" 
+		    autoplay="{{swiper.autoplay}}" 
+		    interval="{{swiper.interval}}" 
+		    duration="{{swiper.duration}}"
+		    circular="{{true}}">
+		    <block 
+		      wx:for="{{swiper.imgUrls}}" 
+		      wx:for-index="idx" 
+		      wx:for-item="item" 
+		      wx:key="idx">
+		      <swiper-item>
+		        <image bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" />
+		      </swiper-item>
+		    </block>
+		</swiper>
+		<!-- 轮播图 结束 -->
+	</view>
+	
+	<view wx:if="{{!isAgentId}}" >
+		<!-- 外卖分类 开始 -->
+		<view class="class-block">
+			<navigator class="class-content" url="/pages/classPage/classPage?id={{item.tagCategoryId}}&name={{item.name}}"
+				wx:for="{{initClassList}}" 
+			    wx:for-index="index" 
+			    wx:for-item="item" 
+			    wx:key="index">
+				<image class="class-icon" src="{{item.grayUrl}}"></image>
+				<view class="class-text">
+					<text>{{item.name}}</text>
+				</view>	
+			</navigator>
+		</view>
+		<!-- <swiper 
+			wx:if="{{isClassListSwiper}}"
+		    class="class-block"
+		    duration="{{swiper.duration}}"
+		    circular="{{true}}">
+		    <swiper-item style="display: flex;flex-wrap: wrap">
+				<navigator class="class-content" url="/pages/classPage/classPage?id={{item.id}}&name={{item.name}}"
+					wx:for="{{fixed.arrLength(initClassList)}}" 
+				    wx:for-index="index" 
+				    wx:for-item="item" 
+				    wx:key="index">
+					<image class="class-icon" src="{{item.grayUrl}}"></image>
+					<view class="class-text">
+						<text>{{item.name}}</text>
+					</view>	
+				</navigator>
+		    </swiper-item>
+		    <swiper-item style="display: flex;flex-wrap: wrap">
+				<navigator class="class-content" url="/pages/classPage/classPage?id={{item.id}}&name={{item.name}}"
+					wx:for="{{fixed.arrLength10(initClassList)}}" 
+				    wx:for-index="index" 
+				    wx:for-item="item" 
+				    wx:key="index">
+					<image class="class-icon" src="{{item.grayUrl}}"></image>
+					<view class="class-text">
+						<text>{{item.name}}</text>
+					</view>	
+				</navigator>
+		    </swiper-item>
+		</swiper> -->
+		<!-- 外卖分类 结束 -->
+		<view class="black"></view>
+		<view class="title">
+			<text class="line"></text>
+			<image src="/images/images/call.png" class="icon-title"></image>
+			<text class="text">附近的商家</text>
+			<text class="line"></text>
+		</view>
+
+		<!-- 附近的商家 开始 -->
+		<view class="goods flex">
+			<view class="goods-item"
+	      		data-index="0"
+	            bindtap="setBfilterType"
+	            >
+	           {{type1}}
+	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	        </view>
+	        <view class="goods-item"
+	      		data-index="1"
+	            bindtap="setBfilterType"
+	            >
+	           {{type2}}
+	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	        </view>
+	        <view class="goods-item"
+	      		data-index="2"
+	            bindtap="setBfilterType"
+	            >
+	            {{type3}}
+	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	        </view>
+		</view>
+		<view class="goods-wrapper clearfix" 
+			wx:for="{{dataList}}" 
+	      	wx:for-index="index" 
+	      	wx:for-item="item"
+	      	wx:key="index"
+	      	data-id="{{item.id}}"
+	      	bindtap="quickPage">	
+			<view class="icon">
+				<image class="icon-image" src="{{item.logo}}" alt="" />
+			</view>
+			<view class="content">
+				<view class="name">
+					<text>{{item.name}}</text>
+					<text class="fr" style="font-size: 26rpx;color: #666;font-weight: 500">{{fixed.round(item.distance)}}km</text>
+				</view>
+				<view class="desc clearfix">
+					<view class="fl desc-content">
+						<template is="star-add" data="{{size,item}}"></template>
+						<text class="desc-count">{{fixed.fomatFloat(item.merchantScore,1)}}分</text>
+						<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
+					</view>
+					<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
+				</view>
+				<view class="extra">
+					<text class="count">起送价￥{{item.minPrice}}</text>
+					<text class="count">|</text>
+					<text>配送费￥{{item.shipFee}}</text>
+					<!-- <image class="extra-img fr" src="/images/images/pay.png"></image> -->
+				</view>
+				<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.height :''}}">
+					<view class="cartcontrol-content flex"
+						wx:for="{{item.promotionActivityList}}" 
+	      				wx:for-index="idx" 
+	      				wx:for-item="promotion"
+	      				wx:key="idx" >
+						<image class="bran" src="{{promotion.promoImg}}"></image>
+						<text class="name">{{promotion.promoName}}</text>
+					</view>
+				</view>
+				<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
+					<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+
+				</view>
+			</view>
+		</view>
+		<!-- 附近的商家 结束 -->
+		<view class="loading-info" wx:if="{{!loading}}">
+	        <image src="/images/merchant/loading.png" class="img-loading"></image>
+	        <view class="loading-text">正在加载，请稍候</view>
+	    </view>
+	    <view class="bottom-info" wx:if="{{loading && dataList.length != 0}}">
+     		 <view class="bottom-text">我是有底线的</view>
+    	</view>
+    	<view wx:if="{{!dataList.length && loading}}" class="text-center">
+      		<view class="no-result mt30">抱歉，没有搜索到您想要的商家</view>
+    	</view>
+	</view>
+	
+
+	<!-- 分类开始 -->
+	<view wx:if="{{classShow}}">
+		<template is="class-common" data="{{classList,childTagCategoryList,timeIndex:timeIndex}}"></template>
+	</view>
+	<view wx:if="{{sortShow}}">
+		<template is="sort-common" data="{{sortList,sortIndex:sortIndex}}"></template>
+	</view>
+	<view wx:if="{{shipShow}}">
+		<template is="shipfilter-common" data="{{shipFilter}}"></template>
+	</view>
+	<!-- 分类结束 -->
+
+	<!-- 无代理商开始 -->
+	<view wx:if="{{isAgentId}}" class="no-agent" style="color:#666">
+		<view class="agent-header">
+			<image class="agent-img" src="/images/images/logo.png"></image>
+		</view>
+		<view class="agent-txt font-16" style="letter-spacing: 4rpx">
+			<text>本区域暂未开通外卖服务</text>
+		</view>
+		<view class="agent-txt font-14" style="margin-top: 20rpx">
+			<text>加盟热线：400-997-9393</text>
+		</view>
+	</view>
+	<!-- 无代理商结束 -->
+	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close">	
+	</view>
+</View>

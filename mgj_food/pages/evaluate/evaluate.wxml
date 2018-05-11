@@ -1,0 +1,55 @@
+<import src="../../components/star/star.wxml" />
+<import src="../../components/showToast/showToast.wxml" />
+<view class="container page-common font-16">
+	<view class="order" >	
+		<view class="evaluate-item evaluate-border">
+			<view class="header-text">
+				<image class="header-img" src="{{orderObject.merchant.logo}}" ></image>
+      			<text class="header-txt">{{orderObject.merchant.name}}</text>
+			</view>
+		</view>
+		<view class="order-evaluate">
+			<view class="evaluate-item evaluate-item-esle">
+				<text class="evaluate-text">总体评价</text>
+				<view class="evaluate-star">
+					<template is="star-click" data="{{size,item:{merchantScore:merchantScore},evaluate:'merchantScore'}}"></template>
+				</view>
+			</view>
+			<view class="evaluate-item evaluate-item-esle">
+				<text>骑手评价</text>
+				<view class="evaluate-star">
+					<template is="star-click" data="{{size,item:{merchantScore:deliverymanScore},evaluate:'deliverymanScore'}}"></template>
+				</view>
+			</view>
+		</view> 		
+	</view>
+	<view class="order" >
+		<picker class="evaluate-item" value="{{timeIndex}}" range="{{timeList}}" bindchange="bindTimeChange">
+			<view class="font-16">
+				<text class="address-map-text">送达时间</text>
+			</view>
+			<view style="flex:1">
+				<text class="text-fr">{{timeList[timeIndex]}}</text>
+				<image class="query-img fr evaluate-star" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>
+			</view>
+		</picker>		
+	</view>
+	<view class="order" >
+		<view class="evaluate-item evaluate-border">菜品评价</view>
+		<view class="evaluate-item evaluate-item-esle"
+			wx:for="{{orderItems}}" 
+			wx:for-index="index" 
+			wx:for-item="food"
+			wx:key="index">
+			<text>{{food.name}}</text>
+			<view class="evaluate-star">
+				<template is="star-click" data="{{size,item:{merchantScore:food.goodsScore},evaluate:food.goodsId}}"></template>
+			</view>
+		</view>
+	</view>
+	<view class="font-12" style="color:#333;text-align: center;margin-top: 16rpx">请在下单后7天内评价</view>
+	<view class="post-evaluate" bindtap="postEvaluate">
+		<text>提交评价</text>
+	</view>
+	<template is="showToast" data="{{showToast: showToast}}" />
+</view>

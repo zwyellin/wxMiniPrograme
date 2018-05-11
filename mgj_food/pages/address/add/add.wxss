@@ -1,0 +1,91 @@
+@import "../../../components/showToast/showToast.wxss";
+.add {
+	padding: 0 30rpx;
+	background: #fff;
+	color:#333;
+}
+.add-item {
+	position: relative;
+	height: 86rpx;
+	line-height: 86rpx;
+	font-size: 32rpx;	
+}
+.form-label {
+	width: 182rpx;
+	height: 86rpx;
+	line-height: 86rpx;
+	letter-spacing: 4rpx;
+}
+.add-item .input-txt {
+	height: 86rpx;
+	line-height: 86rpx;
+	width: 530rpx;
+	font-size: 30rpx;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color:#666;
+}
+.add-item input {
+	height: 86rpx;
+	line-height: 86rpx;
+	width: 350rpx;
+	font-size: 30rpx;
+	width: 100%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.right-icon {
+  position: absolute;
+  right: 0;
+  width: 30rpx;
+  height: 14rpx;
+  transform: rotate(-90deg);
+  margin-top: 38rpx;
+}
+.add-sex {
+	height: 86rpx;
+	line-height: 86rpx;
+	text-align: center;
+	border-bottom: 1rpx solid #eaeaea;
+}
+.add-bottom {
+	border-bottom: 1rpx solid #eaeaea;
+}
+.sex {
+	margin-left: 92rpx;
+}
+.sex-left {
+	margin-left:20rpx;
+}
+.label {
+	display: inline-block;
+	text-align: center;
+	margin-right: 22rpx;
+	width: 102rpx;
+	height: 50rpx;
+	line-height: 50rpx;
+	border-radius: 10rpx;
+	border:1rpx solid #f4f4f4;
+	margin-top: 16rpx;
+	letter-spacing: 2rpx;
+}
+.company {
+	border:1rpx solid #ff9900;
+	color:#ff9900;
+}
+.pad-send {
+	padding: 0 28rpx;
+}
+.send {
+	width: 100%;
+	height: 84rpx;
+	line-height: 84rpx;
+	margin-top: 32rpx;
+	text-align: center;
+	letter-spacing: 8rpx;
+	background: #ff9300;
+	color:#fff;
+	border-radius: 10rpx;
+}

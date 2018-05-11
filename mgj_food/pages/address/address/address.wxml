@@ -1,0 +1,51 @@
+<import src="../../../components/address/address.wxml" />
+<view class="container page-address">
+	<view class="search-address font-14">
+		<input type="text" placeholder-class="placeholder" placeholder="请输入地址" bindinput="address"/>
+	</view>
+	<view class="now-address font-14">
+		<view class="pad-address">
+			<text>当前地址</text>
+		</view>
+		<view class="pad-address" style="background: #fff">
+			<text>{{nowAdress}}</text>
+			<view class="address-imgtext fr" bindtap="reset">
+				<image class="address-img {{resetAddress ? 'reset-address' : ''}}" src="../../../images/images/dingwei.png"></image>
+				<text class="address-text">重新定位</text>
+			</view>
+		</view>
+		<view wx:if="{{false}}">
+			<view class="pad-address">
+				<text>我的收货地址</text>
+			</view>
+			<template is="add-address"></template>
+		</view>
+		<view>
+			<view class="pad-address">
+				<text>附近地址</text>
+			</view>
+			<view class="nearby-address font-12">
+				<view class="nearby-address-text"
+				wx:for="{{nearby}}" 
+		      	wx:for-index="idx" 
+		      	wx:for-item="item" 
+		      	wx:key="idx"
+		      	data-item="{{item}}"
+		      	bindtap="selectAdress">
+			      	<view class="nearby-address-border">
+			      		<view class="font-14" style="color:#333">
+			      			<text>{{item.title}}</text>
+			      		</view>
+						<view style="color:#999;margin-top: 12rpx">
+			      			<text>{{item.address}}</text>
+			      		</view>
+			      	</view>
+				</view>
+			</view>
+		</view>	
+	</view>
+	<navigator class="add-address" url="/pages/address/add/add?isdelate=isdelate">
+		<image class="add-address-img" src="../../../images/images/add_address.png"></image>
+		<view class="add-address-text"><text>增加类型</text></view>	
+	</navigator>
+</view>

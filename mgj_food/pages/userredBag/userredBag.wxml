@@ -1,0 +1,34 @@
+<wxs module="time" src="../../utils/star.wxs"></wxs>
+<view class="container page-common">
+	<view wx:if="{{redBagList.length === 0 }}" class="no-order">
+  		<image class="no-order-img" src="../../images/images/login@2x.png"></image>
+  		<view class="no-order-text">
+  			<text>暂无红包</text>
+  		</view>
+  	</view>
+	<view class="lottery-wrapper"
+		wx:for="{{redBagList}}"   
+      	wx:for-item="item"
+      	wx:for-index="index" 
+      	wx:key="index" 
+      	data-id="{{item.merchantId}}"
+      	bindtap="selectTab">
+		<view class="lottery-content flex">
+			<view class="lottery-icon">
+				<image class="lottery-icon-img" src="{{item.merchantLogo}}"></image>
+			</view>
+			<view class="lottery-content-right font-14">
+				<view class="lottery-content-text">{{item.merchantName}}</view>
+				<view class="money" >满{{item.restrictAmt}}元可用</view>
+			</view>
+			<view class="lottery-content-price">
+				<text>￥</text><text style="font-size:60rpx">{{item.amt}}</text>
+			</view>
+		</view>
+		<view class="lottery-express">
+			<text style="margin-right: 20rpx">有效期</text>
+			<text>{{item.modifyTime}} - {{item.expirationTime}}</text>
+			<text class="fr">外卖</text>
+		</view>
+	</view>
+</view>

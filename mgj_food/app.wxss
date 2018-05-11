@@ -1,0 +1,149 @@
+
+.container {
+  overflow: hidden;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #fff;
+}
+.page-common{
+  background: #ededed;
+}
+
+.flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.text-center {
+  text-align: center;
+}
+.flex-item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.clearfix {
+  zoom: 1;
+}
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+.font-10 {
+  font-size: 20rpx;
+}
+.font-12 {
+  font-size: 24rpx;
+}
+
+.font-13 {
+  font-size: 26rpx;
+}
+
+.font-14 {
+  font-size: 28rpx;
+}
+
+.font-16 {
+  font-size: 32rpx;
+}
+
+.font-18 {
+  font-size: 36rpx;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+.mb10 {
+  margin-bottom: 10rpx;
+}
+.mt10 {
+  margin-top: 10rpx;
+}
+.mt20 {
+  margin-top: 20rpx;
+}
+
+/* 加载更多 */
+.loading-info {
+  width: 100%;
+  text-align: center;
+  padding: 5px 0;
+  overflow: hidden;
+  transition: all 0.4s;
+}
+.img-loading, 
+.loading-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+.img-loading {
+  width: 24px;
+  height: 24px;
+  margin-right: 22rpx;
+  animation: loadingRotate 2s infinite;
+}
+@keyframes loadingRotate
+{
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.loading-text {
+  color: #666666;
+  font-size: 14px;
+}
+/* 无搜索结果时 */
+.mt30 {
+  margin-top: 30rpx;
+}
+.no-result {
+  color: #666666;
+  font-size: 14px;
+}
+
+/*底线*/
+.bottom-info {
+  width: 100%;
+  text-align: center;
+  padding: 5px 0;
+}
+.bottom-text {
+  position: relative;
+  display: inline-block;
+  color: #666666;
+  font-size: 14px;
+}
+.bottom-text:after,
+.bottom-text:before {
+  position: absolute;
+  width: 150rpx;
+  height: 1px;
+  background-color: #c1c1c1;
+  top: 0px;
+  bottom: 0px;
+  margin: auto;
+  content: "";
+}
+.bottom-text:before {
+  left: -170rpx;
+}
+.bottom-text:after {
+  right: -170rpx;
+}
+
+

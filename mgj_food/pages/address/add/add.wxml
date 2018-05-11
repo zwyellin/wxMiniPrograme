@@ -1,0 +1,45 @@
+<import src="../../../components/showToast/showToast.wxml" />
+<view class="container page-common">
+	<view class="add">
+		<view class="flex add-item">
+			<label class="form-label">联系人：</label>
+			<input style="border-bottom: 1rpx solid #eaeaea" type="text" placeholder="姓名"  value="{{userName}}" bindinput="getUserName"/>
+		</view>
+		<view class="add-sex">
+			<radio-group class="radio-group" bindchange="radioChange">
+				<radio value="先生" color="#ff9900" checked="{{sexmen}}" />
+				<text class="sex-left font-16">先生</text>
+				<radio class="sex" value="女士" color="#ff9900" checked="{{sexwomen}}"/>
+				<text class="sex-left font-16">女士</text>
+			</radio-group>
+		</view>
+		<view class="flex add-item add-bottom">
+			<label class="form-label" style="width: 130rpx">电话：</label>
+			<input type="text" placeholder="请填写收货手机号码" value="{{mobile}}" bindinput="getUserMobile"/>
+		</view>
+		<view class="flex add-item">
+			<label class="form-label" style="width: 130rpx;">地址：</label>
+			<text style="border-bottom: 1rpx solid #eaeaea;" class="input-txt" bindtap="getUseraddress" >{{address}}</text>
+			<image class="right-icon" src="../../../images/images/down.png"></image>
+		</view>
+		<view class="flex add-item add-bottom">
+			<label class="form-label" style="width: 156rpx"></label>
+			<input style="border-bottom: 1rpx solid #eaeaea" type="text" placeholder="详细地址(如门牌号等)" value="{{houseNumber}}" bindinput="getUserdetatil" />
+		</view>
+		<!-- <view class="flex add-item">
+			<label class="form-label" style="width: 118rpx">标签：</label>
+			<text class="label company">公司</text>
+			<text class="label" >学校</text>
+			<text class="label">家</text>
+		</view> -->
+	</view>
+	<view class="pad-send flex">
+		<view wx:if="{{!isDelateShow}}" class="send" catchtap="deleteAddress" style="margin-right: 20rpx;background:#d9644c">
+			<text>删除</text>
+		</view>
+		<view class="send" catchtap="sendAddress">
+			<text>确定</text>
+		</view>
+	</view>
+	<template is="showToast" data="{{showToast: showToast}}" />
+</view>

@@ -1,0 +1,37 @@
+.results {
+	
+}
+.results-content {
+  padding: 0 30rpx;
+	height: 121rpx;
+	line-height: 121rpx;
+	font-size: 30rpx;
+	color: #333;
+  background: #fff;
+  border-top: 1rpx solid #ededed;
+}
+.portrait {
+  width: 50rpx;
+  height: 50rpx;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -42rpx;
+}
+.portrait-img {
+  width: 50rpx;
+  height: 50rpx;
+}
+.user {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 20rpx;
+}
+.results-no{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  color: #666;
+  font-size: 24rpx;
+}

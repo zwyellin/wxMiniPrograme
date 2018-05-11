@@ -1,0 +1,15 @@
+<wxs module="cart" src="../../utils/star.wxs"></wxs>
+<template name="contorl-add">
+	<view class="control {{topStatus ? 'top-status' : ''}}">
+		<view wx:if="{{cart.getCount(selectFoods,food.id)>0}}" class="cart-decrease" data-food="{{food}}" catchtap="decrease">
+			<image class="icon-add_circle" src="/images/images/decrease.png"></image>
+		</view>
+			
+		<view wx:if="{{cart.getCount(selectFoods,food.id)>0}}" class="cart-count">
+			<text>{{cart.getCount(selectFoods,food.id)}}</text>
+		</view>		
+		<view wx:if="{{food.goodsSpecList.length === 1 && food.goodsAttributeList.length === 0}}" class="cart-add"  data-food="{{food}}" catchtap="addCart">
+			<image class="icon-add_circle" src="/images/images/add.png"></image>
+		</view>
+	</view>
+</template>

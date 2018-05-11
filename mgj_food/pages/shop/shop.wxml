@@ -1,0 +1,465 @@
+<import src="../../components/control/control.wxml" />
+<import src="../../components/star/star.wxml" />
+<import src="../../components/showToast/showToast.wxml" />
+<wxs module="tage" src="../../utils/star.wxs"></wxs>
+<view class="container page-index">
+	<view class="header">
+		<!-- <text class="title">{{itemList.name}}</text> -->
+		<view class="content-wrapper">
+			<view class="avatar">
+				<image class="icon-image" src="{{itemList.logo}}" ></image>
+			</view>
+			<view class="content">
+				<view class="desc" style="{{itemList.promotionActivityList.length === 0 ? 'margin-top: 29rpx' : ''}}">
+					<text class="count-right">起送价</text>
+					<text>{{itemList.minPrice}}￥</text>
+					<text class="count">|</text>
+					<text class="count-right">配送费</text>
+					<text>{{itemList.shipFee}}￥</text>
+					<text class="count">|</text>
+					<text>{{itemList.avgDeliveryTime}}分钟送达</text>
+				</view>
+				<view class="cartcontrol-wrapper">
+					<swiper autoplay="true" circular="true" 
+						vertical="true" interval="3000" duration="500" style="height: 30rpx">
+						<swiper-item class="cartcontrol-content flex"
+							wx:for="{{itemList.promotionActivityList}}" 
+		      				wx:for-index="idx" 
+		      				wx:for-item="promotion"
+		      				wx:key="idx" >
+							<image class="bran" src="{{promotion.promoImg}}"></image>
+							<text class="name">{{promotion.promoName}}</text>
+						</swiper-item>
+					</swiper>
+					<view wx:if="{{itemList.promotionActivityList.length > 0}}" class="fr">
+						<text>{{itemList.promotionActivityList.length}}个活动</text>
+						<image class="desc-img" src="../../images/images/down.png"></image>
+					</view>
+				</view>
+			</view>  
+		</view>
+		<view class="bulletin-wrapper">
+			<image class="bulletin-title" src="../../images/images/video.png"></image>
+			<text class="bulletin-text">{{itemList.broadcast}}</text>
+			<image class="icon-arrow_lift" src="../../images/images/down.png"></image>
+		</view>
+	</view>
+
+	<view class="tab">
+      <view class="item-tab {{index===tabIndex ? 'item-tab-avtive' : ''}}"
+      wx:for="{{tab.tabList}}"   
+      wx:for-item="item"
+      wx:for-index="index" 
+      wx:key="index" 
+      bindtap="selectTab" data-index="{{index}}">
+        <text>{{item}}</text>
+      </view>
+    </view>
+    <!-- 商品 开始 -->
+    <view wx:if="{{tab.cur==='商品'}}" class="goods">
+    	<scroll-view class="menu-wrapper" 
+    		scroll-y="true"
+    		style="height:{{windowScrollHeight-48}}px"
+    		scroll-into-view="{{leftToView}}" >
+	    	<block 
+		    	wx:for="{{menu}}" 
+		    	wx:for-item="item" 
+		    	wx:for-index="index" 
+		    	wx:key="index" >
+		    	<view class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
+		    		<image class="menu-item-text" wx:if="{{item.icon}}" src="{{item.icon}}"></image>
+		    		<text class="text">
+						{{item.name}}
+					</text>
+		    	</view>	
+			</block>
+		</scroll-view>
+		<scroll-view  class="foods-wrapper" 
+			scroll-y="true"
+			style="height:{{windowScrollHeight-48}}px"
+			scroll-into-view="{{rightToView}}" 
+			bindscroll="rightScroll" >
+		    <block
+		    class="food-list food-list-hook"
+		    wx:for="{{menu}}" 
+		    wx:for-item="item" 
+		    wx:for-index="parentIndex" 
+		    wx:key="parentIndex" >
+		    <view data-cateno="A{{parentIndex+1}}" id="r_A{{parentIndex+1}}">
+				<text class="food-title">{{item.name}}</text>
+				<view class="food-item" 
+					wx:for="{{item.goodsList}}" 
+				    wx:for-item="food" 
+				    wx:for-index="index" 
+				    wx:key="index"
+				    data-food="{{food}}"
+				    bindtap="selectefood">
+					<view class="icon">
+						<image class="icon_img" src="{{food.imgs}}" alt="" />
+					</view>
+					<view class="content">
+						<view class="detail-name">
+							<text >{{food.name}}</text>
+						</view>
+						<view class="detail-descs">
+							<text>{{food.description}}</text>
+						</view>
+						
+						<view class="detail-extra">
+							<text class="detail-count">月售{{food.monthSaled}}</text>
+							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">{{tage.praise(food.goodCommentNum,food.commentNum)}}%好评率</text>
+						</view>
+						<view class="detail-price">
+							<text class="now">¥{{food.goodsSpecList[0].price}}</text>
+						</view>
+						<view class="cartcontrol-wrapper">
+							<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
+								<template is="contorl-add" data="{{food,selectFoods}}" ></template>
+							</view>
+							<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
+								<text>商家休息中</text>
+							</view>
+							<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status === 0}}" class="choice-else font-10">
+								<text>商品已售罄</text>
+							</view>
+							<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
+								<view wx:if="{{food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{food}}" catchtap="choice" >
+									<text>选规格</text>
+								</view>
+							</view>	
+						</view>
+					</view>
+				</view>
+			</view>
+			</block>
+		</scroll-view>
+    </view>
+    <!-- 商品 结束 -->
+
+    <!-- 评价 开始 -->
+    <scroll-view 
+    	wx:if="{{tab.cur==='评价'}}" 
+    	class="evaluate"
+    	scroll-y="true"
+    	style="height:{{windowScrollHeight}}px"
+    	bindscrolltolower="loadMore">
+    	<view class="evaluate-wrapper">
+    		<view class="evaluate-left">
+    			<view class="evaluate-text">
+    				<text style="color:#e6a243">{{itemList.merchantScore}}</text>
+    			</view>
+    			<view class="evaluate-text font-12">
+    				<text>综合评分</text>
+    			</view>
+    		</view>
+    		<view class="evaluate-right">
+				<view class="evaluate-right-text font-12">
+					<label class="text-right">配送服务</label>
+					<template is="star-ship" data="{{size,item}}"></template>
+					<text class="text-left">{{tage.fomatFloat(itemList.shipScore,1)}}分</text>
+				</view>
+				<view class="evaluate-right-text font-12" style="margin-top: 12rpx">
+					<label class="text-right">商家服务</label>
+					<template is="star-add" data="{{size,item}}"></template>
+					<text class="text-left">{{tage.fomatFloat(itemList.merchantScore,1)}}分</text>
+				</view>
+    		</view>
+    	</view>
+    	<view class="evaluate-content">
+    		<view class="evaluate-border"
+    			wx:for="{{evaluate}}" 
+		    	wx:for-item="item" 
+		    	wx:for-index="index" 
+		    	wx:key="index">
+    			<view class="flex font-12">
+	    			<template is="star-add" data="{{size,item}}"></template>
+					<text class="text-left font-16" style="margin-top: -6rpx">{{item.merchantScore}}分</text>
+					<image class="message-img" src="../../images/images/time.png"></image>
+					<text style="margin-top: 4rpx">13分钟送达</text>
+	    		</view>
+	    		<view class="evaluate-message font-14">
+	    			<text>{{item.deliverymanComments}}</text>
+	    		</view>
+	    		<view class="evaluate-message font-12" style="margin-top: 16rpx">
+	    			<text>{{item.modifyTime}}</text>
+	    		</view>
+	    		<view class="evaluate_right font-12">
+	    			<text class="evaluate_text">{{item.appUser.name}}</text>
+	    			<image class="evaluate_img" src="{{item.appUser.headerImg}}" ></image>
+	    		</view>
+	    		<view wx:if="{{item.replyContent}}" class="reply">商家回复: {{item.replyContent}}</view>
+    		</view>	
+    	</view>
+    	<view class="loading-info" wx:if="{{!loading}}">
+	        <image src="/images/merchant/loading.png" class="img-loading"></image>
+	        <view class="loading-text">正在加载，请稍候</view>
+	    </view>
+	    <view class="bottom-info" wx:if="{{loading}}">
+     		<view class="bottom-text">暂无更多评价</view>
+    	</view>
+    </scroll-view>
+    <!-- 评价 结束 -->
+
+    <!-- 商家 开始 -->
+    <view wx:if="{{tab.cur==='商家'}}" class="shop">
+    	<view class="shop-header font-12">
+    		<view class="shop-text font-14">
+    			<text>{{itemList.name}}</text>
+    		</view>
+			<view class="shop-text" style="margin-top:16rpx">
+    			<template is="star-add" data="{{size,item}}"></template>
+    			<text style="color:#666;margin-left:24rpx">月售{{itemList.monthSaled}}单</text>
+    		</view>
+    	</view>
+    	<view class="user-center">
+  			<view class="user-message">
+  				<view class="font-12"><text >起送价</text></view>
+  				<view class="mt10"><text style="color:#333" >{{itemList.minPrice}}元</text></view>
+  			</view>
+  			<view wx:if="{{itemList.shipmentMode === 2}}" class="user-message">
+  				<view class="font-12"><text>第三方配送</text></view>
+  				<view class="mt10"><text style="color:#333">{{itemList.practicalShipFee}}元</text></view>
+  			</view>
+  			<view wx:if="{{itemList.shipmentMode === 1}}" class="user-message">
+  				<view class="font-12"><text>商家自配送</text></view>
+  				<view class="mt10"><text style="color:#333">{{itemList.practicalShipFee || 0}}元</text></view>
+  			</view>
+  			<view class="user-message">
+  				<view class="font-12"><text>平均配送时间</text></view>
+  				<view class="mt10"><text style="color:#333">{{itemList.avgDeliveryTime}}分钟</text></view>
+  			</view>
+  		</view>
+  		<view class="shop-content font-16">
+  			<view class="shop-message shop-message-letter" style="color:#666;padding-left: 10rpx">
+  				<text>商家信息</text>
+  			</view>
+			<view class="shop-message">
+  				<text class="shop-message-letter">商家地址:</text>
+  				<text class="shop-message-letter shop-left">{{itemList.address}}</text>
+  			</view>
+  			<view class="shop-message">
+  				<text class="shop-message-letter">营业时间:</text>
+  				<text class="shop-message-letter shop-left">{{itemList.workingTime}}</text>
+  			</view>
+  			<view class="shop-message" bindtap="callPhone">
+  				<text class="shop-message-letter">电话:</text>
+  				<text class="shop-message-letter shop-left">{{itemList.contacts}}</text>
+  			</view>
+  		</view>
+  		<view class="shop-content font-16">
+  			<view class="shop-message shop-message-letter" style="color:#666">
+  				<text>商家公告</text>
+  			</view>
+  			<view class="shop-message shop-message-letter font-14" style="color:#bc4500">
+  				<text>{{item.broadcast}}</text>
+  			</view>
+  		</view>
+  		<view class="shop-content font-18">
+  			<view class="shop-message shop-message-letter" >
+  				<text>活动与支持</text>
+  			</view>
+  			<view class="query-message font-12 clearfix"
+				wx:for="{{itemList.promotionActivityList}}" 
+				wx:for-index="idx" 
+				wx:for-item="promotion"
+				wx:key="idx">
+				<view class="fl font-14">
+					<image class="bran-img" src="{{promotion.promoImg}}"></image>
+					<text>{{promotion.promoName}}</text>
+				</view>
+			</view>
+  		</view>
+    </view>
+    <!-- 商家 结束 -->
+
+	<view wx:if="{{tab.cur==='商品'}}" class="shopcart">
+		<view class="content">
+			<view class="contet-left">
+				<view class="logo-wrapper" >
+					<view class="logo" bindtap="showFood">
+						<image wx:if="{{totalcount===0}}" class="logo" src="/images/images/cart_1.png"></image>
+						<image wx:if="{{totalcount>0}}" class="logo" src="/images/images/cart_2.png"></image>
+					</view>
+					<view wx:if="{{totalcount>0}}" class="num">
+						<text>{{totalcount}}</text>
+					</view>
+				</view>
+				<view class="price" style="color:#fff"><text>￥{{totalprice}}</text></view>
+				<text class="desc" style="color:#fff">另需配送费¥{{itemList.shipFee}}</text>
+			</view>
+			<view class="content-right" bindtap="checkOut">
+				<view class="pay {{ totalprice>=minPrice ? 'enough' : 'not-enough'}}" >
+					<text>{{tage.payDesc(totalprice,minPrice)}}</text>
+				</view>
+			</view>
+		</view>
+		<view wx:if="{{fold}}" class="shopcart-list">
+			<view class="list-header">
+				<text class="list-title">购物车</text>
+				<text class="empty" bindtap="empty">清空</text>
+			</view>
+			<scroll-view class="list-content" 
+				scroll-y="true" 
+				style="{{selectFoods.length>=2 ? 'height:82px': ''}}" >
+				<block
+					wx:for="{{selectFoods}}" 
+				    wx:for-item="food" 
+				    wx:for-index="index" 
+				    wx:key="index">
+					<view class="food" >
+						<view class="name food-name">{{food.name}}
+							<text wx:if="{{food.priceObject.spec}}">({{food.priceObject.spec}})</text>
+							<text wx:if="{{food.attrbuites}}">{{food.attrbuites}}</text>
+						</view>
+						<view class="price">
+							<text>￥{{food.priceObject.price*food.count}}</text>
+						</view>
+						<view class="cartcontrol-wrapper">
+							<view class="control" style="height: 72rpx">
+								<view wx:if="{{food.count>0}}" class="cart-decrease" data-food="{{food}}" catchtap="decrease">
+									<image class="icon-add_circle" src="/images/images/decrease.png"></image>
+								</view>
+								<view wx:if="{{food.count>0}}" class="cart-count">
+									<text>{{food.count}}</text>
+								</view>
+								<view class="cart-add" data-food="{{food}}" catchtap="addCart">
+									<image class="icon-add_circle" src="/images/images/add.png"></image>
+								</view>
+							</view>
+						</view>
+					</view>
+				</block>
+			</scroll-view>
+		</view>
+	</view>
+	<view wx:if="{{detailShow}}" animation="{{choiceAnimation}}" class="shopdetail">
+		<view class="detail-content">
+			<image class="detail-img" src="{{selectedFood.imgs}}"></image>
+			<view class="detail-title">
+				<text style="text-indent: 32rpx">味道美味</text>
+			</view>	
+		</view>
+		<view class="selectdetail-desc selectdetail-else">
+			<text class="detail-name">{{selectedFood.name}}</text>
+			<text class="detail-old">月售{{selectedFood.monthSaled}}份</text>
+		</view>
+		<view class="selectdetail-desc" style="padding-bottom: 20rpx;">
+			<text class="detail-name" style="color:#ff8282">￥{{selectedFood.goodsSpecList[0].price}}</text>
+			<text detail-old>￥{{selectedFood.now}}</text>
+		</view>
+		<!-- <view class="button"> -->
+			<!-- <image class="button-img" src="../../images/images/cart_2.png"></image>
+			<text class="button-txt">加入购物车</text> -->
+			<!-- </view> -->
+			<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
+				<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
+					<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template>
+				</view>
+				<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
+					<text>商家休息中</text>
+				</view>
+				<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status === 0}}" class="choice-else font-10"  >
+					<text>商品已售罄</text>
+				</view>
+				<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
+					<view wx:if="{{selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{selectedFood}}" catchtap="choice" >
+						<text>选规格</text>
+					</view>
+				</view>	
+			</view>
+		
+	</view>
+	<view wx:if="{{choice || detailShow || merchantRedBagList.length != 0}}" animation="{{maskAnimation}}" class="mask" bindtap="close">	
+	</view>
+	<view wx:if="{{choice}}" animation="{{choiceAnimation}}" class="shoprules font-16">
+		<view class="shoprules-title">
+			<text>{{selectedFood.name}}</text>
+			<image class="shoprules-img" src="../../images/images/close.png" bindtap="close"></image>
+		</view>
+		<view class="shoprules-wrapper font-14">
+			<view class="shoprules-content-rules">
+				<view class="shoprules-text">
+					<text>规格 :</text>
+				</view>
+				<view class="shoprules-options font-14"
+					wx:for="{{selectedFood.goodsSpecList}}" 
+					wx:for-item="taste" 
+					wx:for-index="index" 
+					wx:key="index">
+					<text class="shoprules-select {{index===specIndex ? 'shoprules-active' : ''}}" 
+						bindtap="choicespec"
+						data-index="{{index}}"
+						data-taste="{{taste}}">{{taste.spec}}
+					</text>
+				</view>
+				<view class="shoprules-messgae font-10">
+					<text wx:if="{{selectedFood.goodsSpecList[specIndex].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{selectedFood.goodsSpecList[specIndex].orderLimit}}份</text>
+					<text wx:if="{{selectedFood.goodsSpecList[specIndex].stockType}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{selectedFood.goodsSpecList[specIndex].stock}}件</text>
+					<text wx:if="{{selectedFood.goodsSpecList[specIndex].minOrderNum}}" class="rules-text" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{selectedFood.goodsSpecList[specIndex].minOrderNum}}份起购</text>
+				</view>
+			</view>
+			<view class="shoprules-content"
+				wx:for="{{selectedFood.goodsAttributeList}}" 
+				wx:for-item="item" 
+				wx:for-index="parentindex" 
+				wx:key="parentindex">
+				<view class="shoprules-text">
+					<text>{{item.title}} :</text>
+				</view>
+				<view class="shoprules-options font-14">
+					<text class="shoprules-select {{item.select == taste ? 'shoprules-active' : ''}}" 
+						wx:for="{{tage.splitStr(item.name)}}" 
+						wx:for-item="taste" 
+						wx:for-index="index" 
+						wx:key="index"
+						bindtap="choiceTaste"
+						data-parentindex = "{{parentindex}}"
+						data-taste="{{taste}}">{{taste}}
+					</text>
+				</view>
+			</view>
+			
+		</view>
+		<view class="shoprules-food">
+			<view class="shoprules-left font-18">
+				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text>
+			</view>
+			<view class="shoprules-right">
+				<text bindtap="addCart" data-rules="{{true}}" data-food="{{selectedFood}}" data-specindex="{{specIndex}}">选好了</text>
+			</view>
+		</view>
+	</view>
+	<view class="redbag" wx:if="{{merchantRedBagList.length != 0}}" animation="{{orderRedAnimation}}">
+		<view class="redbag-close">
+			<image class="redbag-close-img" catchtap="close" src="../../images/images/close_red.png"></image>
+		</view>
+		<view class="redbag-header">
+			<image class="redbag-img" src="../../images/images/shop_redbag.png"></image>
+		</view>
+		<view style="background: #e3003a;border-radius:0 0 20rpx 20rpx;overflow: hidden;">
+			<view class="redbag-content"
+				wx:for="{{merchantRedBagList}}" 
+				wx:for-item="item" 
+				wx:for-index="index"
+				wx:key="index" >
+				<view class="lottery-content flex">
+					<view class="lottery-icon" style="color: #ff3e4a">
+						<text style="font-size:36rpx">￥</text>
+						<text style="font-size:60rpx">{{item.amt}}</text>
+					</view>
+					<view class="lottery-content-right font-14">
+						<view class="lottery-content-text">{{item.name}}</view>
+						<view class="money" >{{item.useRule}}</view>
+						<view class="get-redbag font-10 {{item.isReceive === '已领取' ? 'receive' : ''}}" bindtap="getMerchantRedBag" data-item="{{item}}" data-index="{{index}}">
+							<text>{{item.isReceive}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="redbag-food">
+				<text>恭喜获得天降红包，可抵扣在线支付时的订单金额</text>
+			</view>
+		</view>
+	</view>
+	<template is="showToast" data="{{showToast: showToast}}" />
+</view>

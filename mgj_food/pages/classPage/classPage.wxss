@@ -1,0 +1,23 @@
+@import "../../components/goods.wxss";
+@import "../../components/star/star.wxss";
+@import "../../components/common/common.wxss";
+.goods-top {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+}
+.top-40 {
+	margin-top: 62rpx;
+}
+.time {
+  position: fixed;
+  top: 66rpx;
+  width: 100%;
+  height: 574rpx;
+  background: #fff;
+  z-index: 19999
+}
+.item-active {
+	color:#ff9900;
+}

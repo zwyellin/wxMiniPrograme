@@ -1,0 +1,63 @@
+.star{
+	font-size: 0;
+	display: inline-block;
+}
+.star-item{
+	display: inline-block;
+}
+
+.star-48 .star-item{
+	width:38rpx;
+	height: 38rpx;
+	margin-right: 10rpx;
+}
+.star-item:last-child{
+	margin-right: 0;
+}
+.star-48 .star-item .on{
+	width:38rpx;
+	height: 38rpx;
+}
+.star-48 .star-item .half{
+	width:38rpx;
+	height: 38rpx;
+}
+.star-48 .star-item .off{
+	width:38rpx;
+	height: 38rpx;
+}
+		
+.star-36 .star-item{
+	width:30rpx;
+	height: 30rpx;
+	margin-right: 8rpx;
+}
+.star-36 .on{
+	width:30rpx;
+	height: 30rpx;
+}
+.star-36 .half{
+	width:30rpx;
+	height: 30rpx;
+}
+.star-36 .off{
+	width:30rpx;
+	height: 30rpx;
+}
+.star-24 .star-item{
+	width:20rpx;
+	height: 20rpx;
+	margin-right: 6rpx;
+}	
+.star-24 .on{
+	width:20rpx;
+	height: 20rpx;
+}
+.star-24 .half{
+	width:20rpx;
+	height: 20rpx;
+}
+.star-24 .off{
+	width:20rpx;
+	height: 20rpx;
+}

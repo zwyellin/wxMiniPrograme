@@ -1,0 +1,25 @@
+<import src="../../components/showToast/showToast.wxml" />
+<view class="container page-login">
+	<view class="login-tip font-12">
+		<text>为保证送餐员能联系到你，请验证您的账户绑定手机号</text>
+	</view>
+	<view class="pad mt20 font-14">
+		<view class="flex mobile">
+			<label class="form-label">手机号：</label>
+			<input type="number" placeholder="请输入手机号" maxlength="11" bindinput="checkPhone" />
+		</view>
+		<view class="send-ma {{ maStatus ? 'login-active' : ''}}" disabled="{{disabled}}" bindtap="getVerificationCode">
+			<text class="mobile-ma">{{yanzhengma}}</text>	
+			<!-- <text>{{time}}</text> -->
+		</view>  
+		<view class="flex get-ma">
+			<input type="number" placeholder="请输入收到的验证码" bindinput="checkPass" />
+		</view>
+	</view>
+	<view class="pad-send">
+		<view class="send" bindtap="login">
+			<text>登录</text>
+		</view>
+	</view>
+	<template is="showToast" data="{{showToast: showToast}}" />
+</view>

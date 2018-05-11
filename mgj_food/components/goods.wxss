@@ -1,0 +1,102 @@
+.goods {
+	padding-bottom: 14rpx;
+	border-bottom: 1rpx solid #ebebeb;
+	background: #fff;
+}
+.goods-item {
+	flex:1;
+	height: 48rpx;
+	line-height: 48rpx;
+	border-right: 1px solid #ebebeb;
+	text-align: center;
+	font-size: 28rpx;
+}
+.arrow_down {
+	vertical-align: middle;
+	width: 20rpx;
+	height: 10rpx;
+	margin-left: 6rpx;
+}
+.goods-wrapper {
+	position: relative;
+	display: flex;
+	padding: 30rpx 26rpx 20rpx;
+}
+.icon{
+	flex:0 0 170rpx;
+	height: 130rpx;
+	margin-right: 30rpx;
+}
+.content{
+	flex:1;			
+}
+.icon-image {
+	width: 170rpx;
+	height: 130rpx;
+}
+.name{
+	display: block;
+	margin: 0 0 24rpx 0;
+	height: 28rpx;
+	line-height: 28rpx;
+	font-size: 32rpx;
+	color: #333;
+}
+.desc{
+	display: block;
+	margin-bottom: 20rpx;
+	font-size: 24rpx;
+	line-height: 24rpx;
+	color: #666;
+}
+.extra{
+	font-size: 24rpx;
+	line-height: 24rpx;
+	color: #666;
+	padding-bottom: 20rpx;
+	border-bottom: 1rpx dashed #ebebeb;
+}
+.extra-img {
+	width: 26rpx;
+	height: 26rpx;
+}
+.count{
+	margin-right: 24rpx;
+}
+
+.cartcontrol-wrapper{
+	position: relative;
+	padding-top: 16rpx;	
+}
+.cartcontrol-down{
+	position:absolute;
+	right:18rpx;
+	padding-top:16rpx;
+	top:158rpx;
+	width:40rpx;	
+}
+.cartcontrol-content {
+	height: 34rpx;
+	line-height: 34rpx;	
+}
+.cartcontrol-content .name {
+	font-size: 24rpx;
+	letter-spacing: 2rpx;
+	color:#999;
+	text-overflow: ellipsis;
+	/*white-space: nowrap;*/
+	overflow: hidden;
+}
+.cartcontrol-wrapper .bran{
+	display:inline-block;
+	vertical-align: top;
+	flex:0 0 26rpx;
+	width: 26rpx;
+	height: 26rpx;
+	margin-right: 6rpx;
+}
+.posi {
+	position: fixed;
+	top: 0;
+	overflow: hidden;
+}					

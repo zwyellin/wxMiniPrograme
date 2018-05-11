@@ -1,0 +1,133 @@
+@import "../../components/showToast/showToast.wxss";
+.left {
+  float: left; 
+}
+
+.right {
+  float: right; 
+}
+
+.register {
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  padding-top: 60rpx;
+  background: #f3f3f3; 
+}
+.register .title_txt {
+  padding-left: 18rpx;
+  color: #999999;
+  font-size: 24rpx; 
+}
+.register .register_tell {
+  border-top: 1rpx solid #ebebeb;
+  border-bottom: 1rpx solid #ebebeb;
+  margin-top: 36rpx;
+  background: #FFFFFF;
+  overflow: hidden;
+  padding-left: 24rpx;
+  padding-right: 24rpx; 
+}
+.register .register_tell .register_tell-mobile:nth-child(1) {
+  border-bottom: 1rpx solid #ebebeb;
+  overflow: hidden;
+  height: 100rpx; 
+}
+.register .register_tell .register_tell-mobile:nth-child(1) label {
+  font-size: 22rpx;
+  color: #333333;
+  line-height: 100rpx;
+  font-size: 26rpx;
+  margin-right: 36rpx; 
+}
+.register .register_tell .register_tell-mobile:nth-child(1) #tell {
+  font-size: 26rpx;
+  width: 53%;
+  height:100rpx;
+  color: #999999; 
+}
+.register .register_tell .register_tell-mobile .btn {
+  background: #f4f4f4;
+  width: 186rpx;
+  line-height: 60rpx;
+  font-size: 26rpx;
+  margin-top: 19rpx;
+  border-radius: 8rpx;
+  text-align: center; 
+}
+.register .register_tell .register_tell-check {
+  height: 100rpx;
+  line-height: 100rpx;
+  overflow: hidden;
+}
+.register .register_tell .register_tell-check:nth-child(2) #code {
+  padding-left: 88rpx;
+  font-size: 26rpx;
+  height: 100rpx;
+  color: #999999; 
+}
+.register .item {
+  width: 100%;
+  color: #999999;
+  font-size: 26rpx;
+  text-align: center; 
+}
+.register .item a {
+  color: #049eb5; 
+}
+.register .item_top {
+  margin-top: 34rpx; 
+}
+.register .item_bottom {
+  margin-bottom:34rpx;
+}
+.register #reg_btn {
+  width: 90%;
+  margin: 0 5%;
+  text-align: center;
+  height: 86rpx;
+  line-height: 86rpx;
+  color: #FF5959;
+  font-size: 34rpx;
+  background: #FFFFFF;
+  border-radius: 8rpx; 
+}
+.register-active {
+  background: #FF5A59;
+  color:#fff;
+}
+.register #reg_btn:hover, .register #reg_btn:visited, .register #reg_btn:focus, .register #reg_btn:active {
+  background: #FFFFFF; 
+}
+.register #reg_btn[disabled] {
+  color: rgba(0, 0, 0, 0.25);
+  background-color: #f7f7f7; 
+}
+
+.banner {
+  width: 90%;
+  margin: 0 5%;
+  height: 320rpx;
+  margin-top: 50rpx;
+  overflow: hidden; 
+}
+.banner-img {
+  height: 320rpx;
+}
+.footer {
+  position: absolute;
+  left: 0rpx;
+  bottom: 22rpx;
+  width: 100%; 
+}
+.footer .footer-text1 {
+  text-align: center;
+  font-size: 24rpx;
+  color: #9fa0a0;
+  margin-bottom: 22rpx; 
+}
+.footer .footer-text2 {
+  text-align: center;
+  font-size: 24rpx;
+  color: #9fa0a0; 
+}

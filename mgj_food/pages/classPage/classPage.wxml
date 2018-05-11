@@ -1,0 +1,101 @@
+<import src="../../components/star/star.wxml" />
+<import src="../../components/common/common.wxml" />
+<wxs module="fixed" src="../../utils/star.wxs"></wxs>
+<view class="container {{maskShow ? 'posi' : ''}}" >
+	<View class="goods goods-top flex">
+		<view class="goods-item {{classShow ? 'item-active' : ''}}"
+      		data-index="0"
+            bindtap="setBfilterType"
+            >
+           {{type1}}
+            <image wx:if="{{classShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!classShow}}" src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+        <view class="goods-item {{sortShow ? 'item-active' : ''}}"
+      		data-index="1"
+            bindtap="setBfilterType"
+            >
+           {{type2}}
+            <image wx:if="{{sortShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!sortShow}}" src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+        <view class="goods-item"
+      		data-index="2"
+            bindtap="setBfilterType"
+            >
+            {{type3}}
+            <image src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+	</View>
+	<view class="top-40">
+		<view class="goods-wrapper clearfix" 
+			wx:for="{{dataList}}" 
+	      	wx:for-index="index" 
+	      	wx:for-item="item"
+	      	wx:key="index"
+	      	data-id="{{item.id}}"
+	      	bindtap="quickPage">	
+			<view class="icon">
+				<image class="icon-image" src="{{item.logo}}" alt="" />
+			</view>
+			<view class="content">
+				<view class="name">
+					<text>{{item.name}}</text>
+					<text class="fr">{{item.defDistance}}km</text>
+				</view>
+				<view class="desc clearfix">
+					<view class="fl desc-content">
+						<template is="star-add" data="{{size,item}}"></template>
+						<text class="desc-count">{{fixed.fomatFloat(item.merchantScore,1)}}分</text>
+						<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
+					</view>
+					<text class="fr" style="font-size: 30rpx;color:#333">{{item.avgDeliveryTime}}分钟</text>
+				</view>
+				<view class="extra">
+					<text class="count">起送价￥{{item.minPrice}}</text>
+					<text class="count">|</text>
+					<text>配送费￥{{item.shipFee}}</text>
+					<image class="extra-img fr" src="../../images/images/pay.png"></image>
+				</view>
+				<view class="cartcontrol-wrapper" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.height :''}}">
+					<view class="cartcontrol-content flex"
+						wx:for="{{item.promotionActivityList}}" 
+	      				wx:for-index="idx" 
+	      				wx:for-item="promotion"
+	      				wx:key="idx" >
+						<image class="bran" src="{{promotion.promoImg}}"></image>
+						<text class="name">{{promotion.promoName}}</text>
+					</view>
+				</view>
+				<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
+					<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+				</view>
+			</view>
+		</view>
+		<!-- 附近的商家 结束 -->
+		<view class="loading-info" wx:if="{{!loading && dataList.length > 9}}">
+	        <image src="/images/merchant/loading.png" class="img-loading"></image>
+	        <view class="loading-text">正在加载，请稍候</view>
+	    </view>
+	    <view class="bottom-info" wx:if="{{loading && dataList.length != 0}}">
+	 		<view class="bottom-text">我是有底线的</view>
+		</view>
+		<view wx:if="{{!dataList.length && loading}}" class="text-center">
+      		<view class="no-result" style="margin-top: 82rpx">抱歉，没有搜索到您想要的商家</view>
+    	</view>
+	</view>
+	<!-- 分类开始 -->
+	<view wx:if="{{classShow}}">
+		<template is="class-common" data="{{classList,childTagCategoryList,timeIndex:timeIndex,classAnimation}}"></template>
+	</view>
+	<view wx:if="{{sortShow}}">
+		<template is="sort-common" animation="{{classAnimation}}" data="{{sortList,sortIndex:sortIndex}}"></template>
+	</view>
+	<view wx:if="{{shipShow}}">
+		<template is="shipfilter-common" animation="{{classAnimation}}" data="{{shipFilter}}"></template>
+	</view>
+	<!-- 分类结束 -->
+
+	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask-else" catchtap="close">	
+	</view>
+</view>

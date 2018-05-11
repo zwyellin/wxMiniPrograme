@@ -1,0 +1,132 @@
+<wxs module="cart" src="../../../utils/star.wxs"></wxs>
+<view class="page-common container" style="position: relative">
+	<view class="cart-detail">
+		<image class="cart-detail-img" src="{{orderDetail.merchant.logo}}"></image>
+		<view class="cart-detail-txt">
+			<text wx:if="{{orderDetail.orderFlowStatus === -1}}" >订单已取消</text>
+      		<text wx:if="{{orderDetail.orderFlowStatus === 1}}" >订单已提交</text>
+      		<text wx:if="{{orderDetail.orderFlowStatus === 2}}" >等待商家确认</text>
+      		<text wx:if="{{orderDetail.orderFlowStatus === 3}}" >商家已接单</text>
+      		<text wx:if="{{orderDetail.orderFlowStatus === 4}}" >配送员取货中</text>
+      		<text wx:if="{{orderDetail.orderFlowStatus === 5}}" >配送员已取货</text>
+      		<text wx:if="{{orderDetail.orderFlowStatus === 6}}" >骑手配送中</text>
+      		<text wx:if="{{orderDetail.orderFlowStatus === 7}}" >已完成</text>
+		</view>
+		<view class="txt-else">
+			<text wx:if="{{orderDetail.orderFlowStatus === 7}}">感谢你对马管家的信任,期待下次光临</text>
+		</view>
+		<view wx:if="{{orderDetail.orderFlowStatus === 7}}" class="cart-detail-food">
+			<text class="no-cart" bindtap="refundCall">申请退款</text>
+			<text class="no-cart" style="background: #ff9900;color:#fff;margin-left: 14rpx;border: none" catchtap="nextOrder">再来一单</text>
+			<text class="no-cart" bindtap="evaluateOrder" wx:if="{{orderDetail.hasComments === 0}}" style="border:1rpx solid #ff5959;color:#ff5959;margin-left: 14rpx">评价</text>
+		</view>
+		<view wx:else class="cart-detail-food">
+			<text class="no-cart" wx:if="{{orderDetail.orderFlowStatus === 1}}" style="width:200rpx" catchtap="cancelOrder">取消订单</text>
+		</view>
+	</view>
+	<view class="order">
+		<view class="order-header">
+			<view class="header-text">
+				<image class="header-img" src="{{orderDetail.merchant.logo}}" ></image>
+        		<text class="header-txt">{{orderDetail.merchant.name}}</text>
+        		<image class="header-img1 fr" style="margin-top: 46rpx" src="../../../images/images/down.png" ></image>
+			</view>
+		</view>
+		<view class="order-content">
+  			<view class="order-menu-else"
+  				wx:for="{{orderDetail.orderItems}}" 
+				wx:for-index="index" 
+				wx:for-item="food"
+				wx:key="index" >
+  				<text class="order-name-else">{{food.name}}</text>
+  				<text class="fr" style="width: 136rpx;text-align:right">￥{{food.price}}</text>
+  				<text class="fr" style="color:#b6b6b6">x {{food.quantity}}</text>
+  				<!-- <text class="order-name">{{food.name}}</text> -->
+				<!-- <text class="fr" style="color:#b6b6b6">x {{food.quantity}}</text> -->
+  			</view>
+  			<view wx:if="{{orderDetail.orderItems}}" class="order-menu" style="margin-top:0;height:90rpx;line-height:90rpx">
+  				<text class="fr" style="color:#aaaaaa">共{{cart.getCartCount(orderDetail.orderItems)}}件商品 合计 : <text style="color:#333;font-size: 28rpx;font-weight: 500" >￥{{orderDetail.totalPrice}}</text></text>
+  			</view>
+  		</view>
+		<view class="cartorder-food" bindtap="callPhone">
+      		<image class="cartorder-img" src="../../../images/images/call01.png" ></image>
+			<text class="cartorder-txt">联系商家</text>
+		</view>
+  	</view>
+  	<view class="order-detail" wx:if="{{3 < orderDetail.orderFlowStatus && orderDetail.orderFlowStatus < 8}}">
+  		<view class="order-header font-16" style="line-height: 100rpx;color: #000">
+	      	<text class="txt txt-w">配送信息</text>
+	    </view>
+		<view class="order-detail-title">
+	      	<text class="txt txt-w txt-space" style="color: #666">配送方式: </text>
+	      	<text wx:if="{{orderDetail.shipmentType === 2}}" class="txt" style="color: #666">第三方配送</text>
+	      	<text wx:if="{{orderDetail.shipmentType === 1}}" class="txt" style="color: #666">商家自配送</text>
+	    </view>
+	    <view class="order-detail-title">
+	      	<text class="txt txt-w" style="color: #999"><text class="fl">骑</text><text class="fr" style="margin-right: 20rpx">手:</text></text>
+	      	<text class="txt" style="color:#999;position: absolute;left: 184rpx;">{{orderDetail.deliveryTask.deliveryman.name}}</text>
+	      	<text class="txt" catchtap="deliverycall" style="color:#ff9900;left: 244rpx;position: absolute;">{{orderDetail.deliveryTask.deliveryman.mobile}}</text>
+	    </view>
+  	</view>
+	<view class="order-detail" style="color:#666">
+		<view class="order-detail-title">
+			<text class="txt txt-w" style="color:#000">订单详情</text>
+      		<text class="txt-order fr" style="font-size: 26rpx">订单编号：{{orderDetail.id}}</text>
+		</view>
+		<view class="order-detail-title">
+	      	<text class="txt txt-w txt-space">联系人: </text>
+	      	<text class="txt">{{orderDetail.userName}}</text>
+	    </view>
+	    <view class="order-detail-title">
+	      	<text class="txt txt-w txt-space">联系电话: </text>
+	      	<text class="txt">{{orderDetail.userMobile}}</text>
+	    </view>
+	    <view class="order-detail-title">
+	      	<text class="txt txt-w">收货地址: </text>
+	      	<text class="txt" style="width: 75%">{{orderDetail.userAddress}}</text>
+	    </view>
+	    <view class="order-detail-title">
+	      	<text class="txt txt-w">支付方式: </text>
+	      	<text wx:if="{{orderDetail.paymentType === 1}}" class="txt">在线支付</text>
+			<text wx:if="{{orderDetail.paymentType === 2}}" class="txt">货到付款</text>
+	    </view>
+	    <view class="order-detail-title">
+	      	<text class="txt txt-w">订单备注: </text>
+	      	<text class="txt">{{orderDetail.caution || '无'}}</text>
+	    </view>
+	    <view class="order-detail-title" >
+	      	<text class="txt txt-w">下单时间: </text>
+	      	<text class="txt">{{orderDetail.createTime}}</text>
+	    </view>
+	    <view class="order-detail-title" >
+	      	<text class="txt txt-w">送达时间: </text>
+	      	<text class="txt">{{expectArrivalTime || '立即送达'}}</text>
+	    </view>
+	</view>
+	<view class="redbag" wx:if="{{show}}" animation="{{orderRedAnimation}}">
+		<view class="redbag-close">
+			<image class="redbag-close-img" catchtap="close" src="../../../images/images/close_red.png"></image>
+		</view>
+		<view class="redbag-header">
+			<image class="redbag-img" src="../../../images/images/order_red.png"></image>
+		</view>
+		<view style="background: #e3003a">
+			<view class="redbag-content">
+				<view class="lottery-content flex">
+					<view class="lottery-icon" style="color: #ff3e4a">
+						<text style="font-size:36rpx">￥</text><text style="font-size:60rpx">{{getMerchantRedBagList.amt}}</text>
+					</view>
+					<view class="lottery-content-right font-14">
+						<view class="lottery-content-text">返现红包</view>
+						<view class="money" >满{{getMerchantRedBagList.restrictAmt}}元可用</view>
+					</view>
+				</view>
+			</view>
+			<view class="redbag-food">
+				<text>恭喜获得天降红包，可抵扣在线支付时的订单金额</text>
+			</view>
+		</view>
+	</view>
+	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close">	
+	</view>
+</view>

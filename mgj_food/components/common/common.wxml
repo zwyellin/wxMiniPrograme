@@ -1,0 +1,72 @@
+<template name="class-common">
+	<view class="time" animation="{{classAnimation}}">
+		<view class="flex font-14">
+		    <scroll-view class="time-left" scroll-y="true" style="height:574rpx">
+			    <view class="time-left-text {{timeIndex===index ? 'time-active' : ''}}"
+			    	wx:for="{{classList}}"   
+	  				wx:for-item="item"
+	 				wx:for-index="index" 
+	 				wx:key="index"
+	 				catchtap="selectClass"
+	 				data-index ="{{index}}"
+	 				data-item="{{item}}">
+			        <text class="txt">{{item.name}}</text>
+			       <image wx:if="{{timeIndex===index}}" class="common-img fr" style="margin-top: 36rpx" src="../../images/images/down_ye.png" ></image>
+			       <image wx:elif="{{timeIndex===index}}" class="common-img fr" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>
+			    </view>   
+		    </scroll-view>
+		    <scroll-view class="time-right" scroll-y="true" style="height:574rpx">
+		     	<view class="time-right-text time-right-else"
+		     		wx:for="{{childTagCategoryList}}"   
+	  				wx:for-item="item"
+	 				wx:for-index="index" 
+	 				wx:key="index"
+	 				data-index="{{index}}"
+	 				data-item="{{item}}"
+		     		catchtap="selectText">
+		        	<text>{{item.name}}</text>
+		      	</view>
+		    </scroll-view>
+		</view>
+	</view>
+</template>
+<template name="sort-common">
+	<view class="time">
+		<view class="flex font-14">
+		    <scroll-view class="time-left" scroll-y="true" style="height:574rpx;background: #fff">
+			    <view class="time-left-text {{sortIndex===index ? 'time-active' : ''}}"
+			    	wx:for="{{sortList}}"   
+	  				wx:for-item="item"
+	 				wx:for-index="index" 
+	 				wx:key="index"
+	 				catchtap="selectSort"
+	 				data-index ="{{index}}">
+			        <text class="txt">{{item}}</text>
+			       <image wx:if="{{sortIndex===index}}" class="common-img1 fr" style="margin-top: 36rpx;" src="../../images/images/dui.png" ></image>
+			    </view>   
+		    </scroll-view>
+		</view>
+	</view>
+</template>
+<template name="shipfilter-common">
+	<view class="time" style="height:246rpx">
+		<view class="flex font-14 shipfilter-content">
+		    <view class="shipfilter-left" style="text-indent: 18rpx">
+		    	<text>配送方式</text>
+		    </view>
+		    <view class="shipfilter-right flex">
+		    	<text class="shipfilter-text {{shipFilter== null ? 'shipfilter-active' : ''}}" bindtap="selectShip" data-index="{{null}}">不限</text>
+		    	<text class="shipfilter-text ship-box {{shipFilter== 1 ?'shipfilter-active' : ''}}" bindtap="selectShip" data-index="{{1}}">商家配送</text>
+		    	<text class="shipfilter-text {{shipFilter== 2 ?'shipfilter-active' : ''}}" bindtap="selectShip" data-index="{{2}}">第三方配送</text>
+		    </view>
+		</view>
+		<view class="flex font-14 shipfilter-content" style="margin-top:14rpx">
+			<view class="shipfilter-clear" bindtap="clear">
+				<text>清空</text>
+			</view>
+			<view class="shipfilter-query font-16" bindtap="query">
+				<text>确定</text>
+			</view>
+		</view>
+	</view>
+</template>

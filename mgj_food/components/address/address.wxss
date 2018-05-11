@@ -1,0 +1,102 @@
+.receiving-address {
+	position: relative;
+	padding: 30rpx 30rpx 40rpx 30rpx;
+}
+.receiving-header {
+	width: 100%;
+	height: 10rpx;
+	overflow: hidden;
+}
+.receiving-headerimg {
+	position: absolute;
+	width: 100%;
+	height: 10rpx;
+	top: 0;
+	left: 0;
+}
+.receiving-content {
+	display: inline-block;
+	width: 78%;
+}
+.receiving-text {
+	height: 60rpx;
+	line-height: 60rpx;
+	display: flex;
+	width: 100%;
+}
+.receiving-text-txt {
+	width: 100%;
+}
+.text {
+	display: inline-block;
+	margin-right: 22rpx;
+	letter-spacing: 2rpx;
+}
+.typecompany {
+	height: 50rpx;
+	line-height: 50rpx;
+	border:1rpx solid #e94544;
+	border-radius: 10rpx;
+	color:#e94544;
+}
+.typeaddress {
+	height: 50rpx;
+	line-height: 50rpx;
+	border:1rpx solid #449de9;
+	border-radius: 10rpx;
+	color:#449de9;
+}
+.text1 {
+	margin-right: 20rpx;
+}
+.text-adress {
+	/*display: inline-block;*/
+	/*text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;*/
+}
+.receiving-contentimg {
+	position: absolute;
+	right: 36rpx;
+	top: 44rpx;
+	display: inline-block;
+	width: 80rpx;
+	height: 80rpx;
+}
+.receiving-img {
+	position: absolute;
+	right: 12rpx;
+	top: 14rpx;
+	display: inline-block;
+	width: 42rpx;
+	height: 42rpx;
+}
+.receiving-tipimg {
+	width: 42rpx;
+	height: 42rpx;
+	margin-bottom: 4rpx;
+	margin-left: 20rpx;
+}
+.add-address{
+	position: fixed;
+	bottom: 0;
+	height: 100rpx;
+	width: 100%;
+	line-height: 100rpx;
+	margin: 0 auto;
+	text-align: center;
+	background: #fff;
+}
+.add-address-text {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 14rpx;
+	color:#ff9900;
+	letter-spacing: 4rpx;
+}
+.add-address-img {
+	display: inline-block;
+	width: 30rpx;
+	height: 30rpx;
+	vertical-align: middle;
+}

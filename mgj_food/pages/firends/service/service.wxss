@@ -1,0 +1,26 @@
+.hot-service {
+	height: 58rpx;
+	line-height: 58rpx;
+	background: #ededed;
+	text-indent: 10rpx;
+	letter-spacing: 4rpx;
+	color: #666;
+	border-bottom: 2px solid #e6e6e6;
+}
+.service-text {
+	height: 72rpx;
+	line-height: 72rpx;
+	background: #fff;
+	text-indent: 22rpx;
+	letter-spacing: 2rpx;
+	border-bottom: 2px solid #e6e6e6;
+}
+.header-img1 {
+  width: 26rpx;
+  height: 12rpx;
+  display: inline-block;
+  vertical-align: middle;
+  transform: rotate(-90deg);
+  margin-top: 30rpx;
+  margin-right: 14rpx;
+}

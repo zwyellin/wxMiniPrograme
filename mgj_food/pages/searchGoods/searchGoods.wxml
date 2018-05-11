@@ -1,0 +1,68 @@
+<import src="../../components/star/star.wxml" />
+<wxs module="fixed" src="../../utils/star.wxs"></wxs>
+<view class="container page-common">
+	<view class="search-goods font-14" style="background: #fff">
+		<input type="text" placeholder="搜索商家、商品名称" placeholder-class="placeholder" cursor="{{80}}" bindinput="searchGoods"/>
+		<image class="icon-search" src="../../images/images/search.png"></image>
+	</view>
+	<view style="color:#666">
+		<view class="hot-search font-16">
+			<text>热门搜索</text>
+		</view>
+		<view class="font-12 flex search-goods">
+			<view
+				class="hot-text {{item===searchValue ? 'hot-active' : ''}}"
+				wx:for="{{hotList}}" 
+	      		wx:for-index="index" 
+	      		wx:for-item="item"
+	      		wx:key="index"
+	      		data-item="{{item}}"
+	      		bindtap="hotSearch">
+				<text>
+	      			{{item}}
+	      		</text>
+			</view>
+		</view>
+	</view>
+	<view class="goods-wrapper search-background clearfix" 
+		wx:for="{{searchList}}" 
+      	wx:for-index="index" 
+      	wx:for-item="item"
+      	wx:key="index"
+      	data-id="{{item.id}}"
+      	bindtap="quickPage" >	
+		<view class="icon">
+			<image class="icon-image" src="{{item.logo}}" alt="" />
+		</view>
+		<view class="content">
+			<view class="name">
+				<text>{{item.name}}</text>
+				<text class="fr">{{item.defDistance}}km</text>
+			</view>
+			<view class="desc clearfix">
+				<view class="fl desc-content">
+					<template is="star-add" data="{{size,item}}"></template>
+					<text class="desc-count">{{fixed.fomatFloat(item.merchantScore,1)}}分</text>
+					<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
+				</view>
+				<text class="fr" style="font-size: 30rpx;color:#333">{{item.avgDeliveryTime}}分钟</text>
+			</view>
+			<view class="extra">
+				<text class="count">起送价￥{{item.minPrice}}</text>
+				<text class="count">|</text>
+				<text>配送费￥{{item.shipFee}}</text>
+				<image class="extra-img fr" src="../../images/images/pay.png"></image>
+			</view>
+			<view class="cartcontrol-wrapper">
+				<view class="cartcontrol-content flex"
+					wx:for="{{item.promotionActivityList}}" 
+      				wx:for-index="idx" 
+      				wx:for-item="promotion"
+      				wx:key="idx" >
+					<image class="bran" src="{{promotion.promoImg}}"></image>
+					<text class="name">{{promotion.promoName}}</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>

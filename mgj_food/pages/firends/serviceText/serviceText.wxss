@@ -1,0 +1,9 @@
+.service-text {
+	padding: 54rpx 50rpx 50rpx 40rpx;
+	background: #fff;
+	letter-spacing: 2px;
+}
+.send-time {
+	color:#1e1e1e;
+	font-weight: 700;
+}

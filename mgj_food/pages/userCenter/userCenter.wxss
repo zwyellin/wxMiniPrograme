@@ -1,0 +1,56 @@
+/* userCerter.wxss */
+@import "../goods/cartItem/cartItem.wxss"
+.page-usercenter {
+  background:#f4f4f4
+}
+.no-login {
+  padding:20rpx 28rpx 40rpx 28rpx;
+  background: #fff;
+}
+.no-login-content {
+  width: 100%;
+  display: table-cell;
+  padding-bottom: 60rpx;
+}
+.no-login-img {
+  width: 120rpx;
+  height: 120rpx;
+  vertical-align: middle;
+  border-radius: 120rpx;
+  border:1px solid #eaeaea;
+}
+.no-login-text {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 30rpx;
+  color:#262626;
+}
+.no-login-food {
+  margin-top: 20rpx;
+  height: 88rpx;
+  text-align: center;
+  line-height: 88rpx;
+  background: #fff;
+}
+.user-center {
+  display: flex;
+}
+.user-message {
+  flex:1;
+  text-align: center;
+  color:#666;
+}
+.order-header {
+  border-top:none;
+  background: #fff;
+  height: 88rpx;
+}
+.header-img {
+  height: 42rpx;
+  width: 36rpx;
+}
+.header-txt {
+  font-size: 28rpx;
+  color:#333;
+}
+

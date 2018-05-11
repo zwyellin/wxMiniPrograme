@@ -1,0 +1,90 @@
+@import "../../../components/showToast/showToast.wxss";
+/* cartItem.wxss */
+.page {
+  background: #ededed; 
+}
+.no-order {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+.no-order-img {
+  width: 230rpx;
+  height: 230rpx;
+}
+.no-order-text {
+  font-size: 22rpx;
+  text-align: center;
+}
+.button {
+  width: 240rpx;
+  height: 80rpx;
+  margin-top: 28rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 28rpx;
+  background: #fe9800;
+  color: #fff;
+}
+.order {
+  margin-top: 20rpx;
+  background: #fff;
+}
+.order-header {
+  padding: 0 38rpx 0 30rpx;
+  height: 100rpx;
+  border-bottom: 1rpx solid #eaeaea;
+  border-top: 1rpx solid #eaeaea;
+  letter-spacing: 2rpx;
+}
+.header-img {
+  width: 60rpx;
+  height: 60rpx;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 20rpx;
+  border-radius: 60rpx;
+}
+.header-img1 {
+  width: 30rpx;
+  height: 14rpx;
+  display: inline-block;
+  vertical-align: middle;
+  transform: rotate(-90deg);
+  margin-top: 20rpx;
+  margin-left: 30rpx;
+  border-radius: 60rpx;
+}
+.header-txt {
+  display: inline-block;
+  margin-top: 20rpx;
+  vertical-align: middle;
+  margin-left: 20rpx;
+}
+.order-menu {
+  padding: 0 38rpx 0 110rpx;
+  font-size: 26rpx;
+  color: #333;
+  margin-top: 36rpx;
+}
+.order-name {
+  display: inline-block;
+  width: 85%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.order-food {
+  padding-right: 38rpx;
+  height: 90rpx;
+  border-bottom: 1rpx solid #eaeaea;
+  border-top: 1rpx solid #eaeaea;
+}
+.food-txt {
+  padding: 12rpx 18rpx;
+  border: 4rpx solid #ff5959;
+  margin-top: 14rpx;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+}

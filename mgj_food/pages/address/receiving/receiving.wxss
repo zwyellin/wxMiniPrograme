@@ -1,0 +1,6 @@
+@import "../../../components/address/address.wxss";
+@import "../../../components/showToast/showToast.wxss";
+.address-top {
+	position: relative;
+	margin-top: 20rpx;
+}

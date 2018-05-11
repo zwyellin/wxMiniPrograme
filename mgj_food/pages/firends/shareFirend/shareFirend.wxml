@@ -1,0 +1,36 @@
+<view class="container">
+	<view class="share-firend" style="background-image: url(http://7xu5hi.com1.z0.glb.clouddn.com/201805051351037959319.png);-webkit-background-size:cover;">
+	</view>
+	<view class="share-content">
+		<view class="share-box">
+			<image class="share-person" src="../../../images/images/person.png"></image>
+			<view class="share-qrcode font-12">
+				<view class="qrcode-white">
+					<canvas class='qrcode' canvas-id='canvas'></canvas>
+				</view>
+				<view style="margin-top: 10rpx"><text>快去让好友扫描二维码</text></view>
+				<view><text>赢取现金奖励吧</text></view>
+			</view>
+			<view class="share-rule">
+				<image class="share-rule-img" src="/images/images/rule.png"></image>
+				<view class="share-rule-text">
+					<text>当你邀请的好友在马管家平台注册及消费时,你可以获得返现。返现金额为返现比例乘以你好友的消费金额,不同时段返现比例可能不同,返现规则最终解释权归马管家所有</text>
+				</view>
+			</view>
+		</view>
+	</view>
+	<!-- <view class="share-food">
+		<view class="share">
+			<view style="position: relative">
+				<image class="share-weixin" src="../../../images/images/weixin.png"></image>
+				<button class="share-button" open-type="share"></button>
+			</view>
+			<view>
+				<image class="share-img" src="/images/images/qq.png"></image>
+			</view>
+			<view>
+				<image class="share-img" src="../../../images/images/firends.png"></image>
+			</view>
+		</view>
+	</view> -->
+</view>

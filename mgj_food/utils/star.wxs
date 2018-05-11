@@ -1,0 +1,100 @@
+
+var cart = {
+	itemClasses: function(num) {
+		var arr = [];
+		var stars = Math.floor(num*2) / 2;
+		var hasDecimal = stars % 1!== 0;
+		var integer=Math.floor(stars);
+		for (var i = 0; i <integer; i++) {
+			arr.push('on');		
+		}
+		if (hasDecimal) {
+			arr.push('half');
+		}
+		for (var i = arr.length; i <5; i++) {
+			arr.push('off');
+		}
+		return arr;
+	},
+	fomatFloat: function(src,pos){   
+       return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);   
+    },
+	praise:function(goodCommentNum,CommentNum) {
+		var praise = goodCommentNum/CommentNum;
+			praise = praise*100
+			praise = parseInt(praise);
+		return praise;
+	},
+	round:function(num){
+		var str = parseFloat(num/1000);
+			str = str.toFixed(2);
+		return str
+	},
+	splitStr: function(str){
+		return str.split('|*|');
+	},
+	//计算购物车中当前产品的数量
+	getCount: function (cartlist, id) {
+	    var count = 0;
+	    if (id) {
+	      for (var i = 0; i < cartlist.length; i++) {
+	        if (cartlist[i].id == id) {
+	          count+= cartlist[i].count;
+	        }
+	      }
+	    }
+	    return count;
+	},
+	//计算订单中产品的总数
+	getCartCount: function (cartlist) {
+	    var count = 0;
+	    for (var i = 0; i < cartlist.length; i++) {
+	      count += cartlist[i].quantity;
+	    }
+	    return count;
+	},
+	payDesc: function(totalprice,minprice) {
+		if (totalprice===0) {
+			return '¥' + minprice+'元起送';
+		}else if(totalprice < minprice){
+			var dif=minprice - totalprice;
+			return '还差¥'+ dif + '元';
+		}else{
+			return '去结算';
+		}
+	},
+	arrLength: function(classList) {
+		var arr =[];
+		for (var i = 0; i < 10; i++) {
+			arr.push(classList[i]);
+		}
+		return arr;
+	},
+	arrLength10: function(classList) {
+		var arr =[];
+		var len = classlist.length;
+		if (len>20) {
+			for (var i = 10; i < 20; i++) {
+				arr.push(classList[i]);
+			}
+			return arr;
+		} else {
+			for (var i = 10; i < len; i++) {
+				arr.push(classList[i]);
+			}
+			return arr;
+		}	
+	}
+};
+module.exports = {
+  itemClasses: cart.itemClasses,
+  fomatFloat: cart.fomatFloat,
+  praise: cart.praise,
+  splitStr:cart.splitStr,
+  getCount:cart.getCount,
+  getCartCount:cart.getCartCount,
+  payDesc:cart.payDesc,
+  arrLength:cart.arrLength,
+  arrLength10:cart.arrLength10,
+  round:cart.round
+};

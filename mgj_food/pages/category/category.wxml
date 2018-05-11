@@ -1,0 +1,33 @@
+<!--category.wxml-->
+<view class="container page page-category">
+	<view class="category" >
+	    <view class="item-class" >
+			<text class="item-class-text">美食</text>
+			<image class="item-class-img fr" src="http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/114/h/114" ></image>
+	    </view>
+	</view>
+	<view class="category" >
+	    <view class="item-class" >
+			<text class="item-class-text">美食</text>
+			<image class="item-class-img fr" src="http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/114/h/114" ></image>
+	    </view>
+	</view>
+	<view class="category" >
+	    <view class="item-class" >
+			<text class="item-class-text">美食</text>
+			<image class="item-class-img fr" src="http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/114/h/114" ></image>
+	    </view>
+	</view>
+	<view class="category" >
+	    <view class="item-class" >
+			<text class="item-class-text">美食</text>
+			<image class="item-class-img fr" src="http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/114/h/114" ></image>
+	    </view>
+	</view>
+	<view class="category" >
+	    <view class="item-class" >
+			<text class="item-class-text">美食</text>
+			<image class="item-class-img fr" src="http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/114/h/114" ></image>
+	    </view>
+	</view>
+</view>

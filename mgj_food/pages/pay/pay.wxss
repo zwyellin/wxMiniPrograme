@@ -1,0 +1,76 @@
+@import "../../components/showToast/showToast.wxss";
+.pay-content {
+	padding: 0 32rpx;
+}
+.order-price {
+	padding: 0 32rpx;
+	height: 128rpx;
+	line-height: 128rpx;
+	background: #fff;
+}
+.pay-balance {
+	position: relative;
+	padding: 0 32rpx;
+	margin:20rpx 0;
+	height: 100rpx;
+	line-height: 100rpx;
+	background: #fff;
+}
+.pay-channelright {
+	position: absolute;
+	top: 16rpx;
+	right: 56rpx;
+	width: 40rpx;
+	height: 40rpx;	
+}
+.pay-content {
+	padding: 0 32rpx;
+	background: #fff;
+}
+.pay-mode {
+	height: 100rpx;
+	line-height: 100rpx;
+}
+.pay-wx {
+	position: relative;
+	height: 116rpx;
+	line-height: 116rpx;
+	margin-top: 1rpx;
+}
+.pay-image {
+	position: absolute;
+	top: 32rpx;
+	height: 50rpx;
+	width: 50rpx;
+}
+.pay-right {
+	position: absolute;
+	top: 16rpx;
+	right: 24rpx;
+	width: 40rpx;
+	height: 40rpx;	
+}
+.pad-send {
+	padding: 0 32rpx;
+}
+.send {
+	width: 100%;
+	height: 84rpx;
+	line-height: 84rpx;
+	margin-top: 60rpx;
+	text-align: center;
+	letter-spacing: 4rpx;
+	background: #ff9300;
+	color:#fff;
+	border-radius: 10rpx;
+}
+.common-mask {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: #000;
+}

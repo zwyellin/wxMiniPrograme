@@ -1,0 +1,8 @@
+<view class="container page-common">
+	<view class="channel-title">
+		<text>最近30天收支明细</text>
+	</view>
+	<view class="channel-content">
+		
+	</view>
+</view>

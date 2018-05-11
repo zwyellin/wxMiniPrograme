@@ -1,0 +1,20 @@
+<import src="../../../components/address/address.wxml" />
+<import src="../../../components/showToast/showToast.wxml" />
+<view class="container page-common">
+	<view style="padding-bottom:100rpx">
+		<view class="address-top"
+			wx:for="{{address}}" 
+	    	wx:for-item="item" 
+	    	wx:for-index="index" 
+	    	wx:key="index"
+	    	data-item="{{item}}"
+	    	catchtap="selectAddress">
+			<template is="add-address" data="{{item}}"></template>
+		</view>
+	</view>
+	<navigator class="add-address" url="/pages/address/add/add?isdelate=isdelate">
+		<image class="add-address-img" src="../../../images/images/add_address.png"></image>
+		<view class="add-address-text"><text>增加地址</text></view>	
+	</navigator>
+	<template is="showToast" data="{{showToast: showToast}}" />
+</view>

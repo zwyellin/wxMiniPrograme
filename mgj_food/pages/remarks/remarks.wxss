@@ -1,0 +1,39 @@
+@import "../../components/showToast/showToast.wxss";
+.section {
+	position: relative;
+	margin-top: 20rpx;
+	padding: 24rpx 36rpx 24rpx 20rpx;
+	color:#999;
+	background: #fff;
+}
+.section textarea {
+	height: 170rpx;
+	font-size: 28rpx;
+	color:#333;
+	letter-spacing: 2rpx;
+}
+.txtarea {
+	font-size: 24rpx;
+	letter-spacing: 4rpx;
+}
+.txt {
+	position: absolute;
+	bottom: 24rpx;
+	right: 36rpx;
+	font-size: 20rpx;
+	letter-spacing: 4rpx;
+}
+.pad-send {
+	padding: 0 28rpx;
+}
+.send {
+	width: 100%;
+	height: 84rpx;
+	line-height: 84rpx;
+	margin-top: 54rpx;
+	text-align: center;
+	letter-spacing: 8rpx;
+	background: #ff9300;
+	color:#fff;
+	border-radius: 10rpx;
+}
