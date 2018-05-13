@@ -4,8 +4,12 @@ App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
     let loginMessage = wx.getStorageSync('loginMessage');
+    let shoppingCart = wx.getStorageSync('shoppingCart');
     if (loginMessage) {
       this.findAppUserByToken(loginMessage);
+    }
+    if (shoppingCart) {
+      wx.removeStorageSync('shoppingCart');
     }
     this.getUserInfo();
     wx.getSystemInfo({

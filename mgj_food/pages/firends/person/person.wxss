@@ -10,7 +10,7 @@
 .share-money {
 	position: fixed;
 	top:356rpx;
-	left: 52%;
+	left: 50%;
 	transform: translateX(-50%);
 	font-size: 72rpx;
 	color:#e73a24;
@@ -19,7 +19,7 @@
 .share-result {
   position: fixed;
   top:454rpx;
-  left: 54%;
+  left: 52%;
   transform: translateX(-50%);
   font-size: 72rpx;
   color:#e73a24;

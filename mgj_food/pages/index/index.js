@@ -10,6 +10,7 @@ Page(Object.assign({}, {
   		loading:false,
   		isAgentId:false,
   		isClassListSwiper:false,
+  		cartObject:null,
 	    swiper: {
 	      imgUrls: [],
 	      indicatorDots: true,
@@ -116,6 +117,13 @@ Page(Object.assign({}, {
 		});     
 	},
 	onShow(){
+		if (wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = wx.getStorageSync('shoppingCart');
+			console.log(shoppingCart);
+			this.setData({
+				cartObject:shoppingCart
+			});	
+  		}
 		if (this.data.refreshData) {
 			this.setData({
 				type1:'分类',

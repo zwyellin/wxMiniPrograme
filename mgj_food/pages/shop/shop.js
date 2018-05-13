@@ -53,6 +53,7 @@ Page({
 	onLoad(options) {
 		let { merchantid } = options;
 		this.data.merchantId = merchantid;
+		this.getStorageShop(merchantid);
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
 			console.log(res.data.value.menu);
@@ -87,9 +88,21 @@ Page({
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
+	//获取购物车缓存数据
+	getStorageShop(merchantId){
+		if (wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = wx.getStorageSync('shoppingCart');
+			if (shoppingCart[merchantId]) {
+				this.setData({
+					selectFoods:shoppingCart[merchantId]
+				});
+				this.totalprice();
+			}
+  		}
+	},
 	//加载更多评价
 	loadMore(e){  
-        this.data.evaluateStart +=5
+        this.data.evaluateStart +=5;
         this.getevaluate(true);
 	},
 	//选择商品规格
@@ -126,21 +139,23 @@ Page({
 		let isMandatoryGoods;
 		let menu = this.data.menu;
 		let selectFoods = this.data.selectFoods;
+		let index = null;
 		for (let i = 0; i <  menu.length; i++) {
 			if (menu[i].isMandatory) {
 				let isFound = false;
 				for (let j = 0; j < selectFoods.length; j++) {
-					if (menu[i].categoryId === selectFoods[j].categoryId ) {
+					if (menu[i].id === selectFoods[j].categoryId ) {
 						isFound = true;
 					}		
 				}
 				if (!isFound) {
 					isMandatoryGoods = menu[i];
-					break
+					index = i+1;
+					break;
 				}
 			}
 		}
-		return isMandatoryGoods;
+		return {isMandatoryGoods,index};
 	},
 	//去结算
 	checkOut(){
@@ -156,7 +171,7 @@ Page({
 					feedbackApi.showToast({title:'[商品['+isMinOrderNum.name+isMinOrderNum.priceObject.spec+']每单'+isMinOrderNum.priceObject.minOrderNum+'份起够'});
 					return;
 				}
-				let isMandatoryGoods = this.isMandatory()
+				let { isMandatoryGoods, index }= this.isMandatory();
 				if (isMandatoryGoods) {
 					wx.showModal({
 		                content: '请选择['+isMandatoryGoods.name+' (必选) ]下的商品才可以下单哦',
@@ -164,12 +179,16 @@ Page({
 		                confirmText:'好的',
 		                success: function (res) {
 		                  	if (res.confirm) {
-		                    	
+		                    	that.setData({
+							      	currentCateno: 'A'+index,
+							      	rightToView: 'r_A' + index,
+							      	leftScrollClick: true
+							    });
 		                  	} else if (res.cancel) {
-		                    	console.log('用户点击取消')
+		                    	console.log('用户点击取消');
 		                  	}
 		                }
-		            })
+		            });
 					return;
 				}
 				this.data.getOrderStatus = true;
@@ -510,7 +529,7 @@ Page({
 		console.log(food);
 		if (id) {
 	      	let tmpArr = this.data.selectFoods;
-	        //便利数组 
+	        //遍历数组 
         	let isFound = false;
         	tmpArr.map((item)=> {
 	          	if (item.id == id) {
@@ -781,5 +800,18 @@ Page({
         		// 转发失败
       		}
     	};
+  	},
+  	onUnload(){
+  		let merchantId = this.data.merchantId;
+  		if (!wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = {};
+			shoppingCart[merchantId] = this.data.selectFoods;
+			wx.setStorageSync('shoppingCart',shoppingCart);
+  			console.log(shoppingCart);
+  		} else {
+  			let shoppingCart = wx.getStorageSync('shoppingCart');
+  			shoppingCart[merchantId] = this.data.selectFoods;
+  			wx.setStorageSync('shoppingCart',shoppingCart);
+  		}	
   	}
 });

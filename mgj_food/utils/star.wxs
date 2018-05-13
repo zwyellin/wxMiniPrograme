@@ -53,6 +53,30 @@ var cart = {
 	    }
 	    return count;
 	},
+	//计算订单中某一分类下产品的总数
+	getItemCount: function (id,cartlist) {
+	    var count = 0;
+	    if (id === null) return 0;
+	    for (var i = 0; i < cartlist.length; i++) {
+	        if (cartlist[i].categoryId == id) {
+	          count+= cartlist[i].count;
+	        }
+	    }
+	    return count;
+	},
+	//计算该商家下购物车里产品的总数
+	getMerchantCount: function (id,cartObject) {
+		if (cartObject === null) return 0;
+	    var count = 0;
+	    id = id.toString();
+	    var cartList = cartObject[id];
+	    if (cartList) {
+	    	for (var i = 0; i < cartList.length; i++) {
+				count+= cartList[i].count;
+  			}
+	    }
+	    return count;
+	},
 	payDesc: function(totalprice,minprice) {
 		if (totalprice===0) {
 			return '¥' + minprice+'元起送';
@@ -93,6 +117,8 @@ module.exports = {
   splitStr:cart.splitStr,
   getCount:cart.getCount,
   getCartCount:cart.getCartCount,
+  getItemCount:cart.getItemCount,
+  getMerchantCount:cart.getMerchantCount,
   payDesc:cart.payDesc,
   arrLength:cart.arrLength,
   arrLength10:cart.arrLength10,

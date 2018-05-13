@@ -50,12 +50,13 @@
 	font-weight: 500;
 }
 .qrcode-white {
-	padding: 16rpx 18rpx;
+	width: 200rpx;
+	padding: 16rpx 16rpx;
 	background: white;
 }
 .qrcode {
-	width: 210rpx;
-	height: 210rpx;
+	width: 200rpx;
+	height: 200rpx;
 	z-index: 1;
 }
 .share-food {

@@ -140,6 +140,7 @@
 	      	bindtap="quickPage">	
 			<view class="icon">
 				<image class="icon-image" src="{{item.logo}}" alt="" />
+				<text wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</text>
 			</view>
 			<view class="content">
 				<view class="name">

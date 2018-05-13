@@ -23,6 +23,7 @@
 	padding: 30rpx 26rpx 20rpx;
 }
 .icon{
+	position: relative;
 	flex:0 0 170rpx;
 	height: 130rpx;
 	margin-right: 30rpx;
@@ -33,6 +34,18 @@
 .icon-image {
 	width: 170rpx;
 	height: 130rpx;
+}
+.icon-num {
+	position: absolute;
+	top: -12rpx;
+	right: -12rpx;
+	width: 30rpx;
+	line-height: 30rpx;
+	font-size: 16rpx;
+	border-radius: 15rpx;
+	background: #ee5650;
+	color: #fff;
+	text-align: center;
 }
 .name{
 	display: block;

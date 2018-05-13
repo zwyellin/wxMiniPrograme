@@ -71,6 +71,7 @@
 		    		<text class="text">
 						{{item.name}}
 					</text>
+					<text wx:if="{{tage.getItemCount(item.id,selectFoods) > 0}}" class="menu-item-num">{{tage.getItemCount(item.id,selectFoods)}}</text>
 		    	</view>	
 			</block>
 		</scroll-view>
