@@ -38,7 +38,7 @@
 		</view>
 		<view class="fr">
 			<text style="color:#049eb5">{{initTime}}</text>
-			<image class="query-img fr" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>
+			<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
 		</view>
 	</view>
 	<view class="mt20">
@@ -48,7 +48,7 @@
 			</view>
 			<view class="fr">
 				<text>{{payList[payIndex].paymentName}}</text>
-				<image class="query-img fr" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>	
+				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>	
 			</view>
 		</picker>
 		<view wx:if="{{payIndex=== 0}}" class="query-message font-14 clearfix" bindtap="redPage">
@@ -59,7 +59,7 @@
 				<text wx:if="{{redBagUsableCount===0}}" style="color:#999">{{redText}}</text>
 				<text wx:if="{{redBagUsableCount&& redBagMoney === 0}}" style="color:#999">{{redBagUsableCount}}个红包可用</text>
 				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">红包金额为{{redBagMoney}}元</text>
-				<image class="query-img fr" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>
+				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
 			</view>
 		</view>
 		<navigator class="query-message font-14 clearfix" url="/pages/remarks/remarks">
@@ -69,7 +69,7 @@
 			<view class="fr">
 				<text wx:if="{{!remarks}}" style="color:#999">偏好等其他需求</text>
 				<text wx:if="{{remarks}}" style="color:#333">{{remarks}}</text>
-				<image class="query-img fr" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>
+				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
 			</view>
 		</navigator>
 	</view>
@@ -88,11 +88,11 @@
 			<text class="fr">￥{{orderMessage.boxPrice}}</text>
 		</view>
 		<view wx:if="{{orderMessage.shipmentType === 2}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
-			<text style="color:#b6b6b6">{{orderMessage.shipmentTip}}</text>
+			<text style="color:#333">配送费<text style="color:#b6b6b6;font-size: 22rpx"> ({{orderMessage.shipmentTip}})</text></text>
 			<text class="fr">￥{{orderMessage.shippingFee}}</text>
 		</view>
 		<view wx:if="{{orderMessage.shipmentType === 1}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
-			<text style="color:#b6b6b6">{{orderMessage.shipmentTip}}</text>
+			<text style="color:#333">{{orderMessage.shipmentTip}}</text>
 			<text class="fr">￥{{orderMessage.shippingFee}}</text>
 		</view>
 	</view>

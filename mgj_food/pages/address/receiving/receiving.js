@@ -74,13 +74,11 @@ Page({
 		} else {
 			let pages = getCurrentPages();
 	    	let prevPage = pages[pages.length - 2];
+	    	prevPage.setData({
+  				addressInfoId:item.id
+		 	});
 			wx.navigateBack({
-		  		delta: 1,
-		  		success:function(){
-		  	 		prevPage.setData({
-	      				addressInfo:item
-	   		 		});
-		  		}
+		  		delta: 1
 			});
 		}	
 	}

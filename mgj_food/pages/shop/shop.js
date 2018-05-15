@@ -4,6 +4,7 @@ const app = getApp();
 Page({
 	data:{
 		loading:false,
+		isHide:false,         //控制本地购物车缓存
 		getOrderStatus:false,
 		show:true,
 		maskShow:false,       // 遮罩层
@@ -53,7 +54,6 @@ Page({
 	onLoad(options) {
 		let { merchantid } = options;
 		this.data.merchantId = merchantid;
-		this.getStorageShop(merchantid);
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
 			console.log(res.data.value.menu);
@@ -77,6 +77,7 @@ Page({
 		      console.log(cate_size)
 		    }
         });
+        this.getStorageShop(merchantid);
 		this.getevaluate();
 		//获取系统信息 主要是为了计算产品scroll的高度
 	    wx.getSystemInfo({
@@ -801,17 +802,22 @@ Page({
       		}
     	};
   	},
+  	onHide(){
+		this.data.isHide = true
+  	},
   	onUnload(){
-  		let merchantId = this.data.merchantId;
-  		if (!wx.getStorageSync('shoppingCart')) {
-			let shoppingCart = {};
-			shoppingCart[merchantId] = this.data.selectFoods;
-			wx.setStorageSync('shoppingCart',shoppingCart);
-  			console.log(shoppingCart);
-  		} else {
-  			let shoppingCart = wx.getStorageSync('shoppingCart');
-  			shoppingCart[merchantId] = this.data.selectFoods;
-  			wx.setStorageSync('shoppingCart',shoppingCart);
+  		if (!this.data.isHide) {
+	  		let merchantId = this.data.merchantId;
+	  		if (!wx.getStorageSync('shoppingCart')) {
+				let shoppingCart = {};
+				shoppingCart[merchantId] = this.data.selectFoods;
+				wx.setStorageSync('shoppingCart',shoppingCart);
+	  			console.log(shoppingCart);
+	  		} else {
+	  			let shoppingCart = wx.getStorageSync('shoppingCart');
+	  			shoppingCart[merchantId] = this.data.selectFoods;
+	  			wx.setStorageSync('shoppingCart',shoppingCart);
+	  		}
   		}	
   	}
 });

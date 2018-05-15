@@ -11,6 +11,7 @@ Page(Object.assign({}, {
   		isAgentId:false,
   		isClassListSwiper:false,
   		cartObject:null,
+  		isShoppingCart:false,
 	    swiper: {
 	      imgUrls: [],
 	      indicatorDots: true,
@@ -169,16 +170,15 @@ Page(Object.assign({}, {
 	},
 	moveDown(e){
 		let { item, index } = e.currentTarget.dataset;
-		let dataList = this.data.dataList; 
-		if (dataList[index].height === '68rpx') {
-			dataList[index].height = 34*item.promotionActivityList.length+'rpx';
+		if (this.data.dataList[index].height === '68rpx') {
+			this.data.dataList[index].height = 34*item.promotionActivityList.length+'rpx';
 			this.setData({
-				dataList:dataList
+				dataList:this.data.dataList
 			});
 		} else {
-			dataList[index].height = '68rpx';
+			this.data.dataList[index].height = '68rpx';
 			this.setData({
-				dataList:dataList
+				dataList:this.data.dataList
 			});
 		}	
 	},

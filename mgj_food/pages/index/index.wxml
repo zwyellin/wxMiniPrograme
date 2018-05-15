@@ -111,21 +111,21 @@
 		<view class="goods flex">
 			<view class="goods-item"
 	      		data-index="0"
-	            bindtap="setBfilterType"
+	            catchtap="setBfilterType"
 	            >
 	           {{type1}}
 	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
 	        </view>
 	        <view class="goods-item"
 	      		data-index="1"
-	            bindtap="setBfilterType"
+	            catchtap="setBfilterType"
 	            >
 	           {{type2}}
 	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
 	        </view>
 	        <view class="goods-item"
 	      		data-index="2"
-	            bindtap="setBfilterType"
+	            catchtap="setBfilterType"
 	            >
 	            {{type3}}
 	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
@@ -140,7 +140,7 @@
 	      	bindtap="quickPage">	
 			<view class="icon">
 				<image class="icon-image" src="{{item.logo}}" alt="" />
-				<text wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</text>
+				<view wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</view>
 			</view>
 			<view class="content">
 				<view class="name">
@@ -173,7 +173,6 @@
 				</view>
 				<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
 					<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
-
 				</view>
 			</view>
 		</view>
@@ -194,7 +193,7 @@
 	<!-- 分类开始 -->
 	<view wx:if="{{sortShow || classShow || shipShow}}" class="goods goods-header-top flex">
 		<view class="goods-item {{classShow ? 'item-active' : ''}}"
-      		data-index="0"
+      		data-index="{{0}}"
             bindtap="setBfilterType"
             >
            {{type1}}
@@ -202,7 +201,7 @@
             <image wx:if="{{!classShow}}" src="../../images/images/down_1.png" class="arrow_down" />
         </view>
         <view class="goods-item {{sortShow ? 'item-active' : ''}}"
-      		data-index="1"
+      		data-index="{{1}}"
             bindtap="setBfilterType"
             >
            {{type2}}
@@ -210,7 +209,7 @@
             <image wx:if="{{!sortShow}}" src="../../images/images/down_1.png" class="arrow_down" />
         </view>
         <view class="goods-item {{shipShow ? 'item-active' : ''}}"
-      		data-index="2"
+      		data-index="{{2}}"
             bindtap="setBfilterType"
             >
             {{type3}}

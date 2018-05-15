@@ -1,5 +1,5 @@
 <view class="container page-common">
-	<view class="results" wx:if="{{userList.length != 0}}">
+	<view class="results" wx:if="{{userList.length != 0 && show}}">
 		<view class="results-content"
 			wx:for="{{userList}}" 
 	    	wx:for-item="item" 

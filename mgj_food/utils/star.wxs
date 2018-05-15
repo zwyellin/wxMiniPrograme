@@ -69,11 +69,13 @@ var cart = {
 		if (cartObject === null) return 0;
 	    var count = 0;
 	    id = id.toString();
+	    console.log(id)
 	    var cartList = cartObject[id];
 	    if (cartList) {
 	    	for (var i = 0; i < cartList.length; i++) {
 				count+= cartList[i].count;
   			}
+  			// count = count + 1
 	    }
 	    return count;
 	},

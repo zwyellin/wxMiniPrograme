@@ -9,6 +9,7 @@ Page({
 		discountAmt:0,
 		orderMessage: {},    //订单信息
 		addressInfo:null,    //用户订单地址信息
+		addressInfoId:null,
 		deliveryTimes:[],    //配送时间信息
 		expectedArrivalTime:1,
 		redBagUsableCount:0,    //可用红包个数
@@ -71,24 +72,28 @@ Page({
 		this.filterUsableRedBagList();
 	},
 	onShow(){
-		if (this.data.useRedBagList != null ) {
+		if (this.data.useRedBagList != null || this.data.addressInfoId != null) {
 			let redBagMoney = 0;
 			this.orderPreview().then(res=>{
 				if (res.data.code === 0) {
 					let orderMessage = res.data.value
+					let addressInfo = res.data.value.addressInfo
 					this.setData({
-						orderMessage:orderMessage
+						orderMessage:orderMessage,
+						addressInfo:addressInfo
 					})
 				}
 	        }).finally(()=>{
 	        	wx.hideLoading()
-	        });	
-			this.data.useRedBagList.map(item=>{
-				redBagMoney += item.amt;
-			});
-			this.setData({
-				redBagMoney:redBagMoney
-			});
+	        });
+	        if (this.data.useRedBagList != null) {
+	        	this.data.useRedBagList.map(item=>{
+					redBagMoney += item.amt;
+				});
+				this.setData({
+					redBagMoney:redBagMoney
+				});
+	        }		
 		}
 	},
 	//获取可用红包
@@ -264,9 +269,10 @@ Page({
 	        	if (res.data.code === 0) {
 	        		let orderId = res.data.value.id;
 	        		let price = res.data.value.totalPrice;
+	        		console.log(price)
 	        		if (res.data.value.paymentType ===1) {
 	        			wx.navigateTo({
-					  		url: '/pages/pay/pay?orderId=' + orderId + '&price=' + price,
+					  		url: '/pages/pay/pay?orderId=' + orderId + '&price=' + price + '&merchantId=' + this.data.merchantId,
 						});
 	        		} 
 	        		if (res.data.value.paymentType ===2){
@@ -305,6 +311,7 @@ Page({
 		data.orderItems = this.data.orderMessage.orderItems;
 		data.redBags = this.data.useRedBagList;
 		data.orderPayType = this.data.payIndex+1;
+		data.userAddressId = this.data.addressInfoId
 		return wxRequest({
         	url:'/merchant/userClient?m=orderPreview',
         	method:'POST',

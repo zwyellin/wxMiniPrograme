@@ -456,7 +456,7 @@
     height: 100%;
     overflow: auto;
     opacity: 0.7;
-    background: #6d6d6d;
+    background: #000;
 }
 .shoprules{
 	position: absolute;
