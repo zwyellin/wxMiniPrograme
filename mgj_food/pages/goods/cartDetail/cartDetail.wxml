@@ -26,7 +26,7 @@
 	</view>
 	<view class="order">
 		<view class="order-header">
-			<view class="header-text">
+			<view class="header-text" bindtap="selectTab">
 				<image class="header-img" src="{{orderDetail.merchant.logo}}" ></image>
         		<text class="header-txt">{{orderDetail.merchant.name}}</text>
         		<image class="header-img1 fr" style="margin-top: 46rpx" src="../../../images/images/down.png" ></image>

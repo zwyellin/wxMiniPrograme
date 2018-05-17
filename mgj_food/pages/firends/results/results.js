@@ -39,11 +39,13 @@ Page({
 				})
 				this.data.userList.concat(userList)
 				this.setData({
-					show:true,
 	      			userList:userList
 	    		});
 			}
 	    }).finally(()=>{
+	    	this.setData({
+				show:true
+    		});
 	    	wx.hideLoading()
 	    });
 	},

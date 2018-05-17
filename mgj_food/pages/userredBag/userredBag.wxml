@@ -1,6 +1,6 @@
 <wxs module="time" src="../../utils/star.wxs"></wxs>
 <view class="container page-common">
-	<view wx:if="{{redBagList.length === 0 }}" class="no-order">
+	<view wx:if="{{redBagList.length === 0 && show}}" class="no-order">
   		<image class="no-order-img" src="../../images/images/login@2x.png"></image>
   		<view class="no-order-text">
   			<text>暂无红包</text>

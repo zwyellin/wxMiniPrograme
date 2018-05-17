@@ -80,11 +80,11 @@
 			wx:for-index="index" 
 			wx:key="index">
 			<text class="order-name">{{food.name}}<text wx:if="{{food.spec}}"> / {{food.spec}}</text><text wx:if="{{food.attributes}}"> / {{food.attributes}}</text></text>
-			<text class="fr" style="width: 250rpx;text-align:right">￥{{food.price}}</text>
+			<text class="fr" style="width: 250rpx;text-align:right">￥{{food.price*food.quantity}}</text>
 			<text class="fr" style="color:#b6b6b6">x {{food.quantity}}</text>
 		</view>
 		<view wx:if="{{orderMessage.boxPrice != 0 || orderMessage.boxPrice != ''}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
-			<text style="color:#b6b6b6">包装费</text>
+			<text style="color:#333">包装费</text>
 			<text class="fr">￥{{orderMessage.boxPrice}}</text>
 		</view>
 		<view wx:if="{{orderMessage.shipmentType === 2}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">

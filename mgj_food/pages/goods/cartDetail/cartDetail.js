@@ -345,6 +345,11 @@ Page({
 		   orderRedAnimation: animation.export()  
 		}); 
 	},
+	selectTab(e){
+		wx.navigateTo({
+		  url: '/pages/shop/shop?merchantid='+this.data.orderDetail.merchantId
+		});
+	},
 	onUnload(){
 		if (this.data.isredbag) {
 			wx.switchTab({

@@ -23,7 +23,7 @@
   overflow: hidden;
 }
 .icon-adress {
-  margin-top: 16rpx;
+  margin-top: 14rpx;
   height: 27rpx;
   width: 21rpx;
 }
@@ -39,7 +39,7 @@
     flex:1;
     height: 100%;
     padding: 0 10rpx;
-    font-size: 22rpx;
+    font-size: 24rpx;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -55,10 +55,10 @@
   width: 26rpx;
 }
 .icon-adress-right {
-  margin-top: 24rpx;
+  margin-top: 21rpx;
   height: 12rpx;
-  width: 26rpx;
-  transform: rotate(-90deg);
+  width: 22rpx;
+  transform: rotate(-89deg);
   /*float: right;*/
 }
 .adress-text {

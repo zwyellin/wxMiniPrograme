@@ -5,7 +5,6 @@ Page({
 	data: {
 		loading:false,
 		maskAnimation:null,
-		classAnimation:null,
 	    size:24,
 		type1:'分类',
 		type2:'排序',
@@ -60,7 +59,8 @@ Page({
 	},
 	moveDown(e){
 		let { item, index } = e.currentTarget.dataset;
-		let dataList = this.data.dataList; 
+		let dataList = this.data.dataList;
+		if (item.promotionActivityList.length < 3) return;
 		if (dataList[index].height === '68rpx') {
 			dataList[index].height = 34*item.promotionActivityList.length+'rpx';
 			this.setData({
@@ -155,7 +155,6 @@ Page({
 		if (!this.data.maskShow) {
 			this.maskShowAnimation()
 		}
-		this.calssShowAnimation()
 		if (index == 0) {
 			this.setData({
 				classShow:true,
@@ -340,23 +339,6 @@ Page({
 		animation.opacity(0.3).step();//修改透明度,放大  
 		this.setData({  
 		   maskAnimation: animation.export()  
-		}); 
-	},
-	calssShowAnimation(){
-		let animation = wx.createAnimation({ 
-			transformOrigin: "50% 50%", 
-			duration: 1000,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.height(574+'rpx').step();
-	      	this.setData({
-	        	classAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.height(0).step();//修改透明度,放大  
-		this.setData({  
-		   orderRedAnimation: animation.export()  
 		}); 
 	},
 })

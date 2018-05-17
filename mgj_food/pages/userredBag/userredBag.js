@@ -2,6 +2,7 @@ const { wxRequest, format } = require('../../utils/util.js');
 const app = getApp();
 Page({
 	data:{
+		show:false,
 		isDisable:0,   //默认0，0（可用）1（不可用）
 		redBagList:[],
 	},
@@ -39,6 +40,9 @@ Page({
 				});	
 			}
         }).finally(()=>{
+        	this.setData({
+        		show:true
+        	})
         	wx.hideLoading();
         });
 	},

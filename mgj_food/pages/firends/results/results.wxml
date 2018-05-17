@@ -10,7 +10,7 @@
 				<image wx:if="{{!item.headImg}}" class="portrait-img" src="../../../images/images/login_no.png"></image>
 			</view>
       		<text class="user">{{item.inviteeMobile}}</text>
-      		<text class="fr" style="color:#ff9900">- ￥{{item.cashbackAmt}}</text>
+      		<text class="fr" style="color:#ff9900">+ ￥{{item.cashbackAmt}}</text>
   		</view>
 	</view>
 	<view wx:if="{{userList.length === 0}}" class="results-no"><text>暂无战果</text></view>

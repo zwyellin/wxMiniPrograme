@@ -67,9 +67,13 @@
 		    	wx:for-index="index" 
 		    	wx:key="index" >
 		    	<view class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
-		    		<image class="menu-item-text" wx:if="{{item.icon}}" src="{{item.icon}}"></image>
-		    		<text class="text">
+		    		<!-- <image class="menu-item-text" wx:if="{{item.icon}}" src="{{item.icon}}"></image>
+		    		<text class="text" style="background: url({{item.icon}})">
 						{{item.name}}
+					</text> -->
+					<text class="menu-item-text">
+						<text wx:if="{{item.icon}}" class="text" style="background: url({{item.icon}});background-size: 24rpx 24rpx">
+						</text>{{item.name}}
 					</text>
 					<text wx:if="{{tage.getItemCount(item.id,selectFoods) > 0}}" class="menu-item-num">{{tage.getItemCount(item.id,selectFoods)}}</text>
 		    	</view>	
@@ -179,14 +183,15 @@
 					<text style="margin-top: 4rpx">13分钟送达</text>
 	    		</view>
 	    		<view class="evaluate-message font-14">
-	    			<text>{{item.deliverymanComments}}</text>
+	    			<text>{{item.deliverymanComments || '该用户没有做具体评价哦！'}}</text>
 	    		</view>
 	    		<view class="evaluate-message font-12" style="margin-top: 16rpx">
 	    			<text>{{item.modifyTime}}</text>
 	    		</view>
 	    		<view class="evaluate_right font-12">
-	    			<text class="evaluate_text">{{item.appUser.name}}</text>
-	    			<image class="evaluate_img" src="{{item.appUser.headerImg}}" ></image>
+	    			<text class="evaluate_text">{{tage.strReplace(item.appUser.name)}}</text>
+	    			<image wx:if="{{item.appUser.headerImg}}" class="evaluate_img" src="{{item.appUser.headerImg}}" ></image>
+	    			<image wx:if="{{!item.appUser.headerImg}}" class="evaluate_img" src="/images/images/login_no.png" ></image>
 	    		</view>
 	    		<view wx:if="{{item.replyContent}}" class="reply">商家回复: {{item.replyContent}}</view>
     		</view>	
@@ -219,7 +224,7 @@
   			</view>
   			<view wx:if="{{itemList.shipmentMode === 2}}" class="user-message">
   				<view class="font-12"><text>第三方配送</text></view>
-  				<view class="mt10"><text style="color:#333">{{itemList.practicalShipFee}}元</text></view>
+  				<view class="mt10"><text style="color:#333">{{itemList.shipFee}}元</text></view>
   			</view>
   			<view wx:if="{{itemList.shipmentMode === 1}}" class="user-message">
   				<view class="font-12"><text>商家自配送</text></view>
@@ -251,7 +256,7 @@
   			<view class="shop-message shop-message-letter" style="color:#666">
   				<text>商家公告</text>
   			</view>
-  			<view class="shop-message shop-message-letter font-14" style="color:#bc4500">
+  			<view class="shop-message-letter shop-flex font-14" style="color:#bc4500">
   				<text>{{item.broadcast}}</text>
   			</view>
   		</view>

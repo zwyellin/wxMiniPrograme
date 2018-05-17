@@ -25,6 +25,13 @@ var cart = {
 			praise = parseInt(praise);
 		return praise;
 	},
+	strReplace:function(str){
+		//要替换为*号的内容
+		var tmp=str.substring(1,str.length-1);
+		//将其替换
+		var content=str.replace(tmp,'****');
+		return content;
+	},
 	round:function(num){
 		var str = parseFloat(num/1000);
 			str = str.toFixed(2);
@@ -89,28 +96,6 @@ var cart = {
 			return '去结算';
 		}
 	},
-	arrLength: function(classList) {
-		var arr =[];
-		for (var i = 0; i < 10; i++) {
-			arr.push(classList[i]);
-		}
-		return arr;
-	},
-	arrLength10: function(classList) {
-		var arr =[];
-		var len = classlist.length;
-		if (len>20) {
-			for (var i = 10; i < 20; i++) {
-				arr.push(classList[i]);
-			}
-			return arr;
-		} else {
-			for (var i = 10; i < len; i++) {
-				arr.push(classList[i]);
-			}
-			return arr;
-		}	
-	}
 };
 module.exports = {
   itemClasses: cart.itemClasses,
@@ -121,8 +106,7 @@ module.exports = {
   getCartCount:cart.getCartCount,
   getItemCount:cart.getItemCount,
   getMerchantCount:cart.getMerchantCount,
+  strReplace:cart.strReplace,
   payDesc:cart.payDesc,
-  arrLength:cart.arrLength,
-  arrLength10:cart.arrLength10,
   round:cart.round
 };
