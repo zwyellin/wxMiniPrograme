@@ -60,9 +60,9 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
-        if (app.globalData.phone) {
+        if (app.globalData.agentPhone) {
           this.setData({
-            servicePhone:app.globalData.phone
+            servicePhone:app.globalData.agentPhone
           });
         } else {
           let servicePhone = res.data.value[1].phone;

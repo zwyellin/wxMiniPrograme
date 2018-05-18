@@ -2,5 +2,6 @@
   "navigationBarTitleText": "马管家外卖",
   "navigationBarTextStyle":"black",
   "navigationBarBackgroundColor": "#fff",
-  "backgroundColor": "#f5f5f5"
+  "backgroundColor": "#f5f5f5",
+  "enablePullDownRefresh": true
 }

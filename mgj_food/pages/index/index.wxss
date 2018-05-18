@@ -14,7 +14,7 @@
 }
 .adress-box {
   display: flex;
-  width: 204rpx;
+  min-width: 224rpx;
   height: 58rpx;
   border-radius: 58rpx;
   padding: 0 10rpx 0 14rpx;
@@ -40,6 +40,7 @@
     height: 100%;
     padding: 0 10rpx;
     font-size: 24rpx;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -58,7 +59,7 @@
   margin-top: 21rpx;
   height: 12rpx;
   width: 22rpx;
-  transform: rotate(-89deg);
+  transform: rotate(-88deg);
   /*float: right;*/
 }
 .adress-text {

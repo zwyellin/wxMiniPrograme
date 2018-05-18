@@ -3,7 +3,7 @@ const app = getApp();
 const host = app.globalData.domain;
 const qqmap = require('./qqmap-wx-jssdk.js');
 const qqMap = new qqmap({ 
-  key:'SSOBZ-WHAKF-TFBJQ-NCTWB-53L7T-XYF5O' 
+  key:'OLNBZ-ZH73K-LIWJI-A3DA6-GIWLZ-ONFL4' 
 });
 // 拓展 finally 方法，用于替代 wx 的 complete 方法
 Promise.prototype.finally = function (callback) {

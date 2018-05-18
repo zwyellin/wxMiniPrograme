@@ -65,7 +65,7 @@ Page({
 		      let cate_size = [];
 		      let sumscrollheight = 0;//总高度
 		      let catebarheigth = 26;//单个分类bar的高度
-		      let goodsviewheight = 130;//单个产品view的高度
+		      let goodsviewheight = 100;//单个产品view的高度
 		      this.data.menu.forEach((item,index)=> {
 		        let unitheight = catebarheigth + item.goodsList.length * goodsviewheight;//每个分类单元的高度=分类bar的高度+每个产品view的高度*该分类下的产品数
 		        cate_size.push({ cateno: "A"+(index+1), scrollheight: sumscrollheight });
@@ -791,8 +791,7 @@ Page({
 	},
 	onShareAppMessage(res) {
     	return {
-      		title: '马管家',
-      		desc: '自定义分享描述',
+      		title: '马管家外卖',
       		path: "/pages/shop/shop?merchantid=" + this.data.merchantId,
       		success: function(res) {
         		// 转发成功

@@ -251,9 +251,9 @@ Page({
 	        content: '你是否需要拨打客服电话，申请退款',
 	        success: function (res) {
 	          if (res.confirm) {
-	          	if (app.globalData.agentPhone) {
+	          	if (that.data.orderDetail.agentPhone) {
 	          		wx.makePhoneCall({
-	      				phoneNumber: app.globalData.agentPhone   //电话号码
+	      				phoneNumber: that.data.orderDetail.agentPhone   //代理商电话号码
 	    			});
 	          	} else {
 	          		let servicePhone = that.data.servicePhone[1];

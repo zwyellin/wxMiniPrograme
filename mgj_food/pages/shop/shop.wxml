@@ -180,10 +180,10 @@
 	    			<template is="star-add" data="{{size,item}}"></template>
 					<text class="text-left font-16" style="margin-top: -6rpx">{{item.merchantScore}}分</text>
 					<image class="message-img" src="../../images/images/time.png"></image>
-					<text style="margin-top: 4rpx">13分钟送达</text>
+					<text style="margin-top: 4rpx">{{item.deliveryCost || 0}}分钟送达</text>
 	    		</view>
 	    		<view class="evaluate-message font-14">
-	    			<text>{{item.deliverymanComments || '该用户没有做具体评价哦！'}}</text>
+	    			<text>{{item.merchantComments || '该用户没有做具体评价哦！'}}</text>
 	    		</view>
 	    		<view class="evaluate-message font-12" style="margin-top: 16rpx">
 	    			<text>{{item.modifyTime}}</text>

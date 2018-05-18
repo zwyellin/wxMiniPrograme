@@ -3,7 +3,7 @@
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
 
 <!--index.wxml-->
-<View class="container {{maskShow ? 'posi' : ''}} {{isAgentId ? 'no-goods' : ''}}" >
+<View class="container {{maskShow ? 'posi' : ''}} {{isAgentId ? 'no-goods' : ''}}">
 	<view class="page">
 		<!-- 地点 开始 -->
 		<view class="search-view">
@@ -14,7 +14,7 @@
 	            <view class="adress-content" style="color:#fff;text-align: center">
 	              <!-- <view class="adress-move" style="{{orientation}}:{{marqueeDistance2}}px;font-size: 11px"> -->
 	                <text class="adress-text">{{city.cityName}}</text>
-	                <text wx:if="{{marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;font-size:11px">{{city.cityName}}</text>
+	                <!-- <text wx:if="{{marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;font-size:11px">{{city.cityName}}</text> -->
 	              <!-- </view> -->
 	            </view>
 	            <view class="right-img">
@@ -109,8 +109,7 @@
 	      	data-id="{{item.id}}"
 	      	bindtap="quickPage">	
 			<view class="icon">
-				<image wx:if="{{item.logo}}" class="icon-image" src="{{item.logo}}" alt="" />
-				<image wx:if="{{!item.logo}}" class="icon-image" src="../../images/merchant/merchantLogo.png" alt="" />
+				<image class="icon-image" src="{{item.logo}}" alt="" />
 				<view wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</view>
 			</view>
 			<view class="content">
@@ -132,7 +131,7 @@
 					<text>配送费￥{{item.shipFee}}</text>
 					<!-- <image class="extra-img fr" src="/images/images/pay.png"></image> -->
 				</view>
-				<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.height :''}}">
+				<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.isHeight :''}}">
 					<view class="cartcontrol-content flex"
 						wx:for="{{item.promotionActivityList}}" 
 	      				wx:for-index="idx" 

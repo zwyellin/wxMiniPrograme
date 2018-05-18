@@ -29,7 +29,6 @@ Page({
     	}
     	return {
       		title: '邀请好友天天分钱',
-      		desc: '自定义分享描述',
       		path: '/pages/register/register?uid='+loginMessage.id,
       		success: function(res) {
         		// 转发成功

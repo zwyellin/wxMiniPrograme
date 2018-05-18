@@ -25,6 +25,11 @@ var cart = {
 			praise = parseInt(praise);
 		return praise;
 	},
+	// isJpgPng: function(filepath){
+
+	// 	var isImg = /.*(\.png|\.jpg)$/.test(filepath);
+	// 	return isImg;
+	// },
 	strReplace:function(str){
 		//要替换为*号的内容
 		var tmp=str.substring(1,str.length-1);
@@ -109,4 +114,5 @@ module.exports = {
   strReplace:cart.strReplace,
   payDesc:cart.payDesc,
   round:cart.round
+  // isJpgPng:cart.isJpgPng
 };

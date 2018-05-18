@@ -77,6 +77,7 @@ Page(Object.assign({}, {
 					let agentPhone = value.phone;
 					app.globalData.agentId = isAgentId;
 					app.globalData.agentPhone = agentPhone
+					console.log(agentPhone)
 					this.getinitDataList();
 					this.initClass();
         			this.initBanner();
@@ -149,35 +150,32 @@ Page(Object.assign({}, {
 						isAgentId:true
 					});
 				}
-				this.runAddress(this.data.city);	
+				// this.runAddress(this.data.city);	
 	        }).catch(err=>{
 	        	this.setData({
 					isAgentId:true
 				});
-				this.runAddress(this.data.city);
+				// this.runAddress(this.data.city);
 	        });
-		} else {
-			if (interval) {
-				this.runAddress(this.data.city);
-			}
 		}
 	},
 	moveDown(e){
 		if (!this.data.moveDown) {
 			this.data.moveDown = true;
 			let { item, index } = e.currentTarget.dataset;
-			let changeHeight = "dataList[" + index + "].height"
+			let dataList = this.data.dataList;
 			if (item.promotionActivityList.length < 3) return;
-			if (this.data.dataList[index].height === '68rpx') {
-				let itemHeight = 34*item.promotionActivityList.length+'rpx';
+			if (dataList[index].isHeight == '68rpx') {
+				dataList[index].isHeight = 34*item.promotionActivityList.length+'rpx';
 				this.setData({
-					[changeHeight]:itemHeight
+					dataList:dataList
 				});
 			} else {
+				dataList[index].isHeight = '68rpx';
 				this.setData({
-					[changeHeight]:'68rpx'
+					dataList:dataList
 				});
-			}
+			}	
 			this.data.moveDown = false;	
 		}
 	},
@@ -358,7 +356,10 @@ Page(Object.assign({}, {
 				if (status) {
 					if (res.data.value.length != 0) {
 						list.map((item)=>{
-							item.height = '68rpx';
+							if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+								item.logo = '/images/merchant/merchantLogo.png'
+							}
+							item.isHeight = '68rpx';
 							dataList.push(item);
 						});
 		        		console.log(res.data.value);
@@ -383,7 +384,10 @@ Page(Object.assign({}, {
     					});
 					} else {
 						list.map((item)=>{
-							item.height = '68rpx';
+							if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+								item.logo = '/images/merchant/merchantLogo.png'
+							}
+							item.isHeight = '68rpx';
 							dataList.push(item);
 						});
 						this.setData({
@@ -431,7 +435,10 @@ Page(Object.assign({}, {
 					});
 				} else {
 					list.map((item)=>{
-						item.height = '68rpx';
+						if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+							item.logo = '/images/merchant/merchantLogo.png'
+						}
+						item.isHeight = '68rpx';
 					});
 					this.setData({
 						isAgentId:false,
@@ -444,12 +451,13 @@ Page(Object.assign({}, {
 					isAgentId:true
 				});
 			}
-			wx.hideLoading();	
         }).catch(err=>{
         	this.setData({
 				isAgentId:true
 			});
-        	wx.hideLoading();
+        }).finally(()=>{
+			wx.stopPullDownRefresh();
+			wx.hideLoading();
         });
 	},
 	focusToSearch(e){
@@ -471,6 +479,12 @@ Page(Object.assign({}, {
 			this.data.islocal = false
 		}
 	},
+	//下拉刷新
+    onPullDownRefresh:function() {
+      this.initClass();
+      this.findTagCategory();
+      this.getinitDataList();
+    },
 	setBfilterType(e){
 		this.data.islocal = true;
 		let { index } = e.currentTarget.dataset;
@@ -646,8 +660,7 @@ Page(Object.assign({}, {
 	},
 	onShareAppMessage(res) {
     	return {
-      		title: '马管家',
-      		desc: '自定义分享描述',
+      		title: '马管家外卖',
       		path: "/pages/index/index",
       		success: function(res) {
         		// 转发成功
