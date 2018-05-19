@@ -7,7 +7,8 @@
 		<!-- <text class="title">{{itemList.name}}</text> -->
 		<view class="content-wrapper">
 			<view class="avatar">
-				<image class="icon-image" src="{{itemList.logo}}" ></image>
+				<image wx:if="{{itemList.logo}}" class="icon-image" src="{{itemList.logo}}" ></image>
+				<image wx:if="{{!itemList.logo}}" class="icon-image" src="/images/merchant/merchantLogo.png" ></image>
 			</view>
 			<view class="content">
 				<view class="desc" style="{{itemList.promotionActivityList.length === 0 ? 'margin-top: 29rpx' : ''}}">

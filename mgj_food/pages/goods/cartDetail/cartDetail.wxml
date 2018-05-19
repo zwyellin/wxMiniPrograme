@@ -2,7 +2,7 @@
 <view class="page-common container" style="position: relative">
 	<view class="cart-detail">
 		<image wx:if="{{orderDetail.merchant.logo}}" class="cart-detail-img" src="{{orderDetail.merchant.logo}}"></image>
-		<image wx:if="{{!orderDetail.merchant.logo}}" class="cart-detail-img" src="/images/images/login_no.png"></image>
+		<image wx:if="{{!orderDetail.merchant.logo}}" class="cart-detail-img" src="/images/merchant/merchantLogo.png"></image>
 		<view class="cart-detail-txt">
 			<text wx:if="{{orderDetail.orderFlowStatus === -1}}" >订单已取消</text>
       		<text wx:if="{{orderDetail.orderFlowStatus === 1}}" >订单已提交</text>
@@ -29,7 +29,7 @@
 		<view class="order-header">
 			<view class="header-text" bindtap="selectTab">
 				<image wx:if="{{orderDetail.merchant.logo}}" class="header-img" src="{{orderDetail.merchant.logo}}" ></image>
-				<image wx:if="{{!orderDetail.merchant.logo}}" class="header-img" src="/images/images/login_no.png"></image>
+				<image wx:if="{{!orderDetail.merchant.logo}}" class="header-img" src="/images/merchant/merchantLogo.png"></image>
         		<text class="header-txt">{{orderDetail.merchant.name}}</text>
         		<image class="header-img1 fr" style="margin-top: 46rpx" src="../../../images/images/down.png" ></image>
 			</view>
