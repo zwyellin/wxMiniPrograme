@@ -31,7 +31,7 @@ Page({
       });
     }
   },
- onShow () {
+  onShow () {
     this.findCustomerAndComplainPhoneByUserXY();
     let loginMessage = wx.getStorageSync('loginMessage');
     let loginstatus = wx.getStorageSync('loginstatus');
@@ -65,7 +65,7 @@ Page({
             servicePhone:app.globalData.agentPhone
           });
         } else {
-          let servicePhone = res.data.value[1].phone;
+          let servicePhone = res.data.value[0].phone;
           this.setData({
             servicePhone:servicePhone
           });

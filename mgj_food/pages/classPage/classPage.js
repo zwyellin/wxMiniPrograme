@@ -28,8 +28,8 @@ Page({
 	},
 	onLoad(options){
 		let tagId = null
-		if (options.id != "null") {
-			tagId = options.id;
+		if (options.id != "null" && parseInt(options.id) > -1) {
+			tagId = parseInt(options.id);
 		}
 		let type1 = '分类';
 		this.setData({
@@ -38,9 +38,10 @@ Page({
 		this.findTagCategory().then(res=> {
         	if (res.data.code === 0) { 
         		let classList = res.data.value
+        		let timeIndex = 0
         		classList.map((item,index)=>{
         			if(item.id === tagId) {
-        				let timeIndex = index
+        				timeIndex = index
 						item.childTagCategoryList.map((childItem)=>{
 							if(childItem.id === tagId) {
 								type1 = childItem.name
@@ -49,9 +50,10 @@ Page({
         			}
         		})
 				this.setData({
-					timeIndex:0,
+					timeIndex:timeIndex,
+					childTagCategoryList:classList[timeIndex].childTagCategoryList,
 					type1:type1,
-					classList: res.data.value
+					classList: classList
 				})
 				this.getDataList();
         	}

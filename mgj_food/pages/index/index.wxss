@@ -87,9 +87,9 @@
 }
 .desc-count-dan {
   position: absolute;
-  width: 120rpx;
+  width: 160rpx;
   /*top:4rpx;*/
-  left: 200rpx;
+  left: 204rpx;
   display: inline-block;
 }
 .icon-search {
@@ -217,6 +217,7 @@
   letter-spacing: 2rpx;
 }
 .goods-header-top {
+  padding-bottom: 12rpx;
   position: fixed;
   top: 0;
   width: 100%;

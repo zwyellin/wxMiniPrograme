@@ -62,7 +62,8 @@
 			    wx:for-index="index" 
 			    wx:for-item="item" 
 			    wx:key="index">
-				<image class="class-icon" src="{{item.grayUrl}}"></image>
+				<image wx:if="{{item.graySwitch === 0}}" class="class-icon" src="{{item.picUrl}}"></image>
+				<image wx:if="{{item.graySwitch === 1}}" class="class-icon" src="{{item.grayUrl}}"></image>
 				<view class="class-text">
 					<text>{{item.name}}</text>
 				</view>	
@@ -84,28 +85,28 @@
 	            catchtap="setBfilterType"
 	            >
 	           {{type1}}
-	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 	        <view class="goods-item"
 	      		data-index="1"
 	            catchtap="setBfilterType"
 	            >
 	           {{type2}}
-	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 	        <view class="goods-item"
 	      		data-index="2"
 	            catchtap="setBfilterType"
 	            >
 	            {{type3}}
-	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 		</view>
 		<view class="goods-wrapper clearfix" 
 			wx:for="{{dataList}}" 
 	      	wx:for-index="index" 
 	      	wx:for-item="item"
-	      	wx:key="index"
+	      	wx:key="id"
 	      	data-id="{{item.id}}"
 	      	bindtap="quickPage">	
 			<view class="icon">
@@ -114,7 +115,7 @@
 			</view>
 			<view class="content">
 				<view class="name">
-					<text>{{item.name}}</text>
+					<text class="name-txt">{{item.name}}</text>
 					<text class="fr" style="font-size: 26rpx;color: #666;font-weight: 500">{{fixed.round(item.distance)}}km</text>
 				</view>
 				<view class="desc clearfix">
@@ -152,7 +153,7 @@
 	        <view class="loading-text">正在加载，请稍候</view>
 	    </view>
 	    <view class="bottom-info" wx:if="{{loading && dataList.length != 0}}">
-     		 <view class="bottom-text">我是有底线的</view>
+     		<view class="bottom-text">我是有底线的</view>
     	</view>
     	<view wx:if="{{!dataList.length && loading}}" class="text-center">
       		<view class="no-result mt30">抱歉，没有搜索到您想要的商家</view>

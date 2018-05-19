@@ -216,7 +216,7 @@ Page({
 	},
 	getCodeMa(){
 		wxRequest({
-        	url:'/merchant/userClient?m=checkLoginCode',
+        	url:'/merchant/userClient?m=sendLoginSms',
         	method:'POST',
         	data:{
         		params:{

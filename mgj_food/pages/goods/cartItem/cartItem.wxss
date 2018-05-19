@@ -88,3 +88,12 @@
   border-radius: 10rpx;
   font-size: 26rpx;
 }
+.food-pay {
+  display: inline-block;
+  width: 276rpx;
+  padding: 12rpx 18rpx;
+  border: 4rpx solid #ff5959;
+  margin-top: 14rpx;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+}

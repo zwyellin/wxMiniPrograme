@@ -3,6 +3,7 @@
 .search-goods {
 	position: relative;
 	padding: 0 30rpx 30rpx;
+	flex-wrap:wrap;
 }
 .placeholder {
 	margin-left: 8rpx;
@@ -42,9 +43,10 @@
   display: inline-block;
 }
 .hot-search {
-	padding: 22rpx 0 46rpx 30rpx;
+	padding: 22rpx 0 16rpx 30rpx;
 }
 .hot-text {
+	margin-top: 30rpx;
 	padding: 0 28rpx;
 	height: 50rpx;
 	line-height: 17rpx;

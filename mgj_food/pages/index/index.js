@@ -68,16 +68,22 @@ Page(Object.assign({}, {
 				}
 			}; 
 			let { longitude, latitude } = gcj02tobd09(lng,lat);
-			// app.globalData.longitude = latitude;
-			// app.globalData.latitude = longitude;
+			app.globalData.longitude = longitude;
+			app.globalData.latitude = latitude;
 			this.init().then((res)=>{
 				if (res.data.code === 0) {
 					let value = res.data.value;
-					let isAgentId = value.id;
-					let agentPhone = value.phone;
-					app.globalData.agentId = isAgentId;
-					app.globalData.agentPhone = agentPhone
-					console.log(agentPhone)
+					if (value) {
+						app.globalData.agentId = value.id;
+						if (value.phone) {
+							app.globalData.agentPhone = value.phone;
+						} else {
+							app.globalData.agentPhone = null
+						}
+					} else {
+						app.globalData.agentPhone = null
+						app.globalData.agentId = null;
+					}
 					this.getinitDataList();
 					this.initClass();
         			this.initBanner();
@@ -137,10 +143,17 @@ Page(Object.assign({}, {
 			this.init().then((res)=>{
 				if (res.data.code === 0) {
 					let value = res.data.value;
-					let agentId = value.id;
-					let agentPhone = value.phone;
-					app.globalData.agentId = agentId;
-					app.globalData.agentPhone = agentPhone;
+					if (value) {
+						app.globalData.agentId = value.id;
+						if (value.phone) {
+							app.globalData.agentPhone = value.phone;
+						} else {
+							app.globalData.agentPhone = null
+						}
+					} else {
+						app.globalData.agentPhone = null
+						app.globalData.agentId = null;
+					}
 					this.getinitDataList();
 					this.initClass();
         			this.initBanner();
@@ -481,9 +494,10 @@ Page(Object.assign({}, {
 	},
 	//下拉刷新
     onPullDownRefresh:function() {
-      this.initClass();
-      this.findTagCategory();
-      this.getinitDataList();
+    	this.data.start = 0
+      	this.initClass();
+      	this.findTagCategory();
+      	this.getinitDataList();
     },
 	setBfilterType(e){
 		this.data.islocal = true;
@@ -646,18 +660,18 @@ Page(Object.assign({}, {
 	        	maskAnimation: animation.export(),	
 	      	});	
 	    }, 20);
-		animation.opacity(0).step();//修改透明度,放大  
+		animation.opacity(0.3).step();//修改透明度,放大  
 		this.setData({  
 		   maskAnimation: animation.export()  
 		}); 
 	},
-	onHide() {
-		clearInterval(interval);
-		this.setData({
-			marqueeDistance2: 0,
-	    	marquee2copy_status: false
-		});
-	},
+	// onHide() {
+	// 	clearInterval(interval);
+	// 	this.setData({
+	// 		marqueeDistance2: 0,
+	//     	marquee2copy_status: false
+	// 	});
+	// },
 	onShareAppMessage(res) {
     	return {
       		title: '马管家外卖',

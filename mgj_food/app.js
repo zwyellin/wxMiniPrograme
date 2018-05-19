@@ -65,15 +65,17 @@ App({
   globalData: {
     token:'',
     agentPhone:null,
+    agentId:null,
     userId:null,
     addressInfo:null,
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain: 'https://prelaunch.horsegj.com',
+    domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    latitude:'39.965528',
-    longitude:'116.304881'
+    latitude:'',
+    longitude:''
   }
 });
+// prelaunch

@@ -196,11 +196,11 @@
 	    		<view wx:if="{{item.replyContent}}" class="reply">商家回复: {{item.replyContent}}</view>
     		</view>	
     	</view>
-    	<view class="loading-info" wx:if="{{!loading}}">
+    	<view class="loading-info" wx:if="{{!loading && evaluate.length != 0}}">
 	        <image src="/images/merchant/loading.png" class="img-loading"></image>
 	        <view class="loading-text">正在加载，请稍候</view>
 	    </view>
-	    <view class="bottom-info" wx:if="{{loading}}">
+	    <view class="bottom-info" wx:if="{{!evaluate.length && loading}}">
      		<view class="bottom-text">暂无更多评价</view>
     	</view>
     </scroll-view>

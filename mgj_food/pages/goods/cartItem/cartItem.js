@@ -220,6 +220,7 @@ Page({
     },
     //下拉刷新
     onPullDownRefresh:function() {
+      this.data.start = 0;
       this.findNewUserTOrders();
     },
     //上滑加载更多

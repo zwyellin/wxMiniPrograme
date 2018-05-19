@@ -47,13 +47,20 @@
 	color: #fff;
 	text-align: center;
 }
-.name{
+.name {
 	display: block;
 	margin: 0 0 24rpx 0;
 	height: 28rpx;
 	line-height: 28rpx;
-	font-size: 32rpx;
+	font-size: 28rpx;
 	color: #333;
+}
+.name-txt {
+	display: inline-block;
+	width: 80%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .desc{
 	display: block;

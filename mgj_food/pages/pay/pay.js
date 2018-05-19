@@ -89,15 +89,13 @@ Page({
       } else {
         this.wxLogin();
       }
-      wx.showToast({
-        title: '正在支付',
-        icon: 'loading',
-        duration: 200000,
-        mask: true
-      });
-      this.maskShowAnimation();
+      // wx.showToast({
+      //   title: '正在支付',
+      //   icon: 'loading',
+      //   duration: 200000,
+      //   mask: true
+      // });
       this.setData({
-        maskShow:true,
         isPayStatus:true
       });
     }
