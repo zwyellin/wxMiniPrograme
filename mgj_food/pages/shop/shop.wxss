@@ -30,7 +30,7 @@
 }
 .icon-image {
 	height: 110rpx;
-	width:110rpx;
+	width:136rpx;
 }
 .content {
 	width:100%;

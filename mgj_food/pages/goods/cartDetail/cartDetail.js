@@ -226,9 +226,6 @@ Page({
 	close(){
 		this.maskHideAnimation();
 		this.choiceHideAnimation();
-		this.setData({
-			getMerchantRedBagList:[]
-		});
 	},
 	bagListShow(){
 		this.setData({
@@ -338,6 +335,7 @@ Page({
 	      	animation.translate(-50+'%').top(150+'%').step();
 	      	this.setData({
 	        	orderRedAnimation: animation.export(),
+	        	getMerchantRedBagList:[]
 	      	});
 	    }, 200);
 		animation.translate(-50+'%').top(20+'%').step();//修改透明度,放大  

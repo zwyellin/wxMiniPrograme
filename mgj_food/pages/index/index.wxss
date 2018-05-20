@@ -75,23 +75,6 @@
   margin-left: 20rpx;
   background: #ededed;
 }
-.desc-content {
-  position: relative;
-}
-.desc-count {
-  position: absolute;
-  display: inline-block;
-  width: 60rpx;
-  left: 140rpx;
-  color: #ff6000;  
-}
-.desc-count-dan {
-  position: absolute;
-  width: 160rpx;
-  /*top:4rpx;*/
-  left: 204rpx;
-  display: inline-block;
-}
 .icon-search {
   flex:0 0 50;
   width: 50rpx;

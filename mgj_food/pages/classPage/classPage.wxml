@@ -42,7 +42,7 @@
 			</view>
 			<view class="content">
 				<view class="name">
-					<text>{{item.name}}</text>
+					<text class="name-txt">{{item.name}}</text>
 					<text class="fr">{{fixed.round(item.distance)}}km</text>
 				</view>
 				<view class="desc clearfix">

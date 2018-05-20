@@ -69,6 +69,23 @@
 	line-height: 24rpx;
 	color: #666;
 }
+.desc-content {
+  position: relative;
+}
+.desc-count {
+  position: absolute;
+  display: inline-block;
+  width: 60rpx;
+  left: 130rpx;
+  color: #ff6000;  
+}
+.desc-count-dan {
+  position: absolute;
+  width: 180rpx;
+  /*top:4rpx;*/
+  left: 200rpx;
+  display: inline-block;
+}
 .extra{
 	font-size: 24rpx;
 	line-height: 24rpx;

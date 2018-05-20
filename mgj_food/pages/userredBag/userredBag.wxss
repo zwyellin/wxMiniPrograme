@@ -37,14 +37,18 @@
 	height: 110rpx;
 }
 .lottery-content-text {
+	width: 278rpx;
 	margin-bottom: 24rpx;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 	font-weight: 500;
 }
 .money {
 	color:#999
 }
 .lottery-content-price {
-	margin-left: 170rpx;
+	margin-left: 20rpx;
 	color:#ff3333;
 }
 .lottery-express {

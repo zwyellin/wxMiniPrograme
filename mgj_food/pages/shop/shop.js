@@ -333,13 +333,17 @@ Page({
 				let merchantRedBagList = value.merchant.merchantRedBagList
 				wx.setNavigationBarTitle({
 				  	title: name
-				})
+				});
+				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/.test(value.merchant.logo)){
+					value.merchant.logo = '/images/merchant/merchantLogo.png';
+				}
 				this.setData({
 					itemList:value.merchant,
 					item:value.merchant,
 					minPrice:value.merchant.minPrice,
 					shipScore:value.merchant.shipScore
 				});
+
 				if (value.merchant.merchantRedBagList.length != 0) {
 					merchantRedBagList.map((item)=>{
 						item.isReceive = '立即领取'

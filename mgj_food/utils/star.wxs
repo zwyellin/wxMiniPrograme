@@ -16,8 +16,9 @@ var cart = {
 		}
 		return arr;
 	},
-	fomatFloat: function(src,pos){   
-       return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);   
+	fomatFloat: function(src,pos){
+		if (src.toString().length == 1) return src + '.0';
+       	return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);   
     },
 	praise:function(goodCommentNum,CommentNum) {
 		var praise = goodCommentNum/CommentNum;

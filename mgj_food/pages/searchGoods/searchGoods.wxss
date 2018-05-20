@@ -25,23 +25,6 @@
 .search-background {
 	background: #fff;
 }
-.desc-content {
-  position: relative;
-}
-.desc-count {
-  position: absolute;
-  display: inline-block;
-  width: 60rpx;
-  left: 140rpx;
-  color: #ff6000;  
-}
-.desc-count-dan {
-  position: absolute;
-  width: 120rpx;
-  /*top:4rpx;*/
-  left: 200rpx;
-  display: inline-block;
-}
 .hot-search {
 	padding: 22rpx 0 16rpx 30rpx;
 }

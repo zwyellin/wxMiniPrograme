@@ -48,7 +48,7 @@ Page({
                 let searchList = res.data.value;
                 searchList.map((item)=>{
                     if(!/.*(\.png|\.jpg)$/.test(item.logo)){
-                        item.logo = '/images/merchant/merchantLogo.png'
+                        item.logo = '/images/merchant/merchantLogo.png';
                     }
                     item.isHeight = '68rpx';
                 });
@@ -59,7 +59,7 @@ Page({
 
             }
         }).finally(()=>{
-            wx.hideLoading()
+            wx.hideLoading();
         });
     },
     moveDown(e){  
@@ -86,6 +86,7 @@ Page({
 	},
     setsearch(e){
         let value = e.detail.value;
+        if (value == '') return;
         let historyList = this.data.historyList;
         if (this.data.historyList.length === 7) {
             this.data.historyList.splice(6, 1);
