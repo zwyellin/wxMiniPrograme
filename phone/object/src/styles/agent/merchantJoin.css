@@ -16,7 +16,7 @@ body {
 	height:100vh;
 	overflow: hidden;
 	padding: 0rem !important;
-	background: url(../../../images/userVersion/background.png) repeat-y;
+	background: url(../../../images/userVersion/background.png) no-repeat;
 	background-size: 100% 100%;
 }
 /*.imgload{
