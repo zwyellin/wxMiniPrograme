@@ -23,6 +23,7 @@
 	padding: 30rpx 26rpx 20rpx;
 }
 .icon{
+	position: relative;
 	flex:0 0 170rpx;
 	height: 130rpx;
 	margin-right: 30rpx;
@@ -34,13 +35,32 @@
 	width: 170rpx;
 	height: 130rpx;
 }
-.name{
+.icon-num {
+	position: absolute;
+	top: -12rpx;
+	right: -12rpx;
+	width: 30rpx;
+	line-height: 30rpx;
+	font-size: 16rpx;
+	border-radius: 15rpx;
+	background: #ee5650;
+	color: #fff;
+	text-align: center;
+}
+.name {
 	display: block;
 	margin: 0 0 24rpx 0;
 	height: 28rpx;
 	line-height: 28rpx;
-	font-size: 32rpx;
+	font-size: 28rpx;
 	color: #333;
+}
+.name-txt {
+	display: inline-block;
+	width: 80%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .desc{
 	display: block;
@@ -48,6 +68,23 @@
 	font-size: 24rpx;
 	line-height: 24rpx;
 	color: #666;
+}
+.desc-content {
+  position: relative;
+}
+.desc-count {
+  position: absolute;
+  display: inline-block;
+  width: 60rpx;
+  left: 130rpx;
+  color: #ff6000;  
+}
+.desc-count-dan {
+  position: absolute;
+  width: 180rpx;
+  /*top:4rpx;*/
+  left: 200rpx;
+  display: inline-block;
 }
 .extra{
 	font-size: 24rpx;
@@ -96,7 +133,8 @@
 	margin-right: 6rpx;
 }
 .posi {
-	position: fixed;
+	position: absolute;
 	top: 0;
-	overflow: hidden;
+	bottom:0;
+	/*overflow: hidden;*/
 }					

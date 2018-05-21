@@ -8,9 +8,9 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.2.5",
+	"libVersion": "1.6.4",
 	"appid": "wx38e6075b7760daa1",
-	"projectname": "mgj_shop",
+	"projectname": "mgj_prod",
 	"condition": {
 		"search": {
 			"current": -1,

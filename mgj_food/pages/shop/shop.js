@@ -4,6 +4,7 @@ const app = getApp();
 Page({
 	data:{
 		loading:false,
+		isHide:false,         //控制本地购物车缓存
 		getOrderStatus:false,
 		show:true,
 		maskShow:false,       // 遮罩层
@@ -54,7 +55,6 @@ Page({
 		let { merchantid } = options;
 		this.data.merchantId = merchantid;
 		this.findMerchantInfo();
-		console.log(this.data.itemList);
 		this.getShopList().then((res)=>{
 			console.log(res.data.value.menu);
         	this.setData({
@@ -62,10 +62,10 @@ Page({
         		orderList:res.data.value.menu
         	});
         	setRightScrollItemHeight: {
-		      var cate_size = [];
-		      var sumscrollheight = 0;//总高度
-		      var catebarheigth = 26;//单个分类bar的高度
-		      var goodsviewheight = 130;//单个产品view的高度
+		      let cate_size = [];
+		      let sumscrollheight = 0;//总高度
+		      let catebarheigth = 26;//单个分类bar的高度
+		      let goodsviewheight = 100;//单个产品view的高度
 		      this.data.menu.forEach((item,index)=> {
 		        let unitheight = catebarheigth + item.goodsList.length * goodsviewheight;//每个分类单元的高度=分类bar的高度+每个产品view的高度*该分类下的产品数
 		        cate_size.push({ cateno: "A"+(index+1), scrollheight: sumscrollheight });
@@ -74,8 +74,10 @@ Page({
 		      this.setData({
 		        catesScrollHeight: cate_size.reverse()//分类scroll数组倒序处理后写入data
 		      });
+		      console.log(cate_size)
 		    }
         });
+        this.getStorageShop(merchantid);
 		this.getevaluate();
 		//获取系统信息 主要是为了计算产品scroll的高度
 	    wx.getSystemInfo({
@@ -87,9 +89,21 @@ Page({
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
+	//获取购物车缓存数据
+	getStorageShop(merchantId){
+		if (wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = wx.getStorageSync('shoppingCart');
+			if (shoppingCart[merchantId]) {
+				this.setData({
+					selectFoods:shoppingCart[merchantId]
+				});
+				this.totalprice();
+			}
+  		}
+	},
 	//加载更多评价
 	loadMore(e){  
-        this.data.evaluateStart +=5
+        this.data.evaluateStart +=5;
         this.getevaluate(true);
 	},
 	//选择商品规格
@@ -100,6 +114,49 @@ Page({
 		this.setData({
 			selectedFood:selectedFood
 		});
+	},
+	isMinOrderNum(){
+		let goodsItem;
+		let isFoodNum = 0;
+		this.data.selectFoods.map((item,index)=>{
+			if (item.priceObject.minOrderNum) {
+				isFoodNum = 0
+				this.data.selectFoods.map((food)=>{
+					if (food.id === item.id) {
+						if (food.priceObject.id === item.priceObject.id) {
+							isFoodNum += food.count
+						}
+					}
+				});
+				if (isFoodNum < item.priceObject.minOrderNum) {
+					goodsItem = item;
+				}
+			}	
+		});
+		return goodsItem;
+	},
+	//判断是否有商品必选
+	isMandatory(){
+		let isMandatoryGoods;
+		let menu = this.data.menu;
+		let selectFoods = this.data.selectFoods;
+		let index = null;
+		for (let i = 0; i <  menu.length; i++) {
+			if (menu[i].isMandatory) {
+				let isFound = false;
+				for (let j = 0; j < selectFoods.length; j++) {
+					if (menu[i].id === selectFoods[j].categoryId ) {
+						isFound = true;
+					}		
+				}
+				if (!isFound) {
+					isMandatoryGoods = menu[i];
+					index = i+1;
+					break;
+				}
+			}
+		}
+		return {isMandatoryGoods,index};
 	},
 	//去结算
 	checkOut(){
@@ -113,6 +170,26 @@ Page({
       			let isMinOrderNum = this.isMinOrderNum();
 				if (isMinOrderNum) {
 					feedbackApi.showToast({title:'[商品['+isMinOrderNum.name+isMinOrderNum.priceObject.spec+']每单'+isMinOrderNum.priceObject.minOrderNum+'份起够'});
+					return;
+				}
+				let { isMandatoryGoods, index }= this.isMandatory();
+				if (isMandatoryGoods) {
+					wx.showModal({
+		                content: '请选择['+isMandatoryGoods.name+' (必选) ]下的商品才可以下单哦',
+		                showCancel:false,
+		                confirmText:'好的',
+		                success: function (res) {
+		                  	if (res.confirm) {
+		                    	that.setData({
+							      	currentCateno: 'A'+index,
+							      	rightToView: 'r_A' + index,
+							      	leftScrollClick: true
+							    });
+		                  	} else if (res.cancel) {
+		                    	console.log('用户点击取消');
+		                  	}
+		                }
+		            });
 					return;
 				}
 				this.data.getOrderStatus = true;
@@ -153,26 +230,6 @@ Page({
 			feedbackApi.showToast({title: '你还没有登录,请先去登录'});	
     	}
 	},
-	isMinOrderNum(){
-		let goodsItem;
-		let isFoodNum = 0;
-		this.data.selectFoods.map((item,index)=>{
-			if (item.priceObject.minOrderNum) {
-				isFoodNum = 0
-				this.data.selectFoods.map((food)=>{
-					if (food.id === item.id) {
-						if (food.priceObject.id === item.priceObject.id) {
-							isFoodNum += food.count
-						}
-					}
-				});
-				if (isFoodNum < item.priceObject.minOrderNum) {
-					goodsItem = item;
-				}
-			}	
-		});
-		return goodsItem;
-	},
 	//请求订单
 	orderPreview(){
 		wx.showToast({
@@ -201,8 +258,8 @@ Page({
         	data:{
         		params:{
         			data:JSON.stringify(data),
-        			longitude:116.304881,
-        			latitude:39.965528,
+        			longitude:app.globalData.longitude,
+        			latitude:app.globalData.latitude
         		},
         		token:app.globalData.token	
         	},
@@ -276,13 +333,17 @@ Page({
 				let merchantRedBagList = value.merchant.merchantRedBagList
 				wx.setNavigationBarTitle({
 				  	title: name
-				})
+				});
+				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/.test(value.merchant.logo)){
+					value.merchant.logo = '/images/merchant/merchantLogo.png';
+				}
 				this.setData({
 					itemList:value.merchant,
 					item:value.merchant,
 					minPrice:value.merchant.minPrice,
 					shipScore:value.merchant.shipScore
 				});
+
 				if (value.merchant.merchantRedBagList.length != 0) {
 					merchantRedBagList.map((item)=>{
 						item.isReceive = '立即领取'
@@ -439,6 +500,7 @@ Page({
 		let { food, rules} = e.currentTarget.dataset;
 		let attributes = '';
 		let id = food.id; //选择的产品id
+		let categoryId = food.categoryId  //选择的产品分类id
     	let priceObject = {}; //产品价格对象
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
@@ -472,7 +534,7 @@ Page({
 		console.log(food);
 		if (id) {
 	      	let tmpArr = this.data.selectFoods;
-	        //便利数组 
+	        //遍历数组 
         	let isFound = false;
         	tmpArr.map((item)=> {
 	          	if (item.id == id) {
@@ -492,9 +554,9 @@ Page({
 	        });
 	        if(!isFound){
 		      	if (rules) {
-	      			tmpArr.push({attributes:attributes, id: id, name: name, priceObject: priceObject, count: 1});
+	      			tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});
 	      		} else {
-	      			tmpArr.push({id: id, name: name, priceObject: priceObject, count: 1 });
+	      			tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
 	      		}	  		
 	        }
 	      	console.log(tmpArr);
@@ -733,8 +795,7 @@ Page({
 	},
 	onShareAppMessage(res) {
     	return {
-      		title: '马管家',
-      		desc: '自定义分享描述',
+      		title: '马管家外卖',
       		path: "/pages/shop/shop?merchantid=" + this.data.merchantId,
       		success: function(res) {
         		// 转发成功
@@ -743,5 +804,23 @@ Page({
         		// 转发失败
       		}
     	};
+  	},
+  	onHide(){
+		this.data.isHide = true
+  	},
+  	onUnload(){
+  		if (!this.data.isHide) {
+	  		let merchantId = this.data.merchantId;
+	  		if (!wx.getStorageSync('shoppingCart')) {
+				let shoppingCart = {};
+				shoppingCart[merchantId] = this.data.selectFoods;
+				wx.setStorageSync('shoppingCart',shoppingCart);
+	  			console.log(shoppingCart);
+	  		} else {
+	  			let shoppingCart = wx.getStorageSync('shoppingCart');
+	  			shoppingCart[merchantId] = this.data.selectFoods;
+	  			wx.setStorageSync('shoppingCart',shoppingCart);
+	  		}
+  		}	
   	}
 });

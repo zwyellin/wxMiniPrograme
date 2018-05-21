@@ -1,6 +1,6 @@
 <wxs module="fixed" src="../../../utils/star.wxs"></wxs>
 <view class="container">
-	<view class="share-firend" style="background-image: url(http://7xu5hi.com1.z0.glb.clouddn.com/201805051352003971186.png);-webkit-background-size:cover;">
+	<view class="share-firend" style="background-image: url(http://7xu5hi.com1.z0.glb.clouddn.com/201805051352003971186.png);background-size:100% 100%">
 	</view>
 	<view class="share-money">
 		<text>￥{{fixed.fomatFloat(cashbackAmtSum,2)}}</text>

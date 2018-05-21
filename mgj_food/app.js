@@ -4,8 +4,12 @@ App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
     let loginMessage = wx.getStorageSync('loginMessage');
+    let shoppingCart = wx.getStorageSync('shoppingCart');
     if (loginMessage) {
       this.findAppUserByToken(loginMessage);
+    }
+    if (shoppingCart) {
+      wx.removeStorageSync('shoppingCart');
     }
     this.getUserInfo();
     wx.getSystemInfo({
@@ -61,15 +65,17 @@ App({
   globalData: {
     token:'',
     agentPhone:null,
+    agentId:null,
     userId:null,
     addressInfo:null,
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain: 'https://prelaunch.horsegj.com',
+    domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    latitude:'39.965528',
-    longitude:'116.304881'
+    latitude:'',
+    longitude:''
   }
 });
+// prelaunch

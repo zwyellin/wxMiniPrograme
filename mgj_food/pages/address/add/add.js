@@ -171,27 +171,38 @@ Page({
 	},
 	//删除收货地址
 	deleteAddress(){
-		wxRequest({
-        	url:'/merchant/userClient?m=delUserAddress',
-        	method:'POST',
-        	data:{
-        		params:{
-        			id:this.data.id
-        		},
-        		token:app.globalData.token	
-        	},
-        }).then(res=>{
-        	if (res.data.code === 0) {
-        		setTimeout(()=>{
-        			wx.redirectTo({
-				  		url: '/pages/address/receiving/receiving'
-					});
-        		},1000)
-				feedbackApi.showToast({title:'删除成功'});
-        	} else {
-        		let msg = res.data.value;
-        		feedbackApi.showToast({title:msg});
-        	}
-        });
+		let that = this
+		wx.showModal({
+	        title: '删除地址',
+	        content: '确定删除该收货地址吗？',
+	        success: function (res) {
+	          if (res.confirm) {
+	          	wxRequest({
+		        	url:'/merchant/userClient?m=delUserAddress',
+		        	method:'POST',
+		        	data:{
+		        		params:{
+		        			id:that.data.id
+		        		},
+		        		token:app.globalData.token	
+		        	},
+		        }).then(res=>{
+		        	if (res.data.code === 0) {
+		        		setTimeout(()=>{
+		        			wx.navigateBack({
+						  		delta:1
+							});
+		        		},1000)
+						feedbackApi.showToast({title:'删除成功'});
+		        	} else {
+		        		let msg = res.data.value;
+		        		feedbackApi.showToast({title:msg});
+		        	}
+		        });
+	          } else if (res.cancel) {
+	            console.log('用户点击取消')
+	          }
+	        }
+	    });
 	}
 });

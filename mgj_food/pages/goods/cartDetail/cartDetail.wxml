@@ -1,7 +1,8 @@
 <wxs module="cart" src="../../../utils/star.wxs"></wxs>
 <view class="page-common container" style="position: relative">
 	<view class="cart-detail">
-		<image class="cart-detail-img" src="{{orderDetail.merchant.logo}}"></image>
+		<image wx:if="{{orderDetail.merchant.logo}}" class="cart-detail-img" src="{{orderDetail.merchant.logo}}"></image>
+		<image wx:if="{{!orderDetail.merchant.logo}}" class="cart-detail-img" src="/images/merchant/merchantLogo.png"></image>
 		<view class="cart-detail-txt">
 			<text wx:if="{{orderDetail.orderFlowStatus === -1}}" >订单已取消</text>
       		<text wx:if="{{orderDetail.orderFlowStatus === 1}}" >订单已提交</text>
@@ -13,7 +14,7 @@
       		<text wx:if="{{orderDetail.orderFlowStatus === 7}}" >已完成</text>
 		</view>
 		<view class="txt-else">
-			<text wx:if="{{orderDetail.orderFlowStatus === 7}}">感谢你对马管家的信任,期待下次光临</text>
+			<text>感谢你对马管家的信任,期待下次光临</text>
 		</view>
 		<view wx:if="{{orderDetail.orderFlowStatus === 7}}" class="cart-detail-food">
 			<text class="no-cart" bindtap="refundCall">申请退款</text>
@@ -26,8 +27,9 @@
 	</view>
 	<view class="order">
 		<view class="order-header">
-			<view class="header-text">
-				<image class="header-img" src="{{orderDetail.merchant.logo}}" ></image>
+			<view class="header-text" bindtap="selectTab">
+				<image wx:if="{{orderDetail.merchant.logo}}" class="header-img" src="{{orderDetail.merchant.logo}}" ></image>
+				<image wx:if="{{!orderDetail.merchant.logo}}" class="header-img" src="/images/merchant/merchantLogo.png"></image>
         		<text class="header-txt">{{orderDetail.merchant.name}}</text>
         		<image class="header-img1 fr" style="margin-top: 46rpx" src="../../../images/images/down.png" ></image>
 			</view>
@@ -62,12 +64,13 @@
 	      	<text wx:if="{{orderDetail.shipmentType === 2}}" class="txt" style="color: #666">第三方配送</text>
 	      	<text wx:if="{{orderDetail.shipmentType === 1}}" class="txt" style="color: #666">商家自配送</text>
 	    </view>
-	    <view class="order-detail-title">
+	    <view class="order-detail-title order-flex">
 	      	<text class="txt txt-w" style="color: #999"><text class="fl">骑</text><text class="fr" style="margin-right: 20rpx">手:</text></text>
-	      	<text class="txt" style="color:#999;position: absolute;left: 184rpx;">{{orderDetail.deliveryTask.deliveryman.name}}</text>
-	      	<text class="txt" catchtap="deliverycall" style="color:#ff9900;left: 244rpx;position: absolute;">{{orderDetail.deliveryTask.deliveryman.mobile}}</text>
+	      	<text class="txt" style="color:#999">{{orderDetail.deliveryTask.deliveryman.name}}</text>
+	      	<text class="txt" catchtap="deliverycall" style="color:#ff9900;margin-left: 60rpx">{{orderDetail.deliveryTask.deliveryman.mobile}}</text>
 	    </view>
   	</view>
+  	
 	<view class="order-detail" style="color:#666">
 		<view class="order-detail-title">
 			<text class="txt txt-w" style="color:#000">订单详情</text>

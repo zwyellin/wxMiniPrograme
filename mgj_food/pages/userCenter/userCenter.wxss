@@ -47,7 +47,7 @@
 }
 .header-img {
   height: 42rpx;
-  width: 36rpx;
+  width: 42rpx;
 }
 .header-txt {
   font-size: 28rpx;

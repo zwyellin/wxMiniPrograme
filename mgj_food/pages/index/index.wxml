@@ -3,7 +3,7 @@
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
 
 <!--index.wxml-->
-<View class="container {{maskShow ? 'posi' : ''}} {{isAgentId ? 'no-goods' : ''}}" >
+<View class="container {{maskShow ? 'posi' : ''}} {{isAgentId ? 'no-goods' : ''}}">
 	<view class="page">
 		<!-- 地点 开始 -->
 		<view class="search-view">
@@ -11,11 +11,11 @@
 		      	<view class="left-img">
 	              <image src="/images/images/map.png" class="icon-adress"></image>
 	            </view>
-	            <view class="adress-content" style="color:#fff">
-	              <view class="adress-move" style="{{orientation}}:{{marqueeDistance2}}px;font-size: 11px">
-	                <text class="adress-text" style="margin-left:{{first_left}}px">{{city.cityName}}</text>
-	                <text wx:if="{{marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;font-size:11px">{{city.cityName}}</text>
-	              </view>
+	            <view class="adress-content" style="color:#fff;text-align: center">
+	              <!-- <view class="adress-move" style="{{orientation}}:{{marqueeDistance2}}px;font-size: 11px"> -->
+	                <text class="adress-text">{{city.cityName}}</text>
+	                <!-- <text wx:if="{{marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;font-size:11px">{{city.cityName}}</text> -->
+	              <!-- </view> -->
 	            </view>
 	            <view class="right-img">
 	              <image src="/images/images/down_fff.png" class="icon-adress-right"></image>
@@ -62,42 +62,13 @@
 			    wx:for-index="index" 
 			    wx:for-item="item" 
 			    wx:key="index">
-				<image class="class-icon" src="{{item.grayUrl}}"></image>
+				<image wx:if="{{item.graySwitch === 0}}" class="class-icon" src="{{item.picUrl}}"></image>
+				<image wx:if="{{item.graySwitch === 1}}" class="class-icon" src="{{item.grayUrl}}"></image>
 				<view class="class-text">
 					<text>{{item.name}}</text>
 				</view>	
 			</navigator>
 		</view>
-		<!-- <swiper 
-			wx:if="{{isClassListSwiper}}"
-		    class="class-block"
-		    duration="{{swiper.duration}}"
-		    circular="{{true}}">
-		    <swiper-item style="display: flex;flex-wrap: wrap">
-				<navigator class="class-content" url="/pages/classPage/classPage?id={{item.id}}&name={{item.name}}"
-					wx:for="{{fixed.arrLength(initClassList)}}" 
-				    wx:for-index="index" 
-				    wx:for-item="item" 
-				    wx:key="index">
-					<image class="class-icon" src="{{item.grayUrl}}"></image>
-					<view class="class-text">
-						<text>{{item.name}}</text>
-					</view>	
-				</navigator>
-		    </swiper-item>
-		    <swiper-item style="display: flex;flex-wrap: wrap">
-				<navigator class="class-content" url="/pages/classPage/classPage?id={{item.id}}&name={{item.name}}"
-					wx:for="{{fixed.arrLength10(initClassList)}}" 
-				    wx:for-index="index" 
-				    wx:for-item="item" 
-				    wx:key="index">
-					<image class="class-icon" src="{{item.grayUrl}}"></image>
-					<view class="class-text">
-						<text>{{item.name}}</text>
-					</view>	
-				</navigator>
-		    </swiper-item>
-		</swiper> -->
 		<!-- 外卖分类 结束 -->
 		<view class="black"></view>
 		<view class="title">
@@ -111,39 +82,40 @@
 		<view class="goods flex">
 			<view class="goods-item"
 	      		data-index="0"
-	            bindtap="setBfilterType"
+	            catchtap="setBfilterType"
 	            >
 	           {{type1}}
-	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 	        <view class="goods-item"
 	      		data-index="1"
-	            bindtap="setBfilterType"
+	            catchtap="setBfilterType"
 	            >
 	           {{type2}}
-	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 	        <view class="goods-item"
 	      		data-index="2"
-	            bindtap="setBfilterType"
+	            catchtap="setBfilterType"
 	            >
 	            {{type3}}
-	            <image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 		</view>
 		<view class="goods-wrapper clearfix" 
 			wx:for="{{dataList}}" 
 	      	wx:for-index="index" 
 	      	wx:for-item="item"
-	      	wx:key="index"
+	      	wx:key="id"
 	      	data-id="{{item.id}}"
 	      	bindtap="quickPage">	
 			<view class="icon">
 				<image class="icon-image" src="{{item.logo}}" alt="" />
+				<view wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</view>
 			</view>
 			<view class="content">
 				<view class="name">
-					<text>{{item.name}}</text>
+					<text class="name-txt">{{item.name}}</text>
 					<text class="fr" style="font-size: 26rpx;color: #666;font-weight: 500">{{fixed.round(item.distance)}}km</text>
 				</view>
 				<view class="desc clearfix">
@@ -160,7 +132,7 @@
 					<text>配送费￥{{item.shipFee}}</text>
 					<!-- <image class="extra-img fr" src="/images/images/pay.png"></image> -->
 				</view>
-				<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.height :''}}">
+				<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.isHeight :''}}">
 					<view class="cartcontrol-content flex"
 						wx:for="{{item.promotionActivityList}}" 
 	      				wx:for-index="idx" 
@@ -172,7 +144,6 @@
 				</view>
 				<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
 					<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
-
 				</view>
 			</view>
 		</view>
@@ -182,7 +153,7 @@
 	        <view class="loading-text">正在加载，请稍候</view>
 	    </view>
 	    <view class="bottom-info" wx:if="{{loading && dataList.length != 0}}">
-     		 <view class="bottom-text">我是有底线的</view>
+     		<view class="bottom-text">我是有底线的</view>
     	</view>
     	<view wx:if="{{!dataList.length && loading}}" class="text-center">
       		<view class="no-result mt30">抱歉，没有搜索到您想要的商家</view>
@@ -191,6 +162,32 @@
 	
 
 	<!-- 分类开始 -->
+	<view wx:if="{{sortShow || classShow || shipShow}}" class="goods goods-header-top flex">
+		<view class="goods-item {{classShow ? 'item-active' : ''}}"
+      		data-index="{{0}}"
+            bindtap="setBfilterType"
+            >
+           {{type1}}
+            <image wx:if="{{classShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!classShow}}" src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+        <view class="goods-item {{sortShow ? 'item-active' : ''}}"
+      		data-index="{{1}}"
+            bindtap="setBfilterType"
+            >
+           {{type2}}
+            <image wx:if="{{sortShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!sortShow}}" src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+        <view class="goods-item {{shipShow ? 'item-active' : ''}}"
+      		data-index="{{2}}"
+            bindtap="setBfilterType"
+            >
+            {{type3}}
+            <image wx:if="{{shipShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!shipShow}}" src="../../images/images/down_1.png" class="arrow_down" />
+        </view>
+	</view>
 	<view wx:if="{{classShow}}">
 		<template is="class-common" data="{{classList,childTagCategoryList,timeIndex:timeIndex}}"></template>
 	</view>

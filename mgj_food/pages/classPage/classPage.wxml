@@ -2,7 +2,7 @@
 <import src="../../components/common/common.wxml" />
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
 <view class="container {{maskShow ? 'posi' : ''}}" >
-	<View class="goods goods-top flex">
+	<view class="goods goods-top flex">
 		<view class="goods-item {{classShow ? 'item-active' : ''}}"
       		data-index="0"
             bindtap="setBfilterType"
@@ -19,14 +19,15 @@
             <image wx:if="{{sortShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
             <image wx:if="{{!sortShow}}" src="../../images/images/down_1.png" class="arrow_down" />
         </view>
-        <view class="goods-item"
+        <view class="goods-item {{shipShow ? 'item-active' : ''}}"
       		data-index="2"
             bindtap="setBfilterType"
             >
             {{type3}}
-            <image src="../../images/images/down_1.png" class="arrow_down" />
+            <image wx:if="{{shipShow}}" src="../../images/images/down_1ye.png" class="arrow_down" />
+            <image wx:if="{{!shipShow}}" src="../../images/images/down_1.png" class="arrow_down" />
         </view>
-	</View>
+	</view>
 	<view class="top-40">
 		<view class="goods-wrapper clearfix" 
 			wx:for="{{dataList}}" 
@@ -36,12 +37,13 @@
 	      	data-id="{{item.id}}"
 	      	bindtap="quickPage">	
 			<view class="icon">
-				<image class="icon-image" src="{{item.logo}}" alt="" />
+				<image wx:if="{{item.logo}}" class="icon-image" src="{{item.logo}}" alt="" />
+				<image wx:if="{{!item.logo}}" class="icon-image" src="../../images/merchant/merchantLogo.png" alt="" />
 			</view>
 			<view class="content">
 				<view class="name">
-					<text>{{item.name}}</text>
-					<text class="fr">{{item.defDistance}}km</text>
+					<text class="name-txt">{{item.name}}</text>
+					<text class="fr">{{fixed.round(item.distance)}}km</text>
 				</view>
 				<view class="desc clearfix">
 					<view class="fl desc-content">
@@ -57,7 +59,7 @@
 					<text>配送费￥{{item.shipFee}}</text>
 					<image class="extra-img fr" src="../../images/images/pay.png"></image>
 				</view>
-				<view class="cartcontrol-wrapper" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.height :''}}">
+				<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.height :''}}">
 					<view class="cartcontrol-content flex"
 						wx:for="{{item.promotionActivityList}}" 
 	      				wx:for-index="idx" 
@@ -86,13 +88,13 @@
 	</view>
 	<!-- 分类开始 -->
 	<view wx:if="{{classShow}}">
-		<template is="class-common" data="{{classList,childTagCategoryList,timeIndex:timeIndex,classAnimation}}"></template>
+		<template is="class-common" data="{{classList,childTagCategoryList,timeIndex:timeIndex}}"></template>
 	</view>
 	<view wx:if="{{sortShow}}">
-		<template is="sort-common" animation="{{classAnimation}}" data="{{sortList,sortIndex:sortIndex}}"></template>
+		<template is="sort-common"  data="{{sortList,sortIndex:sortIndex}}"></template>
 	</view>
 	<view wx:if="{{shipShow}}">
-		<template is="shipfilter-common" animation="{{classAnimation}}" data="{{shipFilter}}"></template>
+		<template is="shipfilter-common" data="{{shipFilter}}"></template>
 	</view>
 	<!-- 分类结束 -->
 

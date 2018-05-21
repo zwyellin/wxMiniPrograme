@@ -7,9 +7,13 @@ const { wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require
 let interval;
 Page(Object.assign({}, {
   	data: {
+  		islocal:false,       //是否计算本地缓存
+  		moveDown:false,
+  		toSearch:false,
   		loading:false,
   		isAgentId:false,
-  		isClassListSwiper:false,
+  		cartObject:null,
+  		isShoppingCart:false,
 	    swiper: {
 	      imgUrls: [],
 	      indicatorDots: true,
@@ -18,8 +22,6 @@ Page(Object.assign({}, {
 	      duration: 1000
 	    },
 	    refreshData:false,
-	    lng:116.304881,
-	    lat:39.965528,
 	    size:24,
 		city:{
 			cityName:'',
@@ -28,18 +30,12 @@ Page(Object.assign({}, {
 	    marqueeDistance2: 0,        //初始滚动距离
 	    marquee2copy_status: false,
 	    marquee2_margin: 20,
-	    first_left:0,
 	    addressSize: 22,
 	    orientation: 'left',     //滚动方向
 	    interval: 50,           // 时间间隔
 		type1:'分类',
 		type2:'排序',
 		type3:'筛选',
-		cartcontrol:'68rpx',
-		cartcontrolStyle:{
-			height:'68rpx',
-			overflow:'hidden'
-		},
 		classList:[],
 		childTagCategoryList:[],
 		classShow:false,
@@ -53,7 +49,6 @@ Page(Object.assign({}, {
 		shipFilter:null,
 		sortShow:false,
 		maskShow:false,
-		islocking:false,      //锁定滚动条
 		maskAnimation:null,   //遮罩层动画
 		start:0,
 		dataList:[],      //商家列表
@@ -73,15 +68,22 @@ Page(Object.assign({}, {
 				}
 			}; 
 			let { longitude, latitude } = gcj02tobd09(lng,lat);
-			// app.globalData.longitude = latitude;
-			// app.globalData.latitude = longitude;
+			app.globalData.longitude = longitude;
+			app.globalData.latitude = latitude;
 			this.init().then((res)=>{
 				if (res.data.code === 0) {
 					let value = res.data.value;
-					let isAgentId = value.id;
-					let agentPhone = value.phone;
-					app.globalData.agentId = isAgentId;
-					app.globalData.agentPhone = agentPhone
+					if (value) {
+						app.globalData.agentId = value.id;
+						if (value.phone) {
+							app.globalData.agentPhone = value.phone;
+						} else {
+							app.globalData.agentPhone = null
+						}
+					} else {
+						app.globalData.agentPhone = null
+						app.globalData.agentId = null;
+					}
 					this.getinitDataList();
 					this.initClass();
         			this.initBanner();
@@ -96,13 +98,14 @@ Page(Object.assign({}, {
 				console.log(res);
 				let address;
 				if (res.status === 0) {
+					console.log(res)
 					address = res.result.address;
+					// address =res.result.address_component.street_number
 					console.log(address);
 					this.setData({
 		      			city:Object.assign({},this.data.city,{cityName:address})
 		    		});
-		    		this.runAddress(this.data.city);
-		    		this.data.isRun = false;
+		    		// this.runAddress(this.data.city);
 				}
 		    }).catch(err=>{
 		    	this.setData({
@@ -116,6 +119,13 @@ Page(Object.assign({}, {
 		});     
 	},
 	onShow(){
+		if (wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = wx.getStorageSync('shoppingCart');
+			console.log(shoppingCart);
+			this.setData({
+				cartObject:shoppingCart
+			});	
+  		}
 		if (this.data.refreshData) {
 			this.setData({
 				type1:'分类',
@@ -133,10 +143,17 @@ Page(Object.assign({}, {
 			this.init().then((res)=>{
 				if (res.data.code === 0) {
 					let value = res.data.value;
-					let isAgentId = value.id;
-					let agentPhone = value.phone;
-					app.globalData.agentId = isAgentId;
-					app.globalData.agentPhone = agentPhone;
+					if (value) {
+						app.globalData.agentId = value.id;
+						if (value.phone) {
+							app.globalData.agentPhone = value.phone;
+						} else {
+							app.globalData.agentPhone = null
+						}
+					} else {
+						app.globalData.agentPhone = null
+						app.globalData.agentId = null;
+					}
 					this.getinitDataList();
 					this.initClass();
         			this.initBanner();
@@ -146,33 +163,34 @@ Page(Object.assign({}, {
 						isAgentId:true
 					});
 				}
-				this.runAddress(this.data.city);	
+				// this.runAddress(this.data.city);	
 	        }).catch(err=>{
 	        	this.setData({
 					isAgentId:true
 				});
-				this.runAddress(this.data.city);
+				// this.runAddress(this.data.city);
 	        });
-		} else {
-			if (interval) {
-				this.runAddress(this.data.city);
-			}
 		}
 	},
 	moveDown(e){
-		let { item, index } = e.currentTarget.dataset;
-		let dataList = this.data.dataList; 
-		if (dataList[index].height === '68rpx') {
-			dataList[index].height = 34*item.promotionActivityList.length+'rpx';
-			this.setData({
-				dataList:dataList
-			});
-		} else {
-			dataList[index].height = '68rpx';
-			this.setData({
-				dataList:dataList
-			});
-		}	
+		if (!this.data.moveDown) {
+			this.data.moveDown = true;
+			let { item, index } = e.currentTarget.dataset;
+			let dataList = this.data.dataList;
+			if (item.promotionActivityList.length < 3) return;
+			if (dataList[index].isHeight == '68rpx') {
+				dataList[index].isHeight = 34*item.promotionActivityList.length+'rpx';
+				this.setData({
+					dataList:dataList
+				});
+			} else {
+				dataList[index].isHeight = '68rpx';
+				this.setData({
+					dataList:dataList
+				});
+			}	
+			this.data.moveDown = false;	
+		}
 	},
 	runAddress(cityObject){
 		let { cityName } = cityObject;
@@ -199,7 +217,6 @@ Page(Object.assign({}, {
 	        if (-this.data.marqueeDistance2 >= this.data.marquee2_margin) { // 当第二条文字滚动到最左边时
 	          this.setData({
 	            marqueeDistance2: this.data.marquee2_margin // 直接重新滚动
-	            // first_left:this.data.length
 	          });
 	          clearInterval(interval);
 	          this.run();
@@ -275,6 +292,7 @@ Page(Object.assign({}, {
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
         			latitude:app.globalData.latitude,
+        			tagCategoryType: 1,
         			versionCode:46
         		}	
         	},
@@ -304,7 +322,8 @@ Page(Object.assign({}, {
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
         			latitude:app.globalData.latitude,
-        			versionCode:1
+        			tagCategoryType: 1,
+        			versionCode:46
         		}	
         	},
         }).then(res=> {
@@ -350,7 +369,10 @@ Page(Object.assign({}, {
 				if (status) {
 					if (res.data.value.length != 0) {
 						list.map((item)=>{
-							item.height = '68rpx';
+							if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+								item.logo = '/images/merchant/merchantLogo.png'
+							}
+							item.isHeight = '68rpx';
 							dataList.push(item);
 						});
 		        		console.log(res.data.value);
@@ -375,7 +397,10 @@ Page(Object.assign({}, {
     					});
 					} else {
 						list.map((item)=>{
-							item.height = '68rpx';
+							if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+								item.logo = '/images/merchant/merchantLogo.png'
+							}
+							item.isHeight = '68rpx';
 							dataList.push(item);
 						});
 						this.setData({
@@ -423,7 +448,10 @@ Page(Object.assign({}, {
 					});
 				} else {
 					list.map((item)=>{
-						item.height = '68rpx';
+						if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+							item.logo = '/images/merchant/merchantLogo.png'
+						}
+						item.isHeight = '68rpx';
 					});
 					this.setData({
 						isAgentId:false,
@@ -436,26 +464,47 @@ Page(Object.assign({}, {
 					isAgentId:true
 				});
 			}
-			wx.hideLoading();	
         }).catch(err=>{
         	this.setData({
 				isAgentId:true
 			});
-        	wx.hideLoading();
+        }).finally(()=>{
+			wx.stopPullDownRefresh();
+			wx.hideLoading();
         });
 	},
 	focusToSearch(e){
-		wx.navigateTo({
-			url:"/pages/searchGoods/searchGoods"
-		});
+		if (!this.data.toSearch) {
+			this.data.toSearch = true;
+			wx.navigateTo({
+				url:"/pages/searchGoods/searchGoods"
+			});
+			setTimeout(()=>{
+				this.data.toSearch = false;
+			}, 1000);
+		}	
 	},
 	onReachBottom(){
-		this.data.start+= 10;
-		this.getDataList(true);		
+		if (!this.data.islocal) {
+			this.data.start+= 10;
+			this.getDataList(true);	
+		} else {
+			this.data.islocal = false
+		}
 	},
+	//下拉刷新
+    onPullDownRefresh:function() {
+    	this.data.start = 0
+      	this.initClass();
+      	this.findTagCategory();
+      	this.getinitDataList();
+    },
 	setBfilterType(e){
+		this.data.islocal = true;
 		let { index } = e.currentTarget.dataset;
-		this.maskShowAnimation(); 
+		if (!this.data.maskShow) {
+			this.maskShowAnimation();
+		}
 		if (index == 0) {
 			this.setData({
 				classShow:true,
@@ -589,7 +638,6 @@ Page(Object.assign({}, {
 	      	animation.opacity(0.3).step();
 	      	this.setData({
 	        	maskAnimation: animation.export(),
-	        	islocking:true,
 	      	});
 	    }, 200);
 		animation.opacity(0).step();//修改透明度,放大  
@@ -612,22 +660,21 @@ Page(Object.assign({}, {
 	        	maskAnimation: animation.export(),	
 	      	});	
 	    }, 20);
-		animation.opacity(0).step();//修改透明度,放大  
+		animation.opacity(0.3).step();//修改透明度,放大  
 		this.setData({  
 		   maskAnimation: animation.export()  
 		}); 
 	},
-	onHide() {
-		clearInterval(interval);
-		this.setData({
-			marqueeDistance2: 0,
-	    	marquee2copy_status: false
-		});
-	},
+	// onHide() {
+	// 	clearInterval(interval);
+	// 	this.setData({
+	// 		marqueeDistance2: 0,
+	//     	marquee2copy_status: false
+	// 	});
+	// },
 	onShareAppMessage(res) {
     	return {
-      		title: '马管家',
-      		desc: '自定义分享描述',
+      		title: '马管家外卖',
       		path: "/pages/index/index",
       		success: function(res) {
         		// 转发成功

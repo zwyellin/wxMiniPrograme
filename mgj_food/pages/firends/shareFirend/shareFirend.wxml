@@ -1,5 +1,5 @@
 <view class="container">
-	<view class="share-firend" style="background-image: url(http://7xu5hi.com1.z0.glb.clouddn.com/201805051351037959319.png);-webkit-background-size:cover;">
+	<view class="share-firend" style="background-image: url(http://7xu5hi.com1.z0.glb.clouddn.com/201805051351037959319.png);background-size:100% 100%">
 	</view>
 	<view class="share-content">
 		<view class="share-box">

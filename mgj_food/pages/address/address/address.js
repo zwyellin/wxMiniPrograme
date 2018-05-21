@@ -187,8 +187,8 @@ Page({
 				let pages = getCurrentPages();
 	    		let prevPage = pages[pages.length - 2];
 				if (this.data.switch === 'index') {
-					app.globalData.longitude = latitude;
-					app.globalData.latitude = longitude;
+					app.globalData.longitude = longitude;
+					app.globalData.latitude = latitude;
 			    	prevPage.setData({
 			    		city:Object.assign({}, prevPage.data.city,{cityName:addressName}),
 			    		refreshData:true

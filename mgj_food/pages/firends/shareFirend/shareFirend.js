@@ -4,7 +4,8 @@ let qrcode;
 Page({
     data: {
       canvasHidden:false,
-      url:'http://prelaunch.horsegj.com/horsegj/dist/html/register/register.html',
+      testUrl:'http://prelaunch.horsegj.com/horsegj/dist/html/register/register.html',
+      prodUrl:'http://wx.horsegj.com/horsegj/dist/html/register/register.html',
       imagePath:'',
     },
     onLoad() {
@@ -13,7 +14,7 @@ Page({
           scale = Math.round(scale * 100) / 100;
           console.log(scale)
         qrcode = new QR('canvas', {
-            text: "http://prelaunch.horsegj.com/horsegj/dist/html/register/register.html?uid="+loginMessage.id,
+            text: "http://wx.horsegj.com/horsegj/dist/html/register/register.html?uid="+loginMessage.id,
             image:'/images/images/bg.jpg',
             width: 100/scale,
             height: 100/scale,
@@ -29,7 +30,6 @@ Page({
     	}
     	return {
       		title: '邀请好友天天分钱',
-      		desc: '自定义分享描述',
       		path: '/pages/register/register?uid='+loginMessage.id,
       		success: function(res) {
         		// 转发成功

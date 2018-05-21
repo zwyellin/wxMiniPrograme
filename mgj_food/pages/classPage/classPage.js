@@ -5,7 +5,6 @@ Page({
 	data: {
 		loading:false,
 		maskAnimation:null,
-		classAnimation:null,
 	    size:24,
 		type1:'分类',
 		type2:'排序',
@@ -29,21 +28,41 @@ Page({
 	},
 	onLoad(options){
 		let tagId = null
-		if (options.id != "null") {
-			 tagId = options.id;
+		if (options.id != "null" && parseInt(options.id) > -1) {
+			tagId = parseInt(options.id);
 		}
-		let type1 = options.name;
+		let type1 = '分类';
 		this.setData({
-			tagId:tagId,
-			type1:type1
+			tagId:tagId
 		})
-		// this.data.tagParentId = tagParentId
-		this.getDataList();
-		this.findTagCategory()
+		this.findTagCategory().then(res=> {
+        	if (res.data.code === 0) { 
+        		let classList = res.data.value
+        		let timeIndex = 0
+        		classList.map((item,index)=>{
+        			if(item.id === tagId) {
+        				timeIndex = index
+						item.childTagCategoryList.map((childItem)=>{
+							if(childItem.id === tagId) {
+								type1 = childItem.name
+							}
+						})
+        			}
+        		})
+				this.setData({
+					timeIndex:timeIndex,
+					childTagCategoryList:classList[timeIndex].childTagCategoryList,
+					type1:type1,
+					classList: classList
+				})
+				this.getDataList();
+        	}
+        });
 	},
 	moveDown(e){
 		let { item, index } = e.currentTarget.dataset;
-		let dataList = this.data.dataList; 
+		let dataList = this.data.dataList;
+		if (item.promotionActivityList.length < 3) return;
 		if (dataList[index].height === '68rpx') {
 			dataList[index].height = 34*item.promotionActivityList.length+'rpx';
 			this.setData({
@@ -138,7 +157,6 @@ Page({
 		if (!this.data.maskShow) {
 			this.maskShowAnimation()
 		}
-		this.calssShowAnimation()
 		if (index == 0) {
 			this.setData({
 				classShow:true,
@@ -250,7 +268,7 @@ Page({
 	},
 	//根据地理位置初始化分类选项数据
 	findTagCategory(){
-		wxRequest({
+		return wxRequest({
         	url:'/merchant/userClient?m=findTagCategory',
         	method:'POST',
         	data:{
@@ -258,17 +276,11 @@ Page({
         		params:{
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
-        			latitude:app.globalData.latitude
+        			latitude:app.globalData.latitude,
+        			tagCategoryType: 1
         		}	
         	},
-        }).then(res=> {
-        	console.log(res)
-        	if (res.data.code ===0) {
-				this.setData({
-					classList: res.data.value
-				})
-        	}
-        });
+        })
 	},
 	//商家配送方式
 	selectShip(e){
@@ -329,23 +341,6 @@ Page({
 		animation.opacity(0.3).step();//修改透明度,放大  
 		this.setData({  
 		   maskAnimation: animation.export()  
-		}); 
-	},
-	calssShowAnimation(){
-		let animation = wx.createAnimation({ 
-			transformOrigin: "50% 50%", 
-			duration: 1000,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.height(574+'rpx').step();
-	      	this.setData({
-	        	classAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.height(0).step();//修改透明度,放大  
-		this.setData({  
-		   orderRedAnimation: animation.export()  
 		}); 
 	},
 })

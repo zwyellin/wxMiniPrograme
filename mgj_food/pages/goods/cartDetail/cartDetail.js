@@ -226,9 +226,6 @@ Page({
 	close(){
 		this.maskHideAnimation();
 		this.choiceHideAnimation();
-		this.setData({
-			getMerchantRedBagList:[]
-		});
 	},
 	bagListShow(){
 		this.setData({
@@ -251,9 +248,9 @@ Page({
 	        content: '你是否需要拨打客服电话，申请退款',
 	        success: function (res) {
 	          if (res.confirm) {
-	          	if (app.globalData.agentPhone) {
+	          	if (that.data.orderDetail.agentPhone) {
 	          		wx.makePhoneCall({
-	      				phoneNumber: app.globalData.agentPhone   //电话号码
+	      				phoneNumber: that.data.orderDetail.agentPhone   //代理商电话号码
 	    			});
 	          	} else {
 	          		let servicePhone = that.data.servicePhone[1];
@@ -338,12 +335,18 @@ Page({
 	      	animation.translate(-50+'%').top(150+'%').step();
 	      	this.setData({
 	        	orderRedAnimation: animation.export(),
+	        	getMerchantRedBagList:[]
 	      	});
 	    }, 200);
 		animation.translate(-50+'%').top(20+'%').step();//修改透明度,放大  
 		this.setData({  
 		   orderRedAnimation: animation.export()  
 		}); 
+	},
+	selectTab(e){
+		wx.navigateTo({
+		  url: '/pages/shop/shop?merchantid='+this.data.orderDetail.merchantId
+		});
 	},
 	onUnload(){
 		if (this.data.isredbag) {

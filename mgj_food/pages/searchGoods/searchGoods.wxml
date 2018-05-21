@@ -2,26 +2,23 @@
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
 <view class="container page-common">
 	<view class="search-goods font-14" style="background: #fff">
-		<input type="text" placeholder="搜索商家、商品名称" placeholder-class="placeholder" cursor="{{80}}" bindinput="searchGoods"/>
+		<input type="text" placeholder="搜索商家、商品名称" placeholder-class="placeholder" cursor="{{80}}" bindinput="searchGoods" bindblur="setsearch" />
 		<image class="icon-search" src="../../images/images/search.png"></image>
 	</view>
 	<view style="color:#666">
 		<view class="hot-search font-16">
-			<text>热门搜索</text>
+			<text>历史搜索</text>
 		</view>
 		<view class="font-12 flex search-goods">
-			<view
-				class="hot-text {{item===searchValue ? 'hot-active' : ''}}"
-				wx:for="{{hotList}}" 
+			<block
+				wx:for="{{historyList}}" 
 	      		wx:for-index="index" 
 	      		wx:for-item="item"
-	      		wx:key="index"
-	      		data-item="{{item}}"
-	      		bindtap="hotSearch">
-				<text>
+	      		wx:key="index">
+				<text class="hot-text {{searchValueIndex===index ? 'hot-active' : ''}}" data-value="{{item}}" data-index="{{index}}" bindtap="hotSearch">
 	      			{{item}}
 	      		</text>
-			</view>
+			</block>
 		</view>
 	</view>
 	<view class="goods-wrapper search-background clearfix" 
@@ -36,8 +33,8 @@
 		</view>
 		<view class="content">
 			<view class="name">
-				<text>{{item.name}}</text>
-				<text class="fr">{{item.defDistance}}km</text>
+				<text class="name-txt">{{item.name}}</text>
+				<text class="fr">{{fixed.round(item.distance)}}km</text>
 			</view>
 			<view class="desc clearfix">
 				<view class="fl desc-content">
@@ -53,7 +50,7 @@
 				<text>配送费￥{{item.shipFee}}</text>
 				<image class="extra-img fr" src="../../images/images/pay.png"></image>
 			</view>
-			<view class="cartcontrol-wrapper">
+			<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.isHeight :''}}">
 				<view class="cartcontrol-content flex"
 					wx:for="{{item.promotionActivityList}}" 
       				wx:for-index="idx" 
@@ -62,6 +59,9 @@
 					<image class="bran" src="{{promotion.promoImg}}"></image>
 					<text class="name">{{promotion.promoName}}</text>
 				</view>
+			</view>
+			<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
+				<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
 			</view>
 		</view>
 	</view>

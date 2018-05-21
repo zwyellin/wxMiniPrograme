@@ -107,6 +107,14 @@
 }
 .shop-message-letter {
 	letter-spacing: 2rpx;
+	border-bottom:1rpx solid #f5f5f5;
+	min-height: 80rpx;
+	vertical-align: middle;
+}
+.shop-flex {
+	display: flex;
+	padding-right: 26rpx;
+	align-items: center;
 }
 .shop-left {
 	margin-left: 16rpx;

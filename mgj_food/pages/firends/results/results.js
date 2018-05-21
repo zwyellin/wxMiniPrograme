@@ -2,6 +2,7 @@ const app = getApp();
 const { wxRequest, format } = require('../../../utils/util.js');
 Page({
 	data:{
+		show:false,
 		size:20,
 		start:0,
 		userList:[],
@@ -9,9 +10,15 @@ Page({
 		cashbackAmtSum:0
 	},
 	onLoad(){
-		this.findInviterCodeUrl()
+		this.findInviteCashbackDetailList()
 	},
-	findInviterCodeUrl(){
+	findInviteCashbackDetailList(){
+		wx.showToast({
+	        title: '加载中',
+	        icon: 'loading',
+	        duration: 200000,
+	        mask: true
+	    });
 		wxRequest({
 	    	url:'/merchant/userClient?m=findInviteCashbackDetailList',
 	    	method:'POST',
@@ -35,8 +42,11 @@ Page({
 	      			userList:userList
 	    		});
 			}
-	    }).catch(err=>{
-	    	console.log(err)
+	    }).finally(()=>{
+	    	this.setData({
+				show:true
+    		});
+	    	wx.hideLoading()
 	    });
 	},
 	onReachBottom(){

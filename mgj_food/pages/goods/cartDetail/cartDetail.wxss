@@ -33,7 +33,11 @@
 	letter-spacing: 4rpx;
 	font-size: 26rpx;
 }
-
+.order-flex {
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+}
 .cartorder-food {
 	/*margin-top:1rpx solid ;*/
   height: 90rpx;

@@ -108,16 +108,50 @@ Page({
 			return;
 		}
 		if (this.data.yanzhengma === '获取验证码') {
-			this.getCode();
-			this.getCodeMa();
+			this.isCheckMobile();
 		}
 		this.setData({
       		disabled:true
     	});
 	},
+	isCheckMobile(){
+		wxRequest({
+        	url:'/merchant/h5callback/checkUserMobile',
+        	method:'GET',
+        	data:{
+        		mobile:parseInt(this.data.phone),	
+        		callback:'callback'	
+        	},
+        }).then((res)=>{
+			console.log(res)
+			let callback = res.data
+			let valueObject = JSON.parse(callback.substring(9,callback.length-1))
+        	console.log(valueObject.success)
+        	if (valueObject.success === true && valueObject.value != null) {
+        		wx.showModal({
+	                title: '提示',
+	                content: '你已是注册用户,可直接打开马管家小程序邀请好友哦',
+	                success: function (res) {
+	                  if (res.confirm) {
+	                    wx.switchTab({
+	  						url: '/pages/index/index'
+						});
+	                  } else if (res.cancel) {
+	                    console.log('用户点击取消');
+	                  }
+	                }
+	            });	
+			} else {
+        		this.getCode();
+				this.getCodeMa();
+        	}
+        }).catch(err=>{
+        	console.log(err)
+        })
+	},
 	getCodeMa(){
 		wxRequest({
-        	url:'/merchant/userClient?m=checkLoginCode',
+        	url:'/merchant/userClient?m=sendLoginSms',
         	method:'POST',
         	data:{
         		params:{

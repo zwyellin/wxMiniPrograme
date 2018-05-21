@@ -1,5 +1,5 @@
 <template name="class-common">
-	<view class="time" animation="{{classAnimation}}">
+	<view class="time">
 		<view class="flex font-14">
 		    <scroll-view class="time-left" scroll-y="true" style="height:574rpx">
 			    <view class="time-left-text {{timeIndex===index ? 'time-active' : ''}}"

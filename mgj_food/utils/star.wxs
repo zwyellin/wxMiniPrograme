@@ -16,14 +16,27 @@ var cart = {
 		}
 		return arr;
 	},
-	fomatFloat: function(src,pos){   
-       return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);   
+	fomatFloat: function(src,pos){
+		if (src.toString().length == 1) return src + '.0';
+       	return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);   
     },
 	praise:function(goodCommentNum,CommentNum) {
 		var praise = goodCommentNum/CommentNum;
 			praise = praise*100
 			praise = parseInt(praise);
 		return praise;
+	},
+	// isJpgPng: function(filepath){
+
+	// 	var isImg = /.*(\.png|\.jpg)$/.test(filepath);
+	// 	return isImg;
+	// },
+	strReplace:function(str){
+		//要替换为*号的内容
+		var tmp=str.substring(1,str.length-1);
+		//将其替换
+		var content=str.replace(tmp,'****');
+		return content;
 	},
 	round:function(num){
 		var str = parseFloat(num/1000);
@@ -53,6 +66,32 @@ var cart = {
 	    }
 	    return count;
 	},
+	//计算订单中某一分类下产品的总数
+	getItemCount: function (id,cartlist) {
+	    var count = 0;
+	    if (id === null) return 0;
+	    for (var i = 0; i < cartlist.length; i++) {
+	        if (cartlist[i].categoryId == id) {
+	          count+= cartlist[i].count;
+	        }
+	    }
+	    return count;
+	},
+	//计算该商家下购物车里产品的总数
+	getMerchantCount: function (id,cartObject) {
+		if (cartObject === null) return 0;
+	    var count = 0;
+	    id = id.toString();
+	    console.log(id)
+	    var cartList = cartObject[id];
+	    if (cartList) {
+	    	for (var i = 0; i < cartList.length; i++) {
+				count+= cartList[i].count;
+  			}
+  			// count = count + 1
+	    }
+	    return count;
+	},
 	payDesc: function(totalprice,minprice) {
 		if (totalprice===0) {
 			return '¥' + minprice+'元起送';
@@ -63,28 +102,6 @@ var cart = {
 			return '去结算';
 		}
 	},
-	arrLength: function(classList) {
-		var arr =[];
-		for (var i = 0; i < 10; i++) {
-			arr.push(classList[i]);
-		}
-		return arr;
-	},
-	arrLength10: function(classList) {
-		var arr =[];
-		var len = classlist.length;
-		if (len>20) {
-			for (var i = 10; i < 20; i++) {
-				arr.push(classList[i]);
-			}
-			return arr;
-		} else {
-			for (var i = 10; i < len; i++) {
-				arr.push(classList[i]);
-			}
-			return arr;
-		}	
-	}
 };
 module.exports = {
   itemClasses: cart.itemClasses,
@@ -93,8 +110,10 @@ module.exports = {
   splitStr:cart.splitStr,
   getCount:cart.getCount,
   getCartCount:cart.getCartCount,
+  getItemCount:cart.getItemCount,
+  getMerchantCount:cart.getMerchantCount,
+  strReplace:cart.strReplace,
   payDesc:cart.payDesc,
-  arrLength:cart.arrLength,
-  arrLength10:cart.arrLength10,
   round:cart.round
+  // isJpgPng:cart.isJpgPng
 };

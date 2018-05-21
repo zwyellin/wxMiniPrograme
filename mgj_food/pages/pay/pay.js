@@ -13,14 +13,16 @@ Page({
     isChannel:false,
     channelCost:0,
     price:0,
+    merchantId:null,
     channelPrice:0,
     orderId:null
   },
   onLoad(options){
-    let { orderId, price} = options;
+    let { orderId, price, merchantId } = options;
     this.setData({
       price:price,
       channelPrice:price,
+      merchantId:merchantId,
       orderId:orderId
     });
     this.findUserCenter();
@@ -87,15 +89,13 @@ Page({
       } else {
         this.wxLogin();
       }
-      wx.showToast({
-        title: '正在支付',
-        icon: 'loading',
-        duration: 200000,
-        mask: true
-      });
-      this.maskShowAnimation();
+      // wx.showToast({
+      //   title: '正在支付',
+      //   icon: 'loading',
+      //   duration: 200000,
+      //   mask: true
+      // });
       this.setData({
-        maskShow:true,
         isPayStatus:true
       });
     }
@@ -189,6 +189,12 @@ Page({
               console.log(err.msg);
               console.log(err.extra);
               if (result == "success") {
+                let merchantId = that.data.merchantId
+                let shoppingCart = wx.getStorageSync('shoppingCart');
+                if (shoppingCart[merchantId]) {
+                  shoppingCart[merchantId] = []
+                }
+                wx.setStorageSync('shoppingCart',shoppingCart);
                 let isRedBag = true;
                 setTimeout(()=>{
                   wx.redirectTo({
@@ -203,7 +209,7 @@ Page({
                     // charge 不正确或者微信小程序支付失败时会在此处返回
                     that.data.isPayStatus = false;
                     feedbackApi.showToast({title:'支付失败'});
-                } else if (result == "cancel") {
+              } else if (result == "cancel") {
                     feedbackApi.showToast({title:'取消支付'});
                     that.data.isPayStatus = false;
               }
@@ -255,6 +261,12 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
+        let merchantId = res.data.value.merchantId
+        let shoppingCart = wx.getStorageSync('shoppingCart');
+        if (shoppingCart[merchantId]) {
+          shoppingCart[merchantId] = []
+        }
+        wx.setStorageSync('shoppingCart',shoppingCart);
         let isRedBag = true;
         setTimeout(()=>{
           wx.redirectTo({
