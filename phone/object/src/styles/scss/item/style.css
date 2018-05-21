@@ -1,0 +1,59 @@
+html {
+  height: 100%;
+  overflow: hidden; }
+
+body {
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  background: #ffffff; }
+
+.container {
+  overflow: hidden;
+  padding-left: 3.2%;
+  padding-right: 3.2%; }
+
+h1 {
+  padding-top: 17px;
+  color: #3097D4;
+  font-size: 16px;
+  font-weight: 900;
+  padding-bottom: 13px; }
+
+.PayProdects {
+  overflow: hidden; }
+
+.PayProdects span:nth-child(n+1) {
+  display: block;
+  margin-bottom: 6px; }
+
+.PayProdects h2 {
+  line-height: 20px;
+  padding-bottom: 0px;
+  color: #585757;
+  font-size: 14px;
+  font-weight: 900;
+  text-indent: 10px; }
+
+.PayProdects span {
+  color: #898989;
+  font-size: 12px;
+  line-height: 21px; }
+
+.PayProdects span em {
+  padding: 5px;
+  padding-bottom: 6px;
+  padding-right: 20px;
+  text-align: center; }
+
+.PayProdects span b {
+  font-weight: normal; }
+
+.PayProdects span em i {
+  display: inline-block;
+  font-style: normal;
+  width: 6px;
+  height: 6px;
+  margin-bottom: 2px;
+  border-radius: 50%;
+  background: #595657; }

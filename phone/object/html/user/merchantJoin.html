@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no,email=no" name="format-detection" />
+		<meta name="apple-itunes-app" content="app-id=1107154187" /><!-- 1107154187 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!-- UC应用模式 -->
+		<meta name="browsermode" content="application">
+		<!-- QQ应用模式 -->
+		<meta name="x5-page-mode" content="app">
+		<!-- windows phone 点击无高光 -->
+		<!-- QQ强制全屏 -->
+		<meta name="x5-fullscreen" content="true">
+		<!-- UC应用模式 -->
+		<meta name="browsermode" content="application">
+		<meta name="msapplication-tap-highlight" content="no">
+		<title>商家入驻</title>
+		<link rel="stylesheet" type="text/css" href="../../src/styles/lib/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../src/styles/agent/merchantJoin.css"/>
+	</head>
+		<script src="../../src/scripts/lib/jquery-2.1.4.min.js"></script>		
+		<script type="text/javascript" src="../../src/scripts/plugins/flexible.js"></script>
+	    <script type="text/javascript" src="../../src/scripts/lib/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="../../src/scripts/plugins/urlpram.js"></script>
+	    <script type="text/javascript" src="../../src/scripts/plugins/pluginscommon.js"></script>
+	    <script type="text/javascript" src="../../src/scripts/wxshow/merchantJoin.js"></script>
+	<body>
+		<div class="container">
+			<!--content-->
+			<div class="content content_merchant">
+		
+				<form action="" method="post" role="form" class='joinform' style="padding-top: 0.4rem">
+					<div class="form-group">
+				     	<input class="form-control input-lg" type="text" placeholder="*商家类型 (外卖、团购、农场、家政...)" id='name'>
+				   		<div class="littleshow name_alert"></div>
+					</div>
+					
+				   	<div class="form-group">
+				     	<input class="form-control input-lg" type="text" placeholder="*商家名称" id='merchantCompany'>
+				     	<div class="littleshow one_alert"></div>
+				   	</div>
+				
+				   	<div class="form-group">
+				      	<input class="form-control input-lg" type="number" placeholder="*联系电话" id="tell">
+				   		<div class="littleshow tell_alert"></div>
+				   	</div>
+					<div class="form-group">				    
+				      	<select id="sel_Province" name="sel_Province" class="form-control input-lg">
+							<option value="" style="color:#333" selected="selected">*所在省份</option>
+				      	</select>
+						<div class="littleshow provice_alert"></div>
+				   	</div>
+				  
+				   	<div class="form-group">			 
+				      	<select id="sel_City" name="sel_City" class="form-control input-lg">
+				      		<option value="" style="color:#333">*所在地级市</option>
+						</select>
+						<div class="littleshow"></div>
+				   	</div>
+				   	<div class="form-group">			
+				      	<select id="sel_County" name="sel_County" class="form-control input-lg">
+							<option value="" style="color:#333">所在区县</option>
+				      	</select>
+				   	</div>  
+				    <div class="intr_para">*为必填项，请您如实填写，马管家绝不会透漏给第三方</div>
+				    <div class="btn1"></div>
+				    <!-- <input type="button" class="btn" value="提交" /> -->
+				   	<div class="success_alert"></div>
+				</form>
+			</div>
+
+		</div>
+		<div class="cover_alert">
+			<div class="alert_plugins">
+				
+			</div>
+		</div>
+		<div class="cover">
+			<div>
+				
+			</div>
+		</div>
+	</body>
+</html>

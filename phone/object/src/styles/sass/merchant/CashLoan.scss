@@ -1,0 +1,83 @@
+html{
+    font-family: "黑体";
+}
+body{
+    width: 100%;
+    height: 100%;
+    background: #f5f5f5;
+}
+.container{
+   
+}
+
+//item 
+.loan_list{
+    .header{
+       width: 100%;
+       height: 1.75rem;
+       color: #666666;
+       line-height: 1.75rem;
+       font-size: 0.65rem;
+       padding-left: 1.45rem;
+       background: url(../../../../images/merchant/loan20171020.png) no-repeat 0.65rem center;
+       background-size: 0.45rem 0.65rem;
+    }
+    .hot_recomend{
+        width: 100%;
+        //background: #FFFFFF;
+        .aui-grid{
+            background: #f5f5f5 !important;
+            .aui-row{
+                .hot_logo{
+                    background: #FFFFFF url(../../../../images/merchant/loan20171020002.png) no-repeat right top !important;
+                    background-size: 37% 35% !important;
+                }
+                .new_logo{
+                    background: #FFFFFF url(../../../../images/merchant/loan20171020003.png) no-repeat right top !important;
+                    background-size: 37% 35% !important;
+                }
+                .noraml_logo{
+                    background: #FFFFFF; 
+                }
+                .more{
+                    color: #ff9900;
+                    font-size: 0.65rem;
+                    text-align: center;
+                    line-height: 5rem;
+                }
+                .aui-col-xs-4{                   
+                    //margin-right:0.15rem ;
+                    border-radius: 0.2rem;                 
+                    overflow: hidden;
+                    background: #FFFFFF; 
+                    border-bottom: 0.2rem solid #f5f5f5;
+                    border-right: 0.2rem solid #F5F5F5;         
+                    height: 7rem;
+                    img{
+                        width: 2rem;
+                        height: 2rem;
+                        vertical-align: middle;
+                        margin: 0 auto;
+                    }
+                    h2{
+                        width: 100%;
+                        font-size:0.7rem;
+                        color: #333333;
+                        text-align: center;
+                        margin: 0.3rem auto;
+                    }
+                    p{
+                        color: #999999;
+                        font-size: 0.5rem;
+                        text-align: center;
+                        padding: 0rem 0.2rem;
+                        
+                    }
+                }
+                .active:active{
+                    background: #F5F5F5;
+                }
+            }
+        }
+    }
+}

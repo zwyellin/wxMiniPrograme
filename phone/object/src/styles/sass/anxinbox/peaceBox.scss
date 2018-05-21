@@ -1,0 +1,266 @@
+html{
+    font-family: "黑体";
+}
+body{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background:#FFFFFF;
+}
+.activity{
+    overflow: hidden;
+}
+.timePrice{
+    width: 100%;
+    height: 2.35rem;
+    background: #ff5959;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    -webkit-justify-content:space-between;
+    .timePriceTop{
+        line-height: 2.35rem;
+        overflow: hidden;
+        span:nth-child(1){
+           font-size: 0.65rem;
+           color: #FFFFFF;
+            i{
+                font-style: normal;
+                font-size: 1.15rem;
+            }
+        }
+        span:nth-child(2){
+            color: #CCCCCC;
+            text-decoration: line-through;
+          font-size: 0.654rem;
+          i{
+              font-style: normal;
+          }  
+        }
+    }
+    .timePriceBottom{
+         line-height: 2.35rem;
+         overflow: hidden;
+         color: #FFFFFF;
+        span{
+            color: #333333;
+            background: #FFFFFF;
+            border-radius: 0.2rem;
+            padding-left: 0.1rem;
+            padding-right: 0.1rem;
+            font-size: 0.6rem;
+        }
+    }
+}
+.goodsName_limit{
+    padding-top:0.95rem ;
+    padding-bottom: 0.6rem;
+    overflow: hidden;
+    background: #FFFFFF;
+    p:nth-child(1){
+        font-size: 0.85rem;
+        color: #333333;
+        margin-bottom: 0.35rem;
+    }
+    p:nth-child(2){
+        font-size: 0.5rem;
+        font-family: "黑体";
+        span{
+           padding-top: 0.05rem;
+           padding-bottom: 0.05rem;
+          color: #FF5959;
+          border: 1px solid #FF5959;  
+          i{
+              font-style: normal;
+          }
+        }
+    }
+}
+.goodDescribe{
+    width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;   
+    p{
+        font-size: 0.6rem;
+        color: #9c9c9c; 
+        margin-bottom: 0.45rem;
+    }
+    .detail{
+        width: 100%;
+        overflow: hidden;
+        word-wrap: break-word;
+        color: #666666;
+        font-size:0.7rem ;   
+    }
+}
+.eval{
+    width: 100%;
+    .name_title{
+        width: 100%;
+        height: 1.2rem;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
+        span:nth-child(1){
+           font-size: 0.6rem;
+           color:#9c9c9c; 
+        }
+        span:nth-child(2){
+            font-size: 0.6rem;
+            color: #666666;
+            label{
+                display: flex;
+                display: -webkit-flex;
+               input{
+                    width: 1rem;
+                    height: 1rem;
+                    background:url(../../../../images/peaceBox/20170418001peacebox.png) no-repeat;
+                    background-size: 100% 100%;
+                } 
+            }
+            
+        }
+    }
+    
+    .starEval{
+        width: 100%;
+        height: 1rem;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: center;
+        -webkit-justify-content: center;
+        margin-bottom: 0.1rem;
+        .starEval_back{
+            width: 5.45rem;
+            height: 0.9rem;
+            background: url(../../../../images/peaceBox/20170418003peacebox.png) no-repeat;
+            background-size: 5.45rem 0.9rem;
+            span{
+                display: block;
+                width: 5.45rem;
+                height: 0.9rem;
+                background: url(../../../../images/peaceBox/20170418004peacebox.png) no-repeat;
+                background-size: 5.45rem 0.9rem; 
+            }
+        }
+    }
+    
+    .sale_evalgood{
+        width: 100%;
+        display: flex;
+        display: -webkit-flex;
+        div{
+            width: 50%;
+            text-align: center;
+            p{
+                font-size: 1.15rem;
+                color: #333333;
+            }
+            span{
+                font-size: 0.65rem;
+                color: #9c9c9c;
+            }
+        }
+        div:nth-child(1){
+            border-right: 1px solid #e5e5e5;
+        }
+    }
+    
+    .evalPerson{
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        display: -webkit-flex;
+        border-bottom: 1px solid #E5E5E5;
+        .logoPerson{
+            width: 1.8rem;
+            margin-right: 0.6rem;
+            img{
+                display: block;
+                width: 1.8rem;
+                height: 1.8rem;
+                
+            }
+        }
+        .messagePerson{
+            flex: 1;
+            
+            div:nth-child(1){
+                width: 100%;
+                display: flex;
+                display: -webkit-flex;
+                justify-content: space-between;
+                -webkit-justify-content: space-between;
+                p:nth-child(1){
+                    font-size: 0.75rem;
+                    color: #333333;
+                }
+                p:nth-child(2){
+                    font-size: 0.55rem;
+                    color: #999999;
+                    text-align: right;
+                }
+            }
+            div:nth-child(2){
+                height: 0.8rem;
+                width: 2.9rem;
+                height: 0.45rem;
+                background: url(../../../../images/peaceBox/20170418003peacebox.png) no-repeat;
+                background-size: 2.9rem 0.45rem;
+                margin-top: 0.35rem;
+                margin-bottom: 0.25rem;
+                span{
+                    display: block;
+                     width: 2.9rem;
+                    height: 0.45rem;
+                    background: url(../../../../images/peaceBox/20170418004peacebox.png) no-repeat;
+                  background-size: 2.9rem 0.45rem;
+                }
+            }
+        }
+    }
+}
+
+.normal{
+    width: 100%;
+    p:nth-child(1){
+        font-size: 0.85rem;
+        color: #333333;
+    }
+    p:nth-child(2){
+        span:nth-child(1){
+           color: #ff5959;
+           font-size: 0.65rem;
+           i{
+               font-style: normal;
+               font-size: 1.15rem;
+           } 
+        }
+        span:nth-child(2){
+            color: #999999;
+            text-decoration: line-through;
+            font-size: 0.65rem;
+            i{
+                font-style: normal;
+            }
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+.border_line{
+    width: 100%;
+    border-bottom: 1px solid #E5E5E5;
+}
+.border_hou{
+    width: 100%;
+    height: 0.5rem;
+    background: #E5E5E5;
+}

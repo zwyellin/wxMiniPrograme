@@ -1,0 +1,209 @@
+@charset "UTF-8";
+html {
+  font-family: "黑体"; }
+
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #FFFFFF; }
+
+.activity {
+  overflow: hidden; }
+
+.timePrice {
+  width: 100%;
+  height: 2.35rem;
+  background: #ff5959;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  -webkit-justify-content: space-between; }
+  .timePrice .timePriceTop {
+    line-height: 2.35rem;
+    overflow: hidden; }
+    .timePrice .timePriceTop span:nth-child(1) {
+      font-size: 0.65rem;
+      color: #FFFFFF; }
+      .timePrice .timePriceTop span:nth-child(1) i {
+        font-style: normal;
+        font-size: 1.15rem; }
+    .timePrice .timePriceTop span:nth-child(2) {
+      color: #CCCCCC;
+      text-decoration: line-through;
+      font-size: 0.654rem; }
+      .timePrice .timePriceTop span:nth-child(2) i {
+        font-style: normal; }
+  .timePrice .timePriceBottom {
+    line-height: 2.35rem;
+    overflow: hidden;
+    color: #FFFFFF; }
+    .timePrice .timePriceBottom span {
+      color: #333333;
+      background: #FFFFFF;
+      border-radius: 0.2rem;
+      padding-left: 0.1rem;
+      padding-right: 0.1rem;
+      font-size: 0.6rem; }
+
+.goodsName_limit {
+  padding-top: 0.95rem;
+  padding-bottom: 0.6rem;
+  overflow: hidden;
+  background: #FFFFFF; }
+  .goodsName_limit p:nth-child(1) {
+    font-size: 0.85rem;
+    color: #333333;
+    margin-bottom: 0.35rem; }
+  .goodsName_limit p:nth-child(2) {
+    font-size: 0.5rem;
+    font-family: "黑体"; }
+    .goodsName_limit p:nth-child(2) span {
+      padding-top: 0.05rem;
+      padding-bottom: 0.05rem;
+      color: #FF5959;
+      border: 1px solid #FF5959; }
+      .goodsName_limit p:nth-child(2) span i {
+        font-style: normal; }
+
+.goodDescribe {
+  width: 100%;
+  overflow: hidden;
+  word-wrap: break-word; }
+  .goodDescribe p {
+    font-size: 0.6rem;
+    color: #9c9c9c;
+    margin-bottom: 0.45rem; }
+  .goodDescribe .detail {
+    width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    color: #666666;
+    font-size: 0.7rem; }
+
+.eval {
+  width: 100%; }
+  .eval .name_title {
+    width: 100%;
+    height: 1.2rem;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    -webkit-justify-content: space-between; }
+    .eval .name_title span:nth-child(1) {
+      font-size: 0.6rem;
+      color: #9c9c9c; }
+    .eval .name_title span:nth-child(2) {
+      font-size: 0.6rem;
+      color: #666666; }
+      .eval .name_title span:nth-child(2) label {
+        display: flex;
+        display: -webkit-flex; }
+        .eval .name_title span:nth-child(2) label input {
+          width: 1rem;
+          height: 1rem;
+          background: url(../../../../images/peaceBox/20170418001peacebox.png) no-repeat;
+          background-size: 100% 100%; }
+  .eval .starEval {
+    width: 100%;
+    height: 1rem;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+    margin-bottom: 0.1rem; }
+    .eval .starEval .starEval_back {
+      width: 5.45rem;
+      height: 0.9rem;
+      background: url(../../../../images/peaceBox/20170418003peacebox.png) no-repeat;
+      background-size: 5.45rem 0.9rem; }
+      .eval .starEval .starEval_back span {
+        display: block;
+        width: 5.45rem;
+        height: 0.9rem;
+        background: url(../../../../images/peaceBox/20170418004peacebox.png) no-repeat;
+        background-size: 5.45rem 0.9rem; }
+  .eval .sale_evalgood {
+    width: 100%;
+    display: flex;
+    display: -webkit-flex; }
+    .eval .sale_evalgood div {
+      width: 50%;
+      text-align: center; }
+      .eval .sale_evalgood div p {
+        font-size: 1.15rem;
+        color: #333333; }
+      .eval .sale_evalgood div span {
+        font-size: 0.65rem;
+        color: #9c9c9c; }
+    .eval .sale_evalgood div:nth-child(1) {
+      border-right: 1px solid #e5e5e5; }
+  .eval .evalPerson {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    display: -webkit-flex;
+    border-bottom: 1px solid #E5E5E5; }
+    .eval .evalPerson .logoPerson {
+      width: 1.8rem;
+      margin-right: 0.6rem; }
+      .eval .evalPerson .logoPerson img {
+        display: block;
+        width: 1.8rem;
+        height: 1.8rem; }
+    .eval .evalPerson .messagePerson {
+      flex: 1; }
+      .eval .evalPerson .messagePerson div:nth-child(1) {
+        width: 100%;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-between;
+        -webkit-justify-content: space-between; }
+        .eval .evalPerson .messagePerson div:nth-child(1) p:nth-child(1) {
+          font-size: 0.75rem;
+          color: #333333; }
+        .eval .evalPerson .messagePerson div:nth-child(1) p:nth-child(2) {
+          font-size: 0.55rem;
+          color: #999999;
+          text-align: right; }
+      .eval .evalPerson .messagePerson div:nth-child(2) {
+        height: 0.8rem;
+        width: 2.9rem;
+        height: 0.45rem;
+        background: url(../../../../images/peaceBox/20170418003peacebox.png) no-repeat;
+        background-size: 2.9rem 0.45rem;
+        margin-top: 0.35rem;
+        margin-bottom: 0.25rem; }
+        .eval .evalPerson .messagePerson div:nth-child(2) span {
+          display: block;
+          width: 2.9rem;
+          height: 0.45rem;
+          background: url(../../../../images/peaceBox/20170418004peacebox.png) no-repeat;
+          background-size: 2.9rem 0.45rem; }
+
+.normal {
+  width: 100%; }
+  .normal p:nth-child(1) {
+    font-size: 0.85rem;
+    color: #333333; }
+  .normal p:nth-child(2) span:nth-child(1) {
+    color: #ff5959;
+    font-size: 0.65rem; }
+    .normal p:nth-child(2) span:nth-child(1) i {
+      font-style: normal;
+      font-size: 1.15rem; }
+  .normal p:nth-child(2) span:nth-child(2) {
+    color: #999999;
+    text-decoration: line-through;
+    font-size: 0.65rem; }
+    .normal p:nth-child(2) span:nth-child(2) i {
+      font-style: normal; }
+
+.border_line {
+  width: 100%;
+  border-bottom: 1px solid #E5E5E5; }
+
+.border_hou {
+  width: 100%;
+  height: 0.5rem;
+  background: #E5E5E5; }

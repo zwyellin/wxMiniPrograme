@@ -1,0 +1,282 @@
+html{
+ // height: 100%;  
+  font-family: "黑体";
+}
+body{
+    width: 100%;
+    //height: 100%;
+    background:url(../../../../images/merchant/20170310001.png) no-repeat;
+    background-size:cover;
+}
+.container{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.swiper-pagination-bullet-active{
+    background: #FFFfff;
+}
+.aui-slide-page-active{
+     background: #FFFfff;
+}
+#aui-slide3 img{
+//  width: 100%;
+//  height: 100%;
+    display: block;
+}
+.content{
+    overflow: hidden;
+    margin-bottom: 3.2rem;
+//  .goodsimg{
+//      background: #FFFFFF;
+//      overflow: hidden;
+//      width: 100%;
+//      height: 15.8rem;
+//      img{
+//          display: block;
+//          width: 100%;
+//          height: 100%;
+//      }
+//  }
+    .goodsmsg{
+        position: relative;
+        overflow: hidden;
+        padding-top: 0.2rem;
+        background: #FFFFFF;
+        .goodstitle{
+            font-size: 0.85rem;
+            color: #333333;
+        }
+        .salemonth{
+            overflow: hidden;
+            font-size:0.6rem ;
+            color: #999999;
+            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
+            span:nth-child(1){
+                margin-right: 1rem;
+                i{
+                    font-style: normal;
+                }
+            }
+            span:nth-child(2){
+                i{
+                    font-style: normal;
+                }
+            }
+        }
+        .goodsprice{
+            margin-bottom: 0.65rem;
+            span{
+                color: #fb4e45;
+                font-size: 0.6rem;
+                i{
+                    font-style: normal;
+                    font-size: 1.15rem;
+                }
+            }
+            
+            
+        }
+        
+    }
+    //market
+    .merchantmsg{
+        position: relative;
+        border-bottom-left-radius:0.2rem;
+        border-bottom-right-radius:0.2rem;
+        background: #FFFFFF;
+//      overflow: hidden;
+        .merchant{
+            display: flex;
+            display: -webkit-flex;
+            overflow: hidden;
+            .logo{
+                width: 3.8rem;
+                height: 2.9rem;
+                border-radius:0.2rem ;
+                margin-right: 0.5rem;
+            }
+            .merchant_detail{
+                overflow: hidden;
+                .merchanttitle{
+                    font-size:0.75rem;
+                    color: #333333;
+                }
+                .score{
+                    width: 2.9rem;
+                    height: 0.45rem;
+                    background: url(../../../../images/merchant/star002.png) no-repeat;
+                    background-size: 2.9rem 0.45rem;
+                    margin-top: 0.3rem;
+                    margin-bottom: 0.3rem;
+                    span{
+                        display: block;
+                        width: 0rem;
+                        height: 0.45rem;
+                        background: url(../../../../images/merchant/star001.png) no-repeat;
+                        background-size: 2.9rem 0.45rem;
+                    }
+                }
+                .money{
+                    overflow: hidden;
+                    display: flex;
+                    display: -webkit-flex;
+                   align-items: center;
+                    -webkit-align-items: center;
+                    span{  
+                        display: block;                
+                        font-size:0.6rem;
+                        color: #666666;
+                        i{
+                            font-style: normal;
+                            font-size: 0.6rem;
+                            color: #666666;
+                        }
+                    }
+                    .fen{
+                        display: block;        
+                        height: 0.6rem;                     
+                        margin-right:0.25rem;
+                        margin-left: 0.25rem;
+                        border-right: 1px solid #E5E5E5;
+                    }
+                }
+            }
+        }
+        .merchantactive{
+           font-family: "黑体";
+           overflow: hidden;
+            .active_jian{
+                display: block;
+                display: flex;
+                display: -webkit-flex;
+                display:-webkit-box;                     
+                span{                 
+                    overflow: hidden;
+                    display: block;
+                    width: 0.65rem;
+                    height: 0.65rem;
+                    margin-right: 0.2rem;
+                }
+                i{  
+                    display: block;                  
+                    font-style: normal;
+                    color: #999999;
+                    font-size: 0.6rem;
+                    word-wrap: break-word;
+                    width: 93%;
+                }
+            }
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+
+.border{
+    margin: 0 auto;
+    width: 100%;
+    border-bottom: 1px solid #e5e5e5;
+}
+.bottom{
+    width: 100%;
+    height: 2.45rem;
+    position: fixed;
+    bottom: 0rem;
+    background: #FF9A00;
+    text-align: center;
+    line-height: 2.45rem;
+    color: #FFFFFF;
+    font-size: 0.8rem;
+    z-index: 99;
+}
+.header{
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    width: 100%;
+    height: 3rem;
+    position: fixed;
+    top: 0rem;
+    background: rgba(33,33,33,0.5);
+    img{
+        width:2.3rem;
+        height: 2.3rem;
+        border-radius:0.2rem;
+        margin-right: 0.4rem;
+    }
+    .jump{
+        height: 3rem;
+        flex: 1;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        -webkit-align-items: center;
+        justify-content: space-between;
+        -webkit-justify-content: space-between;
+        .jump_left{
+            font-family: "黑体";
+            p{
+              font-size: 0.6rem;
+                color: #FFFFFF;   
+            }
+            p:nth-child(1){
+                margin-bottom: 0.3rem;
+                font-size: 0.6rem;
+                color: #FFFFFF;
+            }
+        }
+        .jump_right{
+            span:nth-child(1){
+                font-size: 0.75rem;
+                color: #333333;
+                padding: 0.2rem 0.3rem;
+                border-radius: 0.2rem;
+                background: #FB965D;
+            }
+            span:nth-child(2){
+                position: relative;
+                top: -0.8rem;
+                align-self: flex-start;
+                font-size: 0.55rem;
+                color: #333333;
+                line-height: 0.6rem;
+                padding: 0.05rem 0.25rem;
+                border-radius: 50%;
+                margin-top: -1rem;
+                background: rgba(255,255,255,0.2);
+            }
+        }
+    }
+}
+/*cover*/
+#cover {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+
+#cover>img {
+    display: block;
+    width: 70%;
+    position: absolute;
+    top: 1%;
+    right: 7.2%;
+}

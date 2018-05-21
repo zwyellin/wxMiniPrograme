@@ -1,0 +1,2446 @@
+html{
+	font-size: 75px;
+}
+body{
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	overflow: hidden;
+	
+	font-family: "黑体";
+}
+.left{
+	float:left;
+}
+.right{
+	float:right;
+}
+
+.container{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+/*分割*/
+.fenge{
+	width:100%;
+	height: 0.3rem;
+	background: #F3F3F3;
+}
+.jump{
+	width: 92%;
+	padding-left: 4%;
+	padding-right: 4%;
+	background: #FF9A00;
+	height:1.26rem ;
+	color: #FFFFFF;
+	font-size:0.36rem ;
+	line-height: 1.26rem;
+	
+}
+.jump span{
+	/*padding:0.12rem;
+	border: 3px solid #FFFFFF;
+	border-radius: 0.12rem;
+	margin-left:27%;*/
+	height: 0.6rem;
+    float: right;
+    line-height: 0.65rem;
+    padding: 0rem 0.12rem;
+    border: 0.08rem solid #FFFFFF;
+    border-radius: 0.12rem;
+    margin-top: 0.3rem;
+    overflow: hidden;
+}
+
+/*border*/
+.border_line{
+	width: 100%;
+	height: 0.025rem;
+	background: #f5f5f5;
+}
+/*求职*********************************************************/
+.peopleforjob{
+	display: none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.header{
+	width: 92%;
+	padding-left: 4%;
+	padding-right:4% ;
+	padding-top:0.6rem ;
+	padding-bottom: 0.4rem;
+	overflow: hidden;
+	margin: 0 auto;	
+	background: #FFFFFF;
+}
+.header .photo_foundjob,.photo{
+	width: 1.8rem;
+	height: 1.8rem;
+	border-radius: 50%;
+	/*background: url(../../images/photo_company_famile.png) no-repeat;*/
+	background-size: 100% 100%;
+	margin-right: 0.45rem;
+}
+.header .personalmsg{
+	width: 6rem;
+	height: 2.1rem;
+}
+.header .personalmsg .name_male_age{
+	clear: both;
+	overflow: hidden;
+	/*width: 6.8rem;
+	height: 0.64rem;*/
+	margin-top: 0rem;
+	
+}
+.header .personalmsg .name_male_age span{
+	display: block;
+	float: left;
+}
+.header .personalmsg .name_male_age span:nth-child(1){
+	font-size: 0.4rem;
+	color: #333333;
+	
+}
+.header .personalmsg .name_male_age span:nth-child(2){
+	width: 0.45rem;
+	height: 0.45rem;
+	/*background:url(../../images/sex_lady.png) no-repeat;*/
+	background-size:100% 100%;
+	margin:0rem 0.36rem 0rem;
+	
+}
+.header .personalmsg .name_male_age span:nth-child(3){
+	font-size: 0.32rem;
+	color: #999999;
+	margin-top: 0.05rem;
+}
+.header .personalmsg .school_preience{
+	clear: both;
+	margin-top: 0.2rem;
+	margin-bottom: 0.2rem;
+	overflow: hidden;
+}
+.header .personalmsg .school_preience span{
+	display: block;
+	float: left;
+	font-size: 0.35rem;
+	color: #666666;
+}
+.header .personalmsg .school_preience span:nth-child(2){
+	height: 0.39rem;
+	background: #CCCCCC;
+	width: 0.035rem;
+	margin:0.06rem 0.36rem 0rem;
+}
+.header .personalmsg .refreshtime{
+	clear: both;
+}
+.header .personalmsg .refreshtime span{
+	font-size: 0.32rem;
+	color: #999999;
+}
+
+/*求职意向*/
+.jobwish{
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.textwish{
+	width: 92%;
+	height: 1.26rem;
+	padding: 0 4%;
+	color: #333333;
+	line-height: 1.26rem;
+	font-size: 0.35rem;
+}
+.job_address_money{
+	width: 92%;
+	padding: 0 4%;
+	margin: 0 auto;
+	overflow: hidden;
+	display: flex;
+	display: -webkit-flex;
+	-webkit-justify-content: space-between;
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+}
+.job_address_money div{
+	float: left;
+	overflow: hidden;
+	margin-right: 0.45rem;
+}
+
+.job_address_money div:last-child{
+	float: left;
+	overflow: hidden;
+	margin-right:0rem;
+}
+/*zhongjian*/
+.job_address_money ._job{
+	height: 1.26rem;
+	line-height: 1.26rem;
+	overflow: hidden;
+	font-size: 0.35rem;
+	color: #666666;
+	font-family: "黑体";
+}
+
+.job_address_money ._job span:nth-child(1){
+	width: 0.6rem;
+	height: 1.26rem;
+	background: url(../../../../images/job_forpeople.png) no-repeat center;
+	background-size:55% 33%;
+}
+.job_address_money ._job span{
+	display: block;
+	float: left;
+}
+.job_address_money ._address{
+	height: 1.26rem;
+	line-height: 1.26rem;
+	overflow: hidden;
+	font-size: 0.32rem;
+	color: #666666;
+	font-family: "黑体";
+}
+.job_address_money ._address span:nth-child(1){
+	width: 0.6rem;
+	height: 1.26rem;
+	background: url(../../../../images/position.png) no-repeat center;
+	background-size:50% 33%;
+}
+.job_address_money ._address span{
+	display: block;
+	float: left;
+}
+
+.job_address_money ._money{
+	height: 1.26rem;
+	line-height: 1.26rem;
+	overflow: hidden;
+	font-size: 0.35rem;
+	color: #666666;
+	font-family: "黑体";
+}
+.job_address_money ._money span:nth-child(1){
+	width: 0.6rem;
+	height: 1.26rem;
+	background: url(../../../../images/money_forpeople.png) no-repeat center;
+	background-size:55% 33%;
+}
+.job_address_money ._money span:nth-child(2){
+	color: #fb4e17;
+}
+.job_address_money ._money i{
+	font-style: normal;
+}
+.job_address_money ._money span{
+	display: block;
+	float: left;
+}
+/*个人简介*/
+.personal_pro{
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.personal_wish{
+	width: 92%;
+	height: 1.26rem;
+	padding: 0 4%;
+	color: #333333;
+	line-height: 1.26rem;
+	font-size: 0.35rem;
+}
+.personalDetail{
+	width: 92%;
+	padding: 0 4%;
+	padding-top: 0.45rem;
+	margin: 0 auto;
+	overflow: hidden;
+	color: #666666;
+	font-size: 0.35rem;
+	line-height: 0.6rem;
+	padding-bottom: 0.45rem;
+}
+/*照片、作品*/
+.photo_zuopin{
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.photo_zuopin .personal_wish span{
+	color: #999999;
+	font-size: 0.32rem;
+}
+.photo_zuopin .personal_wish span i{
+	font-style: normal;
+}
+.photo_zuopin .turn_photo{
+	width: 100%;
+	height: 1.95rem;
+	overflow: hidden;
+	padding: 0.45rem 0rem;
+}
+/*.photo_zuopin .turn_photo ul{
+	width: 100%;
+	height: 1.95rem;
+	margin: 0 auto;
+	overflow: hidden;
+}*/
+/*.photo_zuopin .turn_photo ul li{
+	display: inline-block;
+	width: 2.55rem;
+	height: 1.95rem;
+	margin-right: 0.45rem;
+}*/
+.photo_zuopin .turn_photo .img_list{
+	width: 100%;
+	height: 1.95rem;
+	margin: 0 auto;
+	overflow: hidden;
+	white-space: nowrap;
+}
+/*.photo_zuopin .turn_photo .img_list img{
+	display: inline-block;
+	width: 2.55rem;
+	height: 1.95rem;
+	margin-right: 0.45rem;
+	
+}*/
+/*联系方式*/
+.tell_jump{
+	display: block;
+	width: 92%;
+	height: 1.26rem;
+	line-height: 1.26rem;
+	margin:0 auto;
+	background: #FF9A00;
+	color: #FFFFFF;
+	font-size: 0.48rem;
+	text-align: center;
+	border-radius: 0.2rem;
+	margin-top: 0.75rem;
+	margin-bottom: 0.75rem;
+}
+
+/*swiper*/
+/*.swiper-container{
+	
+}*/
+.job_swiper{
+	width: 100%;
+	height: 1.95rem;
+}
+.job_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 1.95rem;
+}
+.job_swiper .swiper-wrapper .swiper-slide img{
+	width: 2.55rem;
+	height: 1.95rem;
+}
+/*图片放大弹框*/
+.ImgZoomFrames{
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	z-index: 6;
+	background: rgb(0,0,0);
+	background: rgba(0,0,0,0.9);
+}
+/* 招聘 *******************************************************/
+
+.jobforpeople{
+	display: none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	/*background: #FFFFFF;*/
+	overflow: hidden;
+}
+/*mingcheng 薪资  发布时间*/
+.headerlook{
+	width: 92%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 0.6rem 4%;
+	background: #FFFFFF;
+}
+.pro_name{
+	width: 100%;
+	font-size: 0.4rem;
+	color: #333333;
+	margin-bottom: 0.3rem;
+}
+.money_provide{
+	font-size: 0.6rem;
+	color: #fc4315;
+	margin-bottom: 0.3rem;
+}
+.money_provide i{
+	font-style: normal;
+	font-size: 0.39rem;
+	color: #666666;
+}
+.publishtime{
+	font-size: 0.32rem;
+	color: #999999;
+}
+/*职位要求福利*/
+.prolottery{
+	width: 92%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 0.6rem 4% 0.4rem;
+	background: #FFFFFF;
+}
+.pro_name_acc{
+	font-size: 0.35rem;
+	color: #666666;
+	margin-bottom: 0.3rem;
+}
+.pro_name_acc span{
+	color: #333333;
+}
+.need{
+	font-size: 0.35rem;
+	color: #666666;
+	/*margin-bottom: 0.3rem;*/
+}
+.need span{
+	color: #333333;
+}
+.lottery{
+	font-size: 0.35rem;
+	color: #666666;
+	line-height: 1rem;
+	overflow: hidden;
+}
+.lottery div:nth-child(1){
+	width: 1.1rem;
+}
+.lottery_lot{
+	width: 7.8rem;
+	margin-top: 0.36rem;
+}
+.lottery .lottery_lot span{
+	padding: 0.1rem;
+	color: #FF9C00;
+	border: 1px solid #FF9C00;
+	border-radius: 0.06rem;
+	margin-right: 0.2rem;
+	margin-bottom: 0.2rem;
+	float: left;
+	height: 0.4rem;
+	line-height: 0.4rem;
+}
+.lottery span:last-child{
+	margin-right:0rem;
+}
+/*工作地址*/
+.address_name{
+	width: 92%;
+	padding:0.45rem 4% 0.45rem 4%;
+	font-size: 0.35rem;
+	color: #666666;
+}
+.pro_discribe{
+	max-height:4.55rem ;
+	overflow: hidden;
+	padding-bottom: 0.45rem;
+	line-height: 0.7rem;
+}
+.pro_discribe span{
+	font-size: 0.35rem;
+	color: #666666;
+}
+.pro_discribe ul li{
+	line-height: 0.6rem;
+}
+.kongbai{
+	width: 100%;
+	height: 0.45rem;
+	background: #FFFFFF;
+}
+.kongbais{
+	display: none;
+}
+.show_close{
+	text-align: center;
+	background:#fff url(../../../../images/xiasanjiao.png) no-repeat left 61% center;
+	background-size: 4% 22%;
+}
+.click_close{
+	display: none;
+}
+/*公司信息*/
+.company_msg{
+	width: 92%;
+	padding:0.45rem 4% 0.45rem 4%;
+	
+}
+.company_name{
+	width: 100%;
+	font-size: 0.35rem;
+	color: #333333;
+	margin-bottom: 0.8rem;
+}
+.company_model{
+	width: 100%;
+	font-size: 0.35rem;
+	color: #666666;
+	margin-bottom: 0.5rem;
+}
+.company_quality{
+	width: 100%;
+	font-size: 0.35rem;
+	color: #666666;
+	margin-bottom: 0.5rem;
+}
+.company_class{
+	width: 100%;
+	font-size: 0.35rem;
+	color: #666666;
+	
+}
+/*公司地址*/
+.company_address{
+	width: 92%;
+	padding: 0.45rem 4% 0.45rem 4%;
+	font-size: 0.35rem;
+	color: #666666;
+}
+/*公司简介*/
+.company_product{
+	width: 92%;
+	/*max-height: 4.45rem;*/
+	padding: 0.45rem 4% 0.45rem 4%;
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.company_pro{
+	font-size: 0.35rem;
+	color: #666666;
+	margin-bottom: 0.3rem;
+}
+.pro_content{
+	font-size: 0.35rem;
+	color: #666666;
+	line-height: 0.8rem;
+}
+/*公司图片*/
+.company_picture{
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	background: #FFFFFF;
+	margin-bottom: 0.6rem;
+}
+.company_picture .personal_wish span{
+	color: #999999;
+	font-size: 0.32rem;
+}
+.company_picture .personal_wish span i{
+	font-style: normal;
+}
+.company_picture .turn_photo{
+	width: 100%;
+	height: 1.95rem;
+	overflow: hidden;
+	padding: 0.45rem 0rem;
+}
+.turn_photo_company{
+	width: 92%;
+	height: 5.55rem;
+	overflow: hidden;
+	padding: 0.45rem 4% 0.45rem 4%;
+}
+/*swiper*/
+.company_swiper{
+	width: 100%;
+	height: 5.55rem;
+}
+.company_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.company_swiper .swiper-wrapper .swiper-slide img{
+/*	width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+	width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*健康咨询****************************/
+.health{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.healheader{
+	width: 92%;
+	padding-left: 4%;
+	padding-right:4% ;
+	padding-top:0.6rem ;
+	padding-bottom: 0.6rem;
+	overflow: hidden;
+	margin: 0 auto;	
+	background: #FFFFFF;
+}
+.healheader .healphoto{
+	width: 2.2rem;
+	height: 2.2rem;
+	border-radius: 50%;
+	background: url(../../../../images/photo_company_famile.png) no-repeat;
+	background-size: 100% 100%;
+	margin-right: 0.45rem;
+}
+.healheader .healpersonalmsg{
+	width:70%;
+	/*height: 2.1rem;*/
+	overflow: hidden;
+}
+.healheader .healpersonalmsg .healname_male_age{
+	clear: both;
+	overflow: hidden;
+	margin-top: 0.1rem;
+	
+}
+.healheader .healpersonalmsg .healname_male_age span{
+	display: block;
+}
+.healheader .healpersonalmsg .healname_male_age span:nth-child(1){
+	font-size: 0.4rem;
+	color: #333333;
+}
+
+.healheader .healpersonalmsg .healname_male_age span:nth-child(2){
+	padding-left: 0.5rem;
+	font-size: 0.32rem;
+	margin-top: 0rem;
+	color: #333333;
+	background: url(../../../../images/detail_zhuizi00pp.png) no-repeat left center;
+	background-size: 0.3rem 0.3rem;
+	/*padding: 0.1rem;*/
+	/*border: 1px solid #FF9A00;
+	border-radius: 0.1rem;*/
+}
+.healheader .healpersonalmsg .healname_male_age span:nth-child(2) i{
+	
+}
+.healheader .healpersonalmsg .healschool_preience{
+	clear: both;
+	margin-top: 0.3rem;
+	margin-bottom: 0.3rem;
+	overflow: hidden;
+	color: #FF9A00;
+	font-size: 0.35rem;
+}
+.healheader .healpersonalmsg .healrefreshtime{
+	clear: both;
+	font-size: 0.35rem;
+	color: #999999;
+}
+
+/*医疗专长*/
+.health_specialty{
+	overflow: hidden;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	background: #FFFFFF;
+	
+}
+
+.health_title{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0.4rem 4%;
+}
+.health_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #999999;
+	padding:0.4rem 4%;
+	line-height: 0.6rem;
+	word-wrap:break-word;
+}
+
+.health_pro{
+	margin-bottom: 0.75rem;
+}
+/*法律咨询****************************/
+.Lawyer{
+	display: none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.Lawyerheader{
+	width: 92%;
+	padding-left: 4%;
+	padding-right:4% ;
+	padding-top:0.6rem ;
+	padding-bottom: 0.6rem;
+	overflow: hidden;
+	margin: 0 auto;	
+	background: #FFFFFF;
+}
+.Lawyerheader .Lawyerphoto{
+	width: 2.2rem;
+	height: 2.2rem;
+	border-radius: 50%;
+	background: url(../../../../images/morenphoto.png) no-repeat;
+	background-size: 100% 100%;
+	margin-right: 0.45rem;
+}
+.Lawyerheader .Lawyerpersonalmsg{
+	width: 6.4rem;
+	height: 2.1rem;
+}
+.Lawyerheader .Lawyerpersonalmsg .Lawyername_male_age{
+	clear: both;
+	overflow: hidden;
+	margin-top: 0.1rem;
+	
+}
+.Lawyerheader .Lawyerpersonalmsg .Lawyername_male_age span{
+	display: block;
+}
+.Lawyerheader .Lawyerpersonalmsg .Lawyername_male_age span:nth-child(1){
+	font-size: 0.4rem;
+	color: #333333;
+}
+.Lawyerheader .Lawyerpersonalmsg .Lawyername_male_age span:nth-child(2){
+	width: 0.3rem;
+    height: 0.3rem;
+    background: url(../../../../images/Layer_time.png) no-repeat;
+    background-size: 100% 100%;
+    margin: 0.1rem 0.1rem 0rem 0.3rem;
+	
+}
+.Lawyerheader .Lawyerpersonalmsg .Lawyername_male_age span:nth-child(3){
+	font-size: 0.32rem;
+	margin-top: 0.05rem;
+	color: #FF9A00;
+}
+.Lawyerheader .Lawyerpersonalmsg .Lawyername_male_age span:nth-child(4){
+	/*font-size: 0.32rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.06rem;*/
+    padding-left: 0.5rem;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #333333;
+    background: url(../../../../images/detail_zhuizi00pp.png) no-repeat left center;
+    background-size: 0.3rem 0.3rem;
+}
+.Lawyerheader .Lawyerpersonalmsg .Lawyerschool_preience{
+	clear: both;
+	margin-top: 0.2rem;
+	margin-bottom: 0.2rem;
+	overflow: hidden;
+	color: #666666;
+	font-size: 0.35rem;
+}
+.Lawyerheader .Lawyerpersonalmsg .Lawyerrefreshtime{
+	clear: both;
+	font-size: 0.35rem;
+	color: #999999;
+	line-height: 0.5rem;
+}
+
+/*律师专长*/
+.Lawyer_specialty{
+	overflow: hidden;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	background: #FFFFFF;
+	
+}
+
+.Lawyer_title{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0.4rem 4%;
+}
+.Lawyer_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #666666;
+	padding:0.4rem 4%;
+	line-height: 0.6rem;
+	word-wrap:break-word;
+}
+.Lawyer_good span{
+	margin-right: 0.1rem;
+	
+}
+.Lawyer_good span:last-child{
+	margin-right: 0rem;
+}
+.Lawyer_pro{
+	margin-bottom: 0.75rem;
+}
+/*风水大师**************************************/
+.FengShui{
+	display:none ;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.FengShui_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+	background:#FFFFFF;
+}
+.FengShui_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.FengShui_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+	width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.fengshui_pro{
+	width: 92%;
+	padding:0.45rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.fengshui_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.2rem;
+}
+.fengshui_name_age span{
+	display: block;
+}
+.fengshui_name_age span:nth-child(1){
+	font-size: 0.4rem;
+	color: #333333;
+}
+.fengshui_name_age span:nth-child(2){
+	width: 0.35rem;
+    height: 0.35rem;
+    background: url(../../../../images/fengshui_age.png) no-repeat;
+    background-size: 100% 100%;
+    margin: 0.1rem 0.2rem 0rem 0.32rem;
+}
+.fengshui_name_age span:nth-child(3){
+	font-size: 0.35rem;
+	margin-top: 0.05rem;
+	color: #FF9A00;
+}
+.fengshui_name_age span:nth-child(4){
+	/*width: 0.7rem;*/
+	padding-left: 0.5rem;
+	font-size: 0.35rem;
+	margin-top: 0rem;
+	color: #333333;
+	background: url(../../../../images/detail_zhuizi00pp.png) no-repeat left center;
+	background-size: 0.3rem 0.3rem;
+}
+.fengshui_address{
+	font-size: 0.35rem;
+	color: #666666;
+	margin-bottom: 0.1rem;
+}
+.fengshui_speality{
+	font-size: 0.35rem;
+	color: #999999;
+	line-height: 0.7rem;
+}
+.fengshui_speality span{
+	margin-right: 0.3rem;
+}
+
+.fengshui_speality span:last-child{
+	margin-right: 0rem;
+}
+/*风水简介*/
+.fengshui_proal{
+	overflow: auto;
+	width: 100%;
+	margin:0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.72rem;
+}
+.fengshui_title{
+	font-size: 0.35rem;
+	color: #333333;
+	width: 92%;
+	padding: 0.45rem 4%;
+}
+.fengshui_good{
+	overflow: hidden;
+	font-size: 0.35rem;
+	color: #666666;
+	width: 92%;
+	padding: 0.45rem 4%;
+	line-height:0.7rem;
+	word-wrap:break-word;
+}
+/*废品回收*********************************/
+.waste{
+	display: none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.waste_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.waste_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.waste_swiper .swiper-wrapper .swiper-slide img{
+/*	width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+	width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.35rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.waste_pro{
+	width: 92%;
+	padding:0.5rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.waste_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.2rem;
+}
+.waste_name_age span:nth-child(1){
+	width: 74%;
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.waste_name_age span:nth-child(2){
+	float: right;
+	font-size: 0.32rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.06rem;
+}
+
+
+
+/*评分*/
+.waste_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.2rem;
+}
+.waste_score_star{
+	width: 1.8rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.waste_score_star span{
+	display: block;
+	width: 0rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.waste_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.waste_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+
+/*服务区域*/
+.wasteservise{
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.wasteservise .waste_class{
+	width: 92%;
+	padding:0.4rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.wasteservise .waste_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.waste_address{
+	width: 92%;
+	padding:0.4rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.waste_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.waste_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+.waste_proal .waste_title{
+	width: 92%;
+	font-size: 0.32rem;
+	color: #999999;
+	padding:0.4rem 4%;
+}
+.waste_proal .waste_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0rem 4% 0.4rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+}
+/*家政服务*********************************/
+.home{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.home_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.home_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.home_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+	width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.home_pro{
+	width: 92%;
+	padding:0.6rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.home_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.home_name_age span:nth-child(1){
+	width: 64%;
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.home_name_age span:nth-child(2){
+	float: right;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.05rem;
+	
+}
+/*评分*/
+.home_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.3rem;
+}
+.home_score_star{
+	width: 1.8rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.home_score_star span{
+	display: block;
+	width: 1.37rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.home_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.home_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+
+/*服务区域*/
+.homeservise{
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.homeservise .home_class{
+	width: 92%;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+	line-height: 0.6rem;
+}
+.homeservise .home_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.home_address{
+	width: 92%;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.home_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.home_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+.home_proal .home_title{
+	width: 92%;
+	font-size: 0.32rem;
+	color: #999999;
+	padding:0.45rem 4%;
+}
+.home_proal .home_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0rem 4% 0.45rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+}
+/*维修********************************************************/
+.repair{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.repair_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.repair_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.repair_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.repair_pro{
+	width: 92%;
+	padding:0.6rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.repair_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.repair_name_age span:nth-child(1){
+	width: 74%;
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.repair_name_age span:nth-child(2){
+	float: right;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.05rem;
+	
+}
+/*评分*/
+.repair_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.3rem;
+}
+.repair_score_star{
+	width: 1.8rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.repair_score_star span{
+	display: block;
+	width: 1.37rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.repair_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.repair_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+
+/*服务区域*/
+.repairservise{
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.repairservise .repair_class{
+	width: 92%;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.repairservise .repair_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.repair_address{
+	width: 92%;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.repair_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.repair_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+.repair_proal .repair_title{
+	width: 92%;
+	font-size: 0.32rem;
+	color: #999999;
+	padding:0.45rem 4%;
+}
+.repair_proal .repair_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0rem 4% 0.45rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+}
+
+/*教育培训学校********************************************************/
+.eduschool{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.eduschool_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.eduschool_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.eduschool_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.eduschool_pro{
+	width: 92%;
+	padding:0.6rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.eduschool_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.eduschool_name_age span:nth-child(1){
+	width: 74%;
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.eduschool_name_age span:nth-child(2){
+	float: right;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.05rem;
+	
+}
+/*评分*/
+.eduschool_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.3rem;
+}
+.eduschool_score_star{
+	width: 1.8rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.eduschool_score_star span{
+	display: block;
+	width: 1.37rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.eduschool_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.eduschool_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+
+/*服务区域*/
+.eduschoolservise{
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.eduschoolservise .eduschool_class{
+	width: 92%;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.eduschoolservise .eduschool_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+	line-height: 0.6rem;
+}
+.eduschool_address{
+	width: 92%;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.eduschool_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.eduschool_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+.eduschool_proal .eduschool_title{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #999999;
+	padding:0.45rem 4%;
+}
+.eduschool_proal .eduschool_good{
+	width: 92%;
+	font-size: 0.4rem;
+	color: #333333;
+	padding:0rem 4% 0.45rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+}
+/*教育培训教师个人************************/
+
+.edupersonal{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.edupersonal_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.edupersonal_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.edupersonal_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+	width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.edupersonal_pro{
+	width: 92%;
+	padding:0.6rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.edupersonal_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.edupersonal_name_age span:nth-child(1){
+	width: 74%;
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.edupersonal_name_age span:nth-child(2){
+	float: right;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.05rem;
+	
+}
+/*评分*/
+.edupersonal_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.3rem;
+}
+.edupersonal_score_star{
+	width: 1.8rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.edupersonal_score_star span{
+	display: block;
+	width: 1.37rem;
+	height: 0.35rem;
+	background: url(../../../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;
+}
+.edupersonal_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.edupersonal_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+
+/*服务区域*/
+.edupersonalservise{
+	display: -webkit-flex;
+	display: flex;
+	/*-webkit-justify-content: space-around;*/
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.edupersonalservise .edupersonal_class{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.edupersonalservise .edupersonal_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.edupersonal_address{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.edupersonal_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.edupersonal_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+.edupersonal_proal .edupersonal_title{
+	width: 92%;
+	font-size: 0.32rem;
+	color: #999999;
+	padding:0.45rem 4%;
+}
+.edupersonal_proal .edupersonal_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0rem 4% 0.45rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+}
+/*租房详情*************************************/
+.housefor{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.housefor_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.housefor_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.housefor_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+	width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.housefor_pro{
+	width: 92%;
+	padding:0.6rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.housefor_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.2rem;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.housefor_name_age span:nth-child(1){
+	width: 74%;
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.housefor_name_age span:nth-child(2){
+	float: right;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.05rem;
+	
+}
+/*评分*/
+.housefor_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.3rem;
+}
+.housefor_score_star{
+	/*width: 1.8rem;*/
+	font-size: 0.3rem;
+	/*background: url(../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;*/
+}
+.housefor_score_star span{
+	font-size: 0.4rem;
+	color: #FD4A18;
+	/*background: url(../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;*/
+}
+.housefor_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.housefor_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+.housefor_speality span:nth-child(1) i{
+	font-style: normal;
+}
+/*服务区域*/
+.houseforservise{
+	display: -webkit-flex;
+	display: flex;
+	/*-webkit-justify-content: space-around;*/
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.houseforservise .housefor_class{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.houseforservise .housefor_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.housefor_address{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.housefor_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.housefor_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+/*地段*/
+.housefor_address_need{
+	width: 92%;
+	font-size: 0.4rem;
+	color: #999999;
+	padding:0.45rem 4%;
+	background: #FFFFFF;
+}
+.housefor_address_need span{
+	font-size:0.4rem ;
+	color: #333333;
+}
+.housefor_proal .housefor_title{
+	width: 92%;
+	font-size: 0.32rem;
+	color: #999999;
+	padding:0.45rem 4%;
+}
+.housefor_proal .housefor_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0rem 4% 0.45rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+	
+}
+/*求租***************************************/
+.forhouse{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.forhouse_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.forhouse_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.forhouse_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.forhouse_pro{
+	width: 92%;
+	padding:0.6rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.forhouse_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.forhouse_name_age span:nth-child(1){
+	width: 74%;
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.forhouse_name_age span:nth-child(2){
+	float: right;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.05rem;
+	
+}
+/*评分*/
+.forhouse_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.3rem;
+}
+.forhouse_score_star{
+	/*width: 1.8rem;*/
+	font-size: 0.3rem;
+	/*background: url(../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;*/
+}
+.forhouse_score_star span{
+	font-size: 0.4rem;
+	color: #FD4A18;
+	/*background: url(../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;*/
+}
+.forhouse_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.forhouse_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+.forhouse_speality span:nth-child(1) i{
+	font-style: normal;
+}
+/*服务区域*/
+.forhouseservise{
+	display: -webkit-flex;
+	display: flex;
+	/*-webkit-justify-content: space-around;*/
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.forhouseservise .forhouse_class{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.forhouseservise .forhouse_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.forhouse_address{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.forhouse_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.forhouse_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+/*地段*/
+.forhouse_address_need{
+	width: 92%;
+	font-size: 0.4rem;
+	color: #999999;
+	padding:0.45rem 4%;
+	background: #FFFFFF;
+}
+.forhouse_address_need span{
+	font-size:0.4rem ;
+	color: #333333;
+}
+.forhouse_proal .forhouse_title{
+	width: 92%;
+	font-size: 0.32rem;
+	color: #999999;
+	padding:0.45rem 4%;
+}
+.forhouse_proal .forhouse_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0rem 4% 0.45rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+}
+/*二手信息出售*************************************/
+.esmsgforsale{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.esmsgforsale_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.esmsgforsale_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.esmsgforsale_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.esmsgforsale_pro{
+	width: 92%;
+	padding:0.6rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.esmsgforsale_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.esmsgforsale_name_age span:nth-child(1){
+	width: 74%;
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.esmsgforsale_name_age span:nth-child(2){
+	float: right;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.05rem;
+	
+}
+/*评分*/
+.esmsgforsale_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.3rem;
+}
+.esmsgforsale_score_star{
+	
+	font-size: 0.3rem;
+	/*background: url(../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;*/
+}
+.esmsgforsale_score_star span{
+	font-size: 0.4rem;
+	color: #FD4A18;
+	/*background: url(../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;*/
+}
+.esmsgforsale_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.esmsgforsale_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+.esmsgforsale_speality span:nth-child(1) i{
+	font-style: normal;
+}
+/*服务区域*/
+.esmsgforsaleservise{
+	display: -webkit-flex;
+	display: flex;
+	/*-webkit-justify-content: space-around;*/
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.esmsgforsaleservise .esmsgforsale_class{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.esmsgforsaleservise .esmsgforsale_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.esmsgforsale_address{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.esmsgforsale_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.esmsgforsale_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+/*地段*/
+.esmsgforsale_address_need{
+	width: 92%;
+	font-size: 0.4rem;
+	color: #999999;
+	padding:0.45rem 4%;
+	background: #FFFFFF;
+}
+.esmsgforsale_address_need span{
+	font-size:0.4rem ;
+	color: #333333;
+}
+.esmsgforsale_proal .esmsgforsale_title{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #999999;
+	padding:0.45rem 4%;
+}
+.esmsgforsale_proal .esmsgforsale_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0rem 4% 0.45rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+}
+
+/*二手信息求购***********************************/
+.esmsgforbuy{
+	display:none;
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+/*swiper*/
+.esmsgforbuy_swiper{
+	display: block;
+	width: 100%;
+	height: 5.55rem;
+}
+.esmsgforbuy_swiper .swiper-wrapper .swiper-slide{
+	/*width: 2.55rem !important;*/
+	height: 5.55rem;
+}
+.esmsgforbuy_swiper .swiper-wrapper .swiper-slide img{
+	/*width: 100%;
+	height: 5.55rem;*/
+}
+.swiper-pagination{
+width: 1.5rem;
+	height: 0.8rem;
+	border-radius:0.12rem;
+	background: rgba(0,0,0,0.8);
+	position: absolute;
+	right:0.3rem !important;
+	left: auto;
+	bottom: 0.39rem !important;
+	line-height: 0.8rem;
+	text-align: center;
+	color: #FFFFFF;
+	font-size: 0.35rem;
+}
+/*简介*/
+.esmsgforbuy_pro{
+	width: 92%;
+	padding:0.6rem 4%;
+	overflow: hidden;
+	margin: 0 auto;
+	background: #FFFFFF;
+}
+.esmsgforbuy_name_age{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.esmsgforbuy_name_age span:nth-child(1){
+	float: left;
+	font-size: 0.4rem;
+	color: #333333;
+}
+.esmsgforbuy_name_age span:nth-child(2){
+	float: right;
+    font-size: 0.32rem;
+    margin-top: 0rem;
+    color: #FF9A00;
+    padding: 0.05rem 0.1rem;
+    border: 1px solid #FF9A00;
+    border-radius: 0.05rem;
+	
+}
+/*评分*/
+.esmsgforbuy_score{
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0.3rem;
+}
+.esmsgforbuy_score_star{
+	/*width: 1.8rem;*/
+	font-size: 0.3rem;
+	/*background: url(../../images/schoolstar1.png) no-repeat;
+	background-size: 1.8rem 0.35rem;*/
+}
+.esmsgforbuy_score_star span{
+	font-size: 0.4rem;
+	color: #FD4A18;
+	/*background: url(../../images/schoolstar2.png) no-repeat;
+	background-size: 1.8rem 0.35rem;*/
+}
+.esmsgforbuy_score_num{
+	font-size:0.32rem;
+	color: #FF6535;
+	margin-left: 0.1rem;
+}
+.esmsgforbuy_speality{
+	font-size: 0.32rem;
+	color: #999999;
+}
+.esmsgforbuy_speality span:nth-child(1) i{
+	font-style: normal;
+}
+/*服务区域*/
+.esmsgforbuyservise{
+	display: -webkit-flex;
+	display: flex;
+	/*-webkit-justify-content: space-around;*/
+	overflow: hidden;
+	background: #FFFFFF;
+}
+.esmsgforbuyservise .esmsgforbuy_class{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.esmsgforbuyservise .esmsgforbuy_class span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.esmsgforbuy_address{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	padding:0.45rem 4%;
+	font-size: 0.4rem;
+	color: #999999;
+}
+.esmsgforbuy_address span{
+	font-size: 0.4rem;
+	color: #333333;
+	margin-left: 0.2rem;
+}
+.esmsgforbuy_proal{
+	overflow: hidden;
+	margin: 0 auto;
+	clear: both;
+	background: #FFFFFF;
+	margin-bottom: 0.75rem;
+}
+/*地段*/
+.esmsgforbuy_address_need{
+	width: 92%;
+	font-size: 0.4rem;
+	color: #999999;
+	padding:0.45rem 4%;
+	background: #FFFFFF;
+}
+.esmsgforbuy_address_need span{
+	font-size:0.4rem ;
+	color: #333333;
+}
+.esmsgforbuy_proal .esmsgforbuy_title{
+	width: 92%;
+	font-size: 0.32rem;
+	color: #999999;
+	padding:0.45rem 4%;
+}
+.esmsgforbuy_proal .esmsgforbuy_good{
+	width: 92%;
+	font-size: 0.35rem;
+	color: #333333;
+	padding:0rem 4% 0.45rem;
+	line-height: 0.7rem;
+	word-wrap:break-word;
+}
+
+/*********新招聘****************************/
+.newclassforjob{
+	display:none;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+	width: 100%;
+}
+.newclassforjob_con{
+	width: 92%;
+	padding:0.6rem 4% 0.3rem 4%;
+	background: #FFFFFF;
+	overflow: hidden;
+}
+.newclassforjob_title{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+	font-weight: 600;
+}
+.newclassforjob_pubtime{
+	margin-bottom: 0.3rem;
+	font-size: 0.36rem;
+	color: #999999;
+}
+
+.newclassforjob_class{
+	/*margin-bottom: 0.3rem;*/
+	font-size: 0.36rem;
+	color: #999999;
+}
+.newclassforjob_des{
+	width: 92%;
+	padding:0.4rem 4%;
+	background: #FFFFFF;
+	overflow: hidden;
+	margin-bottom: 0.7rem;
+}
+.newclassforjob_des p{
+	margin-bottom: 0.3rem;
+	font-size: 0.36rem;
+	color: #333333;
+	font-weight: 600;
+}
+.newclassforjob_des span{
+	line-height: 0.45rem;
+	color: #666666;
+	font-size: 0.36rem;
+}
+/*********新求职****************************/
+.newclassjobfor{
+	display:none;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+	width: 100%;
+}
+.newclassjobfor_con{
+	width: 92%;
+	padding:0.6rem 4% 0.3rem 4%;
+	background: #FFFFFF;
+	overflow: hidden;
+}
+.newclassjobfor_title{
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 0.3rem;
+	font-size: 0.4rem;
+	color: #333333;
+	font-weight: 600;
+}
+.newclassjobfor_pubtime{
+	margin-bottom: 0.3rem;
+	font-size: 0.36rem;
+	color: #999999;
+}
+
+.newclassjobfor_class{
+	/*margin-bottom: 0.3rem;*/
+	font-size: 0.36rem;
+	color: #999999;
+}
+.newclassjobfor_des{
+	width: 92%;
+	padding:0.4rem 4%;
+	background: #FFFFFF;
+	overflow: hidden;
+	margin-bottom: 0.7rem;
+}
+.newclassjobfor_des p{
+	margin-bottom: 0.3rem;
+	font-size: 0.36rem;
+	color: #333333;
+	font-weight: 600;
+}
+.newclassjobfor_des span{
+	line-height: 0.45rem;
+	color: #666666;
+	font-size: 0.36rem;
+}
+.xiaofenge{
+	width:100%;
+	height: 0.05rem;
+	background: #F3F3F3;
+}
+
+/*cover*/
+#cover {
+	display: none;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+}
+
+#cover>img {
+	display: block;
+	width: 70%;
+	position: absolute;
+	top: 1%;
+	right: 7.2%;
+}

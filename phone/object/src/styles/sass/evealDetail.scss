@@ -1,0 +1,161 @@
+html{
+  font-family: "黑体";
+}
+body{
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+}
+.container{
+   padding-bottom: 2rem;
+}
+//评价
+.eveal{
+    border-bottom: 1px dashed #E5E5E5;
+    overflow: hidden;
+    .eveal_all{
+        font-size: 0.7rem;
+        color: #333333;
+        font-weight: bold;
+    }
+    .eveal_contain{
+        display: flex;
+        display: -webkit-flex; 
+        .eveal_personphoto{
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        .eveal_list_person{
+            width: 100%;
+            overflow: hidden;
+            .eveal_name_time{
+                display: flex;
+                display: -webkit-flex; 
+                justify-content: space-between;
+                -webkit-justify-content: space-between;
+                align-items: center;
+                -webkit-align-items: center;
+                p:nth-child(1){
+                    font-size: 0.75rem;
+                    color: #333333;
+                }
+                p:nth-child(2){
+                    font-size: 0.6rem;
+                    color: #999999;
+                    margin-right: 0.5rem;
+                }
+            }
+            .eveal_score_person{
+                display: -webkit-flex;
+                display: flex;
+               .eveal_score{
+                    margin-top: 0.25rem;
+                    width: 2.95rem;
+                    height: 0.5rem;
+                    background: url(../../../images/merchant/star002.png) no-repeat;
+                    background-size:2.95rem 0.5rem;
+                    margin-right: 0.5rem;
+                    span{
+                        display: block;
+                        width: 2rem;
+                        height: 0.5rem;
+                        background: url(../../../images/merchant/star001.png) no-repeat;
+                        background-size:2.95rem 0.5rem;
+                    }
+                } 
+                p{
+                    font-size: 0.55rem;
+                    color: #666666;
+                    height: 0.55rem;
+                    margin-top: 0.25rem;
+                } 
+            }
+            .eveal_content{
+                font-size: 0.65rem;
+                color: #666666;
+                margin-top:0.35rem;
+              
+            }
+            .environment{
+                margin-top: 0.6rem;
+                font-size: 0.6rem;
+                color: #999999;
+                span{
+                    margin-right: 0.3rem;
+                    i{
+                        font-style: normal;
+                    }
+                }
+            }
+            .eveal_photos{   
+                overflow: hidden;           
+                margin-top: 0.5rem;
+           
+                img{
+                    width: 4.1rem;
+                    height: 4.0rem;
+                    margin-right: 0.85rem;
+                    margin-bottom: 0.75rem;
+                    border-radius: 0.2rem;
+                }
+            }
+        }
+    }
+}
+.procook{
+    display: flex;
+    display: -webkit-flex;
+  
+    img{
+        display: block;
+        width: 4.25rem;
+        height:3.25rem;
+        margin-right: 0.75rem;
+    }
+    .procook_pro{
+          flex: 1;
+        .procook_title{
+            font-size: 0.85rem;
+            color: #333333;
+            margin-bottom:0.4rem ;
+        }
+        .procook_address{
+            display: flex;
+            display: -webkit-flex;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            align-items: center;
+            -webkit-align-items:center ;
+            p:nth-child(1){
+                font-size:0.7rem;
+                font-size: #666666;
+                span{
+                    margin-right: 0.5rem;
+                }
+            }
+            p:nth-child(2){
+                font-size:0.55rem ;
+                color: #666666;
+            }
+        }
+    }
+}
+.border{
+   // -webkit-border: 1px solid #e5e5e5;;
+    border-top: 1px solid #e5e5e5;
+}
+.border_padding{
+    width: 92%;
+    margin: 0 auto;
+}
+.border_hou{
+    clear: both;
+    width: 100%;
+    height: 0.5rem;
+    //-webkit-border: 1px solid #e5e5e5;;
+    border-top: 1px solid #EEEEEE;
+    border-bottom: 1px solid #EEEEEE;
+    background: #F3F3F3;
+}

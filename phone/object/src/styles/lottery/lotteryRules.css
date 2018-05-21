@@ -1,0 +1,106 @@
+
+.container_rule {
+	width:100%;
+	height:100%;
+	overflow: hidden;
+	.rule_bg{
+		width: 100%;
+		height: 2rem;
+		overflow: hidden;
+		background:url(../../../images/lottery_rules.png) no-repeat left top !important;
+		background-size: 100% !important;
+	}
+	.content{
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+		/*position: absolute;
+		left: 0px;
+		top: 0px;*/	
+		.contain_bg{
+			width: 90%;
+			height: auto;
+			margin:0.1rem auto 0rem;
+			padding-top: 0.45rem;
+			padding-bottom: 0.45rem;
+			border-radius: 0.2rem;
+			background:#fb7186;
+			.rule_h1{
+				width: 90%;
+				overflow: hidden;
+				margin:0.5rem auto 0rem;
+			}
+			.rule_h1:nth-child(1){
+				margin:0rem auto 0rem;
+			}
+			.rule_h1{
+				width: 90%;
+				overflow: hidden;
+				margin:0.5rem auto 0rem;
+			}
+			.rule_h1 h1{
+				font-size: 0.45rem;
+				font-weight: bold;
+				font-family: "黑体";
+				margin-bottom: 0.28rem;
+				color: #fdd123;
+			}
+			.rule_h1 h1 span{
+				display: block;
+				width: 0.5rem;
+				height: 0.5rem;
+				border-radius: 50%;
+				background:#FDD123;
+				color: #FFFFFF;
+				text-align: center;
+				line-height: 0.5rem;
+				float: left;
+			}
+			.rule_h1 h1 i{
+				font-style: normal;
+				float: left;
+			}
+			.rule_h1 ul li{
+				clear: both;
+				color: #FFFFFF;
+				font-size: 0.39rem;
+				font-family: "黑体";
+				line-height: 0.8rem;
+			}
+		}
+		#rule_lottery{
+			display: block;
+			width: 50%;
+			height: 1.3rem;
+			margin:0.75rem auto 1rem;
+			/*position:absolute;
+			bottom: 0.8rem;
+			left: 24%;*/
+			z-index: 120;
+			background:#F54F68 url(../../../images/lottery_btn_rule.png) no-repeat;
+			background-size:100% 100%;
+			
+		}
+	}
+}
+
+
+
+#rule_lottery{
+	display: block;
+	width: 50%;
+	height: 1.3rem;
+	margin:0.75rem auto 1rem;
+	/*position:absolute;
+	bottom: 0.8rem;
+	left: 24%;*/
+	z-index: 120;
+	background:#F54F68 url(../../../images/lottery_btn_rule.png) no-repeat;
+	background-size:100% 100%;
+	
+}
+/*#rule_lottery:active{
+	transform: scale(1.1,1.1);
+	-webkit-transform:scale(1.1,1.1); 
+	-moz-transform:scale(1.1,1.1); 
+}*/
