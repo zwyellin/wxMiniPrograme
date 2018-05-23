@@ -1,64 +1,39 @@
 $(function(){
 	var phone = null;
 	// getPhone(valueObject)
-	getSelectLocation();
+	getAgentTel();
 	$('.serive-call').click(function(){
-		if (!sessionStorage.agentPhone) {
-			sessionStorage.agentPhone = 4009979393
+		if (!phone) {
+			phone= 4009979393;
 		}
 		window.YLJsBridge.call(
         	'callTel',{
-            	phoneNum:sessionStorage.agentPhone
+            	phoneNum:phone
         	}
-        )
-	})
+        );
+	});
 	$('#z-call').click(function(){
 		window.YLJsBridge.call(
         	'callTel',{
             	phoneNum:4009979393
         	}
-        )
-	})
-	function getSelectLocation(){
+        );
+	});
+	$('.feedback').click(function(){
 		window.YLJsBridge.call(
-        	'getSelectLocation',{},function(res){
-				if (res.code === 0) {
-					var valueObject = a.value
-					getPhone(valueObject)	
-				}
+        	'feedback',{}
+        );
+	});
+	$('#exit-app').click(function(){
+		window.YLJsBridge.call(
+        	'exitApp'
+        );
+	});
+	function getAgentTel(){
+		window.YLJsBridge.call(
+        	'getAgentTel',{},function(res){
+				phone = res.value;
         	}
-        )
+        );
 	}
-	function getPhone(valueObject){
-		var url="merchant/userClient?m=findAgentByUserXY";
-		var ajaxdata = '';
-		$.ajax({
-			type: 'POST',
-			data: {
-				params:{
-        			longitude:valueObject.longitude,
-			        latitude:valueObject.latitude
-        		}
-			},
-			url: 'http://120.24.16.64/'+url,
-			dataType: "json",
-			success: function(res){
-				if (res.data.code === 0) {
-					let value = res.data.value;
-					if (value) {
-						if (value.phone) {
-							sessionStorage.agentPhone = value.phone;
-						} else {
-							sessionStorage.agentPhone = null;
-						}
-					} else {
-						sessionStorage.agentPhone = null;
-					}	
-				}	
-			},
-			error: function(e){
-				sessionStorage.agentPhone = null;
-			}
-		});		
-	}
-})
+});
