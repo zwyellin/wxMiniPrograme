@@ -174,9 +174,7 @@ $(function(){
 			};
 		}
 		
-	 }
-
-	 
+	}	 
 })
 //var loaclHeight = $("section").height();//获取可视宽度
 //$("input,textarea").focus(function() {

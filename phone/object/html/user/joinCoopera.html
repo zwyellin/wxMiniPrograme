@@ -24,8 +24,10 @@
 		<link rel="stylesheet" type="text/css" href="../../src/styles/user/reset.css" />
 		<link rel="stylesheet" type="text/css" href="../../src/styles/user/joinCoopera.css" />
 	</head>
+		<script type="text/javascript" src="../../src/scripts/user/YLJsBridge.js"></script>
 		<script src="../../src/scripts/lib/jquery-2.1.4.min.js"></script>		
 		<script type="text/javascript" src="../../src/scripts/plugins/flexible.js"></script>
+
 	<body>
 		<div class="container">
 			<div class="joinCoopera">
@@ -35,7 +37,7 @@
 				</div>
 				<div class="joinCoopera-content">
 					<p class="spac fl">骑手加盟</p>
-					<span class="join fr">立即申请</span>
+					<span class="join fr" id="calldeliver">立即申请</span>
 				</div>
 				<div class="joinCoopera-content">
 					<p class="spac fl">区域合伙人申请</p>
@@ -52,4 +54,62 @@
 			</div>
 		</div>
 	</body>
+	<script>
+		$(function(){
+			var phone = null;
+			getSelectLocation();
+			$('#calldeliver').click(function(){
+				if (!phone) {
+					phone = 4009979393
+				}
+				window.YLJsBridge.call(
+		        	'callTel',{
+		            	phoneNum:phone
+		        	}
+		        )
+			})
+			function getSelectLocation(){
+				window.YLJsBridge.call(
+		        	'getSelectLocation',{},function(res){
+						if (res.code === 0) {
+							var valueObject = a.value
+							getPhone(valueObject)	
+						}
+		        	}
+		        )
+			}
+			function getPhone(valueObject){
+				var url="merchant/userClient?m=findAgentByUserXY";
+				var ajaxdata = '';
+				$.ajax({
+					type: 'POST',
+					data: {
+						params:{
+		        			'longitude':valueObject.longitude,
+		        			'latitude':valueObject.latitude
+		        		}
+					},
+					url: 'http://120.24.16.64/'+url,
+					dataType: "json",
+					success: function(res){
+						if (res.data.code === 0) {
+							let value = res.data.value;
+							if (value) {
+								if (value.phone) {
+									phone = value.phone;
+								} else {
+									phone = null;
+								}
+							} else {
+								phone = null;
+							}	
+						}	
+					},
+					error: function(e){
+						phone = null;
+					}
+				});		
+			}
+		})
+	</script>
 </html>

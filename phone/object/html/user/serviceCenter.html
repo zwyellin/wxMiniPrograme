@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"> -->
 		<meta content="yes" name="apple-mobile-web-app-capable" />
 		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
 		<meta content="telephone=no,email=no" name="format-detection" />
@@ -24,15 +24,17 @@
 		<link rel="stylesheet" type="text/css" href="../../src/styles/user/reset.css" />
 		<link rel="stylesheet" type="text/css" href="../../src/styles/user/serviceCenter.css" />
 	</head>
+		<script type="text/javascript" src="../../src/scripts/user/YLJsBridge.js"></script>
 		<script src="../../src/scripts/lib/jquery-2.1.4.min.js"></script>		
 		<script type="text/javascript" src="../../src/scripts/plugins/flexible.js"></script>
-	    <!-- <script type="text/javascript" src="../../src/scripts/lib/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="../../src/scripts/lib/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="../../src/scripts/plugins/urlpram.js"></script>
-	    <script type="text/javascript" src="../../src/scripts/plugins/pluginscommon.js"></script> -->
-	    <!-- <script type="text/javascript" src="../../src/scripts/wxshow/serviceCenter.js"></script> -->
+	    <script type="text/javascript" src="../../src/scripts/plugins/pluginscommon.js"></script>
+	    <script type="text/javascript" src="../../src/scripts/user/serviceCenter.js"></script>
 	<body>
 		<div class="container">
-			<div class="header-title"></div>
+			<div class="header-title"><strong>客服中心</strong></div>
+
 			<div class="service-header">
 				<!-- <div class="header-img fl">
 					<img src="" alt="">
@@ -43,52 +45,47 @@
 			</div>
 			<div class="question">常见问题</div>
 			<div class="service-wrapper">
-				<div class="service-content">
+				<a href="./question/account.html" class="service-content">
 					<div class="service-left left-img1">
-						<!-- <img src="../../images/userVersion/account@2x.png" width="30" height="30" alt=""> -->
-						<p class="service-text" style="margin-top: 0.93rem">账户问题</p>
+						<p class="service-text spac" style="margin-top: 0.93rem">账户问题</p>
 					</div>
 					<div class="service-right">
 						<p class="service-text txt2">验证手机号，显示被其他账号绑定</p>
 						<p class="service-text txt3">什么是新用户</p>
 					</div>
-				</div>
-				<div class="service-content" style="margin-top: 0.28rem">
+				</a>
+				<a href="./question/activity.html" class="service-content" style="margin-top: 0.28rem">
 					<div class="service-left left-img2">
-						<!-- <img src="../../images/userVersion/account@2x.png" width="30" height="30" alt=""> -->
-						<p class="service-text" style="margin-top: 0.93rem">活动问题</p>
+						<p class="service-text spac" style="margin-top: 0.93rem">活动问题</p>
 					</div>
 					<div class="service-right">
 						<p class="service-text txt2">为什么无法使用首单立减</p>
 						<p class="service-text txt3">红包使用规则</p>
 					</div>
-				</div>
-				<div class="service-content" style="margin-top: 0.28rem">
+				</a>
+				<a href="./question/xiandan.html" class="service-content" style="margin-top: 0.28rem">
 					<div class="service-left left-img3">
-						<!-- <img src="../../images/userVersion/account@2x.png" width="30" height="30" alt=""> -->
-						<p class="service-text" style="margin-top: 0.93rem">下单问题</p>
+						<p class="service-text spac" style="margin-top: 0.93rem">下单问题</p>
 					</div>
 					<div class="service-right">
 						<p class="service-text txt2">下单时显示不在配送范围</p>
 						<p class="service-text txt3">订单取消了怎么办</p>
 					</div>
-				</div>
+				</a>
 				<div class="service-content" style="margin-top: 0.28rem">
 					<div class="service-left left-img4">
-						<!-- <img src="../../images/userVersion/account@2x.png" width="30" height="30" alt=""> -->
 						<p class="service-text" style="margin-top: 0.93rem">投诉建议</p>
 					</div>
 					<div class="service-right">
-						<p class="service-text txt2">意见反馈</p>
-						<p class="service-text txt3" style="color: #3c9eea">总部投诉电话</p>
+						<p class="service-text txt2" id="feedback">意见反馈</p>
+						<p class="service-text txt3" id="z-call" style="color: #3c9eea">总部投诉电话</p>
 					</div>
 				</div>
 			</div>
-			<div class="serive-call" >
-				<image class="serive-call-img" src=""></image>
+			<div class="serive-call" id="serive-call">
+				<image class="serive-call-img" src="../../images/userVersion/call.png"></image>
 				<div class="serive-call-text">本地客服热线</div>	
 			</div>
 		</div>
-		
 	</body>
 </html>

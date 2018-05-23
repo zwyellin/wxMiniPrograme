@@ -1,0 +1,142 @@
+html{
+	font-size: 75px;
+}
+body {
+	width: 100%;
+	height:auto;
+	background: url(../../../images/userVersion/plase.png) no-repeat;
+	background-size: 100%;
+}
+.container {
+	width:100%;
+	height:auto;
+	padding: 0rem !important;
+	/*background: url(../../../images/userVersion/plase.png) no-repeat;
+	background-size: 100% 100%;*/
+}
+/*.imgload{
+	 width:100%;
+	 height:1178px;
+	 position: absolute;
+	 left:0px;
+	 top:0px;
+}
+.imgload img{
+	display: block;
+	width:100%;
+	height:100%;
+}*/
+.content{
+	width:100%;
+	padding:0 0.773rem; 
+}
+.content_merchant{
+	margin-top: 3.41rem;
+	width: 100%;
+	height: 12.41rem;
+	background: url(../../../images/userVersion/white.png) no-repeat;
+	background-size: 100%;
+}
+
+.content .form-group{
+	margin-bottom: 0.267rem;
+}
+.content .form-group input.input-lg{
+	width:100%;
+	height:1.1rem;
+	font-size: 0.36rem;
+	color:#B6B6B6 !important;
+}
+.content .form-group input:-ms-input-placeholder{
+    color:#B6B6B6;
+}
+
+.content .form-group input::-webkit-input-placeholder{
+    color:#B6B6B6;
+}
+.content .form-group select{
+	width:100%;
+	height:1.1rem;
+	font-size: 0.36rem;
+	line-height: normal;
+	color:#B6B6B6;
+}	
+.content .form-group select option{
+	font-size: 0.36rem;
+	line-height: 0.8rem;
+}	
+.input-lg{
+	padding: 0px !important;
+	padding-left: 10px !important;
+	background: #f8f8f8;
+}
+.intr_para{
+ font-size: 0.267rem;
+ color:#000;
+ font-family: "黑体";
+ text-align: justify;
+}	
+.intr_para span{
+	font-size: 0.3rem;
+	color:#980d1b;
+	font-family: "黑体";
+}
+.btn1{
+	width:8.4rem;
+	height:1.13rem;
+	margin:0.4rem auto 0 auto;
+	background: url(../../../images/userVersion/button.png);
+	background-size: 100% 100%;
+	border: none !important;
+	overflow: hidden;
+}
+.mgj_pro{
+	color:#bf1d2d;
+	font-size: 0.35rem;
+	margin-bottom: 0.67rem;
+	display:none;
+	text-decoration: underline;
+}
+/*tixing*/
+.littleshow{
+	width: 100%;
+	height: 0.4rem;
+	color:#bf1d2d ;
+	display: none;
+	font-size: 0.3rem;
+	text-indent: 0.3rem;
+}
+/*.success_alert{
+	display: none;
+	width: 2rem;
+	padding:0.12rem 0.1rem 0.12rem 0.1rem;
+	border-radius:0.2rem ;
+	font-size: 0.32rem;
+	color: #FFFFFF;
+	margin: 0 auto;
+	text-align: center;
+	background: rgba(0,0,0,0.5);
+}*/
+.cover{
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0rem;
+	bottom: 0rem;
+	left: 0rem;
+	right: 0rem;
+}
+.cover div{
+	position: absolute;
+	bottom: 1.8rem;
+	width: 2rem;
+	padding:0.12rem 0.1rem 0.12rem 0.1rem;
+	border-radius:0.2rem ;
+	font-size: 0.32rem;
+	color: #FFFFFF;
+	margin: 0 auto;
+	text-align: center;
+	background: rgba(0,0,0,0.5);
+	left: 40%;
+}

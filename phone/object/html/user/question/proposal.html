@@ -24,6 +24,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../src/styles/user/reset.css" />
 		<link rel="stylesheet" type="text/css" href="../../../src/styles/user/question.css" />
 	</head>
+		<script type="text/javascript" src="../../src/scripts/user/YLJsBridge.js"></script>
 		<script src="../../../src/scripts/lib/jquery-2.1.4.min.js"></script>		
 		<script type="text/javascript" src="../../../src/scripts/plugins/flexible.js"></script>
 	<body>
@@ -32,15 +33,36 @@
 				<h2 class="question-top" style="font-size: 0.32rem;color: #666">亲，感谢你选择马管家为你提供服务</h2>
 				<div class="question-item">
 					<p class="question-top" >在活动不共享的情况下，活动使用的优先级为：新用户立减>满减活动>商家红包>满赠活动。一个订单只能使用一个红包。其余活动是否共享由你所在区域的马管家运营中心确定</p>
-					<p class="question-top" style="color: #ff9900">拨打本地服务热线 ></p>
+					<p class="question-top" id="serive-call" style="color: #ff9900">拨打本地服务热线 ></p>
 				</div>
 			</div>
 			<div class="question-content">
 				<div class="question-item">
 					<p class="question-top" >如果你与当地马管家服务商在沟通后，依旧无法得到满意的解决，你还可以拨打马管家总部服务热线寻求帮助</p>
-					<p class="question-top" style="color: #ff9900">拨打马管家总部客服电话 ></p>
+					<p class="question-top" id="z-call" style="color: #ff9900">拨打马管家总部客服电话 ></p>
 				</div>
 			</div>
 		</div>
+		<script>
+			$(function(){
+				$('.serive-call').click(function(){
+					if (!sessionStorage.agentPhone) {
+						sessionStorage.agentPhone = 4009979393
+					}
+					window.YLJsBridge.call(
+			        	'callTel',{
+			            	'phoneNum':sessionStorage.agentPhone
+			        	}
+			        )
+				})
+				$('#z-call').click(function(){
+					window.YLJsBridge.call(
+			        	'callTel',{
+			            	'phoneNum':4009979393
+			        	}
+			        )
+				})
+			})
+		</script>
 	</body>
 </html>
