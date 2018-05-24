@@ -334,7 +334,8 @@ Page({
 				wx.setNavigationBarTitle({
 				  	title: name
 				});
-				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/.test(value.merchant.logo)){
+
+				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/.test(value.merchant.logo.toLowerCase())){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}
 				this.setData({
@@ -343,12 +344,10 @@ Page({
 					minPrice:value.merchant.minPrice,
 					shipScore:value.merchant.shipScore
 				});
-
 				if (value.merchant.merchantRedBagList.length != 0) {
 					merchantRedBagList.map((item)=>{
 						item.isReceive = '立即领取'
 					})
-					console.log(1)
 					this.maskShowAnimation();
 					this.orderShowAnimation();
 					this.setData({

@@ -100,7 +100,7 @@
 				    data-food="{{food}}"
 				    bindtap="selectefood">
 					<view class="icon">
-						<image class="icon_img" src="{{food.imgs}}" alt="" />
+						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs)}}" />
 					</view>
 					<view class="content">
 						<view class="detail-name">
@@ -161,12 +161,12 @@
 				<view class="evaluate-right-text font-12">
 					<label class="text-right">配送服务</label>
 					<template is="star-ship" data="{{size,item}}"></template>
-					<text class="text-left">{{tage.fomatFloat(itemList.shipScore,1)}}分</text>
+					<text class="text-left">{{tage.shopFloat(itemList.shipScore,1)}}分</text>
 				</view>
 				<view class="evaluate-right-text font-12" style="margin-top: 12rpx">
 					<label class="text-right">商家服务</label>
 					<template is="star-add" data="{{size,item}}"></template>
-					<text class="text-left">{{tage.fomatFloat(itemList.merchantScore,1)}}分</text>
+					<text class="text-left">{{tage.shopFloat(itemList.merchantScore,1)}}分</text>
 				</view>
     		</view>
     	</view>
@@ -196,7 +196,7 @@
 	    		<view wx:if="{{item.replyContent}}" class="reply">商家回复: {{item.replyContent}}</view>
     		</view>	
     	</view>
-    	<view class="loading-info" wx:if="{{!loading && evaluate.length != 0}}">
+    	<view class="loading-info" wx:if="{{!loading && evaluate.length > 4}}">
 	        <image src="/images/merchant/loading.png" class="img-loading"></image>
 	        <view class="loading-text">正在加载，请稍候</view>
 	    </view>
@@ -257,7 +257,7 @@
   				<text>商家公告</text>
   			</view>
   			<view class="shop-message-letter shop-flex font-14" style="color:#bc4500">
-  				<text>{{item.broadcast}}</text>
+  				<text>{{item.broadcast || '商家暂无公告'}}</text>
   			</view>
   		</view>
   		<view class="shop-content font-18">

@@ -20,17 +20,22 @@ var cart = {
 		if (src.toString().length == 1) return src + '.0';
        	return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);   
     },
+    shopFloat: function(src,pos) {
+    	return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);  
+    },
 	praise:function(goodCommentNum,CommentNum) {
 		var praise = goodCommentNum/CommentNum;
 			praise = praise*100
 			praise = parseInt(praise);
 		return praise;
 	},
-	// isJpgPng: function(filepath){
-
-	// 	var isImg = /.*(\.png|\.jpg)$/.test(filepath);
-	// 	return isImg;
-	// },
+	removefh:function(filepath){
+		if (filepath && typeof filepath == 'string') {
+			var img = filepath.replace(';','')
+			return img;
+		}
+		return filepath
+	},
 	strReplace:function(str){
 		//要替换为*号的内容
 		var tmp=str.substring(1,str.length-1);
@@ -106,6 +111,7 @@ var cart = {
 module.exports = {
   itemClasses: cart.itemClasses,
   fomatFloat: cart.fomatFloat,
+  shopFloat:cart.shopFloat,
   praise: cart.praise,
   splitStr:cart.splitStr,
   getCount:cart.getCount,
@@ -115,5 +121,5 @@ module.exports = {
   strReplace:cart.strReplace,
   payDesc:cart.payDesc,
   round:cart.round
-  // isJpgPng:cart.isJpgPng
+  removefh:cart.removefh
 };
