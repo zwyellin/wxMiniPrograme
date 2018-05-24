@@ -1,7 +1,0 @@
-body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd,input{margin:0;padding:0;border:0;}
-img{border:none;} ul,ol,li{list-style:none;}
-input,select,textarea{outline:none;} textarea{resize:none;} input::-ms-clear{display:none;}
-.fr{float:right;} .fl{float:left;}
-.clearfix{display:inline-block;}
-.clearfix:after{content:"."; display:block; height:0;line-height: 0; clear:both;visibility: hidden;}
-a{text-decoration:none;}
