@@ -448,7 +448,7 @@ Page(Object.assign({}, {
 					});
 				} else {
 					list.map((item)=>{
-						if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+						if(!/.*(\.png|\.jpg)$/.test(item.logo.toLowerCase())){
 							item.logo = '/images/merchant/merchantLogo.png'
 						}
 						item.isHeight = '68rpx';
