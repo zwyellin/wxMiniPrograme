@@ -369,7 +369,7 @@ Page(Object.assign({}, {
 				if (status) {
 					if (res.data.value.length != 0) {
 						list.map((item)=>{
-							if(!/.*(\.png|\.jpg)$/.test(item.logo.toLowerCase())){
+							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 								item.logo = '/images/merchant/merchantLogo.png'
 							}
 							item.isHeight = '68rpx';
@@ -448,7 +448,7 @@ Page(Object.assign({}, {
 					});
 				} else {
 					list.map((item)=>{
-						if(!/.*(\.png|\.jpg)$/.test(item.logo.toLowerCase())){
+						if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 							item.logo = '/images/merchant/merchantLogo.png'
 						}
 						item.isHeight = '68rpx';
@@ -465,6 +465,7 @@ Page(Object.assign({}, {
 				});
 			}
         }).catch(err=>{
+        	console.log(err)
         	this.setData({
 				isAgentId:true
 			});
@@ -493,7 +494,7 @@ Page(Object.assign({}, {
 		}
 	},
 	//下拉刷新
-    onPullDownRefresh:function() {
+    onPullDownRefresh() {
     	this.data.start = 0
       	this.initClass();
       	this.findTagCategory();
@@ -626,6 +627,7 @@ Page(Object.assign({}, {
 			classShow:false,
 			sortShow:false,
 			shipShow:false,
+			islocal:false
 		});
 	},
 	maskShowAnimation(){

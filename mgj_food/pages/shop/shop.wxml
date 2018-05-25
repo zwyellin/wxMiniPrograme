@@ -12,10 +12,10 @@
 			<view class="content">
 				<view class="desc" style="{{itemList.promotionActivityList.length === 0 ? 'margin-top: 29rpx' : ''}}">
 					<text class="count-right">起送价</text>
-					<text>{{itemList.minPrice}}￥</text>
+					<text>￥{{itemList.minPrice}}</text>
 					<text class="count">|</text>
 					<text class="count-right">配送费</text>
-					<text>{{itemList.shipFee}}￥</text>
+					<text>￥{{itemList.shipFee}}</text>
 					<text class="count">|</text>
 					<text>{{itemList.avgDeliveryTime}}分钟送达</text>
 				</view>

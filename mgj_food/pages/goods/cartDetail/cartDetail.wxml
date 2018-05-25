@@ -1,4 +1,5 @@
 <wxs module="cart" src="../../../utils/star.wxs"></wxs>
+<import src="../../../components/showToast/showToast.wxml" />
 <view class="page-common container" style="position: relative">
 	<view class="cart-detail">
 		<image wx:if="{{orderDetail.merchant.logo}}" class="cart-detail-img" src="{{orderDetail.merchant.logo}}"></image>
@@ -132,4 +133,5 @@
 	</view>
 	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close">	
 	</view>
+	<template is="showToast" data="{{showToast: showToast}}" />
 </view>

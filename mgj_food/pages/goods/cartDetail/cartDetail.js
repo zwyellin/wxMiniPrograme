@@ -1,4 +1,5 @@
 const { wxRequest, formatTime } = require('../../../utils/util.js');
+const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const app = getApp();
 
 Page({
@@ -128,21 +129,23 @@ Page({
 	},
 	//再来一单
 	nextOrder(e){
-      wx.showLoading({
-        title:'',
-        icon:'../../../images/images/loading.gif'
-      });
-      wxRequest({
-          url:'/merchant/userClient?m=againOrderPreview',
-          method:'POST',
-          data:{
-              token:app.globalData.token,
-              params:{
-                  orderId:this.data.orderDetail.id,
-                  userId:this.data.orderDetail.userId,
-                  loginToken:app.globalData.token
-              } 
-          },
+	    wx.showToast({
+	        title: '正在提交订单',
+	        icon: 'loading',
+	        duration: 200000,
+	        mask: true
+	    });
+      	wxRequest({
+			url:'/merchant/userClient?m=againOrderPreview',
+			method:'POST',
+			data:{
+			    token:app.globalData.token,
+			    params:{
+			        orderId:this.data.orderDetail.id,
+			        userId:this.data.orderDetail.userId,
+			        loginToken:app.globalData.token
+			    } 
+			},
         }).then(res=>{
           if (res.data.code === 0) {
             let value = res.data.value

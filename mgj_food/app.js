@@ -71,7 +71,7 @@ App({
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain: 'https://prelaunch.horsegj.com',
+    domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
     latitude:'',

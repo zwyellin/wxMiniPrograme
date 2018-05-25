@@ -112,6 +112,8 @@
 			<view class="icon">
 				<image class="icon-image" src="{{item.logo}}" alt="" />
 				<view wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</view>
+				<view wx:if="{{item.status=== 0}}" class="merchant-rest"><text>暂停营业</text></view>
+				<view wx:if="{{item.businessStatus === 1}}" class="merchant-rest"><text>商家休息</text></view>
 			</view>
 			<view class="content">
 				<view class="name">

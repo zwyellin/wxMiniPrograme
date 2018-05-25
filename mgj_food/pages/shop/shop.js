@@ -76,6 +76,8 @@ Page({
 		      });
 		      console.log(cate_size)
 		    }
+        }).finally(()=>{
+        	wx.hideLoading()
         });
         this.getStorageShop(merchantid);
 		this.getevaluate();
@@ -335,7 +337,7 @@ Page({
 				  	title: name
 				});
 
-				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/.test(value.merchant.logo.toLowerCase())){
+				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}
 				this.setData({
@@ -406,6 +408,12 @@ Page({
         });
 	},
 	getShopList(){
+		wx.showToast({
+	        title: '加载中',
+	        icon: 'loading',
+	        duration: 200000,
+	        mask: true
+	    });
 		return wxRequest({
         	url:'/merchant/userClient?m=showMerchantTakeAwayMenu',
         	method:'POST',
@@ -467,7 +475,7 @@ Page({
 		let total = 0;
 		let count = 0;
 		this.data.selectFoods.forEach((food)=>{	
-			total+= food.priceObject.price*food.count;
+			total+= parseFloat(food.priceObject.price)*food.count;
 			count+= food.count;
 		});
 		if (count === 0) {
@@ -475,8 +483,11 @@ Page({
 		        fold:false
 		    });
 		}
+		if (typeof total === 'number' && total%1 != 0) {
+			total = total.toFixed(2)
+		}
 		this.setData({
-	        totalprice: total,
+	        totalprice:total,
 	        totalcount: count
 	    });
 	},
