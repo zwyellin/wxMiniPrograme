@@ -50,11 +50,10 @@
   width: 30rpx;
   height: 14rpx;
   display: inline-block;
-  vertical-align: middle;
+  /*vertical-align: middle;*/
   transform: rotate(-90deg);
   margin-top: 20rpx;
   margin-left: 30rpx;
-  border-radius: 60rpx;
 }
 .header-txt {
   display: inline-block;

@@ -100,7 +100,7 @@
 				    data-food="{{food}}"
 				    bindtap="selectefood">
 					<view class="icon">
-						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs)}}" />
+						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs)}}?imageView2/2/w/100/h/100" />
 					</view>
 					<view class="content">
 						<view class="detail-name">
@@ -109,7 +109,6 @@
 						<view class="detail-descs">
 							<text>{{food.description}}</text>
 						</view>
-						
 						<view class="detail-extra">
 							<text class="detail-count">月售{{food.monthSaled}}</text>
 							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">{{tage.praise(food.goodCommentNum,food.commentNum)}}%好评率</text>

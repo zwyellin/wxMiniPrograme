@@ -1,0 +1,47 @@
+.refund-header {
+	height: 18rpx;
+	border-bottom: 1rpx solid #eaeaea;
+	border-top: 1rpx solid #eaeaea;
+	background: #ededed;
+}
+.refund-wrapper {
+	padding: 30rpx;
+}
+.success {
+	flex-direction:column;
+	flex:0 0 56rpx;
+	width:56rpx;
+}
+.refund-success {
+	flex:1;
+	color:#333;
+	font-size: 30rpx;
+}
+.refund-data {
+	flex:0 0 240rpx;
+	width: 240rpx;
+	color: #999;
+	font-size: 24rpx;
+}
+.line{
+	height: 60rpx;
+	margin-left: 18rpx;
+	border-left: 1rpx solid #ff9900;
+}
+.refund-top {
+	height:56rpx;
+}
+.refund-center {
+	height:40rpx;
+	line-height:40rpx;
+}
+.refund-mode {
+	padding: 30rpx;
+	background: #fff;
+	color:#333;
+	font-weight:500;
+}
+.mode {
+	height: 60rpx;
+	font-size: 24rpx;
+}

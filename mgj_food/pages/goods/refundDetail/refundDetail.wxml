@@ -1,0 +1,53 @@
+<view class="container">
+	<view class="refund-header"></view>
+	<view class="refund-wrapper flex">
+		<view class="success flex">
+			<icon type="success" size="18" color="#ff9900" />
+			<view class="line"></view>
+			<icon type="success" size="18" color="#ff9900" />
+			<view class="line"></view>
+			<icon type="success" size="18" color="#ff9900" />
+		</view>
+		<view class="refund-success">
+			<view><text>退款申请成功</text></view>
+			<view class="refund-top"></view>
+			<view><text>第三方处理中</text></view>
+			<view class="refund-top"></view>
+			<view><text>退款成功</text></view>
+		</view>
+		<view class="refund-data">
+			<view class="refund-center"><text>2018-01-24 18:42:12</text></view>
+			<view class="refund-top"></view>
+			<view class="refund-center"><text>2018-01-24 18:42:12</text></view>
+			<view class="refund-top"></view>
+			<view class="refund-center"><text>2018-01-24 18:42:12</text></view>
+		</view>
+	</view>
+	<view class="refund-header"></view>
+	<view class="refund-mode">
+		<view class="mode">
+			<text class="fl">订单编号</text>
+			<text class="fr font-15" style="margin-top: -2px">1243567654546578754</text>
+		</view>
+		<view class="mode" style="line-height: 60rpx">
+			<text class="fl">交易流水号</text>
+			<text class="fr font-15" style="margin-top: -2px">1243567654546578754</text>
+		</view>
+	</view>
+	<view class="refund-header"></view>
+	<view class="refund-mode">
+		<view class="mode">
+			<text class="fl">退回至第三方 (微信)</text>
+			<text class="fr">￥12</text>
+		</view>
+		<view class="mode" style="line-height: 60rpx">
+			<text class="fl">退回到余额</text>
+			<text class="fr">￥12</text>
+		</view>
+		<view style="padding-top: 12rpx">
+			<view class="fr font-15">
+				<text>退款金额： </text><text style="color:#ff9900">￥120</text>
+			</view>
+		</view>
+	</view>
+</view>

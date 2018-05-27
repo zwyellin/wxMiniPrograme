@@ -12,6 +12,7 @@
     "pages/userredBag/userredBag",
     "pages/goods/cartItem/cartItem",
     "pages/goods/cartDetail/cartDetail",
+    "pages/goods/refundDetail/refundDetail",
     "pages/searchGoods/searchGoods",
     "pages/sendred/sendred",
     "pages/remarks/remarks",

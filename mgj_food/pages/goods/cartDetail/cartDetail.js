@@ -7,6 +7,7 @@ Page({
 		orderRedAnimation:null,
 		maskAnimation:null,
 		maskShow:false,
+		trackShow:false,                //订单追踪
 		getMerchantRedBagList:{},       //根据订单领取商家红包
 		orderDetail:{},
 		nextOrederList:{},
@@ -274,6 +275,13 @@ Page({
   			phoneNumber: deliveryPhone.mobile   //电话号码
 		});
 	},
+	trackShow(){
+		this.maskShowAnimation();
+		this.setData({
+			maskShow:true,
+			trackShow:true
+		});
+	},
 	maskShowAnimation(){
 		let animation = wx.createAnimation({  
 		    transformOrigin: "50% 50%",
@@ -300,6 +308,7 @@ Page({
 	      	setTimeout(()=>{
 	      		this.setData({
 	      			maskShow:false,
+	      			trackShow:false
 	      		});
 	      	},500);
 	      	this.setData({

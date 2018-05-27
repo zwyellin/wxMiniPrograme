@@ -110,7 +110,7 @@
 	      	data-id="{{item.id}}"
 	      	bindtap="quickPage">	
 			<view class="icon">
-				<image class="icon-image" src="{{item.logo}}" alt="" />
+				<image class="icon-image" src="{{item.logo}}?imageView2/2/w/100/h/100" alt="" />
 				<view wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</view>
 				<view wx:if="{{item.status=== 0}}" class="merchant-rest"><text>暂停营业</text></view>
 				<view wx:if="{{item.businessStatus === 1}}" class="merchant-rest"><text>商家休息</text></view>

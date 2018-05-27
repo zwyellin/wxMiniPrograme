@@ -510,7 +510,7 @@ Page({
 		let { food, rules} = e.currentTarget.dataset;
 		let attributes = '';
 		let id = food.id; //选择的产品id
-		let categoryId = food.categoryId  //选择的产品分类id
+		let categoryId = food.categoryId;  //选择的产品分类id
     	let priceObject = {}; //产品价格对象
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
@@ -520,10 +520,12 @@ Page({
     	let name = food.name; //产品名称
     	console.log(food);
     	if (priceObject.stock || priceObject.orderLimit) {
-			let count = this.getCartCount(id,priceObject)
-			if (count >=priceObject.stock) {
-				feedbackApi.showToast({title: '该商品库存不足'});
-				return;
+			let count = this.getCartCount(id,priceObject);
+			if (priceObject.stock) {
+				if (count >=priceObject.stock) {
+					feedbackApi.showToast({title: '该商品库存不足'});
+					return;
+				}
 			}
 			if (priceObject.orderLimit !=0 && count>=priceObject.orderLimit) {
 				feedbackApi.showToast({title: '该商品每单限购'+ count +'份'});
