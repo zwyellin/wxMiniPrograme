@@ -47,7 +47,7 @@ Page({
             if (res.data.code ===0) {
                 let searchList = res.data.value;
                 searchList.map((item)=>{
-                    if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+                    if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
                         item.logo = '/images/merchant/merchantLogo.png';
                     }
                     item.isHeight = '68rpx';

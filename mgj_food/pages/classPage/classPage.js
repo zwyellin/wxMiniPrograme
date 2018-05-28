@@ -114,6 +114,9 @@ Page({
 				if (status) {
 					if (res.data.value.length != 0) {
 						list.map((item)=>{
+							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
+								item.logo = '/images/merchant/merchantLogo.png'
+							}
 							item.height = '68rpx';
 							dataList.push(item);
 						});
@@ -139,6 +142,9 @@ Page({
     					});
 					} else {
 						list.map((item)=>{
+							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
+								item.logo = '/images/merchant/merchantLogo.png';
+							}
 							item.height = '68rpx';
 						});
 						this.setData({

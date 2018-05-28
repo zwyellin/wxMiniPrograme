@@ -22,7 +22,6 @@
 .foods-wrapper .food-item{
 	position: relative;
 	display: flex;
-	margin-right: 36rpx;
 	padding: 36rpx;
 	border-bottom:1rpx solid rgba(7,17,27,0.1);
 }
@@ -55,20 +54,27 @@
 .foods-wrapper .content .detail-extra{
 	font-size: 20rpx;
 	line-height: 20rpx;
-	color: rgb(147,153,159);
-	
+	color: rgb(147,153,159);	
 }
 .foods-wrapper .content .detail-extra .detail-count{
 	margin-right: 24rpx;
 }
 .foods-wrapper .content .detail-price{
+	/*position: relative;*/
 	font-weight: 700;
 	line-height: 48rpx;
 }
 .foods-wrapper .content .now{
+	flex: 1;
 	margin-right: 16rpx;
 	font-size: 28rpx;
 	color: rgb(240,20,20);
+}
+.item-rules {
+	margin-top: 16rpx;
+}
+.rules-left {
+	margin-left: 8rpx;
 }
 .foods-wrapper .content .old{
 	font-size: 20rpx;
@@ -78,7 +84,7 @@
 .foods-wrapper .content .cartcontrol-wrapper{
 	display: flex;
 	align-items: center;
-	position: absolute;
+	/*position: absolute;
 	right: 0;
-	bottom: 39rpx;
+	bottom: 16rpx;*/
 }

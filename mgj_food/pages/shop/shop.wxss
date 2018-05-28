@@ -221,8 +221,8 @@
 	background: #ff9900;
 }
 .choice-else {
-	height: 44rpx;
-	line-height: 44rpx;
+	/*height: 44rpx;
+	line-height: 44rpx;*/
 	margin-left: 10rpx;
 	text-align: center;
 	color:#999;

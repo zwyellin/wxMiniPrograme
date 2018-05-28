@@ -68,8 +68,8 @@ Page(Object.assign({}, {
 				}
 			}; 
 			let { longitude, latitude } = gcj02tobd09(lng,lat);
-			app.globalData.longitude = longitude;
-			app.globalData.latitude = latitude;
+			// app.globalData.longitude = longitude;
+			// app.globalData.latitude = latitude;
 			this.init().then((res)=>{
 				if (res.data.code === 0) {
 					let value = res.data.value;
@@ -370,7 +370,7 @@ Page(Object.assign({}, {
 					if (res.data.value.length != 0) {
 						list.map((item)=>{
 							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-								item.logo = '/images/merchant/merchantLogo.png'
+								item.logo = '/images/merchant/merchantLogo.png';
 							}
 							item.isHeight = '68rpx';
 							dataList.push(item);
