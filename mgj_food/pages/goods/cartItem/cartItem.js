@@ -218,6 +218,12 @@ Page({
         url: '/pages/evaluate/evaluate'
       });
     },
+    refundDetail(e){
+      let { food } = e.currentTarget.dataset;
+      wx.navigateTo({
+        url:'/pages/goods/refundDetail/refundDetail?orderid=' + food.id
+      });
+    },
     //下拉刷新
     onPullDownRefresh:function() {
       this.data.start = 0;

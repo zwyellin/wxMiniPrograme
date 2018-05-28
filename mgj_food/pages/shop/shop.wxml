@@ -67,10 +67,6 @@
 		    	wx:for-index="index" 
 		    	wx:key="index" >
 		    	<view class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
-		    		<!-- <image class="menu-item-text" wx:if="{{item.icon}}" src="{{item.icon}}"></image>
-		    		<text class="text" style="background: url({{item.icon}})">
-						{{item.name}}
-					</text> -->
 					<text class="menu-item-text">
 						<text wx:if="{{item.icon}}" class="text" style="background: url({{item.icon}});background-size: 24rpx 24rpx">
 						</text>{{item.name}}
@@ -111,10 +107,15 @@
 						</view>
 						<view class="detail-extra">
 							<text class="detail-count">月售{{food.monthSaled}}</text>
-							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">{{tage.praise(food.goodCommentNum,food.commentNum)}}%好评率</text>
+							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
 						</view>
 						<view class="detail-price">
 							<text class="now">¥{{food.goodsSpecList[0].price}}</text>
+						</view>
+						<view wx:if="{{food.goodsSpecList.length == 1}}" class="font-10">
+							<text wx:if="{{food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text>
+							<text wx:if="{{food.goodsSpecList[0].stockType}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
+							<text wx:if="{{food.goodsSpecList[0].minOrderNum}}" class="rules-text" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
 						</view>
 						<view class="cartcontrol-wrapper">
 							<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">

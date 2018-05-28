@@ -156,7 +156,15 @@ const formatTime = function (date) {
 
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':');
 };
+const trackTime = function(date){
+  var month = formatNumber(new Date(date).getMonth() + 1);
+  var day = formatNumber(new Date(date).getDate());
 
+  var hour = formatNumber(new Date(date).getHours());
+  var minute = formatNumber(new Date(date).getMinutes());
+
+  return month + '月' + day +'日' + ' ' + hour + ':' + minute
+}
 const gcj02tobd09 = function (lng, lat) {
   var x_PI = 3.14159265358979324 * 3000.0 / 180.0;
   var PI = 3.1415926535897932384626;
@@ -181,9 +189,7 @@ module.exports = {
   gcj02tobd09,
   qqMap,
   wxGetLocation,
-  wxGetStorage: wxPromisify(wx.getStorage),
-  wxSetStorage: wxPromisify(wx.setStorage),
-  wxRemoveStorage: wxPromisify(wx.removeStorage),
+  trackTime,
   wxShowModal: wxPromisify(wx.showModal),
   wxShowToast: wxPromisify(wx.showToast),
   wxLogin: wxPromisify(wx.login)

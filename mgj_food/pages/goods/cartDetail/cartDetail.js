@@ -1,4 +1,4 @@
-const { wxRequest, formatTime } = require('../../../utils/util.js');
+const { wxRequest, formatTime, trackTime } = require('../../../utils/util.js');
 const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const app = getApp();
 
@@ -10,6 +10,8 @@ Page({
 		trackShow:false,                //订单追踪
 		getMerchantRedBagList:{},       //根据订单领取商家红包
 		orderDetail:{},
+		trackDetailDate:{},
+		trackDateStatus:false,
 		nextOrederList:{},
 		servicePhone:[],
 		orderid:null,
@@ -57,6 +59,7 @@ Page({
 	          	if (expectArrivalTime === 1) {
 	          		this.setData({
 	          			orderDetail:res.data.value,
+	          			trackDetailDate:res.data.value,
 	          			expectArrivalTime:'立即送达'
 	          		});
 	          	} else {
@@ -64,6 +67,7 @@ Page({
 						console.log(time)
 	          			this.setData({
 	          			orderDetail:res.data.value,
+	          			trackDetailDate:res.data.value,
 	          			expectArrivalTime:time
 	          		});
 	          	}
@@ -230,6 +234,9 @@ Page({
 	close(){
 		this.maskHideAnimation();
 		this.choiceHideAnimation();
+		this.setData({
+			trackShow:false
+		})
 	},
 	bagListShow(){
 		this.setData({
@@ -277,15 +284,58 @@ Page({
 	},
 	trackShow(){
 		this.maskShowAnimation();
+		if (!this.data.trackDateStatus) {
+			let trackDetailDate = this.trackTimes()
+			this.setData({
+				trackDetailDate:trackDetailDate
+			});
+			this.data.trackDateStatus = true;
+		}
 		this.setData({
 			maskShow:true,
 			trackShow:true
 		});
 	},
+	trackTimes(){
+		let trackDetailDate = this.data.trackDetailDate
+		let deliveryTask = trackDetailDate.deliveryTask
+		if (trackDetailDate.createTime) {
+			trackDetailDate.createTime = trackDetailDate.createTime.replace(/-/g,'/');
+			trackDetailDate.createTime = new Date(trackDetailDate.createTime).getTime();
+			trackDetailDate.createTime = trackTime(trackDetailDate.createTime);
+		}
+		if (trackDetailDate.paymentFinishTime) {
+			trackDetailDate.paymentFinishTime = trackDetailDate.paymentFinishTime.replace(/-/g,'/');
+			trackDetailDate.paymentFinishTime = new Date(trackDetailDate.paymentFinishTime).getTime();
+			trackDetailDate.paymentFinishTime = trackTime(trackDetailDate.paymentFinishTime);
+		}
+		if (trackDetailDate.modifyTime) {
+			trackDetailDate.modifyTime = trackDetailDate.modifyTime.replace(/-/g,'/');
+			trackDetailDate.modifyTime = new Date(trackDetailDate.modifyTime).getTime();
+			trackDetailDate.modifyTime = trackTime(trackDetailDate.modifyTime);
+		}
+		if (deliveryTask.acceptTime) {
+			deliveryTask.acceptTime = deliveryTask.acceptTime.replace(/-/g,'/');
+			deliveryTask.acceptTime = new Date(deliveryTask.acceptTime).getTime();
+			deliveryTask.acceptTime = trackTime(deliveryTask.acceptTime);
+		}
+		if (deliveryTask.arrivalMerchantTime) {
+			deliveryTask.arrivalMerchantTime = deliveryTask.arrivalMerchantTime.replace(/-/g,'/');
+			deliveryTask.arrivalMerchantTime = new Date(deliveryTask.arrivalMerchantTime).getTime();
+			deliveryTask.arrivalMerchantTime = trackTime(deliveryTask.arrivalMerchantTime);
+		}
+		if (deliveryTask.deliveryDoneTime) {
+			deliveryTask.deliveryDoneTime = deliveryTask.deliveryDoneTime.replace(/-/g,'/');
+			deliveryTask.deliveryDoneTime = new Date(deliveryTask.deliveryDoneTime).getTime();
+			deliveryTask.deliveryDoneTime = trackTime(deliveryTask.deliveryDoneTime);
+		}	
+		trackDetailDate.deliveryTask = deliveryTask 
+		return trackDetailDate
+	},
 	maskShowAnimation(){
 		let animation = wx.createAnimation({  
 		    transformOrigin: "50% 50%",
-			duration: 1000,
+			duration: 500,
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
@@ -293,7 +343,7 @@ Page({
 	      	this.setData({
 	        	maskAnimation: animation.export(),
 	      	});
-	    }, 1000);
+	    }, 200);
 		animation.opacity(0).step();//修改透明度,放大  
 		this.setData({  
 		   maskAnimation: animation.export()  
@@ -307,8 +357,7 @@ Page({
 	      	animation.opacity(0).step();
 	      	setTimeout(()=>{
 	      		this.setData({
-	      			maskShow:false,
-	      			trackShow:false
+	      			maskShow:false
 	      		});
 	      	},500);
 	      	this.setData({

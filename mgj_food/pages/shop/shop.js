@@ -521,7 +521,7 @@ Page({
     	console.log(food);
     	if (priceObject.stock || priceObject.orderLimit) {
 			let count = this.getCartCount(id,priceObject);
-			if (priceObject.stock) {
+			if (priceObject.stockType) {
 				if (count >=priceObject.stock) {
 					feedbackApi.showToast({title: '该商品库存不足'});
 					return;
@@ -535,7 +535,6 @@ Page({
 		// 商品规格
 		if (rules) {
 			for (let i = 0; i < food.goodsAttributeList.length; i++) {
-				
 				if (i === food.goodsAttributeList.length-1) {
 					attributes += food.goodsAttributeList[i].select;
 				} else {
