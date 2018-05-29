@@ -30,6 +30,8 @@
       	bindtap="quickPage" >	
 		<view class="icon">
 			<image class="icon-image" src="{{item.logo}}" alt="" />
+			<image wx:if="{{item.status === 0}}" class="merchant-status" src="/images/merchant/pause_business_new.png"></image>
+			<image wx:if="{{item.status != 0 && item.businessStatus === 1}}" class="merchant-status" src="/images/merchant/rest_business.png"></image>
 		</view>
 		<view class="content">
 			<view class="name">

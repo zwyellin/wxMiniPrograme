@@ -77,9 +77,18 @@
 	margin-left: 8rpx;
 }
 .old-price {
+	position: relative;
 	margin-left: 10rpx;
 	font-size: 20rpx;
 	color: #999;
+}
+.del {
+	display: block;
+	position: absolute;
+	border-top: 1px solid #999;
+	width: 44rpx;
+	top: 12rpx;
+	left: 0;
 }
 .foods-wrapper .content .old{
 	font-size: 20rpx;

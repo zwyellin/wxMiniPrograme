@@ -207,35 +207,35 @@
 	flex-direction:column;
 	flex:0 0 62rpx;
 	width:62rpx;
-	margin-top: 19rpx;
+	margin-top: 7px;
 }
 .track-status {
 	flex:1;
 	color:#333;
-	font-size: 30rpx;
+	font-size: 15px;
 }
 .track-data {
-	flex:0 0 240rpx;
-	width: 240rpx;
+	flex:0 0 120px;
+	width: 120px;
 	color: #999;
-	font-size: 30rpx;
+	font-size: 15px;
 }
 .track-top {
-	height:66rpx;
+	height:33px;
 }
 .track-yuan {
 	/*display: inline-block;*/
-	width: 12rpx;
-	height: 12rpx;
-	border-radius: 12rpx;
+	width: 6px;
+	height: 6px;
+	border-radius: 6px;
 	background: #c8c8c8;
 }
 .track-statusyuan {
 	position: absolute;
-	padding: 9rpx;
-	margin-left: -7rpx;
-	margin-top: -21rpx;
-	border-radius: 30rpx;
+	padding: 5px;
+	margin-left: -4px;
+	margin-top: -10px;
+	border-radius: 15px;
 	background: #ff9900;
 	z-index: 1001;
 }
@@ -247,8 +247,8 @@
 	font-weight: 700;
 }
 .line{
-	height: 94rpx;
-	margin-left: 6rpx;
+	height: 47px;
+	margin-left: 3px;
 	border-left: 1rpx solid #d5d5d5;
 }
 
