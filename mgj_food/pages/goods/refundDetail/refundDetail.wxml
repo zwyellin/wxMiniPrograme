@@ -9,11 +9,11 @@
 			<icon type="success" size="18" color="{{refundDetail.state == 2 ? '#ff9900' : '#ccc'}}" />
 		</view>
 		<view class="refund-success">
-			<view><text>退款申请成功</text></view>
+			<view class="refund-center"><text>退款申请成功</text></view>
 			<view class="refund-top"></view>
-			<view><text>第三方处理中</text></view>
+			<view class="refund-center"><text>第三方处理中</text></view>
 			<view class="refund-top"></view>
-			<view><text>退款成功</text></view>
+			<view class="refund-center"><text>退款成功</text></view>
 		</view>
 		<view class="refund-data">
 			<view class="refund-center"><text>{{refundDetail.applySuccessTime}}</text></view>

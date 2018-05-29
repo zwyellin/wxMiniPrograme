@@ -567,7 +567,12 @@ Page({
 		      	if (rules) {
 	      			tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});
 	      		} else {
-	      			tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
+	      			if (priceObject.minOrderNum) {
+	      				tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
+	      				feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份'});
+	      			} else {
+	      				tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
+	      			}
 	      		}	  		
 	        }
 	      	console.log(tmpArr);
@@ -610,7 +615,12 @@ Page({
 							}
 						} else {
 							if (item.count > 1) {
-			              		item.count -= 1;
+			              		if (item.priceObject.minOrderNum === item.count) {
+									tmpArr.splice(index, 1);
+									feedbackApi.showToast({title: item.name+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+			              		} else {
+			              			item.count -= 1;
+			              		}
 			                } else {
 					        	tmpArr.splice(index, 1);
 					      	}
@@ -625,7 +635,12 @@ Page({
 	        	tmpArr.map((item,index)=>{
 	        		if (item.id === id) {
 	        			if (item.count > 1) {
-		              		item.count -= 1;
+		              		if (item.priceObject.minOrderNum === item.count) {
+								tmpArr.splice(index, 1);
+								feedbackApi.showToast({title: item.name+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+		              		} else {
+		              			item.count -= 1;
+		              		}
 		                } else {
 				        	tmpArr.splice(index, 1);
 				      	}

@@ -15,7 +15,10 @@ Page(Object.assign({}, {
   		cartObject:null,
   		isShoppingCart:false,
 	    swiper: {
-	      imgUrls: [],
+	      imgUrls: [
+	      	'/images/merchant/advertisement.png',
+	      	'/images/merchant/advertisement.png'
+	      ],
 	      indicatorDots: true,
 	      autoplay: true,
 	      interval: 3000,

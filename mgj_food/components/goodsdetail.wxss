@@ -71,10 +71,15 @@
 	color: rgb(240,20,20);
 }
 .item-rules {
-	margin-top: 16rpx;
+	margin-top: 10rpx;
 }
 .rules-left {
 	margin-left: 8rpx;
+}
+.old-price {
+	margin-left: 10rpx;
+	font-size: 20rpx;
+	color: #999;
 }
 .foods-wrapper .content .old{
 	font-size: 20rpx;

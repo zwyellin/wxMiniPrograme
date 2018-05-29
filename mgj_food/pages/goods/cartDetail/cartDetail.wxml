@@ -29,7 +29,7 @@
 	</view>
 	<view class="order">
 		<view class="order-header">
-			<view class="header-text" bindtap="selectTab">
+			<view class="header-text flex" bindtap="selectTab">
 				<image wx:if="{{orderDetail.merchant.logo}}" class="header-img" src="{{orderDetail.merchant.logo}}" ></image>
 				<image wx:if="{{!orderDetail.merchant.logo}}" class="header-img" src="/images/merchant/merchantLogo.png"></image>
         		<text class="header-txt">{{orderDetail.merchant.name}}</text>
@@ -145,44 +145,58 @@
 				<view wx:if="{{orderDetail.orderFlowStatus >= 2 || orderDetail.paymentState === 1}}">
 					<view class="line"></view>
 					<view class="track-yuan"></view>
+					<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus >= 2 && orderDetail.paymentState === 1}}">
+						<view class="track-yuan" style="background: #fff"></view>
+					</view>
 				</view>
-				<view wx:if="{{orderDetail.orderFlowStatus === -1}}">
+				<view class="track-location" wx:if="{{orderDetail.orderFlowStatus === -1}}">
 					<view class="line"></view>
 					<view class="track-yuan"></view>
+					<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === -1}}">
+						<view class="track-yuan" style="background: #fff"></view>
+					</view>
 				</view>
-				<view wx:if="{{orderDetail.orderFlowStatus >= 4}}">
+				<view class="track-location" wx:if="{{orderDetail.orderFlowStatus >= 4}}">
 					<view class="line"></view>
 					<view class="track-yuan"></view>
+					<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 4}}">
+						<view class="track-yuan" style="background: #fff"></view>
+					</view>
 				</view>
-				<view wx:if="{{orderDetail.orderFlowStatus >= 5}}">
+				<view class="track-location" wx:if="{{orderDetail.orderFlowStatus >= 5}}">
 					<view class="line"></view>
 					<view class="track-yuan"></view>
+					<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 5}}">
+						<view class="track-yuan" style="background: #fff"></view>
+					</view>
 				</view>
-				<view wx:if="{{orderDetail.orderFlowStatus >= 6}}">
+				<view class="track-location" wx:if="{{orderDetail.orderFlowStatus >= 6}}">
 					<view class="line"></view>
 					<view class="track-yuan"></view>
+					<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 6}}">
+						<view class="track-yuan" style="background: #fff"></view>
+					</view>
 				</view>
-				<view wx:if="{{orderDetail.orderFlowStatus === 7}}">
+				<view class="track-location" wx:if="{{orderDetail.orderFlowStatus === 7}}">
 					<view class="line"></view>
 					<view class="track-yuan"></view>
+					<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 7}}">
+						<view class="track-yuan" style="background: #fff"></view>
+					</view>
 				</view>
-				<!-- <view class="track-yuan"></view> -->
-				<!-- <view class="track-statusyuan flex">
-					<view class="track-yuan track-yuancenter" style="background: #fff"></view>
-				</view> -->
 			</view>
 			<view class="track-status">
 				<view><text>订单已提交</text></view>
 				<view wx:if="{{orderDetail.orderFlowStatus >= 2 || orderDetail.paymentState === 1}}" class="track-top"></view>
-				<view wx:if="{{orderDetail.orderFlowStatus >= 2 || orderDetail.paymentState === 1}}"><text>支付成功</text></view>
+				<view wx:if="{{orderDetail.orderFlowStatus >= 2 || orderDetail.paymentState === 1}}" class="{{orderDetail.orderFlowStatus === 2 ? 'track-active' :''}}"><text>支付成功</text></view>
 				<view class="track-top"></view>
-				<view wx:if="{{orderDetail.orderFlowStatus === -1}}"><text>订单已取消</text></view>
+				<view wx:if="{{orderDetail.orderFlowStatus === -1}}" class="{{orderDetail.orderFlowStatus === -1 ? 'track-active' :''}}"><text>订单已取消</text></view>
 				<view class="track-top"></view>
-				<view wx:if="{{orderDetail.orderFlowStatus >= 4}}"><text>骑手已接单</text></view>
+				<view wx:if="{{orderDetail.orderFlowStatus >= 4}}" class="{{orderDetail.orderFlowStatus === 4 ? 'track-active' :''}}"><text>骑手已接单</text></view>
 				<view class="track-top"></view>
-				<view wx:if="{{orderDetail.orderFlowStatus >= 5}}"><text>骑手已取货</text></view>
+				<view wx:if="{{orderDetail.orderFlowStatus >= 5}}"><text class="{{orderDetail.orderFlowStatus === 5 ? 'track-active' :''}}">骑手已取货</text></view>
 				<view class="track-top"></view>
-				<view wx:if="{{orderDetail.orderFlowStatus >= 6}}"><text>骑手已送达</text></view>
+				<view wx:if="{{orderDetail.orderFlowStatus >= 6}}"><text class="{{orderDetail.orderFlowStatus === 6 ? 'track-active' :''}}">骑手已送达</text></view>
 				<view class="track-top"></view>
 				<view wx:if="{{orderDetail.orderFlowStatus === 7}}"><text>已完成</text></view>
 			</view>

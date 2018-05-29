@@ -110,7 +110,8 @@
 							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
 						</view>
 						<view class="detail-price flex">
-							<text class="now">¥{{food.goodsSpecList[0].price}}</text>
+							<text class="now">¥{{food.goodsSpecList[0].price}}<text wx:if="{{food.goodsSpecList[0].originalPrice}}" class="old-price">￥{{food.goodsSpecList[0].originalPrice}}</text>
+							</text>
 							<view class="cartcontrol-wrapper">
 								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
 									<template is="contorl-add" data="{{food,selectFoods}}" ></template>
@@ -128,9 +129,9 @@
 								</view>	
 							</view>
 						</view>
-						<view wx:if="{{food.goodsSpecList.length == 1}}" class="{{food.goodsSpecList.length == 1 ? 'item-rules' : ''}} font-10">
+						<view wx:if="{{food.goodsSpecList.length == 1 && (food.goodsSpecList[0].orderLimit || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum) && food.goodsAttributeList.length === 0}}" class="item-rules font-10">
 							<text wx:if="{{food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text>
-							<text wx:if="{{food.goodsSpecList[0].stockType}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
+							<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <11}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
 							<text wx:if="{{food.goodsSpecList[0].minOrderNum}}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
 						</view>
 					</view>
@@ -315,7 +316,7 @@
 					<view class="food" >
 						<view class="name food-name">{{food.name}}
 							<text wx:if="{{food.priceObject.spec}}">({{food.priceObject.spec}})</text>
-							<text wx:if="{{food.attrbuites}}">{{food.attrbuites}}</text>
+							<text wx:if="{{food.attributes}}">{{food.attributes}}</text>
 						</view>
 						<view class="price">
 							<text>￥{{food.priceObject.price*food.count}}</text>
@@ -399,7 +400,7 @@
 				</view>
 				<view class="shoprules-messgae font-10">
 					<text wx:if="{{selectedFood.goodsSpecList[specIndex].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{selectedFood.goodsSpecList[specIndex].orderLimit}}份</text>
-					<text wx:if="{{selectedFood.goodsSpecList[specIndex].stockType}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{selectedFood.goodsSpecList[specIndex].stock}}件</text>
+					<text wx:if="{{selectedFood.goodsSpecList[specIndex].stockType && selectedFood.goodsSpecList[specIndex].stock <11}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{selectedFood.goodsSpecList[specIndex].stock}}件</text>
 					<text wx:if="{{selectedFood.goodsSpecList[specIndex].minOrderNum}}" class="rules-text" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{selectedFood.goodsSpecList[specIndex].minOrderNum}}份起购</text>
 				</view>
 			</view>

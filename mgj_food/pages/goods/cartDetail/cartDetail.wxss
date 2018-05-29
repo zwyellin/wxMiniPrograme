@@ -190,7 +190,7 @@
 	height: 888rpx;
 	color:#333;
 	background: #fff;
-	z-index: 10000;
+	z-index: 1000;
 }
 .track-header {
 	padding-right: 44rpx;
@@ -231,19 +231,16 @@
 	background: #c8c8c8;
 }
 .track-statusyuan {
-	position: relative;
-	width: 30rpx;
-	height: 30rpx;
-	margin-left: -9rpx;
-	margin-top: -9rpx;
-	/*align-items: center;
-	justify-content: center;*/
+	position: absolute;
+	padding: 9rpx;
+	margin-left: -7rpx;
+	margin-top: -21rpx;
 	border-radius: 30rpx;
 	background: #ff9900;
+	z-index: 1001;
 }
-.track-yuancenter {
-	margin-top: 11rpx;
-	margin-left: 12rpx;
+.track-location {
+	position: relative;
 }
 .track-active {
 	color:#ff9900;

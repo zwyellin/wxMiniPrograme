@@ -18,8 +18,8 @@
 	font-size: 30rpx;
 }
 .refund-data {
-	flex:0 0 240rpx;
-	width: 240rpx;
+	flex:0 0 250rpx;
+	width: 250rpx;
 	color: #999;
 	font-size: 24rpx;
 }
