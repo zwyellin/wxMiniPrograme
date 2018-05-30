@@ -49,6 +49,8 @@ Page({
                 searchList.map((item)=>{
                     if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
                         item.logo = '/images/merchant/merchantLogo.png';
+                    } else {
+                        item.logo = item.logo+'?imageView2/2/w/100/h/100';
                     }
                     item.isHeight = '68rpx';
                 });

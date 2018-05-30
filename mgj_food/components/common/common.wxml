@@ -1,5 +1,5 @@
 <template name="class-common">
-	<view class="time">
+	<view class="time" touchmove="myCatchTouch">
 		<view class="flex font-14">
 		    <scroll-view class="time-left" scroll-y="true" style="height:574rpx">
 			    <view class="time-left-text {{timeIndex===index ? 'time-active' : ''}}"
@@ -31,7 +31,7 @@
 	</view>
 </template>
 <template name="sort-common">
-	<view class="time">
+	<view class="time" touchmove="myCatchTouch">
 		<view class="flex font-14">
 		    <scroll-view class="time-left" scroll-y="true" style="height:574rpx;background: #fff">
 			    <view class="time-left-text {{sortIndex===index ? 'time-active' : ''}}"
@@ -49,7 +49,7 @@
 	</view>
 </template>
 <template name="shipfilter-common">
-	<view class="time" style="height:246rpx">
+	<view class="time" style="height:246rpx" touchmove="myCatchTouch">
 		<view class="flex font-14 shipfilter-content">
 		    <view class="shipfilter-left" style="text-indent: 18rpx">
 		    	<text>配送方式</text>

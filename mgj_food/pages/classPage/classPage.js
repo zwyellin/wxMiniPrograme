@@ -81,6 +81,10 @@ Page({
 			url:"/pages/shop/shop?merchantid=" + id,
 		});
 	},
+	//阻止遮罩层
+	myCatchTouch(){
+		return false
+	},
 	getDataList(status){
 		if (!status) {
 			wx.showToast({
@@ -116,6 +120,8 @@ Page({
 						list.map((item)=>{
 							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 								item.logo = '/images/merchant/merchantLogo.png'
+							} else {
+								item.logo = item.logo+'?imageView2/2/w/100/h/100';
 							}
 							item.height = '68rpx';
 							dataList.push(item);
@@ -144,6 +150,8 @@ Page({
 						list.map((item)=>{
 							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 								item.logo = '/images/merchant/merchantLogo.png';
+							} else {
+								item.logo = item.logo+'?imageView2/2/w/100/h/100';
 							}
 							item.height = '68rpx';
 						});

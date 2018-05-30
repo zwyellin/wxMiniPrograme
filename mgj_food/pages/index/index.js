@@ -12,6 +12,7 @@ Page(Object.assign({}, {
   		toSearch:false,
   		loading:false,
   		isAgentId:false,
+  		clickPage:false,
   		cartObject:null,
   		isShoppingCart:false,
 	    swiper: {
@@ -87,9 +88,9 @@ Page(Object.assign({}, {
 						app.globalData.agentPhone = null
 						app.globalData.agentId = null;
 					}
-					this.getinitDataList();
+					this.initBanner();
 					this.initClass();
-        			this.initBanner();
+					this.getinitDataList();
         			this.findTagCategory();	
 				}	
 	        }).catch(err=>{
@@ -122,6 +123,7 @@ Page(Object.assign({}, {
 		});     
 	},
 	onShow(){
+		this.data.clickPage = false;
 		if (wx.getStorageSync('shoppingCart')) {
 			let shoppingCart = wx.getStorageSync('shoppingCart');
 			console.log(shoppingCart);
@@ -195,44 +197,44 @@ Page(Object.assign({}, {
 			this.data.moveDown = false;	
 		}
 	},
-	runAddress(cityObject){
-		let { cityName } = cityObject;
-		let length = cityName.length * (this.data.addressSize/2);    //文字长度
-		console.log(this.data.city.cityName);
-	    let windowWidth = 79;// 屏幕宽度
-	    this.setData({
-	      length: length,
-	      windowWidth: windowWidth,
-	      marquee2_margin: length < windowWidth ? windowWidth - length : this.data.marquee2_margin //当文字长度小于屏幕长度时，需要增加补白
-	    });
-	    this.run();      // 第一个字消失后立即从右边出现
-	},
-	run() {
-		clearInterval(interval);
-	    interval = setInterval(()=>{
-	      if (-this.data.marqueeDistance2 < this.data.length) {
-	        // 如果文字滚动到出现marquee2_margin=30px的白边，就接着显示
-	        this.setData({
-	          marqueeDistance2: this.data.marqueeDistance2 - this.data.marqueePace,    //滚动距离
-	          marquee2copy_status: this.data.length + this.data.marqueeDistance2 <= this.data.windowWidth + this.data.marquee2_margin,
-	        });
-	      } else {
-	        if (-this.data.marqueeDistance2 >= this.data.marquee2_margin) { // 当第二条文字滚动到最左边时
-	          this.setData({
-	            marqueeDistance2: this.data.marquee2_margin // 直接重新滚动
-	          });
-	          clearInterval(interval);
-	          this.run();
-	        } else {
-	          clearInterval(interval);
-	          this.setData({
-	            marqueeDistance2: -this.data.windowWidth
-	          });
-	          this.run();
-	        }
-	      }
-	    }, this.data.interval);
-	},
+	// runAddress(cityObject){
+	// 	let { cityName } = cityObject;
+	// 	let length = cityName.length * (this.data.addressSize/2);    //文字长度
+	// 	console.log(this.data.city.cityName);
+	//     let windowWidth = 79;// 屏幕宽度
+	//     this.setData({
+	//       length: length,
+	//       windowWidth: windowWidth,
+	//       marquee2_margin: length < windowWidth ? windowWidth - length : this.data.marquee2_margin //当文字长度小于屏幕长度时，需要增加补白
+	//     });
+	//     this.run();      // 第一个字消失后立即从右边出现
+	// },
+	// run() {
+	// 	clearInterval(interval);
+	//     interval = setInterval(()=>{
+	//       if (-this.data.marqueeDistance2 < this.data.length) {
+	//         // 如果文字滚动到出现marquee2_margin=30px的白边，就接着显示
+	//         this.setData({
+	//           marqueeDistance2: this.data.marqueeDistance2 - this.data.marqueePace,    //滚动距离
+	//           marquee2copy_status: this.data.length + this.data.marqueeDistance2 <= this.data.windowWidth + this.data.marquee2_margin,
+	//         });
+	//       } else {
+	//         if (-this.data.marqueeDistance2 >= this.data.marquee2_margin) { // 当第二条文字滚动到最左边时
+	//           this.setData({
+	//             marqueeDistance2: this.data.marquee2_margin // 直接重新滚动
+	//           });
+	//           clearInterval(interval);
+	//           this.run();
+	//         } else {
+	//           clearInterval(interval);
+	//           this.setData({
+	//             marqueeDistance2: -this.data.windowWidth
+	//           });
+	//           this.run();
+	//         }
+	//       }
+	//     }, this.data.interval);
+	// },
 	bannerMerchant(e){
 		let { item } = e.currentTarget.dataset;
 		if (item.merchantId) {
@@ -244,9 +246,16 @@ Page(Object.assign({}, {
 	},
 	quickPage(e){
 		let { id } = e.currentTarget.dataset;
-		wx.navigateTo({
-			url:"/pages/shop/shop?merchantid=" + id,
-		});
+		if (!this.data.clickPage) {
+			this.data.clickPage = true;
+			wx.navigateTo({
+				url:"/pages/shop/shop?merchantid=" + id,
+			});
+		}
+	},
+	//阻止遮罩层
+	myCatchTouch(){
+		return false
 	},
 	//根据地理位置初始化首页轮播图
 	initBanner(){
@@ -374,6 +383,8 @@ Page(Object.assign({}, {
 						list.map((item)=>{
 							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 								item.logo = '/images/merchant/merchantLogo.png';
+							} else {
+								item.logo = item.logo+'?imageView2/2/w/100/h/100';
 							}
 							item.isHeight = '68rpx';
 							dataList.push(item);
@@ -400,8 +411,10 @@ Page(Object.assign({}, {
     					});
 					} else {
 						list.map((item)=>{
-							if(!/.*(\.png|\.jpg)$/.test(item.logo.toLowerCase())){
+							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 								item.logo = '/images/merchant/merchantLogo.png'
+							} else {
+								item.logo = item.logo+'?imageView2/2/w/100/h/100';
 							}
 							item.isHeight = '68rpx';
 							dataList.push(item);
@@ -453,6 +466,8 @@ Page(Object.assign({}, {
 					list.map((item)=>{
 						if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 							item.logo = '/images/merchant/merchantLogo.png'
+						} else {
+							item.logo = item.logo+'?imageView2/2/w/100/h/100';
 						}
 						item.isHeight = '68rpx';
 					});

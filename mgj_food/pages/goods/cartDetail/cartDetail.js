@@ -231,6 +231,16 @@ Page({
 			url: '/pages/evaluate/evaluate'
 		});
 	},
+	refundDetail(e){
+      	let { food } = e.currentTarget.dataset;
+     	wx.navigateTo({
+        	url:'/pages/goods/refundDetail/refundDetail?orderid=' + this.data.orderid
+      	});
+    },
+    myCatchTouch(){
+    	console.log(12)
+		return false
+	},
 	close(){
 		this.maskHideAnimation();
 		this.choiceHideAnimation();
@@ -286,6 +296,7 @@ Page({
 		this.maskShowAnimation();
 		if (!this.data.trackDateStatus) {
 			let trackDetailDate = this.trackTimes()
+			console.log(123)
 			this.setData({
 				trackDetailDate:trackDetailDate
 			});
@@ -298,7 +309,8 @@ Page({
 	},
 	trackTimes(){
 		let trackDetailDate = this.data.trackDetailDate
-		let deliveryTask = trackDetailDate.deliveryTask
+		let deliveryTask
+
 		if (trackDetailDate.createTime) {
 			trackDetailDate.createTime = trackDetailDate.createTime.replace(/-/g,'/');
 			trackDetailDate.createTime = new Date(trackDetailDate.createTime).getTime();
@@ -314,21 +326,29 @@ Page({
 			trackDetailDate.modifyTime = new Date(trackDetailDate.modifyTime).getTime();
 			trackDetailDate.modifyTime = trackTime(trackDetailDate.modifyTime);
 		}
-		if (deliveryTask.acceptTime) {
-			deliveryTask.acceptTime = deliveryTask.acceptTime.replace(/-/g,'/');
-			deliveryTask.acceptTime = new Date(deliveryTask.acceptTime).getTime();
-			deliveryTask.acceptTime = trackTime(deliveryTask.acceptTime);
+		if (trackDetailDate.deliveryTask) {
+			deliveryTask = trackDetailDate.deliveryTask
+			if (deliveryTask.orderConfirmTime) {
+				deliveryTask.orderConfirmTime = deliveryTask.orderConfirmTime.replace(/-/g,'/');
+				deliveryTask.orderConfirmTime = new Date(deliveryTask.orderConfirmTime).getTime();
+				deliveryTask.orderConfirmTime = trackTime(deliveryTask.orderConfirmTime);
+			}
+			if (deliveryTask.acceptTime) {
+				deliveryTask.acceptTime = deliveryTask.acceptTime.replace(/-/g,'/');
+				deliveryTask.acceptTime = new Date(deliveryTask.acceptTime).getTime();
+				deliveryTask.acceptTime = trackTime(deliveryTask.acceptTime);
+			}
+			if (deliveryTask.arrivalMerchantTime) {
+				deliveryTask.arrivalMerchantTime = deliveryTask.arrivalMerchantTime.replace(/-/g,'/');
+				deliveryTask.arrivalMerchantTime = new Date(deliveryTask.arrivalMerchantTime).getTime();
+				deliveryTask.arrivalMerchantTime = trackTime(deliveryTask.arrivalMerchantTime);
+			}
+			if (deliveryTask.deliveryDoneTime) {
+				deliveryTask.deliveryDoneTime = deliveryTask.deliveryDoneTime.replace(/-/g,'/');
+				deliveryTask.deliveryDoneTime = new Date(deliveryTask.deliveryDoneTime).getTime();
+				deliveryTask.deliveryDoneTime = trackTime(deliveryTask.deliveryDoneTime);
+			}	
 		}
-		if (deliveryTask.arrivalMerchantTime) {
-			deliveryTask.arrivalMerchantTime = deliveryTask.arrivalMerchantTime.replace(/-/g,'/');
-			deliveryTask.arrivalMerchantTime = new Date(deliveryTask.arrivalMerchantTime).getTime();
-			deliveryTask.arrivalMerchantTime = trackTime(deliveryTask.arrivalMerchantTime);
-		}
-		if (deliveryTask.deliveryDoneTime) {
-			deliveryTask.deliveryDoneTime = deliveryTask.deliveryDoneTime.replace(/-/g,'/');
-			deliveryTask.deliveryDoneTime = new Date(deliveryTask.deliveryDoneTime).getTime();
-			deliveryTask.deliveryDoneTime = trackTime(deliveryTask.deliveryDoneTime);
-		}	
 		trackDetailDate.deliveryTask = deliveryTask 
 		return trackDetailDate
 	},

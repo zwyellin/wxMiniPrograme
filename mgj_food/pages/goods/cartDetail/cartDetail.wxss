@@ -193,12 +193,17 @@
 	z-index: 1000;
 }
 .track-header {
+	position: relative;
 	padding-right: 44rpx;
 	height: 96rpx;
 	line-height: 96rpx;
 	text-align: center;
 	font-size: 34rpx;
 	border-bottom: 1rpx solid #eaeaea;
+}
+.track-close {
+	position: absolute;
+	right: 44rpx;
 }
 .track-content {
 	padding: 82rpx 30rpx 138rpx 56rpx;
@@ -251,4 +256,10 @@
 	margin-left: 3px;
 	border-left: 1rpx solid #d5d5d5;
 }
+.posi {
+	position: relative;
+	top: 0;
+	bottom:0;
+	overflow: hidden;
+}	
 
