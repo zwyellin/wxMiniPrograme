@@ -376,7 +376,7 @@
 			</view>	
 		</view>
 	</view>
-	<view wx:if="{{choice || detailShow || merchantRedBagList.length != 0}}" animation="{{maskAnimation}}" class="mask" bindtap="close">	
+	<view wx:if="{{choice || detailShow || merchantRedBagList.length != 0}}" animation="{{maskAnimation}}" class="mask" bindtap="close" catchtouchmove="myCatchTouch">	
 	</view>
 	<view wx:if="{{choice}}" animation="{{choiceAnimation}}" class="shoprules font-16">
 		<view class="shoprules-title">

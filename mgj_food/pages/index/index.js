@@ -255,7 +255,8 @@ Page(Object.assign({}, {
 	},
 	//阻止遮罩层
 	myCatchTouch(){
-		return false
+		console.log(123);
+		return false;
 	},
 	//根据地理位置初始化首页轮播图
 	initBanner(){

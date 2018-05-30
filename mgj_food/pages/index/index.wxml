@@ -3,7 +3,7 @@
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
 
 <!--index.wxml-->
-<View class="container {{maskShow ? 'posi' : ''}} {{isAgentId ? 'no-goods' : ''}}">
+<View class="container {{isAgentId ? 'no-goods' : ''}}">
 	<view class="page">
 		<!-- 地点 开始 -->
 		<view class="search-view">
@@ -216,6 +216,6 @@
 		</view>
 	</view>
 	<!-- 无代理商结束 -->
-	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close" touchmove="myCatchTouch" >	
+	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close" catchtouchmove="myCatchTouch" >	
 	</view>
 </View>

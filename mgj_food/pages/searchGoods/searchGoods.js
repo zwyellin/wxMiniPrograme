@@ -3,7 +3,7 @@ const { wxRequest } = require('../../utils/util.js');
 
 Page({
 	data:{
-        searchValueIndex:'',
+        searchValueIndex:-1,
         size:24,
 		searchList:[],
         historyList:[]
@@ -92,9 +92,9 @@ Page({
         let historyList = this.data.historyList;
         if (this.data.historyList.length === 7) {
             this.data.historyList.splice(6, 1);
-            this.data.historyList.unshift(value)
+            this.data.historyList.unshift(value);
         } else {
-            this.data.historyList.unshift(value)
+            this.data.historyList.unshift(value);
         }
     },
     hotSearch(e){

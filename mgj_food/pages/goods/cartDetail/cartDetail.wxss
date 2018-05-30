@@ -187,7 +187,7 @@
 	position: fixed;
 	bottom: 0;
 	width: 100%;
-	height: 888rpx;
+	height: 414px;
 	color:#333;
 	background: #fff;
 	z-index: 1000;
@@ -195,8 +195,8 @@
 .track-header {
 	position: relative;
 	padding-right: 44rpx;
-	height: 96rpx;
-	line-height: 96rpx;
+	height: 48px;
+	line-height: 48px;
 	text-align: center;
 	font-size: 34rpx;
 	border-bottom: 1rpx solid #eaeaea;
@@ -206,7 +206,8 @@
 	right: 44rpx;
 }
 .track-content {
-	padding: 82rpx 30rpx 138rpx 56rpx;
+	padding: 21px 30rpx 0 56rpx;
+	/*padding-top: 82rpx;*/
 }
 .track-success {
 	flex-direction:column;

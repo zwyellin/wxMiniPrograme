@@ -108,6 +108,9 @@ Page({
         this.data.evaluateStart +=5;
         this.getevaluate(true);
 	},
+	myCatchTouch(){
+		return false;
+	},
 	//选择商品规格
 	choiceTaste(e){
 		let { taste, parentindex} = e.currentTarget.dataset;

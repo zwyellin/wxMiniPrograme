@@ -327,7 +327,7 @@ Page({
 			trackDetailDate.modifyTime = trackTime(trackDetailDate.modifyTime);
 		}
 		if (trackDetailDate.deliveryTask) {
-			deliveryTask = trackDetailDate.deliveryTask
+			deliveryTask = trackDetailDate.deliveryTask;
 			if (deliveryTask.orderConfirmTime) {
 				deliveryTask.orderConfirmTime = deliveryTask.orderConfirmTime.replace(/-/g,'/');
 				deliveryTask.orderConfirmTime = new Date(deliveryTask.orderConfirmTime).getTime();

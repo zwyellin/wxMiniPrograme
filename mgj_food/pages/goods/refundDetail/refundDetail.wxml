@@ -29,7 +29,7 @@
 			<text class="fl">订单编号</text>
 			<text class="fr font-15" style="margin-top: -2px">{{refundDetail.orderId}}</text>
 		</view>
-		<view wx:if="{{refundDetail.chargeType === 'wx'}}" class="mode" style="line-height: 60rpx">
+		<view wx:if="{{refundDetail.chargeType === 'wx_lite'}}" class="mode" style="line-height: 60rpx">
 			<text class="fl">交易流水号</text>
 			<text class="fr font-15" style="margin-top: -2px">{{refundDetail.transactionNo}}</text>
 		</view>
