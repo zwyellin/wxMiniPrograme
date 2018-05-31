@@ -9,8 +9,12 @@
 }
 .success {
 	flex-direction:column;
-	flex:0 0 56rpx;
-	width:56rpx;
+}
+.refund-item {
+	align-items: center;
+}
+.refund-right {
+	margin-left: 26rpx;
 }
 .refund-success {
 	flex:1;

@@ -61,7 +61,6 @@ Page(Object.assign({}, {
 		initClassList:initClassList	  //分类列表
 	}, 
 	onLoad(){
-		console.log(parseInt(Math.random()*1000000000000000))
 		wxGetLocation({
 			type:'gcj02'
 		}).then(res=>{
@@ -129,7 +128,6 @@ Page(Object.assign({}, {
 		this.data.clickPage = false;
 		if (wx.getStorageSync('shoppingCart')) {
 			let shoppingCart = wx.getStorageSync('shoppingCart');
-			console.log(shoppingCart);
 			this.setData({
 				cartObject:shoppingCart
 			});	

@@ -1,14 +1,32 @@
 <view class="container">
 	<view class="refund-header"></view>
-	<view class="refund-wrapper flex">
+	<view class="refund-wrapper">
 		<view class="success flex">
-			<icon type="success" size="18" color="#ff9900" />
+			<view class="refund-item flex">
+				<icon type="success" size="18" color="#ff9900" />
+				<view class="refund-right flex">
+					<view class="refund-center refund-success"><text>退款申请成功</text></view>
+					<view class="refund-center refund-data"><text>{{refundDetail.applySuccessTime}}</text></view>
+				</view>
+			</view>
 			<view class="line"></view>
-			<icon type="success" size="18" color="#ff9900" />
+			<view class="refund-item flex">
+				<icon type="success" size="18" color="#ff9900" />
+				<view class="refund-right flex">
+					<view class="refund-center refund-success"><text>第三方处理中</text></view>
+					<view class="refund-center refund-data"><text>{{refundDetail.processingTime}}</text></view>
+				</view>
+			</view>
 			<view class="line"></view>
-			<icon type="success" size="18" color="{{refundDetail.state == 2 ? '#ff9900' : '#ccc'}}" />
+			<view class="refund-item flex">
+				<icon type="success" size="18" color="{{refundDetail.state == 2 ? '#ff9900' : '#ccc'}}" />
+				<view class="refund-right flex">
+					<view class="refund-center refund-success"><text>退款成功</text></view>
+					<view wx:if="{{refundDetail.state == 2}}" class="refund-center refund-data"><text>{{refundDetail.refundSuccessTime}}</text></view>
+				</view>
+			</view>
 		</view>
-		<view class="refund-success">
+		<!-- <view class="refund-success">
 			<view class="refund-center"><text>退款申请成功</text></view>
 			<view class="refund-top"></view>
 			<view class="refund-center"><text>第三方处理中</text></view>
@@ -21,7 +39,7 @@
 			<view class="refund-center"><text>{{refundDetail.processingTime}}</text></view>
 			<view class="refund-top"></view>
 			<view wx:if="{{refundDetail.state == 2}}" class="refund-center"><text>{{refundDetail.refundSuccessTime}}</text></view>
-		</view>
+		</view> -->
 	</view>
 	<view class="refund-header"></view>
 	<view class="refund-mode">

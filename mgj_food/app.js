@@ -58,7 +58,7 @@ App({
       },
       fail:function(err){
         that.globalData.token = loginMessage.token;
-        that.globalData.userId = value.id;
+        that.globalData.userId = loginMessage.id;
       }
     });
   },

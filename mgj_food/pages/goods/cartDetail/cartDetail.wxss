@@ -267,6 +267,9 @@
 	margin-left: 6rpx;
 	border-left: 1rpx solid #d5d5d5;
 }
+.track-fooder {
+	height: 96rpx;
+}
 .posi {
 	position: relative;
 	top: 0;

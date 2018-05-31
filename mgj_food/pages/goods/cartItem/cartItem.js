@@ -10,7 +10,8 @@ Page({
       orderDetail:{},   //某一个订单
       value:{},
       start:0,
-      show:false
+      show:false,
+      firstRefresh:false
   	},
   	// onLoad(){
    //    this.findNewUserTOrders();
@@ -23,7 +24,12 @@ Page({
           start:0,
           loginsuccess:true,
         });
-        this.findNewUserTOrders();
+        if (!this.data.firstRefresh) {
+            this.findNewUserTOrders();
+            this.data.firstRefresh = true;
+        } else {
+         wx.startPullDownRefresh();
+        }
       }	else {
         this.setData({
           loginsuccess:false,
@@ -205,7 +211,6 @@ Page({
     //去支付
     payMoney(e){
       let { food } = e.currentTarget.dataset
-      console.log(food)
       wx.navigateTo({
           url: '/pages/pay/pay?orderId=' + food.id + '&price=' + food.totalPrice,
       });
@@ -227,7 +232,9 @@ Page({
     //下拉刷新
     onPullDownRefresh:function() {
       this.data.start = 0;
-      this.findNewUserTOrders();
+      if (this.data.firstRefresh) {
+        this.findNewUserTOrders(true);
+      } 
     },
     //上滑加载更多
     onReachBottom(){

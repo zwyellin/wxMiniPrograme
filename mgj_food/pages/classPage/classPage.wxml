@@ -1,6 +1,6 @@
 <import src="../../components/star/star.wxml" />
+<import src="../../components/merchant/merchant.wxml" />
 <import src="../../components/common/common.wxml" />
-<wxs module="fixed" src="../../utils/star.wxs"></wxs>
 <view class="container {{maskShow ? 'posi' : ''}}" >
 	<view class="goods goods-top flex">
 		<view class="goods-item {{classShow ? 'item-active' : ''}}"
@@ -29,52 +29,7 @@
         </view>
 	</view>
 	<view class="top-40">
-		<view class="goods-wrapper clearfix" 
-			wx:for="{{dataList}}" 
-	      	wx:for-index="index" 
-	      	wx:for-item="item"
-	      	wx:key="index"
-	      	data-id="{{item.id}}"
-	      	bindtap="quickPage">	
-			<view class="icon">
-				<image class="icon-image" src="{{item.logo}}" />
-				<image wx:if="{{item.status === 0}}" class="merchant-status" src="/images/merchant/pause_business_new.png"></image>
-				<image wx:if="{{item.status != 0 && item.businessStatus === 1}}" class="merchant-status" src="/images/merchant/rest_business.png"></image>
-			</view>
-			<view class="content">
-				<view class="name">
-					<text class="name-txt">{{item.name}}</text>
-					<text class="fr" style="font-size: 26rpx;color: #666;font-weight: 500">{{fixed.round(item.distance)}}km</text>
-				</view>
-				<view class="desc clearfix">
-					<view class="fl desc-content">
-						<template is="star-add" data="{{size,item}}"></template>
-						<text class="desc-count">{{fixed.fomatFloat(item.merchantScore,1)}}分</text>
-						<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
-					</view>
-					<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
-				</view>
-				<view class="extra">
-					<text class="count">起送价￥{{item.minPrice}}</text>
-					<text class="count">|</text>
-					<text>配送费￥{{item.shipFee}}</text>
-					<image class="extra-img fr" src="../../images/images/pay.png"></image>
-				</view>
-				<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.height :''}}">
-					<view class="cartcontrol-content flex"
-						wx:for="{{item.promotionActivityList}}" 
-	      				wx:for-index="idx" 
-	      				wx:for-item="promotion"
-	      				wx:key="idx" >
-						<image class="bran" src="{{promotion.promoImg}}"></image>
-						<text class="name">{{promotion.promoName}}</text>
-					</view>
-				</view>
-				<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
-					<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
-				</view>
-			</view>
-		</view>
+		<template is="merchant" data="{{dataList,cartObject,size}}"></template>
 		<!-- 附近的商家 结束 -->
 		<view class="loading-info" wx:if="{{!loading && dataList.length > 9}}">
 	        <image src="/images/merchant/loading.png" class="img-loading"></image>
