@@ -3,6 +3,7 @@
 //获取应用实例
 const app = getApp();
 const { wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
+const { initClassList } = require('../../components/homeClass.js');
 // const obj = require('../../components/common/common.js');
 let interval;
 Page(Object.assign({}, {
@@ -16,10 +17,11 @@ Page(Object.assign({}, {
   		cartObject:null,
   		isShoppingCart:false,
 	    swiper: {
-	      imgUrls: [
-	      	'/images/merchant/advertisement.png',
-	      	'/images/merchant/advertisement.png'
-	      ],
+	      imgUrls: [{
+	      	picUrl:'/images/merchant/advertisement.png',
+	      },{
+	      	picUrl:'/images/merchant/advertisement.png',
+	      }],
 	      indicatorDots: true,
 	      autoplay: true,
 	      interval: 3000,
@@ -56,9 +58,10 @@ Page(Object.assign({}, {
 		maskAnimation:null,   //遮罩层动画
 		start:0,
 		dataList:[],      //商家列表
-		initClassList:[]	  //分类列表
+		initClassList:initClassList	  //分类列表
 	}, 
 	onLoad(){
+		console.log(parseInt(Math.random()*1000000000000000))
 		wxGetLocation({
 			type:'gcj02'
 		}).then(res=>{
@@ -310,12 +313,17 @@ Page(Object.assign({}, {
         		}	
         	},
         }).then(res=> {
-        	console.log(res)
         	if (res.data.code ===0) {
 				let initClassList = res.data.value;
 				let classArr = []
 				for (var i = 0; i < initClassList.length; i++) {
 					if (i === 8) break
+					if (initClassList[i].graySwitch === 0 && !initClassList[i].picUrl || initClassList[i].picUrl && !/.*(\.png|\.jpg)$/i.test(initClassList[i].picUrl)) {
+						initClassList[i].picUrl = '/images/merchant/classification_eva@2x.png'
+					}
+					if (initClassList[i].graySwitch === 1 && !initClassList[i].grayUrl || initClassList[i].picUrl && !/.*(\.png|\.jpg)$/i.test(initClassList[i].grayUrl)) {
+						initClassList[i].grayUrl = '/images/merchant/classification_eva@2x.png'
+					}
 					classArr.push(initClassList[i])
 				}
 				this.setData({
@@ -323,6 +331,9 @@ Page(Object.assign({}, {
 				})	
         	}
         });
+	},
+	errorImg(e){
+		console.log(e)
 	},
 	//根据地理位置初始化分类选项数据
 	findTagCategory(){
@@ -373,6 +384,7 @@ Page(Object.assign({}, {
         	url:'/merchant/userClient?m=findTakeAwayMerchant',
         	method:'POST',
         	data:{
+        		uuid:parseInt(Math.random()*1000000000000000),
         		params:data
         	}	
         }).then(res=>{
@@ -450,9 +462,10 @@ Page(Object.assign({}, {
         	start:this.data.start
 		};
 		wxRequest({
-        	url:'/merchant/userClient?m=findTakeAwayMerchant',
+        	url:'/merchant/userClient?m=findTakeAwayMerchant&uuid=' + parseInt(Math.random()*1000000000000000),
         	method:'POST',
         	data:{
+        		uuid:parseInt(Math.random()*1000000000000000),
         		params:data
         	}	
         }).then(res=>{

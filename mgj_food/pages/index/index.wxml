@@ -62,8 +62,8 @@
 			    wx:for-index="index" 
 			    wx:for-item="item" 
 			    wx:key="index">
-				<image wx:if="{{item.graySwitch === 0}}" class="class-icon" src="{{item.picUrl}}"></image>
-				<image wx:if="{{item.graySwitch === 1}}" class="class-icon" src="{{item.grayUrl}}"></image>
+				<image wx:if="{{item.graySwitch === 0}}" class="class-icon" src="{{item.picUrl}}" binderror="errorImg"></image>
+				<image wx:if="{{item.graySwitch === 1}}" class="class-icon" src="{{item.grayUrl}}" binderror="errorImg"></image>
 				<view class="class-text">
 					<text>{{item.name}}</text>
 				</view>	

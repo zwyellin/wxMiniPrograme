@@ -41,7 +41,7 @@
   	border-radius: 60rpx;
 }
 .header-txt {
-  	flex: 1;
+  	width: 78%;
   	vertical-align: middle;
   	margin-left: 20rpx;
     white-space:nowrap;

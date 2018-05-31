@@ -9,7 +9,6 @@ Page({
 	onLoad(options){
 		this.data.orderId = options.orderid;
 		this.refundInfo()
-		console.log(this.data.orderId)
 	},
 	refundInfo(){
 		wxRequest({
@@ -22,7 +21,6 @@ Page({
 	            } 
 	        },
         }).then(res=>{
-			console.log(res)
 			if (res.data.code === 0) {
 				this.setData({
 					refundDetail:res.data.value

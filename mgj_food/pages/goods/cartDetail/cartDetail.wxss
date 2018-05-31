@@ -12,6 +12,7 @@
 	overflow: hidden;
 }
 .cart-detail-txt {
+	position: relative;
 	font-size: 36rpx;
 	/*text-align: center;*/
 	margin-top: 10rpx;
@@ -179,15 +180,16 @@
 
 /* 订单追踪 */
 .track-entrance {
+	position: absolute;
+	top: 30rpx;
 	margin: 0;
-	padding-left: 12rpx;
-
+	padding-left: 18rpx;
 }
 .order-track {
 	position: fixed;
 	bottom: 0;
 	width: 100%;
-	height: 414px;
+	height: 828rpx;
 	color:#333;
 	background: #fff;
 	z-index: 1000;
@@ -195,53 +197,61 @@
 .track-header {
 	position: relative;
 	padding-right: 44rpx;
-	height: 48px;
-	line-height: 48px;
+	height: 96rpx;
+	line-height: 96rpx;
 	text-align: center;
 	font-size: 34rpx;
 	border-bottom: 1rpx solid #eaeaea;
+}
+.track-item {
+	position: relative;
+	align-items: center;
 }
 .track-close {
 	position: absolute;
 	right: 44rpx;
 }
 .track-content {
-	padding: 21px 30rpx 0 56rpx;
+	padding: 42rpx 30rpx 0 56rpx;
 	/*padding-top: 82rpx;*/
 }
 .track-success {
 	flex-direction:column;
-	flex:0 0 62rpx;
-	width:62rpx;
-	margin-top: 7px;
+	margin-top: 14rpx;
+}
+.track-right {
+	position: absolute;
+	width: 92%;
+	/*left: 62rpx;
+	top: -15rpx;*/
+	margin-left: 62rpx;
 }
 .track-status {
 	flex:1;
 	color:#333;
-	font-size: 15px;
+	font-size: 30rpx;
 }
 .track-data {
-	flex:0 0 120px;
-	width: 120px;
+	flex:0 0 240rpx;
+	width: 240rpx;
 	color: #999;
-	font-size: 15px;
+	font-size: 30rpx;
 }
 .track-top {
-	height:33px;
+	height:66rpx;
 }
 .track-yuan {
-	/*display: inline-block;*/
-	width: 6px;
-	height: 6px;
-	border-radius: 6px;
+	width: 12rpx;
+	height: 12rpx;
+	border-radius: 12rpx;
 	background: #c8c8c8;
 }
 .track-statusyuan {
 	position: absolute;
-	padding: 5px;
-	margin-left: -4px;
-	margin-top: -10px;
-	border-radius: 15px;
+	padding: 9rpx;
+	margin-left: -7rpx;
+	/*margin-top: -9rpx;*/
+	border-radius: 30rpx;
 	background: #ff9900;
 	z-index: 1001;
 }
@@ -253,8 +263,8 @@
 	font-weight: 700;
 }
 .line{
-	height: 47px;
-	margin-left: 3px;
+	height: 94rpx;
+	margin-left: 6rpx;
 	border-left: 1rpx solid #d5d5d5;
 }
 .posi {

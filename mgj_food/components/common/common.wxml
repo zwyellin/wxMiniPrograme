@@ -1,6 +1,6 @@
 <template name="class-common">
 	<view class="time">
-		<view class="flex font-14">
+		<view class="flex font-14" >
 		    <scroll-view class="time-left" scroll-y="true" style="height:574rpx">
 			    <view class="time-left-text {{timeIndex===index ? 'time-active' : ''}}"
 			    	wx:for="{{classList}}"   
@@ -16,7 +16,7 @@
 			       <image wx:elif="{{timeIndex===index}}" class="common-img fr" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>
 			    </view>   
 		    </scroll-view>
-		    <scroll-view class="time-right" scroll-y="true" style="height:574rpx" >
+		    <scroll-view class="time-right" scroll-y="true" style="height:574rpx" catchtouchmove="myCatchTouch">
 		     	<view class="time-right-text time-right-else"
 		     		wx:for="{{childTagCategoryList}}"   
 	  				wx:for-item="item"
@@ -52,7 +52,7 @@
 	</view>
 </template>
 <template name="shipfilter-common">
-	<view class="time" style="height:246rpx">
+	<view class="time" style="height:246rpx" catchtouchmove="myCatchTouch">
 		<view class="flex font-14 shipfilter-content">
 		    <view class="shipfilter-left" style="text-indent: 18rpx">
 		    	<text>配送方式</text>

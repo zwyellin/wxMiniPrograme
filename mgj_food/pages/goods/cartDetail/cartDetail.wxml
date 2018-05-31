@@ -141,61 +141,94 @@
 			<view style="flex:1">订单追踪</view>
 			<view class="track-close font-15" bindtap="close">关闭</view>
 		</view>
-		<scroll-view scroll-y="true" style="height:308px">
-			<view class="track-content flex" catchtouchmove="myCatchTouch">
+		<scroll-view scroll-y="true" style="height:616rpx">
+			<view class="track-content" >
 				<view class="track-success flex">
-					<view class="track-yuan"></view>
-					<view wx:if="{{orderDetail.orderFlowStatus >= 2 || orderDetail.paymentState === 1}}">
-						<view class="line"></view>
+					<view class="track-item flex">
+						<view class="track-yuan"></view>
+						<view class="track-right flex">
+							<view class="track-status"><text>订单已提交</text></view>
+							<view class="track-data"><text>{{trackDetailDate.createTime}}</text></view>
+						</view>
+					</view>
+					<view class="line" wx:if="{{orderDetail.orderFlowStatus >= 2 || orderDetail.paymentState === 1}}"></view>
+					<view class="track-item flex" wx:if="{{orderDetail.orderFlowStatus >= 2 || orderDetail.paymentState === 1}}">
 						<view class="track-yuan"></view>
 						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 2 && orderDetail.paymentState === 1}}">
 							<view class="track-yuan" style="background: #fff"></view>
 						</view>
+						<view class="track-right flex">
+							<view class="track-status {{orderDetail.orderFlowStatus === 2 ? 'track-active' :''}}"><text>支付成功</text></view>
+							<view class="track-data"><text>{{trackDetailDate.paymentFinishTime}}</text></view>
+						</view>
 					</view>
-					<view class="track-location" wx:if="{{orderDetail.deliveryTask.orderConfirmTime}}">
-						<view class="line"></view>
+					<view class="line" wx:if="{{orderDetail.deliveryTask.orderConfirmTime}}"></view>
+					<view class="track-item flex" wx:if="{{orderDetail.deliveryTask.orderConfirmTime}}">
+						<view class="track-yuan"></view>
+						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 3}}">
+							<view class="track-yuan" style="background: #fff"></view>
+						</view>
+						<view class="track-right flex">
+							<view class="track-status {{orderDetail.orderFlowStatus === 3 ? 'track-active' :''}}"><text>商家已接单</text></view>
+							<view class="track-data"><text>{{trackDetailDate.deliveryTask.orderConfirmTime}}</text></view>
+						</view>
+					</view>
+					<view class="line" wx:if="{{orderDetail.deliveryTask.acceptTime}}"></view>
+					<view class="track-item flex" wx:if="{{orderDetail.deliveryTask.acceptTime}}">
 						<view class="track-yuan"></view>
 						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 4}}">
 							<view class="track-yuan" style="background: #fff"></view>
 						</view>
-					</view>
-					<view class="track-location" wx:if="{{orderDetail.deliveryTask.acceptTime}}">
-						<view class="line"></view>
-						<view class="track-yuan"></view>
-						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 4}}">
-							<view class="track-yuan" style="background: #fff"></view>
+						<view class="track-right flex">
+							<view class="track-status {{orderDetail.orderFlowStatus === 4 ? 'track-active' :''}}"><text>骑手已接单</text></view>
+							<view class="track-data"><text>{{trackDetailDate.deliveryTask.acceptTime}}</text></view>
 						</view>
 					</view>
-					<view class="track-location" wx:if="{{orderDetail.deliveryTask.arrivalMerchantTime}}">
-						<view class="line"></view>
-						<view class="track-yuan"></view>
-						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 5}}">
-							<view class="track-yuan" style="background: #fff"></view>
-						</view>
-					</view>
-					<view class="track-location" wx:if="{{orderDetail.deliveryTask.deliveryDoneTime}}">
-						<view class="line"></view>
+					<view class="line" wx:if="{{orderDetail.deliveryTask.arrivalMerchantTime}}"></view>
+					<view class="track-item flex" wx:if="{{orderDetail.deliveryTask.arrivalMerchantTime}}">	
 						<view class="track-yuan"></view>
 						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 6}}">
 							<view class="track-yuan" style="background: #fff"></view>
 						</view>
+						<view class="track-right flex">
+							<view class="track-status {{orderDetail.orderFlowStatus === 6 ? 'track-active' :''}}"><text>骑手已取货</text></view>
+							<view class="track-data"><text>{{trackDetailDate.deliveryTask.arrivalMerchantTime}}</text></view>
+						</view>
 					</view>
-					<view class="track-location" wx:if="{{orderDetail.orderFlowStatus === -1}}">
-						<view class="line"></view>
+					<view class="line" wx:if="{{orderDetail.deliveryTask.deliveryDoneTime}}"></view>
+					<view class="track-item flex" wx:if="{{orderDetail.deliveryTask.deliveryDoneTime}}">
+						<view class="track-yuan"></view>
+						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 6}}">
+							<view class="track-yuan" style="background: #fff"></view>
+						</view>
+						<view class="track-right flex">
+							<view class="track-status {{orderDetail.orderFlowStatus === 6 ? 'track-active' :''}}"><text>骑手已送达</text></view>
+							<view class="track-data"><text>{{trackDetailDate.deliveryTask.deliveryDoneTime}}</text></view>
+						</view>
+					</view>
+					<view class="line" wx:if="{{orderDetail.orderFlowStatus === -1 || orderDetail.orderFlowStatus === 7}}"></view>
+					<view class="track-item flex" wx:if="{{orderDetail.orderFlowStatus === -1}}">
 						<view class="track-yuan"></view>
 						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === -1}}">
 							<view class="track-yuan" style="background: #fff"></view>
 						</view>
+						<view class="track-right flex">
+							<view class="track-status {{orderDetail.orderFlowStatus === -1 ? 'track-active' :''}}"><text>订单已取消</text></view>
+							<view class="track-data"><text>{{trackDetailDate.modifyTime}}</text></view>
+						</view>
 					</view>
-					<view class="track-location" wx:if="{{orderDetail.orderFlowStatus === 7}}">
-						<view class="line"></view>
+					<view class="track-item flex" wx:if="{{orderDetail.orderFlowStatus === 7}}">
 						<view class="track-yuan"></view>
 						<view class="track-statusyuan" wx:if="{{orderDetail.orderFlowStatus === 7}}">
 							<view class="track-yuan" style="background: #fff"></view>
 						</view>
+						<view class="track-right flex">
+							<view class="track-status {{orderDetail.orderFlowStatus === 7 ? 'track-active' :''}}"><text>已完成</text></view>
+							<view class="track-data"><text>{{trackDetailDate.modifyTime}}</text></view>
+						</view>
 					</view>
 				</view>
-				<view class="track-status">
+				<!-- <view class="track-status flex">
 					<view><text>订单已提交</text></view>
 					<view wx:if="{{orderDetail.orderFlowStatus >= 2 || orderDetail.paymentState === 1}}">
 						<view class="track-top"></view>
@@ -219,7 +252,7 @@
 					</view>
 					<view class="track-top"></view>
 					<view wx:if="{{orderDetail.orderFlowStatus === -1}}" class="{{orderDetail.orderFlowStatus === -1 ? 'track-active' :''}}"><text>订单已取消</text></view>
-					<view wx:if="{{orderDetail.orderFlowStatus === 7}}"><text>已完成</text></view>
+					<view wx:if="{{orderDetail.orderFlowStatus === 7}}" class="{{orderDetail.orderFlowStatus === -1 ? 'track-active' :''}}"><text>已完成</text></view>
 				</view>
 				<view class="track-data">
 					<view class="track-center"><text>{{trackDetailDate.createTime}}</text></view>
@@ -246,7 +279,7 @@
 					<view class="track-top"></view>
 					<view wx:if="{{orderDetail.orderFlowStatus === -1}}" class="track-center"><text>{{trackDetailDate.modifyTime}}</text></view>
 					<view wx:if="{{orderDetail.orderFlowStatus === 7}}" class="track-center"><text>{{trackDetailDate.modifyTime}}</text></view>
-				</view>
+				</view> -->
 			</view>
 		</scroll-view>
 		<view class="track-header flex">
