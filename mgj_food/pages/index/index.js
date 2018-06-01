@@ -3,7 +3,7 @@
 //获取应用实例
 const app = getApp();
 const { wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
-const { initClassList } = require('../../components/homeClass.js');
+const { initClassList, imgUrls } = require('../../components/homeClass.js');
 // const obj = require('../../components/common/common.js');
 let interval;
 Page(Object.assign({}, {
@@ -17,11 +17,8 @@ Page(Object.assign({}, {
   		cartObject:null,
   		isShoppingCart:false,
 	    swiper: {
-	      imgUrls: [{
-	      	picUrl:'/images/merchant/advertisement.png',
-	      },{
-	      	picUrl:'/images/merchant/advertisement.png',
-	      }],
+	      imgUrls: imgUrls,
+	      imageShow:false,
 	      indicatorDots: true,
 	      autoplay: true,
 	      interval: 3000,
@@ -256,7 +253,6 @@ Page(Object.assign({}, {
 	},
 	//阻止遮罩层
 	myCatchTouch(){
-		console.log(123);
 		return false;
 	},
 	//根据地理位置初始化首页轮播图
@@ -275,6 +271,9 @@ Page(Object.assign({}, {
         }).then(res=>{
 			if (res.data.code === 0) {
 				let imgUrls = res.data.value;
+				imgUrls.map((item)=>{
+					item.picUrl = item.picUrl +'?imageView2/2/w/350/h/120'
+				})
 				this.setData({
 	      			swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls})
 	    		});
@@ -330,8 +329,11 @@ Page(Object.assign({}, {
         	}
         });
 	},
-	errorImg(e){
-		console.log(e)
+	imageLoad(e){
+		this.data.swiper.imageShow = true;
+		this.setData({
+  			swiper:this.data.swiper
+		});
 	},
 	//根据地理位置初始化分类选项数据
 	findTagCategory(){

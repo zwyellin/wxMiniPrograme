@@ -14,8 +14,10 @@
 .cart-detail-txt {
 	position: relative;
 	font-size: 36rpx;
-	/*text-align: center;*/
+	text-align: center;
 	margin-top: 10rpx;
+	height: 48rpx;
+	line-height: 48rpx;
 }
 .txt-else {
 	color:#999;
@@ -181,9 +183,11 @@
 /* 订单追踪 */
 .track-entrance {
 	position: absolute;
-	top: 30rpx;
-	margin: 0;
+	top: 16rpx;
 	padding-left: 18rpx;
+	width:12rpx;
+	height:26rpx;
+	display:inline-block;
 }
 .order-track {
 	position: fixed;

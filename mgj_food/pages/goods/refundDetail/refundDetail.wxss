@@ -12,14 +12,16 @@
 }
 .refund-item {
 	align-items: center;
+	height: 36rpx;
 }
 .refund-right {
+	width: 100%;
 	margin-left: 26rpx;
 }
 .refund-success {
 	flex:1;
 	color:#333;
-	font-size: 30rpx;
+	font-size: 28rpx;
 }
 .refund-data {
 	flex:0 0 250rpx;

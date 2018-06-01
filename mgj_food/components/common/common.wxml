@@ -8,7 +8,6 @@
 	 				wx:for-index="index" 
 	 				wx:key="index"
 	 				catchtap="selectClass"
-	 				catchtouchmove="myCatchTouch"
 	 				data-index ="{{index}}"
 	 				data-item="{{item}}">
 			        <text class="txt">{{item.name}}</text>
@@ -24,8 +23,7 @@
 	 				wx:key="index"
 	 				data-index="{{index}}"
 	 				data-item="{{item}}"
-		     		catchtap="selectText"
-		     		catchtouchmove="myCatchTouch">
+		     		catchtap="selectText">
 		        	<text>{{item.name}}</text>
 		      	</view>
 		    </scroll-view>

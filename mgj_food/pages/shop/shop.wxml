@@ -340,7 +340,7 @@
 			</scroll-view>
 		</view>
 	</view>
-	<view wx:if="{{detailShow}}" animation="{{choiceAnimation}}" class="shopdetail">
+	<view wx:if="{{detailShow}}" animation="{{choiceAnimation}}" class="shopdetail" catchtouchmove="myCatchTouch">
 		<view class="detail-content">
 			<image class="detail-img" src="{{selectedFood.imgs}}"></image>
 			<view class="detail-title">
@@ -378,7 +378,7 @@
 	</view>
 	<view wx:if="{{choice || detailShow || merchantRedBagList.length != 0}}" animation="{{maskAnimation}}" class="mask" bindtap="close" catchtouchmove="myCatchTouch">	
 	</view>
-	<view wx:if="{{choice}}" animation="{{choiceAnimation}}" class="shoprules font-16">
+	<view wx:if="{{choice}}" animation="{{choiceAnimation}}" class="shoprules font-16" catchtouchmove="myCatchTouch">
 		<view class="shoprules-title">
 			<text>{{selectedFood.name}}</text>
 			<image class="shoprules-img" src="../../images/images/close.png" bindtap="close"></image>
@@ -436,7 +436,7 @@
 			</view>
 		</view>
 	</view>
-	<view class="redbag" wx:if="{{merchantRedBagList.length != 0}}" animation="{{orderRedAnimation}}">
+	<view class="redbag" wx:if="{{merchantRedBagList.length != 0}}" animation="{{orderRedAnimation}}" catchtouchmove="myCatchTouch">
 		<view class="redbag-close">
 			<image class="redbag-close-img" catchtap="close" src="../../images/images/close_red.png"></image>
 		</view>

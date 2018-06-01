@@ -22,7 +22,19 @@ const initClassList = [{
 },{
 	graySwitch:0,
 	picUrl:'/images/merchant/classification_eva@2x.png'
-}]
+}];
+const imgUrls = [{
+  	picUrl:'/images/merchant/advertisement.png',
+  },{
+  	picUrl:'/images/merchant/advertisement.png',
+  },{
+  	picUrl:'/images/merchant/advertisement.png',
+  },{
+  	picUrl:'/images/merchant/advertisement.png',
+  },{
+  	picUrl:'/images/merchant/advertisement.png',
+  },]
 module.exports = {
-	initClassList:initClassList
+	initClassList:initClassList,
+	imgUrls:imgUrls
 }

@@ -327,6 +327,7 @@ Page({
         	data:{
         		token:app.globalData.token,
         		params:{
+        			agentId:app.globalData.agentId,
         			merchantId:this.data.merchantId
         		}	
         	},
@@ -339,7 +340,6 @@ Page({
 				wx.setNavigationBarTitle({
 				  	title: name
 				});
-
 				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}
