@@ -11,7 +11,8 @@
   	<view  wx:if="{{loginsuccess === true}}">
 		<view class="no-login">
 	  		<view class="no-login-content">
-		  		<image class="no-login-img" src="{{avatarUrl}}"></image>
+		  		<image wx:if="{{avatarUrl}}" class="no-login-img" src="{{avatarUrl}}"></image>
+		  		<image wx:if="{{!avatarUrl}}" class="no-login-img" src="/images/images/login_no.png"></image>
 		  		<view class="no-login-text">
 		  			<view>
 		  				<text>{{nickName}}</text>

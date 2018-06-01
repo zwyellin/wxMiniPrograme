@@ -14,7 +14,7 @@ Page({
           scale = Math.round(scale * 100) / 100;
           console.log(scale)
         qrcode = new QR('canvas', {
-            text: "http://prelaunch.horsegj.com/horsegj/dist/html/register/register.html?uid="+loginMessage.id,
+            text: "http://wx.horsegj.com/horsegj/dist/html/register/register.html?uid="+loginMessage.id,
             image:'/images/images/bg.jpg',
             width: 100/scale,
             height: 100/scale,

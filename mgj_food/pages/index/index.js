@@ -71,8 +71,8 @@ Page(Object.assign({}, {
 				}
 			}; 
 			let { longitude, latitude } = gcj02tobd09(lng,lat);
-			// app.globalData.longitude = longitude;
-			// app.globalData.latitude = latitude;
+			app.globalData.longitude = longitude;
+			app.globalData.latitude = latitude;
 			this.init().then((res)=>{
 				if (res.data.code === 0) {
 					let value = res.data.value;
@@ -272,7 +272,7 @@ Page(Object.assign({}, {
 			if (res.data.code === 0) {
 				let imgUrls = res.data.value;
 				imgUrls.map((item)=>{
-					item.picUrl = item.picUrl +'?imageView2/2/w/350/h/120'
+					item.picUrl = item.picUrl +'?imageView2/0/w/710/h/240'
 				})
 				this.setData({
 	      			swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls})
@@ -397,7 +397,7 @@ Page(Object.assign({}, {
 							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 								item.logo = '/images/merchant/merchantLogo.png';
 							} else {
-								item.logo = item.logo+'?imageView2/2/w/100/h/100';
+								item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
 							}
 							item.isHeight = '68rpx';
 							dataList.push(item);
@@ -427,7 +427,7 @@ Page(Object.assign({}, {
 							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 								item.logo = '/images/merchant/merchantLogo.png'
 							} else {
-								item.logo = item.logo+'?imageView2/2/w/100/h/100';
+								item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
 							}
 							item.isHeight = '68rpx';
 							dataList.push(item);
@@ -481,7 +481,7 @@ Page(Object.assign({}, {
 						if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
 							item.logo = '/images/merchant/merchantLogo.png'
 						} else {
-							item.logo = item.logo+'?imageView2/2/w/100/h/100';
+							item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
 						}
 						item.isHeight = '68rpx';
 					});

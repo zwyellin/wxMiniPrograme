@@ -1,9 +1,10 @@
-const { wxRequest } = require('../../../utils/util.js');
+const { wxRequest, refundTime } = require('../../../utils/util.js');
 const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const app = getApp();
 let timer = null;
 Page({
   	data:{
+      time:new Date('2018/5/25 2:00:00').getTime(),
       loading:false,
     	loginsuccess:false,
     	orderList:[],
@@ -13,9 +14,6 @@ Page({
       show:false,
       firstRefresh:false
   	},
-  	// onLoad(){
-   //    this.findNewUserTOrders();
-  	// },
   	onShow(){
       let loginMessage = wx.getStorageSync('loginMessage');
       let loginstatus = wx.getStorageSync('loginstatus');
@@ -24,12 +22,13 @@ Page({
           start:0,
           loginsuccess:true,
         });
-        if (!this.data.firstRefresh) {
-            this.findNewUserTOrders();
-            this.data.firstRefresh = true;
-        } else {
-         wx.startPullDownRefresh();
-        }
+        // if (!this.data.firstRefresh) {
+        //     this.findNewUserTOrders();
+        //     this.data.firstRefresh = true;
+        // } else {
+        //  wx.startPullDownRefresh();
+        // }
+        this.findNewUserTOrders();
       }	else {
         this.setData({
           loginsuccess:false,
@@ -86,6 +85,17 @@ Page({
         clearInterval(timer);
       }
     },
+    changeRefundButton(item){
+      item.createTime = item.createTime.replace(/-/g,'/');
+      let time = new Date(item.createTime).getTime();
+      if (time > this.data.time) {
+        item.refundDetail = true;
+      } else {
+        item.refundDetail = false;
+      }
+      item.createTime = refundTime(item.createTime);
+      return item;
+    },
     findNewUserTOrders(status){
       if (!status) {
         wx.showToast({
@@ -111,7 +121,9 @@ Page({
           if (status) {
             if (valueArr.length != 0) {
               let orderList = this.data.orderList;
+              console.log(orderList)
               valueArr.map((item)=>{
+                item = this.changeRefundButton(item)
                 orderList.push(item);
               });
               this.data.orderList  = orderList;
@@ -124,6 +136,9 @@ Page({
               });
             } 
           } else {
+            valueArr.map((item)=>{
+                item = this.changeRefundButton(item)
+            });
             this.data.orderList  = valueArr;
             this.setData({
               loading:false
@@ -232,13 +247,11 @@ Page({
     //下拉刷新
     onPullDownRefresh:function() {
       this.data.start = 0;
-      if (this.data.firstRefresh) {
-        this.findNewUserTOrders(true);
-      } 
+      this.findNewUserTOrders(); 
     },
     //上滑加载更多
     onReachBottom(){
-      this.data.start+= 10;
+      this.data.start = this.data.orderList.length;
       this.findNewUserTOrders(true);  
     },
 });
