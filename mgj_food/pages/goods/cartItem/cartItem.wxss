@@ -34,6 +34,7 @@
 .order-header {
   padding: 0 38rpx 0 30rpx;
   height: 100rpx;
+  line-height: 100rpx;
   border-bottom: 1rpx solid #eaeaea;
   border-top: 1rpx solid #eaeaea;
   letter-spacing: 2rpx;
@@ -50,17 +51,22 @@
   width: 30rpx;
   height: 14rpx;
   display: inline-block;
-  vertical-align: middle;
   transform: rotate(-90deg);
   margin-top: 20rpx;
   margin-left: 30rpx;
-  border-radius: 60rpx;
 }
 .header-txt {
-  display: inline-block;
-  margin-top: 20rpx;
+  flex: 1;
   vertical-align: middle;
   margin-left: 20rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.header-status {
+  padding-left:10rpx;
+  font-size: 28rpx;
+  color:#ff9900;
 }
 .order-menu {
   padding: 0 38rpx 0 110rpx;
@@ -84,7 +90,7 @@
 .food-txt {
   padding: 12rpx 18rpx;
   border: 4rpx solid #ff5959;
-  margin-top: 14rpx;
+  margin-top: 12rpx;
   border-radius: 10rpx;
   font-size: 26rpx;
 }

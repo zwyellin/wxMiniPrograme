@@ -1,0 +1,57 @@
+<view class="container">
+	<view class="refund-header"></view>
+	<view class="refund-wrapper">
+		<view class="success flex">
+			<view class="refund-item flex">
+				<icon type="success" size="18" color="#ff9900" />
+				<view class="refund-right flex">
+					<view class="refund-center refund-success"><text>退款申请成功</text></view>
+					<view class="refund-center refund-data"><text>{{refundDetail.applySuccessTime}}</text></view>
+				</view>
+			</view>
+			<view class="line" style="border-color: {{refundDetail.processingTime ? '#ff9900' : '#ccc'}}"></view>
+			<view class="refund-item flex">
+				<icon type="success" size="18" color="{{refundDetail.processingTime ? '#ff9900' : '#ccc'}}" />
+				<view class="refund-right flex">
+					<view class="refund-center refund-success"><text>第三方处理中</text></view>
+					<view class="refund-center refund-data"><text>{{refundDetail.processingTime}}</text></view>
+				</view>
+			</view>
+			<view class="line" style="border-color: {{refundDetail.processingTime ? '#ff9900' : '#ccc'}}"></view>
+			<view class="refund-item flex">
+				<icon type="success" size="18" color="{{refundDetail.state == 2 ? '#ff9900' : '#ccc'}}" />
+				<view class="refund-right flex">
+					<view class="refund-center refund-success"><text>退款成功</text></view>
+					<view wx:if="{{refundDetail.state == 2}}" class="refund-center refund-data"><text>{{refundDetail.refundSuccessTime}}</text></view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="refund-header"></view>
+	<view class="refund-mode">
+		<view class="mode">
+			<text class="fl">订单编号</text>
+			<text class="fr font-15" style="margin-top: -2px">{{refundDetail.orderId}}</text>
+		</view>
+		<view wx:if="{{refundDetail.chargeType === 'wx_lite'}}" class="mode" style="line-height: 60rpx">
+			<text class="fl">交易流水号</text>
+			<text class="fr font-15" style="margin-top: -2px">{{refundDetail.transactionNo}}</text>
+		</view>
+	</view>
+	<view class="refund-header"></view>
+	<view class="refund-mode">
+		<view class="mode">
+			<text class="fl">退回至第三方 (微信)</text>
+			<text class="fr">￥{{refundDetail.amt}}</text>
+		</view>
+		<view class="mode" style="line-height: 60rpx">
+			<text class="fl">退回到余额</text>
+			<text class="fr">￥{{refundDetail.balanceCost}}</text>
+		</view>
+		<view style="padding-top: 12rpx">
+			<view class="fr font-15">
+				<text>退款金额： </text><text style="color:#ff9900">￥{{refundDetail.refundTotalMoney}}</text>
+			</view>
+		</view>
+	</view>
+</view>

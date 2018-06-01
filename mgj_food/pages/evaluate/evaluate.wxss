@@ -41,9 +41,12 @@
   	border-radius: 60rpx;
 }
 .header-txt {
-  	display: inline-block;
+  	width: 78%;
   	vertical-align: middle;
   	margin-left: 20rpx;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
 }
 .query-img {
 	  width: 30rpx;

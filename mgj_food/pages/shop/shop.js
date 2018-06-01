@@ -76,6 +76,8 @@ Page({
 		      });
 		      console.log(cate_size)
 		    }
+        }).finally(()=>{
+        	wx.hideLoading()
         });
         this.getStorageShop(merchantid);
 		this.getevaluate();
@@ -105,6 +107,9 @@ Page({
 	loadMore(e){  
         this.data.evaluateStart +=5;
         this.getevaluate(true);
+	},
+	myCatchTouch(){
+		return false;
 	},
 	//选择商品规格
 	choiceTaste(e){
@@ -322,6 +327,7 @@ Page({
         	data:{
         		token:app.globalData.token,
         		params:{
+        			agentId:app.globalData.agentId,
         			merchantId:this.data.merchantId
         		}	
         	},
@@ -334,8 +340,7 @@ Page({
 				wx.setNavigationBarTitle({
 				  	title: name
 				});
-
-				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/.test(value.merchant.logo.toLowerCase())){
+				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}
 				this.setData({
@@ -406,6 +411,12 @@ Page({
         });
 	},
 	getShopList(){
+		wx.showToast({
+	        title: '加载中',
+	        icon: 'loading',
+	        duration: 200000,
+	        mask: true
+	    });
 		return wxRequest({
         	url:'/merchant/userClient?m=showMerchantTakeAwayMenu',
         	method:'POST',
@@ -467,7 +478,7 @@ Page({
 		let total = 0;
 		let count = 0;
 		this.data.selectFoods.forEach((food)=>{	
-			total+= food.priceObject.price*food.count;
+			total+= parseFloat(food.priceObject.price)*food.count;
 			count+= food.count;
 		});
 		if (count === 0) {
@@ -475,8 +486,11 @@ Page({
 		        fold:false
 		    });
 		}
+		if (typeof total === 'number' && total%1 != 0) {
+			total = total.toFixed(2)
+		}
 		this.setData({
-	        totalprice: total,
+	        totalprice:total,
 	        totalcount: count
 	    });
 	},
@@ -499,7 +513,7 @@ Page({
 		let { food, rules} = e.currentTarget.dataset;
 		let attributes = '';
 		let id = food.id; //选择的产品id
-		let categoryId = food.categoryId  //选择的产品分类id
+		let categoryId = food.categoryId;  //选择的产品分类id
     	let priceObject = {}; //产品价格对象
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
@@ -509,10 +523,12 @@ Page({
     	let name = food.name; //产品名称
     	console.log(food);
     	if (priceObject.stock || priceObject.orderLimit) {
-			let count = this.getCartCount(id,priceObject)
-			if (count >=priceObject.stock) {
-				feedbackApi.showToast({title: '该商品库存不足'});
-				return;
+			let count = this.getCartCount(id,priceObject);
+			if (priceObject.stockType) {
+				if (count >=priceObject.stock) {
+					feedbackApi.showToast({title: '该商品库存不足'});
+					return;
+				}
 			}
 			if (priceObject.orderLimit !=0 && count>=priceObject.orderLimit) {
 				feedbackApi.showToast({title: '该商品每单限购'+ count +'份'});
@@ -522,7 +538,6 @@ Page({
 		// 商品规格
 		if (rules) {
 			for (let i = 0; i < food.goodsAttributeList.length; i++) {
-				
 				if (i === food.goodsAttributeList.length-1) {
 					attributes += food.goodsAttributeList[i].select;
 				} else {
@@ -555,7 +570,12 @@ Page({
 		      	if (rules) {
 	      			tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});
 	      		} else {
-	      			tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
+	      			if (priceObject.minOrderNum) {
+	      				tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
+	      				feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份'});
+	      			} else {
+	      				tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
+	      			}
 	      		}	  		
 	        }
 	      	console.log(tmpArr);
@@ -598,7 +618,12 @@ Page({
 							}
 						} else {
 							if (item.count > 1) {
-			              		item.count -= 1;
+			              		if (item.priceObject.minOrderNum === item.count) {
+									tmpArr.splice(index, 1);
+									feedbackApi.showToast({title: item.name+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+			              		} else {
+			              			item.count -= 1;
+			              		}
 			                } else {
 					        	tmpArr.splice(index, 1);
 					      	}
@@ -613,7 +638,12 @@ Page({
 	        	tmpArr.map((item,index)=>{
 	        		if (item.id === id) {
 	        			if (item.count > 1) {
-		              		item.count -= 1;
+		              		if (item.priceObject.minOrderNum === item.count) {
+								tmpArr.splice(index, 1);
+								feedbackApi.showToast({title: item.name+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+		              		} else {
+		              			item.count -= 1;
+		              		}
 		                } else {
 				        	tmpArr.splice(index, 1);
 				      	}

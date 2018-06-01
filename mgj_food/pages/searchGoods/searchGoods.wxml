@@ -1,5 +1,6 @@
 <import src="../../components/star/star.wxml" />
-<wxs module="fixed" src="../../utils/star.wxs"></wxs>
+<import src="../../components/merchant/merchant.wxml" />
+
 <view class="container page-common">
 	<view class="search-goods font-14" style="background: #fff">
 		<input type="text" placeholder="搜索商家、商品名称" placeholder-class="placeholder" cursor="{{80}}" bindinput="searchGoods" bindblur="setsearch" />
@@ -21,48 +22,5 @@
 			</block>
 		</view>
 	</view>
-	<view class="goods-wrapper search-background clearfix" 
-		wx:for="{{searchList}}" 
-      	wx:for-index="index" 
-      	wx:for-item="item"
-      	wx:key="index"
-      	data-id="{{item.id}}"
-      	bindtap="quickPage" >	
-		<view class="icon">
-			<image class="icon-image" src="{{item.logo}}" alt="" />
-		</view>
-		<view class="content">
-			<view class="name">
-				<text class="name-txt">{{item.name}}</text>
-				<text class="fr">{{fixed.round(item.distance)}}km</text>
-			</view>
-			<view class="desc clearfix">
-				<view class="fl desc-content">
-					<template is="star-add" data="{{size,item}}"></template>
-					<text class="desc-count">{{fixed.fomatFloat(item.merchantScore,1)}}分</text>
-					<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
-				</view>
-				<text class="fr" style="font-size: 30rpx;color:#333">{{item.avgDeliveryTime}}分钟</text>
-			</view>
-			<view class="extra">
-				<text class="count">起送价￥{{item.minPrice}}</text>
-				<text class="count">|</text>
-				<text>配送费￥{{item.shipFee}}</text>
-				<image class="extra-img fr" src="../../images/images/pay.png"></image>
-			</view>
-			<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.isHeight :''}}">
-				<view class="cartcontrol-content flex"
-					wx:for="{{item.promotionActivityList}}" 
-      				wx:for-index="idx" 
-      				wx:for-item="promotion"
-      				wx:key="idx" >
-					<image class="bran" src="{{promotion.promoImg}}"></image>
-					<text class="name">{{promotion.promoName}}</text>
-				</view>
-			</view>
-			<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
-				<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
-			</view>
-		</view>
-	</view>
+	<template is="merchant" data="{{dataList,cartObject,size}}"></template>
 </view>

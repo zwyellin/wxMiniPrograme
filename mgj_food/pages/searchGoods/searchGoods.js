@@ -3,19 +3,30 @@ const { wxRequest } = require('../../utils/util.js');
 
 Page({
 	data:{
-        searchValueIndex:'',
+        searchValueIndex:-1,
         size:24,
-		searchList:[],
-        historyList:[]
+		dataList:[],
+        historyList:[],
+        cartObject:null,
+        clickPage:false,
 	},
 	onLoad(){
 		if(wx.getStorageSync('historyList')) {
-            let historyList = wx.getStorageSync('historyList')
+            let historyList = wx.getStorageSync('historyList');
             this.setData({
                 historyList:historyList
-            })
+            });
         }
 	},
+    onShow(){
+        this.data.clickPage = false;
+        if (wx.getStorageSync('shoppingCart')) {
+            let shoppingCart = wx.getStorageSync('shoppingCart');
+            this.setData({
+                cartObject:shoppingCart
+            }); 
+        }
+    },
 	searchGoods(e){
 		let value = e.detail.value;
 		this.search(value);
@@ -45,15 +56,17 @@ Page({
         }).then(res=> {
             console.log(res);
             if (res.data.code ===0) {
-                let searchList = res.data.value;
-                searchList.map((item)=>{
-                    if(!/.*(\.png|\.jpg)$/.test(item.logo)){
+                let dataList = res.data.value;
+                dataList.map((item)=>{
+                    if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
                         item.logo = '/images/merchant/merchantLogo.png';
+                    } else {
+                        item.logo = item.logo+'?imageView2/2/w/100/h/100';
                     }
                     item.isHeight = '68rpx';
                 });
                 this.setData({
-                    searchList: searchList
+                    dataList: dataList
                 });
             } else {
 
@@ -64,25 +77,28 @@ Page({
     },
     moveDown(e){  
         let { item, index } = e.currentTarget.dataset;
-        let searchList = this.data.searchList;
+        let dataList = this.data.dataList;
         if (item.promotionActivityList.length < 3) return;
-        if (searchList[index].isHeight == '68rpx') {
-            searchList[index].isHeight = 34*item.promotionActivityList.length+'rpx';
+        if (dataList[index].isHeight == '68rpx') {
+            dataList[index].isHeight = 34*item.promotionActivityList.length+'rpx';
             this.setData({
-                searchList:searchList
+                dataList:dataList
             });
         } else {
-            searchList[index].isHeight = '68rpx';
+            dataList[index].isHeight = '68rpx';
             this.setData({
-                searchList:searchList
+                dataList:dataList
             });
         }   
     },
     quickPage(e){
 		let { id } = e.currentTarget.dataset;
-		wx.navigateTo({
-			url:"/pages/shop/shop?merchantid=" + id,
-		});
+		if (!this.data.clickPage) {
+            this.data.clickPage = true;
+            wx.navigateTo({
+                url:"/pages/shop/shop?merchantid=" + id,
+            });
+        }
 	},
     setsearch(e){
         let value = e.detail.value;
@@ -90,9 +106,9 @@ Page({
         let historyList = this.data.historyList;
         if (this.data.historyList.length === 7) {
             this.data.historyList.splice(6, 1);
-            this.data.historyList.unshift(value)
+            this.data.historyList.unshift(value);
         } else {
-            this.data.historyList.unshift(value)
+            this.data.historyList.unshift(value);
         }
     },
     hotSearch(e){

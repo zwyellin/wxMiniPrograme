@@ -12,10 +12,10 @@
 			<view class="content">
 				<view class="desc" style="{{itemList.promotionActivityList.length === 0 ? 'margin-top: 29rpx' : ''}}">
 					<text class="count-right">起送价</text>
-					<text>{{itemList.minPrice}}￥</text>
+					<text>￥{{itemList.minPrice}}</text>
 					<text class="count">|</text>
 					<text class="count-right">配送费</text>
-					<text>{{itemList.shipFee}}￥</text>
+					<text>￥{{itemList.shipFee}}</text>
 					<text class="count">|</text>
 					<text>{{itemList.avgDeliveryTime}}分钟送达</text>
 				</view>
@@ -67,10 +67,6 @@
 		    	wx:for-index="index" 
 		    	wx:key="index" >
 		    	<view class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
-		    		<!-- <image class="menu-item-text" wx:if="{{item.icon}}" src="{{item.icon}}"></image>
-		    		<text class="text" style="background: url({{item.icon}})">
-						{{item.name}}
-					</text> -->
 					<text class="menu-item-text">
 						<text wx:if="{{item.icon}}" class="text" style="background: url({{item.icon}});background-size: 24rpx 24rpx">
 						</text>{{item.name}}
@@ -100,7 +96,8 @@
 				    data-food="{{food}}"
 				    bindtap="selectefood">
 					<view class="icon">
-						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs)}}" />
+						<image wx:if="{{food.imgs}}" class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs)}}?imageView2/2/w/100/h/100" />
+						<image wx:if="{{!food.imgs}}" class="icon_img" lazy-load="true" src="/images/merchant/merchantLogo.png" />
 					</view>
 					<view class="content">
 						<view class="detail-name">
@@ -109,29 +106,34 @@
 						<view class="detail-descs">
 							<text>{{food.description}}</text>
 						</view>
-						
 						<view class="detail-extra">
 							<text class="detail-count">月售{{food.monthSaled}}</text>
-							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">{{tage.praise(food.goodCommentNum,food.commentNum)}}%好评率</text>
+							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
 						</view>
-						<view class="detail-price">
-							<text class="now">¥{{food.goodsSpecList[0].price}}</text>
-						</view>
-						<view class="cartcontrol-wrapper">
-							<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
-								<template is="contorl-add" data="{{food,selectFoods}}" ></template>
-							</view>
-							<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
-								<text>商家休息中</text>
-							</view>
-							<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status === 0}}" class="choice-else font-10">
-								<text>商品已售罄</text>
-							</view>
-							<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
-								<view wx:if="{{food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{food}}" catchtap="choice" >
-									<text>选规格</text>
+						<view class="detail-price flex">
+							<text class="now">¥{{food.goodsSpecList[0].price}}<text wx:if="{{food.goodsSpecList[0].originalPrice}}" class="old-price">￥{{food.goodsSpecList[0].originalPrice}}<text class="del"></text></text>
+							</text>
+							<view class="cartcontrol-wrapper">
+								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
+									<template is="contorl-add" data="{{food,selectFoods}}" ></template>
 								</view>
-							</view>	
+								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
+									<text>商家休息中</text>
+								</view>
+								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status === 0}}" class="choice-else font-10">
+									<text>商品已售罄</text>
+								</view>
+								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
+									<view wx:if="{{food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{food}}" catchtap="choice" >
+										<text>选规格</text>
+									</view>
+								</view>	
+							</view>
+						</view>
+						<view wx:if="{{food.goodsSpecList.length == 1 && (food.goodsSpecList[0].orderLimit || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum) && food.goodsAttributeList.length === 0}}" class="item-rules font-10">
+							<text wx:if="{{food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text>
+							<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <10}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
+							<text wx:if="{{food.goodsSpecList[0].minOrderNum}}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
 						</view>
 					</view>
 				</view>
@@ -315,10 +317,10 @@
 					<view class="food" >
 						<view class="name food-name">{{food.name}}
 							<text wx:if="{{food.priceObject.spec}}">({{food.priceObject.spec}})</text>
-							<text wx:if="{{food.attrbuites}}">{{food.attrbuites}}</text>
+							<text wx:if="{{food.attributes}}">{{food.attributes}}</text>
 						</view>
 						<view class="price">
-							<text>￥{{food.priceObject.price*food.count}}</text>
+							<text>￥{{tage.shopFloat(food.priceObject.price*food.count,2)}}</text>
 						</view>
 						<view class="cartcontrol-wrapper">
 							<view class="control" style="height: 72rpx">
@@ -338,7 +340,7 @@
 			</scroll-view>
 		</view>
 	</view>
-	<view wx:if="{{detailShow}}" animation="{{choiceAnimation}}" class="shopdetail">
+	<view wx:if="{{detailShow}}" animation="{{choiceAnimation}}" class="shopdetail" catchtouchmove="myCatchTouch">
 		<view class="detail-content">
 			<image class="detail-img" src="{{selectedFood.imgs}}"></image>
 			<view class="detail-title">
@@ -357,27 +359,26 @@
 			<!-- <image class="button-img" src="../../images/images/cart_2.png"></image>
 			<text class="button-txt">加入购物车</text> -->
 			<!-- </view> -->
-			<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
-				<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
-					<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template>
-				</view>
-				<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
-					<text>商家休息中</text>
-				</view>
-				<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status === 0}}" class="choice-else font-10"  >
-					<text>商品已售罄</text>
-				</view>
-				<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
-					<view wx:if="{{selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{selectedFood}}" catchtap="choice" >
-						<text>选规格</text>
-					</view>
-				</view>	
+		<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
+			<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
+				<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template>
 			</view>
-		
+			<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
+				<text>商家休息中</text>
+			</view>
+			<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status === 0}}" class="choice-else font-10"  >
+				<text>商品已售罄</text>
+			</view>
+			<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
+				<view wx:if="{{selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{selectedFood}}" catchtap="choice" >
+					<text>选规格</text>
+				</view>
+			</view>	
+		</view>
 	</view>
-	<view wx:if="{{choice || detailShow || merchantRedBagList.length != 0}}" animation="{{maskAnimation}}" class="mask" bindtap="close">	
+	<view wx:if="{{choice || detailShow || merchantRedBagList.length != 0}}" animation="{{maskAnimation}}" class="mask" bindtap="close" catchtouchmove="myCatchTouch">	
 	</view>
-	<view wx:if="{{choice}}" animation="{{choiceAnimation}}" class="shoprules font-16">
+	<view wx:if="{{choice}}" animation="{{choiceAnimation}}" class="shoprules font-16" catchtouchmove="myCatchTouch">
 		<view class="shoprules-title">
 			<text>{{selectedFood.name}}</text>
 			<image class="shoprules-img" src="../../images/images/close.png" bindtap="close"></image>
@@ -400,7 +401,7 @@
 				</view>
 				<view class="shoprules-messgae font-10">
 					<text wx:if="{{selectedFood.goodsSpecList[specIndex].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{selectedFood.goodsSpecList[specIndex].orderLimit}}份</text>
-					<text wx:if="{{selectedFood.goodsSpecList[specIndex].stockType}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{selectedFood.goodsSpecList[specIndex].stock}}件</text>
+					<text wx:if="{{selectedFood.goodsSpecList[specIndex].stockType && selectedFood.goodsSpecList[specIndex].stock <10}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{selectedFood.goodsSpecList[specIndex].stock}}件</text>
 					<text wx:if="{{selectedFood.goodsSpecList[specIndex].minOrderNum}}" class="rules-text" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{selectedFood.goodsSpecList[specIndex].minOrderNum}}份起购</text>
 				</view>
 			</view>
@@ -435,7 +436,7 @@
 			</view>
 		</view>
 	</view>
-	<view class="redbag" wx:if="{{merchantRedBagList.length != 0}}" animation="{{orderRedAnimation}}">
+	<view class="redbag" wx:if="{{merchantRedBagList.length != 0}}" animation="{{orderRedAnimation}}" catchtouchmove="myCatchTouch">
 		<view class="redbag-close">
 			<image class="redbag-close-img" catchtap="close" src="../../images/images/close_red.png"></image>
 		</view>

@@ -3,9 +3,9 @@
 <view class="container page-common font-16">
 	<view class="order" >	
 		<view class="evaluate-item evaluate-border">
-			<view class="header-text">
-				<image class="header-img" src="{{orderObject.merchant.logo}}" ></image>
-      			<text class="header-txt">{{orderObject.merchant.name}}</text>
+			<view class="header-text flex">
+				<image style="margin-top: 20rpx" class="header-img" src="{{orderObject.merchant.logo}}" ></image>
+      			<view class="header-txt"><text>{{orderObject.merchant.name}}</text></view>
 			</view>
 		</view>
 		<view class="order-evaluate">

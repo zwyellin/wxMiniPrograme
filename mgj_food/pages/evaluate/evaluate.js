@@ -28,9 +28,6 @@ Page({
 	    	orderItems:orderItems,
 	    	orderId:orderId
 	    })
-	    console.log(orderObject)
-	    console.log(orderItems)
-	    console.log(parseInt('10分钟'))
 	},
 	bindTimeChange(e){
 		this.setData({

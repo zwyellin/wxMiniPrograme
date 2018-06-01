@@ -87,7 +87,6 @@ var cart = {
 		if (cartObject === null) return 0;
 	    var count = 0;
 	    id = id.toString();
-	    console.log(id)
 	    var cartList = cartObject[id];
 	    if (cartList) {
 	    	for (var i = 0; i < cartList.length; i++) {
@@ -120,6 +119,6 @@ module.exports = {
   getMerchantCount:cart.getMerchantCount,
   strReplace:cart.strReplace,
   payDesc:cart.payDesc,
-  round:cart.round
+  round:cart.round,
   removefh:cart.removefh
 };

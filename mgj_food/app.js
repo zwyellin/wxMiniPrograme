@@ -58,7 +58,7 @@ App({
       },
       fail:function(err){
         that.globalData.token = loginMessage.token;
-        that.globalData.userId = value.id;
+        that.globalData.userId = loginMessage.id;
       }
     });
   },
@@ -74,8 +74,8 @@ App({
     domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    latitude:'',
-    longitude:''
+    latitude:'39.977261',
+    longitude:'116.336983'
   }
 });
 // prelaunch

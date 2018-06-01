@@ -1,4 +1,4 @@
-@import "../../components/goods.wxss";
+@import "../../components/merchant/merchant.wxss";
 @import "../../components/star/star.wxss";
 @import "../../components/common/common.wxss";
 .page {

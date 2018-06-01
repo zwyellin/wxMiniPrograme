@@ -10,6 +10,8 @@ Page({
 		type2:'排序',
 		type3:'筛选',
 		classList:[],
+		cartObject:null,
+		clickPage:false,
 		childTagCategoryList:[],
 		classShow:false,
 		shipShow:false,
@@ -59,17 +61,27 @@ Page({
         	}
         });
 	},
+	onShow(){
+		this.data.clickPage = false;
+		if (wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = wx.getStorageSync('shoppingCart');
+			console.log(shoppingCart);
+			this.setData({
+				cartObject:shoppingCart
+			});	
+  		}
+	},
 	moveDown(e){
 		let { item, index } = e.currentTarget.dataset;
 		let dataList = this.data.dataList;
 		if (item.promotionActivityList.length < 3) return;
-		if (dataList[index].height === '68rpx') {
-			dataList[index].height = 34*item.promotionActivityList.length+'rpx';
+		if (dataList[index].isHeight === '68rpx') {
+			dataList[index].isHeight = 34*item.promotionActivityList.length+'rpx';
 			this.setData({
 				dataList:dataList
 			});
 		} else {
-			dataList[index].height = '68rpx';
+			dataList[index].isHeight = '68rpx';
 			this.setData({
 				dataList:dataList
 			});
@@ -77,9 +89,16 @@ Page({
 	},
 	quickPage(e){
 		let { id } = e.currentTarget.dataset;
-		wx.navigateTo({
-			url:"/pages/shop/shop?merchantid=" + id,
-		});
+		if (!this.data.clickPage) {
+			this.data.clickPage = true;
+			wx.navigateTo({
+				url:"/pages/shop/shop?merchantid=" + id,
+			});
+		}
+	},
+	//阻止遮罩层
+	myCatchTouch(){
+		return false
 	},
 	getDataList(status){
 		if (!status) {
@@ -114,7 +133,12 @@ Page({
 				if (status) {
 					if (res.data.value.length != 0) {
 						list.map((item)=>{
-							item.height = '68rpx';
+							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
+								item.logo = '/images/merchant/merchantLogo.png'
+							} else {
+								item.logo = item.logo+'?imageView2/2/w/100/h/100';
+							}
+							item.isHeight = '68rpx';
 							dataList.push(item);
 						});
 		        		console.log(res.data.value);
@@ -139,7 +163,12 @@ Page({
     					});
 					} else {
 						list.map((item)=>{
-							item.height = '68rpx';
+							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
+								item.logo = '/images/merchant/merchantLogo.png';
+							} else {
+								item.logo = item.logo+'?imageView2/2/w/100/h/100';
+							}
+							item.isHeight = '68rpx';
 						});
 						this.setData({
         					dataList:list,
