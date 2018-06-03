@@ -61,7 +61,7 @@ Page({
                     if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
                         item.logo = '/images/merchant/merchantLogo.png';
                     } else {
-                        item.logo = item.logo+'?imageView2/2/w/100/h/100';
+                        item.logo = item.logo+'?imageView2/0/w/170/h/130';
                     }
                     item.isHeight = '68rpx';
                 });

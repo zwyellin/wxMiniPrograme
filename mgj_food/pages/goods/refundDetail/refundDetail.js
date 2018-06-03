@@ -11,6 +11,12 @@ Page({
 		this.refundInfo()
 	},
 	refundInfo(){
+		wx.showToast({
+          title: '加载中',
+          icon: 'loading',
+          duration: 200000,
+          mask: true
+        });
 		wxRequest({
 	        url:'/merchant/userClient?m=refundInfo',
 	        method:'POST',
@@ -26,6 +32,8 @@ Page({
 					refundDetail:res.data.value
 				})
 			}
+        }).finally(()=>{
+        	wx.hideLoading()
         })
 	}
 });
