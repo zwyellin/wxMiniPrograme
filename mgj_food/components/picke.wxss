@@ -1,0 +1,47 @@
+.pickertag{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	height: 600rpx;
+	width: 100%;
+    background-color: #ffff;
+    padding: 20rpx;
+    z-index: 999;
+    box-sizing: border-box;
+}
+.news{
+    height: 270rpx;
+    line-height: 38rpx;
+    overflow: hidden;
+}
+.news-text{
+    display: flex;
+    color: #333;
+    width: 100%;
+    font-size: 22rpx;
+}
+.notice{
+    width: 100%;
+    line-height: 60rpx;
+    color: black;
+    font-size: 40rpx;
+    
+}
+.notice-text{
+    width: 100%;
+    line-height: 40rpx;
+    color: black;
+    font-size: 28rpx;
+}
+.give{
+    display: inline-block;
+    font-size: 28rpx;
+    color: #000;
+}
+.text{
+    display: inline-block;
+    width: 1rpx;
+    height: 28rpx;
+    color: #ccc;
+    margin: 0 20rpx -2rpx 20rpx;
+}

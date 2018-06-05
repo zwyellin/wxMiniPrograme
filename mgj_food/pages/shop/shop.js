@@ -49,11 +49,14 @@ Page({
 	    item:{},
 	    shipScore:0,
 	    evaluate:[],
-	    value:{},       //确认订单后台返回信息
+		value:{},       //确认订单后台返回信息
+		pickertag:false,
+		pickerId:0
 	},
 	onLoad(options) {
 		let { merchantid } = options;
 		this.data.merchantId = merchantid;
+		// this.data.merchantId = 402;
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
 			console.log(res.data.value.menu);
@@ -90,6 +93,16 @@ Page({
 		    }
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
+	},
+	//获取活动数据
+	broadcast(e){
+		this.maskShowAnimation();
+		console.log(this.data.pickertag)
+		this.setData({
+			pickertag:true,
+			maskShow:true
+		})
+
 	},
 	//获取购物车缓存数据
 	getStorageShop(merchantId){
@@ -343,6 +356,7 @@ Page({
 				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}
+				console.log(value.merchant)
 				this.setData({
 					itemList:value.merchant,
 					item:value.merchant,
@@ -440,7 +454,6 @@ Page({
 			selectedFood:food,
 			choice:true,
 			detailShow:false,
-			maskShow:true,
 			specIndex:0
 		});
 	},
@@ -448,11 +461,11 @@ Page({
 	selectefood(e){
 		this.maskShowAnimation();
 		this.choiceShowAnimation();
+		
 		let { food } = e.currentTarget.dataset;
 		this.setData({
 	        selectedFood:food,
-	        detailShow:true,
-	        maskShow:true,
+			detailShow:true,
 	    });
 	},
 	//关闭查看商品详情
@@ -462,7 +475,9 @@ Page({
 		this.orderHideAnimation();
 		this.setData({
 			choice:false,
-	        detailShow:false,
+			detailShow:false,
+
+			pickertag:false
 	    });
 	},
 	//查看购物车详情
@@ -707,6 +722,7 @@ Page({
 	},
 	//拨打商家电话
 	callPhone(e){
+		
 	    wx.makePhoneCall({
 	      phoneNumber: this.data.itemList.contacts   //电话号码
 	    });

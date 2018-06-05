@@ -81,7 +81,7 @@ Page({
         	},
         });
 	},
-	checkPhone(e){
+	checkPhone(e){//手机号码
 		let phone = e.detail.value;
 		if (phone.length == 11) {
 			this.setData({
@@ -96,13 +96,13 @@ Page({
 			});
 		}	
 	},
-	checkPass(e){
+	checkPass(e){//密码
 		let pass = e.detail.value;
 		this.setData({
 			password:pass
 		});
 	},
-	login(){
+	login(){//登录
 		if(this.data.phone === ''){
 			feedbackApi.showToast({title: '手机号不能为空'});
 			return;

@@ -118,8 +118,27 @@ var QRCode;
             this.setupPositionProbePattern(0, 0); this.setupPositionProbePattern(this.moduleCount - 7, 0); this.setupPositionProbePattern(0, this.moduleCount - 7); this.setupPositionAdjustPattern(); this.setupTimingPattern(); this.setupTypeInfo(test, maskPattern); if (this.typeNumber >= 7) { this.setupTypeNumber(test); }
             if (this.dataCache == null) { this.dataCache = QRCodeModel.createData(this.typeNumber, this.errorCorrectLevel, this.dataList); }
             this.mapData(this.dataCache, maskPattern);
-        }, setupPositionProbePattern: function (row, col) { for (var r = -1; r <= 7; r++) { if (row + r <= -1 || this.moduleCount <= row + r) continue; for (var c = -1; c <= 7; c++) { if (col + c <= -1 || this.moduleCount <= col + c) continue; if ((0 <= r && r <= 6 && (c == 0 || c == 6)) || (0 <= c && c <= 6 && (r == 0 || r == 6)) || (2 <= r && r <= 4 && 2 <= c && c <= 4)) { this.modules[row + r][col + c] = true; } else { this.modules[row + r][col + c] = false; } } } }, getBestMaskPattern: function () {
-            var minLostPoint = 0; var pattern = 0; for (var i = 0; i < 8; i++) { this.makeImpl(true, i); var lostPoint = QRUtil.getLostPoint(this); if (i == 0 || minLostPoint > lostPoint) { minLostPoint = lostPoint; pattern = i; } }
+        }, setupPositionProbePattern: function (row, col) { 
+            for (var r = -1; r <= 7; r++) { 
+                if (row + r <= -1 || this.moduleCount <= row + r) continue; 
+                for (var c = -1; c <= 7; c++) { 
+                    if (col + c <= -1 || this.moduleCount <= col + c) continue; 
+                    if ((0 <= r && r <= 6 && (c == 0 || c == 6)) || (0 <= c && c <= 6 && (r == 0 || r == 6)) || (2 <= r && r <= 4 && 2 <= c && c <= 4)) { 
+                        this.modules[row + r][col + c] = true; 
+                    } else { 
+                        this.modules[row + r][col + c] = false; 
+                    } 
+                } 
+            } 
+        }, getBestMaskPattern: function () {
+            var minLostPoint = 0; 
+            var pattern = 0; 
+            for (var i = 0; i < 8; i++) { 
+                this.makeImpl(true, i); 
+                var lostPoint = QRUtil.getLostPoint(this); 
+                if (i == 0 || minLostPoint > lostPoint) { 
+                    minLostPoint = lostPoint; pattern = i; 
+                } }
             return pattern;
         }, createMovieClip: function (target_mc, instance_name, depth) {
             var qr_mc = target_mc.createEmptyMovieClip(instance_name, depth); var cs = 1; this.make(); for (var row = 0; row < this.modules.length; row++) { var y = row * cs; for (var col = 0; col < this.modules[row].length; col++) { var x = col * cs; var dark = this.modules[row][col]; if (dark) { qr_mc.beginFill(0, 100); qr_mc.moveTo(x, y); qr_mc.lineTo(x + cs, y); qr_mc.lineTo(x + cs, y + cs); qr_mc.lineTo(x, y + cs); qr_mc.endFill(); } } }

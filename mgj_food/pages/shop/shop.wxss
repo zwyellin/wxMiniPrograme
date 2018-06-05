@@ -3,12 +3,14 @@
 @import "../../components/evaluate.wxss";
 @import "../../components/star/star.wxss";
 @import "../../components/showToast/showToast.wxss";
+@import "../../components/picke.wxss";
 .header {
 	position: relative;
 	overflow: hidden;
 	color:#fff;
 	background:#482a1a;	
 }
+
 .title {
 	display: block;
 	width: 100%;
