@@ -1,9 +1,9 @@
-@import "../../components/goodsdetail.wxss";
+@import "../../components/shop/goodsdetail.wxss";
 @import "../../components/control/control.wxss";
 @import "../../components/evaluate.wxss";
 @import "../../components/star/star.wxss";
 @import "../../components/showToast/showToast.wxss";
-@import "../../components/picke.wxss";
+@import "../../components/shop/picke.wxss";
 .header {
 	position: relative;
 	overflow: hidden;
@@ -20,7 +20,7 @@
 }
 .content-wrapper {
 	display: flex;
-	padding: 4rpx 30rpx 26rpx;
+	padding: 4rpx 30rpx 16rpx;
 	border-bottom: 1rpx dashed #fff;
 }
 .avatar {
@@ -74,6 +74,7 @@
 	letter-spacing: 2rpx;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	white-space: nowrap;
 }
 .food-name {
 	width: 60%;
@@ -161,14 +162,6 @@
 	border-bottom: 1rpx solid #ededed;
 	box-sizing: border-box;
 }
-/*.menu-item .text{
-	display: inline-block;
-	height: 120rpx;
-	font-size: 28rpx;
-	overflow: hidden;
-	word-wrap : break-word;
-	text-overflow: ellipsis;
-}*/
 .menu-item .text {
 	display: inline-block;
 	/*vertical-align:middle;*/
@@ -177,14 +170,6 @@
 	margin-right: 3px;
 	background-repeat: no-repeat;
 }
-/*.menu-item-text {
-	width: 24rpx;
-	height: 24rpx;
-	display: inline-block;
-	vertical-align: top;
-	margin-top: 46rpx;
-	margin-right: 6rpx;
-}*/
 .menu-item-text{
 	/*width: 56px;*/
 	display: table-cell;

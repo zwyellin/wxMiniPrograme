@@ -1,0 +1,32 @@
+<template name="activity">
+	<view class="pickertag" wx:if="{{pickertag}}" animation="{{pickertagAnimation}}">
+		<view class="news">
+			<view class="news-text"
+				wx:for="{{itemList.promotionActivityList}}" 
+				wx:for-item="item" 
+				wx:for-index="index"
+				wx:key="index" 
+				>
+				<image class="bran"  style="margin-top: 3rpx" src="{{item.promoImg}}"></image>
+				<text class="name bran-left" >{{item.promoName}}</text>
+			</view>
+		</view>
+		<view class="news">
+			<view class="notice">配送</view>
+			<view style="height: 26rpx;line-height: 26rpx">
+				<text class="give">起送 ¥{{itemList.minPrice}}</text>
+				<text class="pickertag-text">|</text>
+				<text class="give">配送 ¥{{itemList.shipFee}}</text>
+				<text class="pickertag-text">|</text>
+				<text class="give">{{itemList.avgDeliveryTime}}分钟送达</text>
+			</view>
+			<view style="height: 26rpx;line-height: 26rpx;margin-top: 6rpx">
+				<text class="notice-text">配送时间：{{itemList.workingTime}}</text>
+			</view>
+		</view>		
+		<view>
+			<view class="notice">公告</view>
+			<view style="height: 26rpx;line-height: 26rpx"><text class="notice-text">{{itemList.broadcast || '商家暂无公告'}}</text></view>
+		</view>			
+	</view>
+</template>

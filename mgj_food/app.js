@@ -74,8 +74,8 @@ App({
     domain: 'https://prelaunch.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    latitude:'',
-    longitude:''
+    latitude:'39.977261',
+    longitude:'116.336983'
   }
 });
 // prelaunch

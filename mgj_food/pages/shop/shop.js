@@ -1,6 +1,7 @@
 const { wxRequest } = require('../../utils/util.js');
 const feedbackApi=require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const app = getApp();
+let ActivityListHeight = 149;
 Page({
 	data:{
 		loading:false,
@@ -11,6 +12,7 @@ Page({
 		maskAnimation:null,
 		choiceAnimation:null,
 		orderRedAnimation:null,   //红包动画
+		pickertagAnimation:null,
 		tab: {
 	      tabList: ["商品","评价","商家"],
 	      cur: "商品",
@@ -50,8 +52,7 @@ Page({
 	    shipScore:0,
 	    evaluate:[],
 		value:{},       //确认订单后台返回信息
-		pickertag:false,
-		pickerId:0
+		pickertag:false
 	},
 	onLoad(options) {
 		let { merchantid } = options;
@@ -88,7 +89,7 @@ Page({
 	    wx.getSystemInfo({
 		    success: res => {
 		        this.setData({
-		          windowScrollHeight: res.windowHeight - 142
+		          windowScrollHeight: res.windowHeight - 140
 		        });
 		    }
 	    });
@@ -97,12 +98,12 @@ Page({
 	//获取活动数据
 	broadcast(e){
 		this.maskShowAnimation();
-		console.log(this.data.pickertag)
+		this.pickertagShowAnimation()
+		console.log(this.data.pickertag);
 		this.setData({
 			pickertag:true,
 			maskShow:true
-		})
-
+		});
 	},
 	//获取购物车缓存数据
 	getStorageShop(merchantId){
@@ -363,6 +364,7 @@ Page({
 					minPrice:value.merchant.minPrice,
 					shipScore:value.merchant.shipScore
 				});
+				ActivityListHeight += this.data.itemList.promotionActivityList.length*16
 				if (value.merchant.merchantRedBagList.length != 0) {
 					merchantRedBagList.map((item)=>{
 						item.isReceive = '立即领取'
@@ -729,7 +731,7 @@ Page({
 	},
 	maskShowAnimation(){
 		let animation = wx.createAnimation({  
-			duration: 1000,
+			duration: 500,
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
@@ -802,7 +804,7 @@ Page({
 	orderShowAnimation(){
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
-			duration: 1000,
+			duration: 500,
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
@@ -819,7 +821,7 @@ Page({
 	orderHideAnimation(){
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
-			duration: 1000,
+			duration: 500,
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
@@ -837,6 +839,24 @@ Page({
 		this.setData({  
 		   orderRedAnimation: animation.export()  
 		}); 
+	},
+	pickertagShowAnimation(){
+		console.log(ActivityListHeight)
+		let animation = wx.createAnimation({ 
+			transformOrigin: "50% 50%", 
+			duration: 500,
+			timingFunction: "ease",
+		});
+		setTimeout(()=> {
+	      	animation.bottom(0).step();
+	      	this.setData({
+	        	pickertagAnimation: animation.export(),
+	      	});
+	    }, 200);
+		animation.bottom(-ActivityListHeight+'px').step();
+		this.setData({  
+		   pickertagAnimation: animation.export()  
+		});
 	},
 	onShareAppMessage(res) {
     	return {

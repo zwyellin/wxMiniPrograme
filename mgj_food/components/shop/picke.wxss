@@ -3,11 +3,16 @@
 	left: 0;
 	bottom: 0;
 	width: 100%;
-    background-color: #ffff;
-    padding: 20rpx;
-    z-index: 999;
+    background: #fff;
+    padding: 28rpx 30rpx 54rpx 30rpx;
+    z-index: 1000;
+    min-height: 138px;
     box-sizing: border-box;
     transform: 0.3s;
+}
+.bran-left {
+    margin-left: 8rpx;
+    line-height: 32rpx;
 }
 .news{
     margin-bottom: 22rpx;
@@ -21,21 +26,20 @@
 .notice{
     width: 100%;
     color: #333;
-    font-size: 30rpx;
+    font-size: 34rpx;
+    font-weight: 700;
 }
 .notice-text{
     width: 100%;
-    line-height: 32rpx;
     color:#494949;
-    font-size: 22rpx;
+    font-size: 24rpx;
 }
 .give{
     display: inline-block;
-    line-height: 32rpx;
     font-size: 22rpx;
     color: #494949;
 }
-.text{
+.pickertag-text{
     display: inline-block;
     width: 1rpx;
     height: 22rpx;
@@ -43,8 +47,4 @@
     font-size: 22rpx;
     margin: 0 20rpx -2rpx 20rpx;
 }
-.textlength{
-    overflow:hidden; 
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
+

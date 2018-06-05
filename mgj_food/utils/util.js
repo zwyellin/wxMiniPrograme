@@ -156,15 +156,26 @@ const formatTime = function (date) {//获取到当前时间
 
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':');
 };
+
 const trackTime = function(date){//得到当前时间
+  var {month, day, hour, minute } = getTime(date)
+
+  return month + '月' + day +'日' + ' ' + hour + ':' + minute
+}
+const getTime = function (date) {
   var month = formatNumber(new Date(date).getMonth() + 1);
   var day = formatNumber(new Date(date).getDate());
 
   var hour = formatNumber(new Date(date).getHours());
   var minute = formatNumber(new Date(date).getMinutes());
-
-  return month + '月' + day +'日' + ' ' + hour + ':' + minute
+  return {month, day, hour, minute }
 }
+const refundTime = function(date){
+  var {month, day, hour, minute } = getTime(date)
+
+  return month + '-' + day + ' ' + hour + ':' + minute
+}
+
 const gcj02tobd09 = function (lng, lat) {//经纬度坐标
   var x_PI = 3.14159265358979324 * 3000.0 / 180.0;
   var PI = 3.1415926535897932384626;
@@ -190,6 +201,7 @@ module.exports = {
   qqMap,
   wxGetLocation,
   trackTime,
+  refundTime,
   wxShowModal: wxPromisify(wx.showModal),
   wxShowToast: wxPromisify(wx.showToast),
   wxLogin: wxPromisify(wx.login)

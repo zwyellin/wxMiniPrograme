@@ -1,5 +1,6 @@
 <import src="../../components/control/control.wxml" />
 <import src="../../components/star/star.wxml" />
+<import src="../../components/shop/activity.wxml" />
 <import src="../../components/showToast/showToast.wxml" />
 <wxs module="tage" src="../../utils/star.wxs"></wxs>
 <view class="container page-index">
@@ -32,7 +33,7 @@
 						</swiper-item>
 					</swiper>
 					<view wx:if="{{itemList.promotionActivityList.length > 0}}" 
-						class="fr" bindtap="broadcast">
+						class="fr" bindtap="broadcast" style="margin-top: 6rpx">
 						<text>{{itemList.promotionActivityList.length}}个活动</text>
 						<image class="desc-img" src="../../images/images/down.png"></image>	
 					</view>	
@@ -470,36 +471,5 @@
 		</view>
 	</view>
 	<template is="showToast" data="{{showToast: showToast}}" />
-	<view class="pickertag" wx:if="{{pickertag }}">
-			<view class="news">
-					<view class="news-text"
-						wx:for="{{itemList.promotionActivityList}}" 
-						wx:for-item="item" 
-						wx:for-index="index"
-						wx:key="index" 
-						>
-						<image class="bran"  src="{{item.promoImg}}"></image>
-						<text class="name textlength"  >{{item.promoName}}</text>
-					</view>
-			</view>
-			<view class="news">
-				<view class="notice">配送</view>
-				<view >
-					<text class="give">起送 ¥{{itemList.minPrice}}</text>
-					<text class="text">|</text>
-					<text class="give">配送 ¥{{itemList.shipFee}}</text>
-					<text class="text">|</text>
-					<text class="give">{{itemList.avgDeliveryTime}}分钟送达</text>
-				</view>
-				<view >
-					<text class="notice-text">配送时间：{{itemList.workingTime
-
-}}</text>
-				</view>
-			</view>		
-			<view>
-				<view class="notice">公告</view>
-				<text class="notice-text">{{itemList.broadcast || '商家暂无公告'}}</text>
-			</view>			
-	</view>
+	<template is="activity" data="{{pickertag,itemList,pickertagAnimation}}" />
 </view>
