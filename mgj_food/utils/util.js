@@ -116,6 +116,20 @@ const wxGetLocation = function(obj){
   })
 }
 
+const catchHandle = function (e) {
+  let message;  
+  if (e.statusCode === 400 && e.data.code == 0) {
+    message = e.data.content;
+  } else {
+    message = "请求异常";
+  }
+  
+  wxPromisify(wx.showModal)({
+    title: "提示",
+    content: message,
+    showCancel: false
+  });
+};
 
 const formatNumber = function (n) {
   n = n.toString();
@@ -130,7 +144,7 @@ const format = function (date,a) {
   return [year, month, day].map(formatNumber).join(a);
 };
 
-const formatTime = function (date) {
+const formatTime = function (date) {//获取到当前时间
   var year = new Date(date).getFullYear();
   var month =new Date(date).getMonth() + 1;
   var day = new Date(date).getDate();
@@ -142,7 +156,7 @@ const formatTime = function (date) {
 
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':');
 };
-const trackTime = function(date){
+const trackTime = function(date){//得到当前时间
   var month = formatNumber(new Date(date).getMonth() + 1);
   var day = formatNumber(new Date(date).getDate());
 
@@ -151,16 +165,7 @@ const trackTime = function(date){
 
   return month + '月' + day +'日' + ' ' + hour + ':' + minute
 }
-const refundTime = function(date){
-  var month = formatNumber(new Date(date).getMonth() + 1);
-  var day = formatNumber(new Date(date).getDate());
-
-  var hour = formatNumber(new Date(date).getHours());
-  var minute = formatNumber(new Date(date).getMinutes());
-
-  return month + '-' + day + ' ' + hour + ':' + minute
-}
-const gcj02tobd09 = function (lng, lat) {
+const gcj02tobd09 = function (lng, lat) {//经纬度坐标
   var x_PI = 3.14159265358979324 * 3000.0 / 180.0;
   var PI = 3.1415926535897932384626;
   var a = 6378245.0;
@@ -179,12 +184,12 @@ module.exports = {
   wxRequest,
   wxPromisify,
   Promise,
+  catchHandle,
   getBMapLocation,
   gcj02tobd09,
   qqMap,
   wxGetLocation,
   trackTime,
-  refundTime,
   wxShowModal: wxPromisify(wx.showModal),
   wxShowToast: wxPromisify(wx.showToast),
   wxLogin: wxPromisify(wx.login)

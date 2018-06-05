@@ -598,6 +598,7 @@
 	padding: 0 32rpx;
 	background: #e3003a;
 	margin-bottom: 20rpx;
+
 }
 .lottery-content {
 	padding: 32rpx 0 22rpx 0rpx;

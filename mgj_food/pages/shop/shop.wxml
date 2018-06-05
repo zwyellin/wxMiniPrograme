@@ -479,20 +479,22 @@
 						wx:key="index" 
 						>
 						<image class="bran"  src="{{item.promoImg}}"></image>
-						<text class="name" >{{item.promoName}}</text>
+						<text class="name textlength"  >{{item.promoName}}</text>
 					</view>
 			</view>
-			<view>
+			<view class="news">
 				<view class="notice">配送</view>
 				<view >
 					<text class="give">起送 ¥{{itemList.minPrice}}</text>
 					<text class="text">|</text>
 					<text class="give">配送 ¥{{itemList.shipFee}}</text>
 					<text class="text">|</text>
-					<text class="give">{{itemList.avgDeliveryTime}}分钟</text>
+					<text class="give">{{itemList.avgDeliveryTime}}分钟送达</text>
 				</view>
 				<view >
-					<text class="notice-text">配送时间：</text>
+					<text class="notice-text">配送时间：{{itemList.workingTime
+
+}}</text>
 				</view>
 			</view>		
 			<view>

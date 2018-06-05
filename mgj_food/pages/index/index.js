@@ -71,8 +71,8 @@ Page(Object.assign({}, {
 				}
 			}; 
 			let { longitude, latitude } = gcj02tobd09(lng,lat);
-			// app.globalData.longitude = longitude;
-			// app.globalData.latitude = latitude;
+			app.globalData.longitude = longitude;
+			app.globalData.latitude = latitude;
 			this.init().then((res)=>{
 				if (res.data.code === 0) {
 					let value = res.data.value;
@@ -653,7 +653,7 @@ Page(Object.assign({}, {
 		})
 		this.getDataList();
 	},
-	close(){
+	close(){//关闭弹窗
 		this.maskHideAnimation()
 		this.setData({
 			classShow:false,
@@ -662,7 +662,7 @@ Page(Object.assign({}, {
 			islocal:false
 		});
 	},
-	maskShowAnimation(){
+	maskShowAnimation(){//动画打开
 		let animation = wx.createAnimation({  
 		    transformOrigin: "50% 50%",
 			duration: 1000,
@@ -679,7 +679,7 @@ Page(Object.assign({}, {
 		   maskAnimation: animation.export()  
 		}); 
 	},
-	maskHideAnimation(){
+	maskHideAnimation(){//动画关闭
 		let animation = wx.createAnimation({  
 		    duration: 500,  
 		});

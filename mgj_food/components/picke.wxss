@@ -2,17 +2,15 @@
 	position: fixed;
 	left: 0;
 	bottom: 0;
-	height: 600rpx;
 	width: 100%;
     background-color: #ffff;
     padding: 20rpx;
     z-index: 999;
     box-sizing: border-box;
+    transform: 0.3s;
 }
 .news{
-    height: 270rpx;
-    line-height: 38rpx;
-    overflow: hidden;
+    margin-bottom: 22rpx;
 }
 .news-text{
     display: flex;
@@ -22,26 +20,31 @@
 }
 .notice{
     width: 100%;
-    line-height: 60rpx;
-    color: black;
-    font-size: 40rpx;
-    
+    color: #333;
+    font-size: 30rpx;
 }
 .notice-text{
     width: 100%;
-    line-height: 40rpx;
-    color: black;
-    font-size: 28rpx;
+    line-height: 32rpx;
+    color:#494949;
+    font-size: 22rpx;
 }
 .give{
     display: inline-block;
-    font-size: 28rpx;
-    color: #000;
+    line-height: 32rpx;
+    font-size: 22rpx;
+    color: #494949;
 }
 .text{
     display: inline-block;
     width: 1rpx;
-    height: 28rpx;
-    color: #ccc;
+    height: 22rpx;
+    color: #494949;
+    font-size: 22rpx;
     margin: 0 20rpx -2rpx 20rpx;
+}
+.textlength{
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
