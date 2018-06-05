@@ -1,8 +1,9 @@
 const app = getApp();
 const { wxRequest } = require('../../utils/util.js');
-
-Page({
+const { merchantObj } = require('../../components/merchant/merchant.js');
+Page(Object.assign({}, merchantObj, {
 	data: {
+		islocal:false,       //是否计算本地缓存
 		loading:false,
 		maskAnimation:null,
 	    size:24,
@@ -71,35 +72,7 @@ Page({
 			});	
   		}
 	},
-	moveDown(e){
-		let { item, index } = e.currentTarget.dataset;
-		let dataList = this.data.dataList;
-		if (item.promotionActivityList.length < 3) return;
-		if (dataList[index].isHeight === '68rpx') {
-			dataList[index].isHeight = 34*item.promotionActivityList.length+'rpx';
-			this.setData({
-				dataList:dataList
-			});
-		} else {
-			dataList[index].isHeight = '68rpx';
-			this.setData({
-				dataList:dataList
-			});
-		}	
-	},
-	quickPage(e){
-		let { id } = e.currentTarget.dataset;
-		if (!this.data.clickPage) {
-			this.data.clickPage = true;
-			wx.navigateTo({
-				url:"/pages/shop/shop?merchantid=" + id,
-			});
-		}
-	},
-	//阻止遮罩层
-	myCatchTouch(){
-		return false
-	},
+	
 	getDataList(status){
 		if (!status) {
 			wx.showToast({
@@ -181,116 +154,6 @@ Page({
         	wx.hideLoading();
         });
 	},
-	setBfilterType(e){
-		let { index } = e.currentTarget.dataset;
-		if (!this.data.maskShow) {
-			this.maskShowAnimation()
-		}
-		if (index == 0) {
-			this.setData({
-				classShow:true,
-				maskShow:true,
-				sortShow:false,
-				shipShow:false,
-			});
-		}
-		if (index == 1) {
-			this.setData({
-				sortShow:true,
-				maskShow:true,
-				classShow:false,
-				shipShow:false,
-			});
-		}
-		if (index == 2) {
-			this.setData({
-				shipShow:true,
-				sortShow:false,
-				maskShow:true,
-				classShow:false
-			});
-		}	
-	},
-	//选择排序
-	selectSort(e){
-		let { index } = e.currentTarget.dataset;
-		let value = this.data.sortList[index];
-		this.setData({
-			queryType:index+1,
-			start:0,
-			sortIndex:index,
-			sortShow:false,
-			maskShow:false,
-			type2:value,
-			loading:false
-		});
-		this.maskHideAnimation()
-		this.getDataList();
-	},
-	//选择分类
-	selectClass(e){
-		let { index, item} = e.currentTarget.dataset;
-		let childTagCategoryList = item.childTagCategoryList;
-		let value = item.name;
-		if (index === 0) {
-			this.setData({
-				childTagCategoryList:childTagCategoryList,
-				timeIndex:index,
-				tagParentId:item.parentId,
-				tagId:null,
-				classShow:false,
-				maskShow:false,
-				start:0,
-				type1:value,
-				loading:false	
-			});
-			this.maskHideAnimation()
-			this.getDataList();
-		} else {
-			this.setData({
-				childTagCategoryList:childTagCategoryList,
-				tagParentId:item.id,
-				tagId:null,
-				start:0,
-				timeIndex:index,
-			});
-		}
-	},
-	//选择第二轮分类
-	selectText(e){
-		let { item, index } = e.currentTarget.dataset;
-		let value = item.name;
-		if (index === 0) {
-			this.setData({
-				tagParentId:item.parentId,
-				classShow:false,
-				maskShow:false,
-				type1:value	,
-				loading:false
-			});
-			this.maskHideAnimation()
-			this.getDataList();
-		} else {
-			this.setData({
-				tagParentId:item.parentId,
-				tagId:item.id,
-				classShow:false,
-				maskShow:false,
-				type1:value,
-				loading:false
-			});
-			this.maskHideAnimation()
-			this.getDataList();
-		}	
-	},
-	close(){
-		this.maskHideAnimation()
-		this.setData({
-			classShow:false,
-			sortShow:false,
-			shipShow:false,
-		});
-	},
 	onReachBottom(){
 		this.data.start+= 10;
 		this.getDataList(true);
@@ -309,67 +172,6 @@ Page({
         			tagCategoryType: 1
         		}	
         	},
-        })
+        });
 	},
-	//商家配送方式
-	selectShip(e){
-		let { index } = e.currentTarget.dataset;
-		this.setData({
-			shipFilter:index
-		})
-	},
-	clear(){
-		this.maskHideAnimation()
-		this.setData({
-			shipFilter:null,
-			shipShow:false,
-			maskShow:false
-		})
-	},
-	query(){
-		this.maskHideAnimation()
-		this.setData({
-			shipShow:false,
-			maskShow:false,
-			loading:false
-		})
-		this.getDataList();
-	},
-	maskShowAnimation(){
-		let animation = wx.createAnimation({  
-		    transformOrigin: "50% 50%",
-			duration: 1000,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.opacity(0.3).step();
-	      	this.setData({
-	        	maskAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.opacity(0).step();//修改透明度,放大  
-		this.setData({  
-		   maskAnimation: animation.export()  
-		}); 
-	},
-	maskHideAnimation(){
-		let animation = wx.createAnimation({  
-		    duration: 500,  
-		});
-		setTimeout(()=> {
-	      	animation.opacity(0).step();
-	      	setTimeout(()=>{
-	      		this.setData({
-	      			maskShow:false,
-	      		})
-	      	},500);
-	      	this.setData({
-	        	maskAnimation: animation.export(),	
-	      	});	
-	    }, 20);
-		animation.opacity(0.3).step();//修改透明度,放大  
-		this.setData({  
-		   maskAnimation: animation.export()  
-		}); 
-	},
-})
+}));
