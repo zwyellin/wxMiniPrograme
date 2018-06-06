@@ -2,7 +2,7 @@
 
 //获取应用实例
 const app = getApp();
-const { wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
+const { Promise, wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
 const { initClassList, imgUrls } = require('../../components/homeClass.js');
 // const obj = require('../../components/common/common.js');
 let interval;
@@ -58,68 +58,116 @@ Page(Object.assign({}, {
 		initClassList:initClassList	  //分类列表
 	}, 
 	onLoad(){
-		wxGetLocation({
-			type:'gcj02'
-		}).then(res=>{
-			console.log(res);
-			let lat = res.latitude;
-			let lng = res.longitude;
-			this.data.obj = {
-				location:{
-					longitude:lng,
-					latitude:lat
-				}
-			}; 
-			let { longitude, latitude } = gcj02tobd09(lng,lat);
-			// app.globalData.longitude = longitude;
-			// app.globalData.latitude = latitude;
-			this.init().then((res)=>{
-				if (res.data.code === 0) {
-					let value = res.data.value;
-					if (value) {
-						app.globalData.agentId = value.id;
-						if (value.phone) {
-							app.globalData.agentPhone = value.phone;
+		this.getSeting().then(()=>{
+			wxGetLocation({
+				type:'gcj02'
+			}).then(res=>{
+				console.log(res);
+				let lat = res.latitude;
+				let lng = res.longitude;
+				this.data.obj = {
+					location:{
+						longitude:lng,
+						latitude:lat
+					}
+				}; 
+				let { longitude, latitude } = gcj02tobd09(lng,lat);
+				// app.globalData.longitude = longitude;
+				// app.globalData.latitude = latitude;
+				this.init().then((res)=>{
+					if (res.data.code === 0) {
+						let value = res.data.value;
+						if (value) {
+							app.globalData.agentId = value.id;
+							if (value.phone) {
+								app.globalData.agentPhone = value.phone;
+							} else {
+								app.globalData.agentPhone = null
+							}
 						} else {
 							app.globalData.agentPhone = null
+							app.globalData.agentId = null;
 						}
-					} else {
-						app.globalData.agentPhone = null
-						app.globalData.agentId = null;
+						this.initBanner();
+						this.initClass();
+						this.getinitDataList();
+	        			this.findTagCategory();	
+					}	
+		        }).catch(err=>{
+		        	this.setData({
+						isAgentId:true
+					});
+		        });
+		        getBMapLocation(this.data.obj).then(res=>{
+					console.log(res);
+					let address;
+					if (res.status === 0) {
+						console.log(res)
+						address = res.result.address;
+						// address =res.result.address_component.street_number
+						console.log(address);
+						this.setData({
+			      			city:Object.assign({},this.data.city,{cityName:address})
+			    		});
+			    		// this.runAddress(this.data.city);
 					}
-					this.initBanner();
-					this.initClass();
-					this.getinitDataList();
-        			this.findTagCategory();	
-				}	
-	        }).catch(err=>{
-	        	this.setData({
+			    }).catch(err=>{
+			    	this.setData({
+						isAgentId:true
+					});
+			    });
+			}).catch(err=>{
+				this.setData({
 					isAgentId:true
 				});
-	        });
-	        getBMapLocation(this.data.obj).then(res=>{
-				console.log(res);
-				let address;
-				if (res.status === 0) {
-					console.log(res)
-					address = res.result.address;
-					// address =res.result.address_component.street_number
-					console.log(address);
-					this.setData({
-		      			city:Object.assign({},this.data.city,{cityName:address})
-		    		});
-		    		// this.runAddress(this.data.city);
-				}
-		    }).catch(err=>{
-		    	this.setData({
-					isAgentId:true
-				});
-		    });
+			}); 
 		}).catch(err=>{
 			this.setData({
 				isAgentId:true
 			});
-		});     
+		});
+	},
+	//调起授权
+	getSeting(){
+		let that = this;
+		return new Promise((resolve,reject)=>{
+			wx.getSetting({
+			    success: (res) => {
+			        console.log(res);
+			        if (res.authSetting["scope.userLocation"] !=true) {
+			        	this.setData({
+							isAgentId:true
+						});
+			          	wx.showModal({
+				            title: '用户未授权',
+				            content: '如需正常使用马管家小程序功能，请按确定进入小程序设置界面，勾选地理位置并点击确定。',
+				            showCancel: false,
+				            success: (res)=> {
+				              	if (res.confirm) {
+					                wx.openSetting({
+						                success: (res) => {
+						                    if (res.authSetting["scope.userLocation"] ===true) {
+												resolve();
+						                    }else {
+						                    	reject(err);
+						                    }
+						                },
+						                fail: (err)=>{
+						                	reject(err);
+						                }
+					                });
+				              	}
+				            },
+				            fail: (err)=>{
+				            	reject(err);
+				            }
+				        });
+			        } else {
+			        	resolve();
+			        }
+			    }
+	    	});
+		});	
 	},
 	onShow(){
 		this.data.clickPage = false;
@@ -527,6 +575,10 @@ Page(Object.assign({}, {
 	},
 	//下拉刷新
     onPullDownRefresh() {
+    	if (this.data.maskShow) {
+    		wx.stopPullDownRefresh()
+    		return false
+    	}
     	this.data.start = 0
       	this.initClass();
       	this.findTagCategory();

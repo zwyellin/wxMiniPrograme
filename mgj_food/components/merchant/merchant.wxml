@@ -37,7 +37,7 @@
 			</view>
 			<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.isHeight :''}}">
 				<view class="cartcontrol-content flex"
-					wx:for="{{item.promotionActivityList}}" 
+					wx:for="{{dataList[index].promotionActivityList}}" 
       				wx:for-index="idx" 
       				wx:for-item="promotion"
       				wx:key="idx" >
