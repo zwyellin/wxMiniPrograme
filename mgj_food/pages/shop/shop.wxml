@@ -99,7 +99,7 @@
 				    bindtap="selectefood">
 					<view class="icon">
 						<image wx:if="{{food.imgs}}" class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs)}}?imageView2/0/w/114/h/114" />
-						<image wx:if="{{!food.imgs}}" class="icon_img" lazy-load="true" src="/images/merchant/merchantLogo.png" />
+						<image wx:if="{{!food.imgs}}" class="icon_img" src="/images/merchant/merchantLogo.png" />
 					</view>
 					<view class="content">
 						<view class="detail-name">

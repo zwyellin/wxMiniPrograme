@@ -699,32 +699,30 @@ Page({
 	},
 	//产品左侧分类菜单点击事件
 	scrollLeftTap(e) {
-	    //修改当前选择的菜单分类编码
+	    let cateno = e.currentTarget.dataset.cateno;
 	    this.setData({
-	      currentCateno: e.currentTarget.dataset.cateno,
-	      rightToView: 'r_' + e.currentTarget.dataset.cateno,
-	      leftScrollClick: true
+		    currentCateno: cateno,
+		    rightToView: 'r_' + cateno,
+	      	leftScrollClick: true
 	    });
 	},
 	//产品右侧滚动事件
 	rightScroll(e) {
 	    if (!this.data.leftScrollClick) {
-	      var currentcate = this.data.catesScrollHeight.find((n) => n.scrollheight <= e.detail.scrollTop).cateno;
-	      //修改当前选择的菜单分类编码
-	      this.setData({
-	        currentCateno: currentcate,
-	        leftToView: 'l_' + currentcate,
-	      });
-	    }
-	    else {
-	      this.setData({
-	        leftScrollClick: false
-	      });
+	      	var currentcate = this.data.catesScrollHeight.find((n) => n.scrollheight <= e.detail.scrollTop).cateno;
+	        //修改当前选择的菜单分类编码
+	      	if (currentcate != this.data.currentCateno) {
+	      		this.setData({
+		        	currentCateno: currentcate,
+		        	leftToView: 'l_' + currentcate,
+		     	});
+	      	}
+	    } else {
+	    	this.data.leftScrollClick = false;
 	    }
 	},
 	//拨打商家电话
 	callPhone(e){
-		
 	    wx.makePhoneCall({
 	      phoneNumber: this.data.itemList.contacts   //电话号码
 	    });

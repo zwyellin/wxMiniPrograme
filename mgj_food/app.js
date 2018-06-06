@@ -11,7 +11,6 @@ App({
     if (shoppingCart) {
       wx.removeStorageSync('shoppingCart');
     }
-    this.getSeting();
     this.getUserInfo();
     wx.getSystemInfo({
       success: (res)=> {
@@ -27,10 +26,6 @@ App({
       }
     });
   },
-  getSeting(){
-    
-  },
-  
   getUserInfo:function(cb){
     var that = this;
     if(this.globalData.userInfo){
