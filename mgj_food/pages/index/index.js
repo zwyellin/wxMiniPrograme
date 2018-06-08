@@ -73,8 +73,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				app.globalData.longitude = longitude;
-				app.globalData.latitude = latitude;
+				// app.globalData.longitude = longitude;
+				// app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
@@ -272,7 +272,6 @@ Page(Object.assign({}, merchantObj, {
 			});
 		}
 	},
-	
 	//根据地理位置初始化首页轮播图
 	initBanner(){
 		wxRequest({
@@ -385,10 +384,8 @@ Page(Object.assign({}, merchantObj, {
 		        icon: 'loading',
 		        duration: 200000,
 		        mask: true
-			});
-			
+			});	
 		}
-		
 		let data = {
 			agentId:app.globalData.agentId,
         	longitude:app.globalData.longitude,
@@ -401,7 +398,7 @@ Page(Object.assign({}, merchantObj, {
         	start:this.data.start
 		};
 		wxRequest({
-        	url:status?'/merchant/userClient?m=findTakeAwayMerchant' : '/merchant/userClient?m=findTakeAwayMerchant&uuid=' + parseInt(Math.random()*1000000000000000),
+        	url:'/merchant/userClient?m=findTakeAwayMerchant&uuid=' + parseInt(Math.random()*1000000000000000),
         	method:'POST',
         	data:{
         		uuid:parseInt(Math.random()*1000000000000000),
@@ -414,16 +411,8 @@ Page(Object.assign({}, merchantObj, {
 				if(Boos){
 					if (status) {  
 						if (res.data.value.length != 0) {
-							list.map((item)=>{
-								if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-									item.logo = '/images/merchant/merchantLogo.png';
-								} else {
-									item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
-								}
-								item.isHeight = '68rpx';
-								dataList.push(item);
-							});
-							console.log(res.data.value);
+							list = this.seatImg(list);
+							dataList = dataList.concat(list);
 							this.setData({
 								dataList:dataList,
 								loading:false
@@ -435,7 +424,6 @@ Page(Object.assign({}, merchantObj, {
 						}
 					} else {
 						if (list.length === 0) {
-							console.log(23)
 							setTimeout(()=>{
 								this.setData({
 									loading:true
@@ -445,15 +433,8 @@ Page(Object.assign({}, merchantObj, {
 								dataList:list
 							});
 						} else {
-							list.map((item)=>{
-								if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-									item.logo = '/images/merchant/merchantLogo.png'
-								} else {
-									item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
-								}
-								item.isHeight = '68rpx';
-								dataList.push(item);
-							});
+							list = this.seatImg(list);
+							dataList = dataList.concat(list);
 							this.setData({
 								dataList:list,
 								loading:false
@@ -466,14 +447,7 @@ Page(Object.assign({}, merchantObj, {
 							isAgentId:true
 						});	
 					} else {
-						list.map((item)=>{
-							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-								item.logo = '/images/merchant/merchantLogo.png'
-							} else {
-								item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
-							}
-							item.isHeight = '68rpx';
-						});
+						list = this.seatImg(list);
 						this.setData({
 							isAgentId:false,
 							dataList:list,
@@ -491,75 +465,10 @@ Page(Object.assign({}, merchantObj, {
 					isAgentId:false
 				});
         }).finally(()=>{
-			if(!status){
-				wx.stopPullDownRefresh();
-			}
+			wx.stopPullDownRefresh();
 			wx.hideLoading();
         });
 	},
-	// getinitDataList(){
-	// 	wx.showToast({
-	//         title: '加载中',
-	//         icon: 'loading',
-	//         duration: 200000,
-	//         mask: true
-	//     });
-	// 	let data = {
-	// 		agentId:app.globalData.agentId,
-    //     	longitude:app.globalData.longitude,
-    //     	latitude:app.globalData.latitude,
-    //     	queryType:this.data.queryType,
-    //     	shipFilter:this.data.shipFilter,
-	// 		tagId:this.data.tagId,
-    //     	tagParentId:this.data.tagParentId,
-    //     	size:10,
-    //     	start:this.data.start
-	// 	};
-	// 	wxRequest({
-    //     	url:'/merchant/userClient?m=findTakeAwayMerchant&uuid=' + parseInt(Math.random()*1000000000000000),
-    //     	method:'POST',
-    //     	data:{
-    //     		uuid:parseInt(Math.random()*1000000000000000),
-    //     		params:data
-    //     	}	
-    //     }).then(res=>{
-	// 		let dataList =this.data.dataList;
-	// 		let list = res.data.value;
-	// 		if (res.data.code === 0) {
-	// 			if (list.length === 0) {
-	// 				this.setData({
-	// 					isAgentId:true
-	// 				});
-	// 			} else {
-	// 				list.map((item)=>{
-	// 					if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-	// 						item.logo = '/images/merchant/merchantLogo.png'
-	// 					} else {
-	// 						item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
-	// 					}
-	// 					item.isHeight = '68rpx';
-	// 				});
-	// 				this.setData({
-	// 					isAgentId:false,
-    // 					dataList:list,
-    // 					loading:false
-    // 				});
-	// 			}	
-	// 		} else {
-	// 			this.setData({
-	// 				isAgentId:true
-	// 			});
-	// 		}
-    //     }).catch(err=>{
-	// 		console.log(err)
-    //     	this.setData({
-	// 			isAgentId:true
-	// 		});
-    //     }).finally(()=>{
-	// 		wx.stopPullDownRefresh();
-	// 		wx.hideLoading();
-    //     });
-	// },
 	focusToSearch(e){
 		if (!this.data.toSearch) {
 			this.data.toSearch = true;
@@ -576,7 +485,7 @@ Page(Object.assign({}, merchantObj, {
 			this.data.start+= 10;
 			this.getDataList(true,true);	
 		} else {
-			this.data.islocal = false
+			this.data.islocal = false;
 		}
 	},
 	//下拉刷新
@@ -588,23 +497,8 @@ Page(Object.assign({}, merchantObj, {
     	this.data.start = 0
       	this.initClass();
       	this.findTagCategory();
-      	this.getDataList(false,true); //this.getinitDataList()
+      	this.getDataList(false,true);
     },
-	clear(){
-		this.maskHideAnimation()
-		this.setData({
-			shipFilter:null,
-			shipShow:false
-		})
-	},
-	query(){
-		this.maskHideAnimation()
-		this.setData({
-			shipShow:false,
-			loading:false
-		})
-		this.getDataList(false,true);
-	},
 	// onHide() {
 	// 	clearInterval(interval);
 	// 	this.setData({

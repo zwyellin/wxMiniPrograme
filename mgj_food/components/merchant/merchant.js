@@ -146,6 +146,18 @@ let merchantObj = {
 			islocal:false
 		});
 	},
+	//处理商家无logo占位图
+	seatImg(merchantList) {
+		merchantList.map((item)=>{
+			if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
+				item.logo = '/images/merchant/merchantLogo.png'
+			} else {
+				item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
+			}
+			item.isHeight = '68rpx';
+		});
+		return merchantList;
+	},
 	clear(){
 		this.maskHideAnimation();
 		this.setData({

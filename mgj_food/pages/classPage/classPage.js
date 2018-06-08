@@ -30,7 +30,7 @@ Page(Object.assign({}, merchantObj, {
 		initClassList:[]	  //分类列表
 	},
 	onLoad(options){
-		let tagId = null
+		let tagId = null;
 		if (options.id != "null" && parseInt(options.id) > -1) {
 			tagId = parseInt(options.id);
 		}
@@ -105,16 +105,8 @@ Page(Object.assign({}, merchantObj, {
 			if (res.data.code === 0) {
 				if (status) {
 					if (res.data.value.length != 0) {
-						list.map((item)=>{
-							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-								item.logo = '/images/merchant/merchantLogo.png'
-							} else {
-								item.logo = item.logo+'?imageView2/0/w/170/h/130';
-							}
-							item.isHeight = '68rpx';
-							dataList.push(item);
-						});
-		        		console.log(res.data.value);
+						list = this.seatImg(list);
+		        		dataList = dataList.concat(list);
 		        		this.setData({
 		        			dataList:dataList,
 		        			loading:false
@@ -135,14 +127,7 @@ Page(Object.assign({}, merchantObj, {
     						dataList:list
     					});
 					} else {
-						list.map((item)=>{
-							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-								item.logo = '/images/merchant/merchantLogo.png';
-							} else {
-								item.logo = item.logo+'?imageView2/0/w/170/h/130';
-							}
-							item.isHeight = '68rpx';
-						});
+						list = this.seatImg(list);
 						this.setData({
         					dataList:list,
         					loading:false
