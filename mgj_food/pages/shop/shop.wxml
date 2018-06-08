@@ -94,15 +94,15 @@
 					wx:for="{{item.goodsList}}" 
 				    wx:for-item="food" 
 				    wx:for-index="index" 
-				    wx:key="index"
+				    wx:key="id"
 				    data-food="{{food}}"
 				    bindtap="selectefood">
 					<view class="icon">
-						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs,114,114)}}" />
+						<image class="icon_img" lazy-load="true" src="{{food.isImgLoadComplete ? tage.removefh(food.imgs,114,114) : '/images/merchant/merchantLogo.png'}}" data-parentindex="{{parentIndex}}" data-index="{{index}}" bindload="_imgOnLoad" />
 					</view>
 					<view class="content">
 						<view class="detail-name">
-							<text >{{food.name}}</text>
+							<text>{{food.name}}</text>
 						</view>
 						<view class="detail-descs">
 							<text>{{food.description}}</text>

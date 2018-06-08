@@ -5,7 +5,7 @@ const merchantShop = {
 	//获取商家详情
 	findMerchantInfo(){
 		wxRequest({
-        	url:'/merchant/userClient?m=findMerchantInfo2',
+        	url:'/merchant/userClient?m=findMerchantInfo',
         	method:'POST',
         	data:{
         		token:app.globalData.token,

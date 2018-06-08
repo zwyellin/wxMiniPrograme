@@ -61,10 +61,16 @@ Page(Object.assign({}, merchantShop,{
 		// this.data.merchantId = 402;
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
-			console.log(res.data.value.menu);
+			let menu = res.data.value.menu;
+			menu.map(leftItem =>{
+				leftItem.goodsList.map(leftItemShop =>{
+					leftItemShop.isImgLoadComplete = false;
+				});
+			});
+			console.log(menu);
         	this.setData({
-        		menu:res.data.value.menu,
-        		orderList:res.data.value.menu
+        		menu:menu,
+        		orderList:res.data.value.orderList
         	});
         	setRightScrollItemHeight: {
 		      let cate_size = [];
@@ -95,6 +101,15 @@ Page(Object.assign({}, merchantShop,{
 		    }
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
+	},
+	_imgOnLoad(e){
+		console.log(e);
+		let { parentindex, index } = e.currentTarget.dataset; 
+		let menu = this.data.menu;
+		menu[parentindex].goodsList[index].isImgLoadComplete = true;
+		this.setData({
+			menu:menu
+		});
 	},
 	//获取购物车缓存数据
 	getStorageShop(merchantId){
@@ -590,7 +605,7 @@ Page(Object.assign({}, merchantShop,{
     	};
   	},
   	onHide(){
-		this.data.isHide = true
+		this.data.isHide = true;
   	},
   	onUnload(){
   		if (!this.data.isHide) {
