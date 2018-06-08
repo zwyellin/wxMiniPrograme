@@ -76,7 +76,7 @@ let merchantObj = {
 			type2:value,
 			loading:false
 		});
-		this.getDataList();
+		this.getDataList(false,true);
 	},
 	//选择分类
 	selectClass(e){
@@ -95,7 +95,7 @@ let merchantObj = {
 				type1:value,
 				loading:false	
 			});
-			this.getDataList();
+			this.getDataList(false,true);
 		} else {
 			this.setData({
 				childTagCategoryList:childTagCategoryList,
@@ -118,7 +118,7 @@ let merchantObj = {
 				type1:value,
 				loading:false
 			});
-			this.getDataList();
+			this.getDataList(false,true);
 		} else {
 			this.setData({
 				tagParentId:item.parentId,
@@ -127,7 +127,7 @@ let merchantObj = {
 				type1:value,
 				loading:false
 			});
-			this.getDataList();
+			this.getDataList(false,true);
 		}	
 	},
 	//商家配送方式
@@ -161,7 +161,7 @@ let merchantObj = {
 			maskShow:false,
 			loading:false
 		});
-		this.getDataList();
+		this.getDataList(false,true);
 	},
 	maskShowAnimation(){//动画打开
 		let animation = wx.createAnimation({  

@@ -73,8 +73,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				// app.globalData.longitude = longitude;
-				// app.globalData.latitude = latitude;
+				app.globalData.longitude = longitude;
+				app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
@@ -91,7 +91,7 @@ Page(Object.assign({}, merchantObj, {
 						}
 						this.initBanner();
 						this.initClass();
-						this.getinitDataList();
+						this.getDataList(false,false);//getinitDataList
 	        			this.findTagCategory();	
 					}	
 		        }).catch(err=>{
@@ -206,7 +206,7 @@ Page(Object.assign({}, merchantObj, {
 						app.globalData.agentPhone = null
 						app.globalData.agentId = null;
 					}
-					this.getinitDataList();
+					this.getDataList(false,false);//getinitDataList
 					this.initClass();
         			this.initBanner();
         			this.findTagCategory();	
@@ -378,15 +378,17 @@ Page(Object.assign({}, merchantObj, {
         	}
         });
 	},
-	getDataList(status){
+	getDataList(status,Boos){
 		if (!status) {
 			wx.showToast({
 		        title: '加载中',
 		        icon: 'loading',
 		        duration: 200000,
 		        mask: true
-		    });
+			});
+			
 		}
+		
 		let data = {
 			agentId:app.globalData.agentId,
         	longitude:app.globalData.longitude,
@@ -399,7 +401,7 @@ Page(Object.assign({}, merchantObj, {
         	start:this.data.start
 		};
 		wxRequest({
-        	url:'/merchant/userClient?m=findTakeAwayMerchant',
+        	url:status?'/merchant/userClient?m=findTakeAwayMerchant' : '/merchant/userClient?m=findTakeAwayMerchant&uuid=' + parseInt(Math.random()*1000000000000000),
         	method:'POST',
         	data:{
         		uuid:parseInt(Math.random()*1000000000000000),
@@ -407,39 +409,62 @@ Page(Object.assign({}, merchantObj, {
         	}	
         }).then(res=>{
 			let dataList =this.data.dataList;
-			let list = res.data.value;
+			let list = res.data.value;		
 			if (res.data.code === 0) {
-				if (status) {
-					if (res.data.value.length != 0) {
-						list.map((item)=>{
-							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-								item.logo = '/images/merchant/merchantLogo.png';
-							} else {
-								item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
-							}
-							item.isHeight = '68rpx';
-							dataList.push(item);
-						});
-		        		console.log(res.data.value);
-		        		this.setData({
-		        			dataList:dataList,
-							loading:false
-		        		});	
+				if(Boos){
+					if (status) {  
+						if (res.data.value.length != 0) {
+							list.map((item)=>{
+								if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
+									item.logo = '/images/merchant/merchantLogo.png';
+								} else {
+									item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
+								}
+								item.isHeight = '68rpx';
+								dataList.push(item);
+							});
+							console.log(res.data.value);
+							this.setData({
+								dataList:dataList,
+								loading:false
+							});	
+						} else {
+							this.setData({
+								loading:true,
+							});	
+						}
 					} else {
-						this.setData({
-							loading:true
-						});
-					}
+						if (list.length === 0) {
+							console.log(23)
+							setTimeout(()=>{
+								this.setData({
+									loading:true
+								});
+							},1500);
+							this.setData({
+								dataList:list
+							});
+						} else {
+							list.map((item)=>{
+								if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
+									item.logo = '/images/merchant/merchantLogo.png'
+								} else {
+									item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
+								}
+								item.isHeight = '68rpx';
+								dataList.push(item);
+							});
+							this.setData({
+								dataList:list,
+								loading:false
+							});
+						}	
+					}	
 				} else {
 					if (list.length === 0) {
-						setTimeout(()=>{
-							this.setData({
-        						loading:true
-        					});
-						},1500);
 						this.setData({
-    						dataList:list
-    					});
+							isAgentId:true
+						});	
 					} else {
 						list.map((item)=>{
 							if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
@@ -448,82 +473,93 @@ Page(Object.assign({}, merchantObj, {
 								item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
 							}
 							item.isHeight = '68rpx';
-							dataList.push(item);
 						});
 						this.setData({
-        					dataList:list,
-        					loading:false
-        				});
+							isAgentId:false,
+							dataList:list,
+							loading:false
+						});	
 					}	
 				}	
-			} 
-        }).finally(()=>{
-        	wx.hideLoading();
-        });
-	},
-	getinitDataList(){
-		wx.showToast({
-	        title: '加载中',
-	        icon: 'loading',
-	        duration: 200000,
-	        mask: true
-	    });
-		let data = {
-			agentId:app.globalData.agentId,
-        	longitude:app.globalData.longitude,
-        	latitude:app.globalData.latitude,
-        	queryType:this.data.queryType,
-        	shipFilter:this.data.shipFilter,
-			tagId:this.data.tagId,
-        	tagParentId:this.data.tagParentId,
-        	size:10,
-        	start:this.data.start
-		};
-		wxRequest({
-        	url:'/merchant/userClient?m=findTakeAwayMerchant&uuid=' + parseInt(Math.random()*1000000000000000),
-        	method:'POST',
-        	data:{
-        		uuid:parseInt(Math.random()*1000000000000000),
-        		params:data
-        	}	
-        }).then(res=>{
-			let dataList =this.data.dataList;
-			let list = res.data.value;
-			if (res.data.code === 0) {
-				if (list.length === 0) {
-					this.setData({
-						isAgentId:true
-					});
-				} else {
-					list.map((item)=>{
-						if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
-							item.logo = '/images/merchant/merchantLogo.png'
-						} else {
-							item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
-						}
-						item.isHeight = '68rpx';
-					});
-					this.setData({
-						isAgentId:false,
-    					dataList:list,
-    					loading:false
-    				});
-				}	
-			} else {
+			}else {
 				this.setData({
-					isAgentId:true
+					isAgentId:true	
 				});
 			}
         }).catch(err=>{
-        	console.log(err)
-        	this.setData({
-				isAgentId:true
-			});
+				this.setData({
+					isAgentId:false
+				});
         }).finally(()=>{
-			wx.stopPullDownRefresh();
+			if(!status){
+				wx.stopPullDownRefresh();
+			}
 			wx.hideLoading();
         });
 	},
+	// getinitDataList(){
+	// 	wx.showToast({
+	//         title: '加载中',
+	//         icon: 'loading',
+	//         duration: 200000,
+	//         mask: true
+	//     });
+	// 	let data = {
+	// 		agentId:app.globalData.agentId,
+    //     	longitude:app.globalData.longitude,
+    //     	latitude:app.globalData.latitude,
+    //     	queryType:this.data.queryType,
+    //     	shipFilter:this.data.shipFilter,
+	// 		tagId:this.data.tagId,
+    //     	tagParentId:this.data.tagParentId,
+    //     	size:10,
+    //     	start:this.data.start
+	// 	};
+	// 	wxRequest({
+    //     	url:'/merchant/userClient?m=findTakeAwayMerchant&uuid=' + parseInt(Math.random()*1000000000000000),
+    //     	method:'POST',
+    //     	data:{
+    //     		uuid:parseInt(Math.random()*1000000000000000),
+    //     		params:data
+    //     	}	
+    //     }).then(res=>{
+	// 		let dataList =this.data.dataList;
+	// 		let list = res.data.value;
+	// 		if (res.data.code === 0) {
+	// 			if (list.length === 0) {
+	// 				this.setData({
+	// 					isAgentId:true
+	// 				});
+	// 			} else {
+	// 				list.map((item)=>{
+	// 					if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
+	// 						item.logo = '/images/merchant/merchantLogo.png'
+	// 					} else {
+	// 						item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
+	// 					}
+	// 					item.isHeight = '68rpx';
+	// 				});
+	// 				this.setData({
+	// 					isAgentId:false,
+    // 					dataList:list,
+    // 					loading:false
+    // 				});
+	// 			}	
+	// 		} else {
+	// 			this.setData({
+	// 				isAgentId:true
+	// 			});
+	// 		}
+    //     }).catch(err=>{
+	// 		console.log(err)
+    //     	this.setData({
+	// 			isAgentId:true
+	// 		});
+    //     }).finally(()=>{
+	// 		wx.stopPullDownRefresh();
+	// 		wx.hideLoading();
+    //     });
+	// },
 	focusToSearch(e){
 		if (!this.data.toSearch) {
 			this.data.toSearch = true;
@@ -538,7 +574,7 @@ Page(Object.assign({}, merchantObj, {
 	onReachBottom(){
 		if (!this.data.islocal) {
 			this.data.start+= 10;
-			this.getDataList(true);	
+			this.getDataList(true,true);	
 		} else {
 			this.data.islocal = false
 		}
@@ -552,7 +588,7 @@ Page(Object.assign({}, merchantObj, {
     	this.data.start = 0
       	this.initClass();
       	this.findTagCategory();
-      	this.getinitDataList();
+      	this.getDataList(false,true); //this.getinitDataList()
     },
 	clear(){
 		this.maskHideAnimation()
@@ -567,7 +603,7 @@ Page(Object.assign({}, merchantObj, {
 			shipShow:false,
 			loading:false
 		})
-		this.getDataList();
+		this.getDataList(false,true);
 	},
 	// onHide() {
 	// 	clearInterval(interval);
