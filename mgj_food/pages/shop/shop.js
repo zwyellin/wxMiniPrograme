@@ -1,8 +1,9 @@
 const { wxRequest } = require('../../utils/util.js');
-const feedbackApi=require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
+const feedbackApi = require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
+const { merchantShop } = require('../../components/shop/merchantShop.js');
 const app = getApp();
 let ActivityListHeight = 149;
-Page({
+Page(Object.assign({}, merchantShop,{
 	data:{
 		loading:false,
 		isHide:false,         //控制本地购物车缓存
@@ -78,10 +79,10 @@ Page({
 		      this.setData({
 		        catesScrollHeight: cate_size.reverse()//分类scroll数组倒序处理后写入data
 		      });
-		      console.log(cate_size)
+		      console.log(cate_size);
 		    }
         }).finally(()=>{
-        	wx.hideLoading()
+        	wx.hideLoading();
         });
         this.getStorageShop(merchantid);
 		this.getevaluate();
@@ -95,16 +96,6 @@ Page({
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
-	//获取活动数据
-	broadcast(e){
-		this.maskShowAnimation();
-		this.pickertagShowAnimation()
-		console.log(this.data.pickertag);
-		this.setData({
-			pickertag:true,
-			maskShow:true
-		});
-	},
 	//获取购物车缓存数据
 	getStorageShop(merchantId){
 		if (wx.getStorageSync('shoppingCart')) {
@@ -116,14 +107,6 @@ Page({
 				this.totalprice();
 			}
   		}
-	},
-	//加载更多评价
-	loadMore(e){  
-        this.data.evaluateStart +=5;
-        this.getevaluate(true);
-	},
-	myCatchTouch(){
-		return false;
 	},
 	//选择商品规格
 	choiceTaste(e){
@@ -298,133 +281,6 @@ Page({
 			tab:Object.assign({},this.data.tab,{cur:this.data.tab.tabList[index]}),
 			tabIndex:index
 		});
-	},
-	getevaluate(isLoadMore){
-		wxRequest({
-        	url:'/merchant/userClient?m=findMerchantComments',
-        	method:'POST',
-        	data:{
-        		params:{
-        			merchantId:this.data.merchantId,
-        			size: this.data.evaluateSize,   
-        			start:this.data.evaluateStart
-        		}	
-        	}
-        }).then(res=>{
-			if (res.data.code === 0) {
-				let list = res.data.value
-				let evaluate = this.data.evaluate
-				if (isLoadMore) {
-					if (list.length === 0) {
-						this.setData({
-							loading:true,
-						});
-					}
-					list.map((item)=>{
-						evaluate.push(item)
-					})
-				} else {
-					evaluate = list
-				}
-    			this.setData({
-    				evaluate:evaluate,
-    			});
-    		}
-			console.log(res.data);
-        });
-	},
-	//获取商家详情
-	findMerchantInfo(){
-		wxRequest({
-        	url:'/merchant/userClient?m=findMerchantInfo',
-        	method:'POST',
-        	data:{
-        		token:app.globalData.token,
-        		params:{
-        			agentId:app.globalData.agentId,
-        			merchantId:this.data.merchantId
-        		}	
-        	},
-        }).then(res=>{
-        	console.log(res);
-			if (res.data.code === 0) {
-				let value = res.data.value;
-				let name = value.merchant.name;
-				let merchantRedBagList = value.merchant.merchantRedBagList
-				wx.setNavigationBarTitle({
-				  	title: name
-				});
-				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
-					value.merchant.logo = '/images/merchant/merchantLogo.png';
-				}
-				console.log(value.merchant)
-				this.setData({
-					itemList:value.merchant,
-					item:value.merchant,
-					minPrice:value.merchant.minPrice,
-					shipScore:value.merchant.shipScore
-				});
-				ActivityListHeight += this.data.itemList.promotionActivityList.length*16
-				if (value.merchant.merchantRedBagList.length != 0) {
-					merchantRedBagList.map((item)=>{
-						item.isReceive = '立即领取'
-					})
-					this.maskShowAnimation();
-					this.orderShowAnimation();
-					this.setData({
-						merchantRedBagList:merchantRedBagList
-					})
-				}
-			} else {
-				let msg = res.data.value;
-				if (res.data.code === 100000 ) {
-					setTimeout(()=>{
-						wx.navigateTo({
-							url:'/pages/login/login'
-						});
-					},1000);	
-				}
-				feedbackApi.showToast({title: msg});
-			}
-        });
-	},
-	//领取商家红包
-	getMerchantRedBag(e){
-		let { item, index} = e.currentTarget.dataset;
-		if (this.data.merchantRedBagList[index].isReceive === "已领取") return
-		wxRequest({
-        	url:'/merchant/userClient?m=getMerchantRedBag',
-        	method:'POST',
-        	data:{
-        		token:app.globalData.token,
-        		params:{
-        			merchantId:this.data.merchantId,
-        			id:item.id
-        		}	
-        	},
-        }).then(res=>{
-        	console.log(res);
-			if (res.data.code === 0) {
-				let value = res.data.value;
-				let merchantRedBagList = this.data.merchantRedBagList;
-				merchantRedBagList[index].isReceive = "已领取";
-				this.setData({
-					merchantRedBagList:merchantRedBagList
-				})	
-			} else {
-				let msg = res.data.value;
-				if (res.data.code === 100000 ) {
-					setTimeout(()=>{
-						wx.navigateTo({
-							url:'/pages/login/login'
-						})
-					},1000);	
-					feedbackApi.showToast({title: '你还没有登录,请先去登录'});
-					return
-				}
-				feedbackApi.showToast({title: msg});
-			}
-        });
 	},
 	getShopList(){
 		wx.showToast({
@@ -721,141 +577,6 @@ Page({
 	    	this.data.leftScrollClick = false;
 	    }
 	},
-	//拨打商家电话
-	callPhone(e){
-	    wx.makePhoneCall({
-	      phoneNumber: this.data.itemList.contacts   //电话号码
-	    });
-	},
-	maskShowAnimation(){
-		let animation = wx.createAnimation({  
-			duration: 500,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.opacity(0.5).step();
-	      	this.setData({
-	        	maskAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.opacity(0).step();//修改透明度,放大  
-		this.setData({  
-		   maskAnimation: animation.export()  
-		}); 
-	},
-	maskHideAnimation(){
-		let animation = wx.createAnimation({  
-		    duration: 500,  
-		});
-		setTimeout(()=> {
-	      	animation.opacity(0).step();
-	      	setTimeout(()=>{
-	      		this.setData({
-	      			choice:false,
-	        		detailShow:false,
-	        		merchantRedBagList:[]
-	      		})
-	      	},500);
-	      	this.setData({
-	        	maskAnimation: animation.export(),	
-	      	});	
-	    }, 20);
-		animation.opacity(0).step();//修改透明度,放大  
-		this.setData({  
-		   maskAnimation: animation.export()  
-		}); 
-	},
-	choiceShowAnimation(){
-		let animation = wx.createAnimation({ 
-			transformOrigin: "50% 50%", 
-			duration: 500,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.opacity(1).translate(-50+'%',-50+'%').scale(1,1).step();
-	      	this.setData({
-	        	choiceAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.opacity(0).translate(-100+'%',-100+'%').scale(0,0).step();//修改透明度,放大  
-		this.setData({  
-		   choiceAnimation: animation.export()  
-		}); 
-	},
-	choiceHideAnimation(){
-		let animation = wx.createAnimation({ 
-			transformOrigin: "50% 50%", 
-			duration: 500,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.opacity(1).scale(0,0).translateX(-50+'%').step();
-	      	this.setData({
-	        	choiceAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.opacity(0).scale(1,1).translateX(-50+'%').step();//修改透明度,放大  
-		this.setData({  
-		   choiceAnimation: animation.export()  
-		}); 
-	},
-	orderShowAnimation(){
-		let animation = wx.createAnimation({ 
-			transformOrigin: "50% 50%", 
-			duration: 500,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.translate(-50+'%').top(20+'%').step();
-	      	this.setData({
-	        	orderRedAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.top(-1000+'rpx').step();
-		this.setData({  
-		   orderRedAnimation: animation.export()  
-		}); 
-	},
-	orderHideAnimation(){
-		let animation = wx.createAnimation({ 
-			transformOrigin: "50% 50%", 
-			duration: 500,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.translate(-50+'%').top(150+'%').step();
-	      	setTimeout(()=>{
-	      		this.setData({
-	        		merchantRedBagList:[]
-	      		});
-	      	},1000)
-	      	this.setData({
-	        	orderRedAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.translate(-50+'%').top(20+'%').step(); 
-		this.setData({  
-		   orderRedAnimation: animation.export()  
-		}); 
-	},
-	pickertagShowAnimation(){
-		console.log(ActivityListHeight)
-		let animation = wx.createAnimation({ 
-			transformOrigin: "50% 50%", 
-			duration: 500,
-			timingFunction: "ease",
-		});
-		setTimeout(()=> {
-	      	animation.bottom(0).step();
-	      	this.setData({
-	        	pickertagAnimation: animation.export(),
-	      	});
-	    }, 200);
-		animation.bottom(-ActivityListHeight+'px').step();
-		this.setData({  
-		   pickertagAnimation: animation.export()  
-		});
-	},
 	onShareAppMessage(res) {
     	return {
       		title: '马管家外卖',
@@ -886,4 +607,4 @@ Page({
 	  		}
   		}	
   	}
-});
+}));

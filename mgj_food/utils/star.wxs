@@ -25,16 +25,17 @@ var cart = {
     },
 	praise:function(goodCommentNum,CommentNum) {
 		var praise = goodCommentNum/CommentNum;
-			praise = praise*100
+			praise = praise*100;
 			praise = parseInt(praise);
 		return praise;
 	},
-	removefh:function(filepath){
+	removefh:function(filepath,width,height){
 		if (filepath && typeof filepath == 'string') {
-			var img = filepath.replace(';','')
-			return img;
+			var img = filepath.split(';',1);
+			return img[0] + '?imageView2/0/w/'+ width + '/h/'+height;
+		} else {
+			return '/images/merchant/merchantLogo.png';
 		}
-		return filepath
 	},
 	strReplace:function(str){
 		//要替换为*号的内容
@@ -46,7 +47,7 @@ var cart = {
 	round:function(num){
 		var str = parseFloat(num/1000);
 			str = str.toFixed(2);
-		return str
+		return str;
 	},
 	splitStr: function(str){
 		return str.split('|*|');

@@ -8,7 +8,6 @@
     z-index: 1000;
     min-height: 138px;
     box-sizing: border-box;
-    transform: 0.3s;
 }
 .bran-left {
     margin-left: 8rpx;

@@ -98,8 +98,7 @@
 				    data-food="{{food}}"
 				    bindtap="selectefood">
 					<view class="icon">
-						<image wx:if="{{food.imgs}}" class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs)}}?imageView2/0/w/114/h/114" />
-						<image wx:if="{{!food.imgs}}" class="icon_img" src="/images/merchant/merchantLogo.png" />
+						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs,114,114)}}" />
 					</view>
 					<view class="content">
 						<view class="detail-name">
@@ -344,7 +343,7 @@
 	</view>
 	<view wx:if="{{detailShow}}" animation="{{choiceAnimation}}" class="shopdetail" catchtouchmove="myCatchTouch">
 		<view class="detail-content">
-			<image class="detail-img" src="{{selectedFood.imgs}}"></image>
+			<image class="detail-img" src="{{tage.removefh(selectedFood.imgs,642,656)}}"></image>
 			<view class="detail-title">
 				<text style="text-indent: 32rpx">味道美味</text>
 			</view>	

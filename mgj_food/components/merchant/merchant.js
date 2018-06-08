@@ -175,7 +175,7 @@ let merchantObj = {
 		});
 		this.getDataList(false,true);
 	},
-	maskShowAnimation(){//动画打开
+	maskShowAnimation(){//遮罩层显示动画
 		let animation = wx.createAnimation({  
 		    transformOrigin: "50% 50%",
 			duration: 1000,
@@ -192,7 +192,7 @@ let merchantObj = {
 		   maskAnimation: animation.export()  
 		}); 
 	},
-	maskHideAnimation(){//动画关闭
+	maskHideAnimation(){//遮罩层隐藏动画
 		let animation = wx.createAnimation({  
 		    duration: 500,  
 		});

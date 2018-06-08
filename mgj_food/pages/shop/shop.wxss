@@ -3,7 +3,7 @@
 @import "../../components/evaluate.wxss";
 @import "../../components/star/star.wxss";
 @import "../../components/showToast/showToast.wxss";
-@import "../../components/shop/picke.wxss";
+@import "../../components/shop/activity.wxss";
 .header {
 	position: relative;
 	overflow: hidden;
