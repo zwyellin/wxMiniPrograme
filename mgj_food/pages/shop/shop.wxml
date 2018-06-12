@@ -429,11 +429,22 @@
 			
 		</view>
 		<view class="shoprules-food">
-			<view class="shoprules-left font-18">
+			<view  class="shoprules-left font-18">
 				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text>
 			</view>
-			<view class="shoprules-right">
-				<text bindtap="addCart" data-rules="{{true}}" data-food="{{selectedFood}}" data-specindex="{{specIndex}}">选好了</text>
+			<view wx:if="{{tage.cartItemNum(selectedFood,specIndex,selectFoods)==0}}" class="shoprules-right">
+				<text catchtap="addCart"  data-rules="{{true}}" data-food="{{selectedFood}}" data-specindex="{{specIndex}}">加入购物车</text>
+			</view>
+			<view class="control" wx:if="{{tage.cartItemNum(selectedFood,specIndex,selectFoods) > 0}}" style="margin-top:0" >
+				<view  class="cart-decrease"  data-rules="{{true}}" data-food="{{selectedFood}}" data-specindex="{{specIndex}}" catchtap="decrease">
+					<image class="icon-add_circle" src="/images/images/decrease.png"></image>
+				</view>
+				<view  class="cart-count">
+					<text>{{tage.cartItemNum(selectedFood,specIndex,selectFoods)}}</text>
+				</view>
+				<view class="cart-add" data-food="{{selectedFood}}" data-rules="{{true}}" data-specindex="{{specIndex}}" catchtap="addCart">
+					<image class="icon-add_circle" src="/images/images/add.png"></image>
+				</view>
 			</view>
 		</view>
 	</view>

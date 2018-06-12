@@ -107,7 +107,31 @@ var cart = {
 			return '去结算';
 		}
 	},
-};
+	cartItemNum:function(selectedFood,specIndex,selectFoods){
+		var  count = 0;
+		var id = selectedFood.id
+		var attributes = '';
+		for (var i = 0; i < selectedFood.goodsAttributeList.length; i++) {
+			if (i === selectedFood.goodsAttributeList.length-1) {
+				attributes += selectedFood.goodsAttributeList[i].select;
+			} else {
+				attributes += selectedFood.goodsAttributeList[i].select+',';
+			}
+		}
+		var  priceObject = selectedFood.goodsSpecList[specIndex]
+		for(var i=0;i<selectFoods.length;i++){
+			if(id === selectFoods[i].id){
+				if(priceObject.id === selectFoods[i].priceObject.id){
+					if(attributes === selectFoods[i].attributes){
+						count = selectFoods[i].count
+					}
+				}
+			}	
+		}
+		return count;
+	}
+}
+
 module.exports = {
   itemClasses: cart.itemClasses,
   fomatFloat: cart.fomatFloat,
@@ -121,5 +145,6 @@ module.exports = {
   strReplace:cart.strReplace,
   payDesc:cart.payDesc,
   round:cart.round,
-  removefh:cart.removefh
+  removefh:cart.removefh,
+  cartItemNum:cart.cartItemNum
 };
