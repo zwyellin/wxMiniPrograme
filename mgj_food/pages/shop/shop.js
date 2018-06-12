@@ -612,23 +612,12 @@ Page(Object.assign({}, merchantShop,{
 			              }
 			            }
 			        });
-<<<<<<< HEAD
 	        	}	
 	        }
 	      	this.setData({
-=======
-				}	
-				
-			}
-			console.log(tmpArr)
-			
-			this.setData({
->>>>>>> 69b58922e2bda8150d43afa893af50bdf9f706ea
 				selectFoods: tmpArr,
-				maskShow:true,
-				
-			})
-
+				maskShow:true,	
+			});
 	    }
 	    this.totalprice();
 	},
