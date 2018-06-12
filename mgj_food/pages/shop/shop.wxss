@@ -425,7 +425,6 @@
 	width: 178rpx;
 	align-items: center;
 	text-align: center;
-	
 }
 .cartcontrol-button {
 	display: flex;

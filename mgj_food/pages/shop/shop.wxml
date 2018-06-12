@@ -430,7 +430,7 @@
 			</view>	
 		</view>
 		<view class="shoprules-food">
-			<view class="shoprules-left font-18">
+			<view  class="shoprules-left font-18">
 				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text>
 			</view>
 			<view class="button flex">

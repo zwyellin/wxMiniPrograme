@@ -41,9 +41,12 @@ Page({
 			};
 			getBMapLocation(obj).then(res=>{
 				console.log(res);
-				let address
+				let address;
 				if (res.status === 0) {
 					address = res.result.address_component.street_number;
+					if (!address) {
+						address = res.result.address;
+					}
 					this.data.region = res.result.address_component.city;
 					console.log(address);
 					let pois = res.result.pois;
@@ -57,12 +60,12 @@ Page({
 			    	});
 				}
 		    }).catch(err=>{
-
-		    })
-		})
+				console.log(err);
+		    });
+		});
 	},
 	address(e){
-		var that = this
+		var that = this;
 		let address = e.detail.value;
 		if (!this.data.istimeSearch) {
 			this.data.istimeSearch = true;

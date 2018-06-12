@@ -53,11 +53,12 @@ Page(Object.assign({}, merchantShop,{
 	    shipScore:0,
 	    evaluate:[],
 		value:{},       //确认订单后台返回信息
-		pickertag:false
+		pickertag:false,
+		selects:false
 	},
 	onLoad(options) {
-		let { merchantid } = options;
-		this.data.merchantId = merchantid;
+		// let { merchantid } = options;
+		this.data.merchantId = 221;
 		// this.data.merchantId = 402;
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
@@ -108,6 +109,9 @@ Page(Object.assign({}, merchantShop,{
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
+	onShow(){
+		console.log(12);
+	},
 	_imgOnLoad(e){
 		console.log(e)
 		let { parentindex, index } = e.currentTarget.dataset; 
@@ -132,11 +136,22 @@ Page(Object.assign({}, merchantShop,{
 	//选择商品规格
 	choiceTaste(e){
 		let { taste, parentindex} = e.currentTarget.dataset;
+		
 		let selectedFood = this.data.selectedFood;
+		let selectFoods = this.data.selectFoods;
+		console.log(selectFoods)
+		// let selects = this.data.selects;
+		
 		selectedFood.goodsAttributeList[parentindex].select = taste;
+		console.log(selectedFood.goodsAttributeList[parentindex])
 		this.setData({
-			selectedFood:selectedFood
+			selectedFood:selectedFood,
+			
 		});
+		
+		
+		
+		
 	},
 	isMinOrderNum(){
 		let goodsItem;
@@ -291,9 +306,11 @@ Page(Object.assign({}, merchantShop,{
 	//选择商品大小价格
 	choicespec(e){
 		let { index, taste } = e.currentTarget.dataset;
+		console.log(index, taste)
 		this.setData({
 			price:taste.price,
-			specIndex:index
+			specIndex:index,
+			
 		});
 	},
 	selectTab(e){
@@ -324,17 +341,22 @@ Page(Object.assign({}, merchantShop,{
 		this.maskShowAnimation();
 		this.choiceShowAnimation();
 		let { food } = e.currentTarget.dataset;
+		// let selectedFood = this.data.selectedFood;
+		
 		let arr = [];
 		for (let i = 0; i < food.goodsAttributeList.length; i++) {
 			let arr = food.goodsAttributeList[i].name.split('|*|');
 			food.goodsAttributeList[i].select = arr[0];
 		}
+		console.log(food)
 		this.setData({
 			selectedFood:food,
 			choice:true,
 			detailShow:false,
 			specIndex:0
 		});
+		// console.log(selectedFood)
+		
 	},
 	//点击查看商品详情
 	selectefood(e){
@@ -355,8 +377,8 @@ Page(Object.assign({}, merchantShop,{
 		this.setData({
 			choice:false,
 			detailShow:false,
-
 			pickertag:false
+			
 	    });
 	},
 	//查看购物车详情
@@ -401,24 +423,31 @@ Page(Object.assign({}, merchantShop,{
 	    })
 	    return count;
 	},
+	
 	//添加进购物车
 	addCart(e) {
 		let specIndex = e.currentTarget.dataset.specindex || 0;
+
 		let { food, rules} = e.currentTarget.dataset;
 		let attributes = '';
 		let id = food.id; //选择的产品id
 		let categoryId = food.categoryId;  //选择的产品分类id
-    	let priceObject = {}; //产品价格对象
+		let priceObject = {}; //产品价格对象
+		
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
 		} else {
 			priceObject = food.goodsSpecList[specIndex]; //产品价格
+			
 		}
     	let name = food.name; //产品名称
-    	console.log(food);
+    	// console.log(food);
     	if (priceObject.stock || priceObject.orderLimit) {
+
 			let count = this.getCartCount(id,priceObject);
+			
 			if (priceObject.stockType) {
+				console.log(count,priceObject.stock)
 				if (count >=priceObject.stock) {
 					feedbackApi.showToast({title: '该商品库存不足'});
 					return;
@@ -439,16 +468,20 @@ Page(Object.assign({}, merchantShop,{
 				}
 			}
 		}
+		console.log(attributes)
 		console.log(food);
 		if (id) {
 	      	let tmpArr = this.data.selectFoods;
 	        //遍历数组 
         	let isFound = false;
         	tmpArr.map((item)=> {
+				
 	          	if (item.id == id) {
 	            	if (item.priceObject.id == priceObject.id) {
+						
 	            		if (item.attributes && rules) {            //规格判断
 							// let flag = true;
+							console.log(111)
 							if (attributes == item.attributes) {
 								item.count += 1;	
 								isFound = true;
@@ -456,28 +489,35 @@ Page(Object.assign({}, merchantShop,{
 	            		} else {
 	            			item.count += 1;
 	            			isFound = true;
-	            		}	
+						}
+						
+						
 	                }
-	            } 
+				} 
+				
 	        });
 	        if(!isFound){
 		      	if (rules) {
-	      			tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});
+					  tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});
+					
 	      		} else {
 	      			if (priceObject.minOrderNum) {
 	      				tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
-	      				feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份'});
+						  feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份'});
+						 
 	      			} else {
-	      				tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
-	      			}
+						  tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
+						 
+					}
 	      		}	  		
 	        }
-	      	console.log(tmpArr);
-	      	this.setData({
-		 		// choice:false,
+
+			console.log(tmpArr)
+			this.setData({
 				selectFoods: tmpArr,
-				maskShow:false
-		 	});
+				maskShow:true
+				
+			})
 	    }
 	 	this.totalprice();
 	},
@@ -494,6 +534,7 @@ Page(Object.assign({}, merchantShop,{
 		if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
 		}
+
 		//弹出层多规格删减匹配
 		if (food.goodsAttributeList && food.goodsAttributeList.length > 0) {
 			attributes = '';
@@ -520,7 +561,8 @@ Page(Object.assign({}, merchantShop,{
 	          			if (attributes) {
 		          			if (attributes == item.attributes) {
 								if (item.count > 1) {
-				              		item.count -= 1;
+									  item.count -= 1;
+									  
 				                } else {
 						        	tmpArr.splice(index, 1);
 						      	}
@@ -570,12 +612,23 @@ Page(Object.assign({}, merchantShop,{
 			              }
 			            }
 			        });
+<<<<<<< HEAD
 	        	}	
 	        }
 	      	this.setData({
+=======
+				}	
+				
+			}
+			console.log(tmpArr)
+			
+			this.setData({
+>>>>>>> 69b58922e2bda8150d43afa893af50bdf9f706ea
 				selectFoods: tmpArr,
-				maskShow:false,
-		 	});
+				maskShow:true,
+				
+			})
+
 	    }
 	    this.totalprice();
 	},
