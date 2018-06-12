@@ -98,7 +98,9 @@
 				    data-food="{{food}}"
 				    bindtap="selectefood">
 					<view class="icon">
-						<image class="icon_img" lazy-load="true" src="{{food.isImgLoadComplete ? tage.removefh(food.imgs,114,114) : '/images/merchant/merchantLogo.png'}}" data-parentindex="{{parentIndex}}" data-index="{{index}}" bindload="_imgOnLoad" />
+						<!-- <image style="display: none" class="icon_img" src="{{tage.removefh(food.imgs,114,114)}}" data-parentindex="{{parentIndex}}" data-index="{{index}}" bindload="_imgOnLoad" />
+						<image class="icon_img" src="{{food.isImgLoadComplete ? tage.removefh(food.imgs,114,114) : '/images/merchant/merchantLogo.png'}}" /> -->
+						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs,114,114)}}" />
 					</view>
 					<view class="content">
 						<view class="detail-name">
@@ -425,15 +427,28 @@
 						data-taste="{{taste}}">{{taste}}
 					</text>
 				</view>
-			</view>
-			
+			</view>	
 		</view>
 		<view class="shoprules-food">
 			<view class="shoprules-left font-18">
 				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text>
 			</view>
-			<view class="shoprules-right">
-				<text bindtap="addCart" data-rules="{{true}}" data-food="{{selectedFood}}" data-specindex="{{specIndex}}">选好了</text>
+			<view class="button flex">
+				<!-- <image class="button-img" src="../../images/images/cart_2.png"></image> -->
+				<text wx:if="{{tage.getstandard(selectedFood,specIndex,selectFoods)===0}}" class="button-txt" bindtap="addCart" data-rules="{{true}}" data-food="{{selectedFood}}" data-specindex="{{specIndex}}">加入购物车</text>
+				<view wx:if="{{tage.getstandard(selectedFood,specIndex,selectFoods)>0}}" class="cartcontrol-wrapper" style="height: 62rpx">
+					<view>
+						<view wx:if="{{tage.getstandard(selectedFood,specIndex,selectFoods)>0}}" class="cart-decrease" data-food="{{selectedFood}}" data-specindex="{{specIndex}}" data-rules="{{true}}" catchtap="decrease">
+							<image class="icon-add_circle" src="/images/images/decrease.png"></image>
+						</view>
+						<view wx:if="{{tage.getstandard(selectedFood,specIndex,selectFoods)>0}}" class="cart-count">
+							<text>{{tage.getstandard(selectedFood,specIndex,selectFoods)}}</text>
+						</view>
+						<view class="cart-add" data-rules="{{true}}" data-specindex="{{specIndex}}"data-food="{{selectedFood}}" catchtap="addCart">
+							<image class="icon-add_circle" src="/images/images/add.png"></image>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>

@@ -62,10 +62,16 @@ Page(Object.assign({}, merchantShop,{
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
 			let menu = res.data.value.menu;
-			menu.map(leftItem =>{
-				leftItem.goodsList.map(leftItemShop =>{
-					leftItemShop.isImgLoadComplete = false;
-				});
+			menu.map((leftItem,index) =>{
+				if (index != 0 ) {
+					leftItem.goodsList.map(leftItemShop =>{
+						leftItemShop.isImgLoadComplete = false;
+					});
+				} else {
+					leftItem.goodsList.map(leftItemShop =>{
+						leftItemShop.isImgLoadComplete = true;
+					});
+				}	
 			});
 			console.log(menu);
         	this.setData({
@@ -90,7 +96,7 @@ Page(Object.assign({}, merchantShop,{
         }).finally(()=>{
         	wx.hideLoading();
         });
-        this.getStorageShop(merchantid);
+        this.getStorageShop(this.data.merchantId);
 		this.getevaluate();
 		//获取系统信息 主要是为了计算产品scroll的高度
 	    wx.getSystemInfo({
@@ -103,7 +109,7 @@ Page(Object.assign({}, merchantShop,{
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
 	_imgOnLoad(e){
-		console.log(e);
+		console.log(e)
 		let { parentindex, index } = e.currentTarget.dataset; 
 		let menu = this.data.menu;
 		menu[parentindex].goodsList[index].isImgLoadComplete = true;
@@ -468,7 +474,7 @@ Page(Object.assign({}, merchantShop,{
 	        }
 	      	console.log(tmpArr);
 	      	this.setData({
-		 		choice:false,
+		 		// choice:false,
 				selectFoods: tmpArr,
 				maskShow:false
 		 	});
@@ -477,17 +483,32 @@ Page(Object.assign({}, merchantShop,{
 	},
 	decrease(e){
 		let specIndex = e.currentTarget.dataset.specindex || 0;
-		let { food } = e.currentTarget.dataset;
+		let { food, rules} = e.currentTarget.dataset;
 		let priceObject = {};
 		let attributes = '';
 		let id = food.id; //选择的产品id
+		//购物车多规格删减匹配
 		if (food.attributes) {
 			attributes = food.attributes;
 		}
 		if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
+		}
+		//弹出层多规格删减匹配
+		if (food.goodsAttributeList && food.goodsAttributeList.length > 0) {
+			attributes = '';
+			for (var i = 0; i < food.goodsAttributeList.length; i++) {
+				if (i === food.goodsAttributeList.length-1) {
+					attributes += food.goodsAttributeList[i].select;
+				} else {
+					attributes += food.goodsAttributeList[i].select+',';
+				}
+			}
+		}
+		if (food.goodsSpecList && rules) {
+			priceObject = food.goodsSpecList[specIndex];
 		} 
-		console.log(food)
+		console.log(food);
 		let isNum = 0;
 		let isNumstatus = false;
     	if (id) {
@@ -516,12 +537,12 @@ Page(Object.assign({}, merchantShop,{
 					        	tmpArr.splice(index, 1);
 					      	}
 						}
-						isNumstatus = true
+						isNumstatus = true;
 	                }
-	                isNum++	
+	                isNum++;
 	            }
 	        });
-	        console.log(isNum)
+	        console.log(isNum);
 	        if (isNum === 1 && !isNumstatus) {
 	        	tmpArr.map((item,index)=>{
 	        		if (item.id === id) {
@@ -536,9 +557,9 @@ Page(Object.assign({}, merchantShop,{
 				        	tmpArr.splice(index, 1);
 				      	}
 	        		}
-	        	})
+	        	});
 	        } else {
-	        	if (!food.priceObject) {
+	        	if (!food.priceObject && !rules) {
 					wx.showModal({
 			            content: '多种规格,请在购物车里删除',
 			            success: function (res) {
@@ -552,7 +573,6 @@ Page(Object.assign({}, merchantShop,{
 	        	}	
 	        }
 	      	this.setData({
-		 		choice:false,
 				selectFoods: tmpArr,
 				maskShow:false,
 		 	});

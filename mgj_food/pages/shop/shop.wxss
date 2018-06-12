@@ -418,14 +418,14 @@
 	font-size: 24rpx;
 }
 .button {
-	position: absolute;
+	/*position: absolute;
 	right: 30rpx;
 	bottom: 26rpx;
-	width: 192rpx;
-	height: 58rpx;
-	line-height: 58rpx;
-	background: #ff9900;
-	border-radius: 58rpx;
+	width: 192rpx;*/
+	width: 178rpx;
+	align-items: center;
+	text-align: center;
+	
 }
 .cartcontrol-button {
 	display: flex;
@@ -444,8 +444,11 @@
 	height: 48rpx;
 }
 .button-txt{
-	position: absolute;
-	left:56rpx;
+	width: 152rpx;
+	height: 52rpx;
+	line-height: 52rpx;
+	background: #ff9900;
+	border-radius: 52rpx;
 	font-size: 24rpx
 }
 .mask {
@@ -534,6 +537,12 @@
 	width: 202rpx;
 	text-align: center;
 	background: #ff9900;
+}
+.shoprules-addcart {
+	flex:0 0 202rpx;
+	width: 202rpx;
+	text-align: center;
+	/*background: #ff9900;*/
 	letter-spacing: 4rpx;
 }
 .shoprules-messgae {

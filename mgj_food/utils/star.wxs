@@ -83,6 +83,29 @@ var cart = {
 	    }
 	    return count;
 	},
+	//计算同一商品下不同规格的商品添加的数量
+	getstandard:function (selectedFood,specIndex,cartlist) {
+		var count = 0;
+		var attributes = '';
+		var isFound = false;
+		var priceObject = selectedFood.goodsSpecList[specIndex];
+		for (var i = 0; i < selectedFood.goodsAttributeList.length; i++) {
+			if (i === selectedFood.goodsAttributeList.length-1) {
+				attributes += selectedFood.goodsAttributeList[i].select;
+			} else {
+				attributes += selectedFood.goodsAttributeList[i].select+',';
+			}
+		}
+		for (var i = 0; i < cartlist.length; i++) {
+			if (cartlist[i].priceObject.id == priceObject.id) {
+        		if (cartlist[i].attributes ==  attributes) {            //规格判断
+					count = cartlist[i].count;
+					isFound = true;	
+        		}
+            }
+		}
+		return count;
+	},
 	//计算该商家下购物车里产品的总数
 	getMerchantCount: function (id,cartObject) {
 		if (cartObject === null) return 0;
@@ -117,6 +140,7 @@ module.exports = {
   getCount:cart.getCount,
   getCartCount:cart.getCartCount,
   getItemCount:cart.getItemCount,
+  getstandard:cart.getstandard,
   getMerchantCount:cart.getMerchantCount,
   strReplace:cart.strReplace,
   payDesc:cart.payDesc,
