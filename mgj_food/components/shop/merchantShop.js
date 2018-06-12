@@ -1,6 +1,7 @@
 const { wxRequest } = require('../../utils/util.js');
 const feedbackApi = require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const app = getApp();
+let  ActivityListHeight = 149;
 const merchantShop = {
 	//获取商家详情
 	findMerchantInfo(){
@@ -265,7 +266,7 @@ const merchantShop = {
 		}); 
 	},
 	pickertagShowAnimation(){
-		console.log(ActivityListHeight)
+		
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
 			duration: 500,
