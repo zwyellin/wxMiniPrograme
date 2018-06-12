@@ -102,6 +102,9 @@ Page(Object.assign({}, merchantShop,{
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
+	onShow(){
+		console.log(12);
+	},
 	_imgOnLoad(e){
 		console.log(e);
 		let { parentindex, index } = e.currentTarget.dataset; 

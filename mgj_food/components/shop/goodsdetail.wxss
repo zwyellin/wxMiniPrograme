@@ -43,6 +43,8 @@
 	color: rgb(7,17,27);
 }
 .foods-wrapper .content{
+	/*display: flex;
+	flex-direction: column;*/
 	flex:1;
 }
 .foods-wrapper .content .detail-descs{
@@ -61,6 +63,7 @@
 }
 .foods-wrapper .content .detail-price{
 	/*position: relative;*/
+	/*width: 100%;*/
 	font-weight: 700;
 	line-height: 48rpx;
 }

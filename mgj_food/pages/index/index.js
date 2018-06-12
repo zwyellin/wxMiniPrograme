@@ -83,15 +83,15 @@ Page(Object.assign({}, merchantObj, {
 							if (value.phone) {
 								app.globalData.agentPhone = value.phone;
 							} else {
-								app.globalData.agentPhone = null
+								app.globalData.agentPhone = null;
 							}
 						} else {
-							app.globalData.agentPhone = null
+							app.globalData.agentPhone = null;
 							app.globalData.agentId = null;
 						}
 						this.initBanner();
 						this.initClass();
-						this.getDataList(false,false);//getinitDataList
+						this.getDataList(false,false);
 	        			this.findTagCategory();	
 					}	
 		        }).catch(err=>{
@@ -443,9 +443,20 @@ Page(Object.assign({}, merchantObj, {
 					}	
 				} else {
 					if (list.length === 0) {
-						this.setData({
-							isAgentId:true
-						});	
+						if (app.globalData.agentId === null) {
+							this.setData({
+								isAgentId:true
+							});
+						} else {
+							setTimeout(()=>{
+								this.setData({
+									loading:true
+								});
+							},1500);
+							this.setData({
+								dataList:list
+							});
+						}	
 					} else {
 						list = this.seatImg(list);
 						this.setData({

@@ -8,7 +8,7 @@
 			<text>当前地址</text>
 		</view>
 		<view class="pad-address" style="background: #fff">
-			<text>{{nowAdress}}</text>
+			<text class="now-address-text">{{nowAdress}}</text>
 			<view class="address-imgtext fr" bindtap="reset">
 				<image class="address-img {{resetAddress ? 'reset-address' : ''}}" src="../../../images/images/dingwei.png"></image>
 				<text class="address-text">重新定位</text>

@@ -24,6 +24,13 @@
 	height: 74rpx;
 	line-height: 74rpx;
 }
+.now-address-text {
+	display: inline-block;
+	width: 500rpx;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .address-imgtext {
 	display: table-cell;
 }
