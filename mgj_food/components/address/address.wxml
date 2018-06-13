@@ -1,8 +1,14 @@
 <template name="add-address">
-	<view style="background: #fff">
+	<view class="receiving-address-item">
 		<image class="receiving-headerimg" src="../../../images/images/address.png"></image>
-		<view class="receiving-address font-14">
-			<view class="receiving-content">
+		<view class="receiving-address font-14"  style="{{item.txtStyle}}" 
+			data-item="{{item}}"
+			data-index="{{index}}"
+			catchtap="selectAddress" 
+			bindtouchstart="drawStart"
+			bindtouchmove="drawMove" 
+			bindtouchend="drawEnd">
+			<view class="receiving-content" >
 				<view class="receiving-text">
 					<text class="text">{{item.name}}</text>
 					<text class="text1">{{item.gender}}</text>
@@ -17,6 +23,7 @@
 			<view wx:if="{{item.overShipping != 1}}" class="receiving-contentimg" data-item="{{item}}" catchtap="editAddress">
 				<image class="receiving-img" src="../../../images/images/pen.png" ></image>
 			</view>
+			
 			<view wx:if="{{item.overShipping == 1}}" class="receiving-contentimg font-10" data-item="{{item}}" >
 				<image class="receiving-tipimg" src="../../../images/images/chao.png" ></image>
 				<view>
@@ -24,5 +31,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="remove" bindtouchstart="removeAddress" style="{{item.btnStyle}}" data-id="{{item.id}}">
+			<view>删除</view>
+		</view>
 	</view>
+	
 </template>

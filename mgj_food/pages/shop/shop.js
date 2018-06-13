@@ -57,8 +57,8 @@ Page(Object.assign({}, merchantShop,{
 		selects:false
 	},
 	onLoad(options) {
-		// let { merchantid } = options;
-		this.data.merchantId = 221;
+		let { merchantid } = options;
+		this.data.merchantId = merchantid;
 		// this.data.merchantId = 402;
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{

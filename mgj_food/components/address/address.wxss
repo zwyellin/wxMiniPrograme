@@ -7,6 +7,11 @@
 	height: 10rpx;
 	overflow: hidden;
 }
+.receiving-addres-item{
+	background: #fff;
+	position: absolute;
+	
+}
 .receiving-headerimg {
 	position: absolute;
 	width: 100%;
@@ -99,4 +104,18 @@
 	width: 30rpx;
 	height: 30rpx;
 	vertical-align: middle;
+}
+.remove{
+    width: 100rpx;
+	height: 100%;
+	font-size: 24rpx;
+    background-color: red;
+	position: absolute;
+	text-align: center;
+    top: 0;
+    right: -100px;
+    display: flex;
+    justify-content: center;
+	align-items: center;
+	z-index: 99999;
 }
