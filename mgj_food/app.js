@@ -5,7 +5,7 @@ App({
     //调用API从本地缓存中获取数据
     let loginMessage = wx.getStorageSync('loginMessage');
     let shoppingCart = wx.getStorageSync('shoppingCart');
-    if (loginMessage && typeof loginMessage == "object") {
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
       this.findAppUserByToken(loginMessage);
     }
     if (shoppingCart) {
@@ -52,9 +52,11 @@ App({
       },
       success:function(res){
         var value = res.data.value;
-        that.globalData.token = value.token;
-        that.globalData.userId = value.id;
-        wx.setStorageSync('loginMessage',value);
+        if (value.code === 0) {
+          that.globalData.token = value.token;
+          that.globalData.userId = value.id;
+          wx.setStorageSync('loginMessage',value);
+        }
       },
       fail:function(err){
         that.globalData.token = loginMessage.token;
@@ -74,10 +76,10 @@ App({
     domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    latitude:'39.977261',
-    longitude:'116.336983'
-    // latitude:'',
-    // longitude:''
+    // latitude:'39.977261',
+    // longitude:'116.336983'
+    latitude:'',
+    longitude:''
   }
 });
 // prelaunch

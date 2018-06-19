@@ -147,11 +147,7 @@ Page(Object.assign({}, merchantShop,{
 		this.setData({
 			selectedFood:selectedFood,
 			
-		});
-		
-		
-		
-		
+		});	
 	},
 	isMinOrderNum(){
 		let goodsItem;

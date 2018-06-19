@@ -19,7 +19,7 @@ Page({
 	onShow(){
 		let that = this;
         let loginMessage = wx.getStorageSync('loginMessage');
-		if (loginMessage  && typeof loginMessage == "object") {
+		if (loginMessage  && typeof loginMessage == "object" && loginMessage.token) {
 			wx.setStorageSync('loginstatus',true);
 			this.findAppUserByToken(loginMessage).then(res=>{
 				if (res.data.code === 0) {
