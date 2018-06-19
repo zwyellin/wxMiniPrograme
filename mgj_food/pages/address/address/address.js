@@ -114,7 +114,6 @@ Page({
 	//关键字查询
 	getSuggestion(address){
 		var that = this;
-		console.log(123456);
 		qqMap.getSuggestion({
 			keyword:address,
 			region:this.data.region,

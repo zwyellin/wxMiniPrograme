@@ -40,7 +40,7 @@ Page({
     }
   },
   payChannel(){
-    if (this.data.channelCost === 0) {
+    if (this.data.channelCost === 0 && this.data.price != 0) {
       if (!this.data.isChannel) {
         feedbackApi.showToast({title:'余额不足'});
         this.data.isChannel = true;
@@ -296,7 +296,7 @@ Page({
   close(){
     this.setData({
       maskShow:false
-    })
+    });
   },
   maskShowAnimation(){
     let animation = wx.createAnimation({  
@@ -325,7 +325,7 @@ Page({
               choice:false,
               detailShow:false,
               merchantRedBagList:[]
-            })
+            });
           },500);
           this.setData({
             maskAnimation: animation.export(),  

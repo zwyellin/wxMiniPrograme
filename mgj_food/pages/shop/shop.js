@@ -57,8 +57,12 @@ Page(Object.assign({}, merchantShop,{
 		selects:false
 	},
 	onLoad(options) {
-		let { merchantid } = options;
+		let { merchantid,longitude,latitude} = options;
 		this.data.merchantId = merchantid;
+		if (longitude && latitude) {
+			app.globalData.longitude = longitude;
+        	app.globalData.latitude = latitude;
+		}
 		// this.data.merchantId = 402;
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
@@ -109,11 +113,7 @@ Page(Object.assign({}, merchantShop,{
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
-	onShow(){
-		console.log(12);
-	},
 	_imgOnLoad(e){
-		console.log(e)
 		let { parentindex, index } = e.currentTarget.dataset; 
 		let menu = this.data.menu;
 		menu[parentindex].goodsList[index].isImgLoadComplete = true;
@@ -294,8 +294,8 @@ Page(Object.assign({}, merchantShop,{
         	data:{
         		params:{
         			data:JSON.stringify(data),
-        			longitude:app.globalData.longitude || '115.81529',
-        			latitude:app.globalData.latitude || '28.6925'
+        			longitude:app.globalData.longitude,
+        			latitude:app.globalData.latitude
         		},
         		token:app.globalData.token	
         	},
@@ -410,7 +410,7 @@ Page(Object.assign({}, merchantShop,{
 	},
 	//计算订单中某一商品的总数
 	getCartCount: function (id,priceObject) {
-		let selectFoods = this.data.selectFoods
+		let selectFoods = this.data.selectFoods;
 	    let count = 0;
 	    selectFoods.map((item)=>{
 			if (item.id == id) {
@@ -418,7 +418,7 @@ Page(Object.assign({}, merchantShop,{
 	      			count+= item.count;
 	      		}  
 	        }
-	    })
+	    });
 	    return count;
 	},
 	
@@ -619,7 +619,6 @@ Page(Object.assign({}, merchantShop,{
 	    }
 	    this.totalprice();
 	},
-	
 	//清空购物车
 	empty(){
 		this.setData({
@@ -655,7 +654,7 @@ Page(Object.assign({}, merchantShop,{
 	onShareAppMessage(res) {
     	return {
       		title: '马管家外卖',
-      		path: "/pages/shop/shop?merchantid=" + this.data.merchantId,
+      		path: '/pages/shop/shop?merchantid='+ this.data.merchantId+'longitude='+app.globalData.longitude+'latitude='+app.globalData.latitude,
       		success: function(res) {
         		// 转发成功
      		},
