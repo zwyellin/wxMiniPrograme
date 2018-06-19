@@ -35,7 +35,7 @@ Page({
     this.findCustomerAndComplainPhoneByUserXY();
     let loginMessage = wx.getStorageSync('loginMessage');
     let loginstatus = wx.getStorageSync('loginstatus');
-    if (loginMessage && loginstatus) {
+    if (loginMessage && typeof loginMessage == "object" && loginstatus) {
       this.findUserCenter();
       this.findUserListAndCashbackAmtSum()
       let name = loginMessage.mobile.toString();

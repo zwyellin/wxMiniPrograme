@@ -202,7 +202,7 @@ Page(Object.assign({}, merchantShop,{
 		let loginMessage = wx.getStorageSync('loginMessage');
     	let loginstatus = wx.getStorageSync('loginstatus');
 		if (this.data.totalcount === 0 || this.data.totalprice < this.data.minPrice) return;
-		if (loginMessage && loginstatus) {
+		if (loginMessage && typeof loginMessage == "object" && loginstatus) {
       		// wx.setStorageSync('food',this.data.selectFoods);
       		if (!this.data.getOrderStatus) {
       			let isMinOrderNum = this.isMinOrderNum();

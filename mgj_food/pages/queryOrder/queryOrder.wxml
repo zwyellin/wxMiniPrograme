@@ -89,11 +89,11 @@
 			<text class="fr">￥{{orderMessage.boxPrice}}</text>
 		</view>
 		<view wx:if="{{orderMessage.shipmentType === 2}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
-			<text style="color:#333">配送费<text style="color:#b6b6b6;font-size: 22rpx"> ({{orderMessage.shipmentTip}})</text></text>
+			<text style="color:#333" class="shipmenttip-txt">配送费<text style="color:#b6b6b6;font-size: 22rpx"> ({{orderMessage.shipmentTip}})</text></text>
 			<text class="fr">￥{{orderMessage.shippingFee}}</text>
 		</view>
 		<view wx:if="{{orderMessage.shipmentType === 1}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
-			<text style="color:#333">{{orderMessage.shipmentTip}}</text>
+			<text style="color:#333" class="shipmenttip-txt">{{orderMessage.shipmentTip}}</text>
 			<text class="fr">￥{{orderMessage.shippingFee}}</text>
 		</view>
 	</view>

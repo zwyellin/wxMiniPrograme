@@ -5,7 +5,7 @@ App({
     //调用API从本地缓存中获取数据
     let loginMessage = wx.getStorageSync('loginMessage');
     let shoppingCart = wx.getStorageSync('shoppingCart');
-    if (loginMessage) {
+    if (loginMessage && typeof loginMessage == "object") {
       this.findAppUserByToken(loginMessage);
     }
     if (shoppingCart) {
@@ -71,7 +71,7 @@ App({
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain: 'https://prelaunch.horsegj.com',
+    domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
     latitude:'39.977261',

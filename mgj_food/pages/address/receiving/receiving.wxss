@@ -3,4 +3,5 @@
 .address-top {
 	position: relative;
 	margin-top: 20rpx;
+	background: #fff;
 }

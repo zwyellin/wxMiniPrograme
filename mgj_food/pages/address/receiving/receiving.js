@@ -59,11 +59,10 @@ Page({
 			wx.navigateTo({
   				url: '/pages/address/add/add'
 			});
-		}
-			
+		}		
 	},
 	drawStart(e){//手指刚放到屏幕触发
-		console.log(1111)
+		console.log(e.touches)
 		if(e.touches.length == 1){
 			this.setData({
 				startX:e.touches[0].clientX
@@ -71,11 +70,13 @@ Page({
 		}
 	},
 	drawMove(e){//触发时触发，手指在屏幕上没移动一次，触发一次
-		console.log(2222)
+		var index = e.currentTarget.dataset.index;
 		var that = this;
+		if (this.data.address[index].btnStyle == 'right:0px') return;
 		if(e.touches.length == 1){
 			var moveX = e.touches[0].clientX;
 			var disX = that.data.startX - moveX;
+			console.log(disX);
 			var delBtnWidth = that.data.delBtnWidth;
 			var txtStyle = "";
 			var btnStyle= "";
@@ -91,14 +92,14 @@ Page({
 					btnStyle = "right:0px";
 				}
 			}
-			var index = e.currentTarget.dataset.index;
+			
 			var list = that.data.address;
-			console.log(list[index].txtStyle)
 			list[index].txtStyle = txtStyle;
 			list[index].btnStyle = btnStyle;
+			console.log(list[index].txtStyle);
 			this.setData({
 				address:list
-			})
+			});
 		}
 	},
 	drawEnd(e){//手指移动结束后触发位置

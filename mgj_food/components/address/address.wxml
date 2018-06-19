@@ -4,10 +4,7 @@
 		<view class="receiving-address font-14"  style="{{item.txtStyle}}" 
 			data-item="{{item}}"
 			data-index="{{index}}"
-			catchtap="selectAddress" 
-			bindtouchstart="drawStart"
-			bindtouchmove="drawMove" 
-			bindtouchend="drawEnd">
+			catchtap="selectAddress">
 			<view class="receiving-content" >
 				<view class="receiving-text">
 					<text class="text">{{item.name}}</text>
@@ -31,9 +28,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="remove" bindtouchstart="removeAddress" style="{{item.btnStyle}}" data-id="{{item.id}}">
+		<!-- <view class="remove" bindtouchstart="removeAddress" style="{{item.btnStyle}}" data-id="{{item.id}}">
 			<view>删除</view>
-		</view>
+		</view> -->
 	</view>
 	
 </template>
