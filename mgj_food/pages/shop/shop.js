@@ -227,7 +227,7 @@ Page(Object.assign({}, merchantShop,{
 					return;
 				}
 				this.data.getOrderStatus = true;
-				this.orderPreview().then((res)=>{
+				this.orderPreview(loginMessage).then((res)=>{
 	      			if (res.data.code === 0) {
 	      				this.setData({
 							value:res.data.value
@@ -265,7 +265,7 @@ Page(Object.assign({}, merchantShop,{
     	}
 	},
 	//请求订单
-	orderPreview(){
+	orderPreview(loginMessage){
 		wx.showToast({
 	        title: '加载中',
 	        icon: 'loading',
@@ -273,6 +273,8 @@ Page(Object.assign({}, merchantShop,{
 	        mask: true
 	    });
 		let orderItems = [];
+		app.globalData.token = loginMessage.token;
+		app.globalData.userId = loginMessage.id;
 		let data = {loginToken:app.globalData.token,userId:app.globalData.userId,merchantId:this.data.merchantId};
 		this.data.selectFoods.map((item,index)=>{
 			let json = {};
@@ -292,8 +294,8 @@ Page(Object.assign({}, merchantShop,{
         	data:{
         		params:{
         			data:JSON.stringify(data),
-        			longitude:app.globalData.longitude,
-        			latitude:app.globalData.latitude
+        			longitude:app.globalData.longitude || '115.81529',
+        			latitude:app.globalData.latitude || '28.6925'
         		},
         		token:app.globalData.token	
         	},

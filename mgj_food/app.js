@@ -76,8 +76,6 @@ App({
     domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    // latitude:'39.977261',
-    // longitude:'116.336983'
     latitude:'',
     longitude:''
   }

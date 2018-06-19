@@ -342,7 +342,7 @@ Page(Object.assign({}, merchantObj, {
 				}
 				this.setData({
 					initClassList:classArr
-				})	
+				});	
         	}
         });
 	},
