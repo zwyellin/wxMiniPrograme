@@ -466,20 +466,15 @@ Page(Object.assign({}, merchantShop,{
 				}
 			}
 		}
-		console.log(attributes)
 		console.log(food);
 		if (id) {
 	      	let tmpArr = this.data.selectFoods;
 	        //遍历数组 
         	let isFound = false;
         	tmpArr.map((item)=> {
-				
 	          	if (item.id == id) {
 	            	if (item.priceObject.id == priceObject.id) {
-						
 	            		if (item.attributes && rules) {            //规格判断
-							// let flag = true;
-							console.log(111)
 							if (attributes == item.attributes) {
 								item.count += 1;	
 								isFound = true;
@@ -487,30 +482,30 @@ Page(Object.assign({}, merchantShop,{
 	            		} else {
 	            			item.count += 1;
 	            			isFound = true;
-						}
-						
-						
+						}		
 	                }
 				} 
 				
 	        });
 	        if(!isFound){
 		      	if (rules) {
-					  tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});
-					
+		      		if (priceObject.minOrderNum) {
+		      			tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
+						feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+priceObject.minOrderNum+'份哦'});
+		      		} else {
+					  	tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});	
+		      		}
 	      		} else {
 	      			if (priceObject.minOrderNum) {
 	      				tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
-						  feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份'});
+						  feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
 						 
 	      			} else {
-						  tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
-						 
+						tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });	 
 					}
 	      		}	  		
 	        }
-
-			console.log(tmpArr)
+			console.log(tmpArr);
 			this.setData({
 				selectFoods: tmpArr,
 				maskShow:true
@@ -559,8 +554,12 @@ Page(Object.assign({}, merchantShop,{
 	          			if (attributes) {
 		          			if (attributes == item.attributes) {
 								if (item.count > 1) {
-									  item.count -= 1;
-									  
+									if (item.priceObject.minOrderNum === item.count) {
+										tmpArr.splice(index, 1);
+										feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+				              		} else {
+				              			item.count -= 1;
+				              		} 
 				                } else {
 						        	tmpArr.splice(index, 1);
 						      	}
@@ -569,7 +568,7 @@ Page(Object.assign({}, merchantShop,{
 							if (item.count > 1) {
 			              		if (item.priceObject.minOrderNum === item.count) {
 									tmpArr.splice(index, 1);
-									feedbackApi.showToast({title: item.name+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+									feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+item.priceObject.minOrderNum+'份'});
 			              		} else {
 			              			item.count -= 1;
 			              		}
@@ -589,7 +588,7 @@ Page(Object.assign({}, merchantShop,{
 	        			if (item.count > 1) {
 		              		if (item.priceObject.minOrderNum === item.count) {
 								tmpArr.splice(index, 1);
-								feedbackApi.showToast({title: item.name+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+								feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+item.priceObject.minOrderNum+'份'});
 		              		} else {
 		              			item.count -= 1;
 		              		}
@@ -654,7 +653,7 @@ Page(Object.assign({}, merchantShop,{
 	onShareAppMessage(res) {
     	return {
       		title: '马管家外卖',
-      		path: '/pages/shop/shop?merchantid='+ this.data.merchantId+'longitude='+app.globalData.longitude+'latitude='+app.globalData.latitude,
+      		path: '/pages/shop/shop?merchantid='+ this.data.merchantId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude,
       		success: function(res) {
         		// 转发成功
      		},

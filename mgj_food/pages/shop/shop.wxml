@@ -386,49 +386,51 @@
 			<text>{{selectedFood.name}}</text>
 			<image class="shoprules-img" src="../../images/images/close.png" bindtap="close"></image>
 		</view>
-		<view class="shoprules-wrapper font-14">
-			<view class="shoprules-content-rules">
-				<view class="shoprules-text">
-					<text>规格 :</text>
-				</view>
-				<view class="shoprules-options font-14"
-					wx:for="{{selectedFood.goodsSpecList}}" 
-					wx:for-item="taste" 
-					wx:for-index="index" 
-					wx:key="index">
-					<text class="shoprules-select {{index===specIndex ? 'shoprules-active' : ''}}" 
-						bindtap="choicespec"
-						data-index="{{index}}"
-						data-taste="{{taste}}">{{taste.spec}}
-					</text>
-				</view>
-				<view class="shoprules-messgae font-10">
-					<text wx:if="{{selectedFood.goodsSpecList[specIndex].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{selectedFood.goodsSpecList[specIndex].orderLimit}}份</text>
-					<text wx:if="{{selectedFood.goodsSpecList[specIndex].stockType && selectedFood.goodsSpecList[specIndex].stock <10}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{selectedFood.goodsSpecList[specIndex].stock}}件</text>
-					<text wx:if="{{selectedFood.goodsSpecList[specIndex].minOrderNum}}" class="rules-text" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{selectedFood.goodsSpecList[specIndex].minOrderNum}}份起购</text>
-				</view>
-			</view>
-			<view class="shoprules-content"
-				wx:for="{{selectedFood.goodsAttributeList}}" 
-				wx:for-item="item" 
-				wx:for-index="parentindex" 
-				wx:key="parentindex">
-				<view class="shoprules-text">
-					<text>{{item.title}} :</text>
-				</view>
-				<view class="shoprules-options font-14">
-					<text class="shoprules-select {{item.select == taste ? 'shoprules-active' : ''}}" 
-						wx:for="{{tage.splitStr(item.name)}}" 
+		<scroll-view scroll-y="true">
+			<view class="shoprules-wrapper font-14">
+				<view class="shoprules-content-rules">
+					<view class="shoprules-text">
+						<text>规格 :</text>
+					</view>
+					<view class="shoprules-options font-14"
+						wx:for="{{selectedFood.goodsSpecList}}" 
 						wx:for-item="taste" 
 						wx:for-index="index" 
-						wx:key="index"
-						bindtap="choiceTaste"
-						data-parentindex = "{{parentindex}}"
-						data-taste="{{taste}}">{{taste}}
-					</text>
+						wx:key="index">
+						<text class="shoprules-select {{index===specIndex ? 'shoprules-active' : ''}}" 
+							bindtap="choicespec"
+							data-index="{{index}}"
+							data-taste="{{taste}}">{{taste.spec}}
+						</text>
+					</view>
+					<view class="shoprules-messgae font-10">
+						<text wx:if="{{selectedFood.goodsSpecList[specIndex].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{selectedFood.goodsSpecList[specIndex].orderLimit}}份</text>
+						<text wx:if="{{selectedFood.goodsSpecList[specIndex].stockType && selectedFood.goodsSpecList[specIndex].stock <10}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{selectedFood.goodsSpecList[specIndex].stock}}件</text>
+						<text wx:if="{{selectedFood.goodsSpecList[specIndex].minOrderNum}}" class="rules-text" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{selectedFood.goodsSpecList[specIndex].minOrderNum}}份起购</text>
+					</view>
 				</view>
-			</view>	
-		</view>
+				<view class="shoprules-content"
+					wx:for="{{selectedFood.goodsAttributeList}}" 
+					wx:for-item="item" 
+					wx:for-index="parentindex" 
+					wx:key="parentindex">
+					<view class="shoprules-text">
+						<text>{{item.title}} :</text>
+					</view>
+					<view class="shoprules-options font-14">
+						<text class="shoprules-select {{item.select == taste ? 'shoprules-active' : ''}}" 
+							wx:for="{{tage.splitStr(item.name)}}" 
+							wx:for-item="taste" 
+							wx:for-index="index" 
+							wx:key="index"
+							bindtap="choiceTaste"
+							data-parentindex = "{{parentindex}}"
+							data-taste="{{taste}}">{{taste}}
+						</text>
+					</view>
+				</view>	
+			</view>
+		</scroll-view>
 		<view class="shoprules-food">
 			<view  class="shoprules-left font-18">
 				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text>
