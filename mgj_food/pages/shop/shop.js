@@ -294,8 +294,8 @@ Page(Object.assign({}, merchantShop,{
         	data:{
         		params:{
         			data:JSON.stringify(data),
-        			longitude:app.globalData.longitude,
-        			latitude:app.globalData.latitude
+        			longitude:app.globalData.longitude || '1',
+        			latitude:app.globalData.latitude || '1'
         		},
         		token:app.globalData.token	
         	},
@@ -508,8 +508,7 @@ Page(Object.assign({}, merchantShop,{
 			console.log(tmpArr);
 			this.setData({
 				selectFoods: tmpArr,
-				maskShow:true
-				
+				maskShow:true	
 			})
 	    }
 	 	this.totalprice();
