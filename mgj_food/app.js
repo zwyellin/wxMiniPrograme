@@ -41,6 +41,7 @@ App({
       });
     }
   },
+  
   findAppUserByToken(loginMessage){
     var that = this;
     wx.request({
