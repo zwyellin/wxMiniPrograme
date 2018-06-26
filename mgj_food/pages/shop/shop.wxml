@@ -386,8 +386,8 @@
 			<text>{{selectedFood.name}}</text>
 			<image class="shoprules-img" src="../../images/images/close.png" bindtap="close"></image>
 		</view>
-		<scroll-view scroll-y="true">
-			<view class="shoprules-wrapper font-14">
+		<scroll-view scroll-y="true" catchtouchmove="myCatchTouch">
+			<view class="shoprules-wrapper font-14" catchtouchmove="myCatchTouch">
 				<view class="shoprules-content-rules">
 					<view class="shoprules-text">
 						<text>规格 :</text>

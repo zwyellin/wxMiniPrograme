@@ -82,7 +82,7 @@ Page({
 						},
 						get_poi:1,
 						poi_options:'policy=2'
-					} 
+					}; 
 			        getBMapLocation(obj).then(res=>{
 			        	if (res.status === 0) {
 			        		let poi = res.result.pois
