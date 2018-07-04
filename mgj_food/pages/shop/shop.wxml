@@ -284,6 +284,21 @@
     <!-- 商家 结束 -->
 
 	<view wx:if="{{tab.cur==='商品'}}" class="shopcart">
+		<view wx:if="{{totalcount===0 && ruleDtoList.length>0|| fold===false && ruleDtoList.length>0}}" class="shopcart-list-top lisTop">
+			<text 
+			wx:if="{{selectFoods.length==0}}"
+				wx:for="{{ruleDtoList}}"
+				wx:for-index="index"
+				wx:for-item="ruletion"
+				wx:key="index"
+				>满{{ruletion.full}}元减{{ruletion.sub}}元 </text>
+				<view wx:if="{{selectFoods.length>0}}">
+						<text
+						>{{bankName}}(在线支付专享)</text>
+						<text class="shopcart-list-top-tetx" wx:if="{{boos}}" bindtap="boosLisr"> [去凑单]</text>
+					</view>
+			
+		</view>
 		<view class="content">
 			<view class="contet-left">
 				<view class="logo-wrapper" >
@@ -305,13 +320,65 @@
 			</view>
 		</view>
 		<view wx:if="{{fold}}" class="shopcart-list">
-			<view class="list-header">
+			<view wx:if="{{ruleDtoList.length>0}}" class="shopcart-list-top">
+					<text wx:if="{{selectFoods.length==0}}"
+					wx:for="{{ruleDtoList}}"
+					wx:for-index="index"
+					wx:for-item="ruletion"
+					wx:key="index"
+					>满{{ruletion.full}}元减{{ruletion.sub}}元 </text>
+					<view wx:if="{{selectFoods.length>0}}">
+						<text	
+						>{{bankName}}(在线支付专享)</text>
+						<text class="shopcart-list-top-tetx" wx:if="{{boos}}" bindtap="boosLisr"> [去凑单]</text>
+					</view>
+					
+			</view>
+			<view class="list-header"
+				wx:if="{{code?false:true}}"
+			>
 				<text class="list-title">购物车</text>
 				<text class="empty" bindtap="empty">清空</text>
 			</view>
+			<scroll-view
+				class="list-content"
+				scroll-y="code?true:false"
+				wx:if="{{code?true:false}}"
+				style="{{listFoods.length>=2 ? 'height:82px': ''}}"
+			>
+				<block
+					wx:for="{{listFoods}}" 
+					wx:for-item="food" 
+					wx:for-index="index" 
+					wx:key="index">
+					<view class="food" >
+						<view class="name food-name">{{food.name}}
+							<text wx:if="{{food.priceObject.spec}}">({{food.goodsSpecList[0].spec}})</text>
+							<text wx:if="{{food.attributes}}">{{food.goodsSpecList[0].attributes}}</text>
+						</view>
+						<view class="price">
+							<text>￥{{tage.shopFloat(food.priceObject.price*food.count,2)}}</text>
+						</view>
+						<view class="cartcontrol-wrapper">
+							<view class="control" style="height: 72rpx">
+								<view  class="cart-decrease" data-food="{{food}}" catchtap="decrease">
+									<image class="icon-add_circle" src="/images/images/decrease.png"></image>
+								</view>
+								<view wx:if="{{food.count>0}}" class="cart-count">
+									<text>{{food.count}}</text>
+								</view>
+								<view class="cart-add" data-food="{{food}}" catchtap="addCart">
+									<image class="icon-add_circle" src="/images/images/add.png"></image>
+								</view>
+							</view>
+						</view>
+					</view>
+				</block>
+			</scroll-view>
 			<scroll-view class="list-content" 
+				wx:if="{{code?false:true}}"
 				scroll-y="true" 
-				style="{{selectFoods.length>=2 ? 'height:82px': ''}}" >
+				style="{{selectFoods.length>=2 ? 'height:182px': ''}}" >
 				<block
 					wx:for="{{selectFoods}}" 
 				    wx:for-item="food" 

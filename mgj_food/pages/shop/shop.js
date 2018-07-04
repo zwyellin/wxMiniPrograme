@@ -54,7 +54,12 @@ Page(Object.assign({}, merchantShop,{
 	    evaluate:[],
 		value:{},       //确认订单后台返回信息
 		pickertag:false,
-		selects:false
+		selects:false,
+		ruleDtoList:[],
+		bankName:'',
+		boos:false,
+		code:false,
+		listFoods:[]
 	},
 	onLoad(options) {
 		let { merchantid } = options;
@@ -99,6 +104,7 @@ Page(Object.assign({}, merchantShop,{
         });
         this.getStorageShop(this.data.merchantId);
 		this.getevaluate();
+		// this.boosLisr();
 		//获取系统信息 主要是为了计算产品scroll的高度
 	    wx.getSystemInfo({
 		    success: res => {
@@ -125,13 +131,49 @@ Page(Object.assign({}, merchantShop,{
 	getStorageShop(merchantId){
 		if (wx.getStorageSync('shoppingCart')) {
 			let shoppingCart = wx.getStorageSync('shoppingCart');
+			console.log(12);
 			if (shoppingCart[merchantId]) {
 				this.setData({
 					selectFoods:shoppingCart[merchantId]
 				});
-				this.totalprice();
 			}
   		}
+	},
+	//去凑单
+	boosLisr(){
+		var Code = false;
+		if(this.data.code){
+			Code = false;
+		}else{
+			Code = true;
+		}
+		let selectFoods = this.data.selectFoods;
+		console.log(selectFoods)
+		let listFoods = [];
+		let menu = this.data.menu;
+		menu.map(item=>{
+			item.goodsList.map(value=>{
+				
+				listFoods.push(value)
+				
+			})
+		})
+
+		selectFoods.map(value=>{
+			listFoods.push(value);
+		})
+		let obj = {};
+		
+		listFoods = listFoods.reduce((cur,next)=>{
+			obj[next.id] ? "":obj[next.id] = true && cur.push(next);
+			return cur;
+		},[])
+		console.log(listFoods)
+		this.setData({
+			code:Code,
+			listFoods:listFoods
+		})
+
 	},
 	//选择商品规格
 	choiceTaste(e){
@@ -328,7 +370,7 @@ Page(Object.assign({}, merchantShop,{
 	        mask: true
 	    });
 		return wxRequest({
-        	url:'/merchant/userClient?m=showMerchantTakeAwayMenu',
+        	url:'/merchant/userClient?m=showMerchantTakeAwayCategory2',
         	method:'POST',
         	data:{
         		params:{
@@ -385,7 +427,8 @@ Page(Object.assign({}, merchantShop,{
 	showFood(){
 		if (this.data.totalcount > 0) {
 			this.setData({
-				fold:!this.data.fold
+				fold:!this.data.fold,
+				code:false
 			});
 		}	
 	},
@@ -405,10 +448,86 @@ Page(Object.assign({}, merchantShop,{
 		if (typeof total === 'number' && total%1 != 0) {
 			total = total.toFixed(2)
 		}
-		this.setData({
-	        totalprice:total,
-	        totalcount: count
-	    });
+		
+			let bank = '';
+			let Boos =false;
+			let ruleDtoList = this.data.ruleDtoList;
+			if(total<ruleDtoList[0].full){
+				for(var j=0;j<ruleDtoList.length;j++){
+					ruleDtoList[j].fullRange=null;
+					ruleDtoList[j].subRange=null;
+				}
+				ruleDtoList[0].fullRange=ruleDtoList[0].full-total;
+				ruleDtoList[0].subRange=ruleDtoList[0].sub;
+
+				Boos = ruleDtoList[0].fullRange=(ruleDtoList[0].fullRange/ruleDtoList[0].full)>0.8?true:false;
+
+				bank = `再买${ruleDtoList[0].fullRange.toFixed(1)}元，可减${ruleDtoList[0].subRange}元 `
+			}else if(total>=ruleDtoList[0].full){
+				let arr = [];
+				var fullRange;
+				var subRange;
+				var present;
+				for(var j=0;j<ruleDtoList.length;j++){
+					ruleDtoList[j].fullRange=null;
+					ruleDtoList[j].subRange=null;
+				}
+				for(var i=0;i<ruleDtoList.length;i++){
+					
+					if(total<ruleDtoList[i].full){
+						arr.push(ruleDtoList[i])
+						arr.find(item=>{
+							if(total<=item.full){
+								if(item.full===ruleDtoList[i].full){
+									ruleDtoList[i].fullRange = item.full-total;
+									ruleDtoList[i].subRange = item.sub;
+									fullRange=ruleDtoList[i].fullRange;
+									subRange=ruleDtoList[i].subRange;
+									Boos =(fullRange/item.full)>0.8?true:false;
+									ruleDtoList.map(value=>{
+										if(value.full<ruleDtoList[i].full){
+											ruleDtoList[i].present = value.sub;
+											present = ruleDtoList[i].present;
+										}
+									})
+								}
+								bank=`下单减${present }元，再买${fullRange.toFixed(1)}元，可减${subRange}元 `
+			
+							}
+
+						})
+					}else if(total>=ruleDtoList[i].full){
+						ruleDtoList.find(value=>{
+							if(total>ruleDtoList[i].full){
+								ruleDtoList[i].fullRange = value.full;
+								ruleDtoList[i].subRange = value.sub;
+								fullRange=ruleDtoList[i].fullRange;
+								subRange=ruleDtoList[i].subRange;
+							}
+
+						})
+						
+						bank = `已满${fullRange}元，可减${subRange}元 `;
+					}
+
+				}
+				
+				
+				
+				
+			}
+			this.setData({
+				totalprice:total,
+				totalcount: count,
+				bankName:bank,
+				boos:Boos
+				
+			});
+		console.log(this.data.ruleDtoList)
+		console.log(this.data.bankName)
+		
+		
+		
 	},
 	//计算订单中某一商品的总数
 	getCartCount: function (id,priceObject) {
@@ -427,8 +546,9 @@ Page(Object.assign({}, merchantShop,{
 	//添加进购物车
 	addCart(e) {
 		let specIndex = e.currentTarget.dataset.specindex || 0;
-
+		console.log(specIndex)
 		let { food, rules} = e.currentTarget.dataset;
+		console.log(food, rules)
 		let attributes = '';
 		let id = food.id; //选择的产品id
 		let categoryId = food.categoryId;  //选择的产品分类id

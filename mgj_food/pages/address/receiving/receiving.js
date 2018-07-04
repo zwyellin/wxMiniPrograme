@@ -2,7 +2,7 @@ const { wxRequest } = require('../../../utils/util.js');
 const app = getApp();
 const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 
-
+var timer=null;
 
 Page({
 	data:{
@@ -11,12 +11,14 @@ Page({
 		merchantId:null,
 		editIndex:0,
 		delBtnWidth:100,
-		id:null 
+		
 	},
 	onLoad(options){
+		
 		this.setData({
 			merchantId:options.merchantId,
-			windowHeight:app.globalData.windowHeight
+			windowHeight:app.globalData.windowHeight,
+			
 		});	
 	},
 	onShow(){
@@ -63,27 +65,35 @@ Page({
 			
 	},
 	drawStart(e){//手指刚放到屏幕触发
-		console.log(1111)
-		if(e.touches.length == 1){
-			this.setData({
-				startX:e.touches[0].clientX
-			})
-		}
+		timer=setInterval(()=>{
+			if(e.touches.length == 1){
+				this.setData({
+					startX:e.touches[0].clientX
+				})
+			}
+		},300)
+		
+	
+		
+
 	},
 	drawMove(e){//触发时触发，手指在屏幕上没移动一次，触发一次
-		console.log(2222)
-		var that = this;
+		let {item} = e.currentTarget.dataset;
+		let index = e.currentTarget.dataset.index;
+		var list = that.data.address;
+		 var that = this;
 		if(e.touches.length == 1){
 			var moveX = e.touches[0].clientX;
 			var disX = that.data.startX - moveX;
 			var delBtnWidth = that.data.delBtnWidth;
-			var txtStyle = "";
-			var btnStyle= "";
+			let txtStyle = "";
+			let btnStyle= "";
 			if(disX == 0 || disX < 0){
-				txtStyle = "left:12px";
+				txtStyle = "left:0px";
 				btnStyle = "right:-100px";
 
 			}else if(disX > 0){
+				if (list[index].btnStyle == 'right:0px') return
 				txtStyle = "left:-"+disX+"px";
 				btnStyle = "right:"+(-100+disX)+"px";
 				if(disX >= delBtnWidth){
@@ -91,18 +101,27 @@ Page({
 					btnStyle = "right:0px";
 				}
 			}
-			var index = e.currentTarget.dataset.index;
-			var list = that.data.address;
-			console.log(list[index].txtStyle)
+			
+			
+			
 			list[index].txtStyle = txtStyle;
 			list[index].btnStyle = btnStyle;
 			this.setData({
 				address:list
 			})
 		}
+		
+
+
 	},
+	// angle(start,end){
+	// 	let _X = end.X - start.X;
+	// 	let _Y = end.Y - start.Y;
+	// 	return 360 * Math.atan(_Y/_X) / (2 * Math.PI);
+	// },
 	drawEnd(e){//手指移动结束后触发位置
 		console.log(3333)
+		clearInterval(timer);
 		var that = this;
 		if(e.changedTouches.length == 1){
 			var endX = e.changedTouches[0].clientX;
@@ -114,6 +133,7 @@ Page({
 			console.log(index)
 			console.log(txtStyle)
 			var list = that.data.address;
+			
 			list[index].txtStyle = txtStyle;
 			list[index].btnStyle = btnStyle;
 			this.setData({

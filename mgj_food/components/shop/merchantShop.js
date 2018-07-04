@@ -6,7 +6,7 @@ const merchantShop = {
 	//获取商家详情
 	findMerchantInfo(){
 		wxRequest({
-        	url:'/merchant/userClient?m=findMerchantInfo',
+        	url:'/merchant/userClient?m=findMerchantInfo2',
         	method:'POST',
         	data:{
         		token:app.globalData.token,
@@ -20,6 +20,8 @@ const merchantShop = {
 			if (res.data.code === 0) {
 				let value = res.data.value;
 				let name = value.merchant.name;
+				let ruleDtoList =value.merchant.ruleDtoList;
+				console.log(ruleDtoList)
 				let merchantRedBagList = value.merchant.merchantRedBagList
 				wx.setNavigationBarTitle({
 				  	title: name
@@ -32,8 +34,13 @@ const merchantShop = {
 					itemList:value.merchant,
 					item:value.merchant,
 					minPrice:value.merchant.minPrice,
-					shipScore:value.merchant.shipScore
+					shipScore:value.merchant.shipScore,
+					ruleDtoList:value.merchant.ruleDtoList,
+					bankName:value.merchant.bankName
 				});
+				if (wx.getStorageSync('shoppingCart')) {
+					this.totalprice();	
+				}
 				ActivityListHeight += this.data.itemList.promotionActivityList.length*16
 				if (value.merchant.merchantRedBagList.length != 0) {
 					merchantRedBagList.map((item)=>{

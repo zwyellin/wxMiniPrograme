@@ -327,6 +327,25 @@
 	z-index: -1;
 	width: 100%;
 }
+.shopcart-list-top{
+	height: 40rpx;
+	width: 100%;
+	line-height: 40rpx;
+	background-color: #fff8db;
+	text-align: center;
+	font-size: 24rpx;
+	color: #6e646c;
+	
+}
+.shopcart-list-top-tetx{
+	color: #d56c2b;
+	margin-left: 10rpx;
+}
+.lisTop{
+	position: fixed;
+	bottom: 97rpx;
+	left: 0;
+}
 .shopcart-list .list-title{
 	float:left;
 	font-size: 28rpx;

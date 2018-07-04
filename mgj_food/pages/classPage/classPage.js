@@ -94,7 +94,7 @@ Page(Object.assign({}, merchantObj, {
         	start:this.data.start
 		};
 		wxRequest({
-        	url:'/merchant/userClient?m=findTakeAwayMerchant',
+        	url:'/merchant/userClient?m=findTakeAwayMerchant4',
         	method:'POST',
         	data:{
         		params:data
