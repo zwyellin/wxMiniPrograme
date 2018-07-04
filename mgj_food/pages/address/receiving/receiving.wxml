@@ -8,11 +8,9 @@
 	    	wx:for-index="index" 
 	    	wx:key="index"
 			>
-			<template is="add-address"  data="{{item,index}}"></template>
-			
+			<template is="add-address"  data="{{item,index}}"></template>	
 		</view>
 	</view>
-
 	<navigator class="add-address" url="/pages/address/add/add?isdelate=isdelate">
 		<image class="add-address-img" src="../../../images/images/add_address.png"></image>
 		<view class="add-address-text"><text>增加地址</text></view>	

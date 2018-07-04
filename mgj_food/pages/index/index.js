@@ -59,7 +59,87 @@ Page(Object.assign({}, merchantObj, {
 		initClassList:initClassList	  //分类列表
 	}, 
 	onLoad(){
+		wxGetLocation({type:'gcj02'}).then(()=>{
+			this.getSeting().then(()=>{
+				wxGetLocation({
+					type:'gcj02'
+				}).then(res=>{
+					console.log(res);
+					let lat = res.latitude;
+					let lng = res.longitude;
+					this.data.obj = {
+						location:{
+							longitude:lng,
+							latitude:lat
+						}
+					}; 
+					let { longitude, latitude } = gcj02tobd09(lng,lat);
+					app.globalData.longitude = longitude;
+					app.globalData.latitude = latitude;
+					this.init().then((res)=>{
+						if (res.data.code === 0) {
+							let value = res.data.value;
+							if (value) {
+								app.globalData.agentId = value.id;
+								if (value.phone) {
+									app.globalData.agentPhone = value.phone;
+								} else {
+									app.globalData.agentPhone = null;
+								}
+							} else {
+								app.globalData.agentPhone = null;
+								app.globalData.agentId = null;
+							}
+							this.initBanner();
+							this.initClass();
+							this.getDataList(false,false);
+		        			this.findTagCategory();	
+						}	
+			        }).catch(err=>{
+			        	this.setData({
+							isAgentId:true
+						});
+			        });
+			        getBMapLocation(this.data.obj).then(res=>{
+						console.log(res);
+						let address;
+						if (res.status === 0) {
+							console.log(res)
+							address = res.result.address;
+							// address =res.result.address_component.street_number
+							console.log(address);
+							this.setData({
+				      			city:Object.assign({},this.data.city,{cityName:address})
+				    		});
+				    		// this.runAddress(this.data.city);
+						}
+				    }).catch(err=>{
+				    	this.setData({
+							isAgentId:true
+						});
+				    });
+				}).catch(err=>{
+					this.setData({
+						isAgentId:true
+					});
+				}); 
+			}).catch(err=>{
+				this.setData({
+					isAgentId:true
+				});
+			});
+		}).catch(err=>{
+			this.setData({
+				isAgentId:true
+			});
+			this.appLocationMessage();
+		});	
+	},
+	appLocationMessage(){
 		this.getSeting().then(()=>{
+			this.setData({
+				isAgentId:false
+			});
 			wxGetLocation({
 				type:'gcj02'
 			}).then(res=>{
@@ -73,8 +153,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				// app.globalData.longitude = longitude;
-				// app.globalData.latitude = latitude;
+				app.globalData.longitude = longitude;
+				app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
@@ -289,11 +369,17 @@ Page(Object.assign({}, merchantObj, {
 			if (res.data.code === 0) {
 				let imgUrls = res.data.value;
 				imgUrls.map((item)=>{
-					item.picUrl = item.picUrl +'?imageView2/0/w/710/h/240'
-				})
-				this.setData({
-	      			swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls})
-	    		});
+					item.picUrl = item.picUrl +'?imageView2/0/w/710/h/240';
+				});
+				if (imgUrls.length === 1) {
+					this.setData({
+	      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:false,indicatorDots:false})
+	    			});
+				} else {
+					this.setData({
+	      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:true,indicatorDots:true})
+	    			});
+				}
 			}
         });
 	},
@@ -342,7 +428,7 @@ Page(Object.assign({}, merchantObj, {
 				}
 				this.setData({
 					initClassList:classArr
-				})	
+				});	
         	}
         });
 	},

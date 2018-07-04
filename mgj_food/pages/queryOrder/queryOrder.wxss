@@ -46,6 +46,14 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+.shipmenttip-txt {
+  width:80%;
+  display:inline-block;
+  height:88rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow:hidden;
+}
 .query-check {
   display: flex;
   position: fixed;

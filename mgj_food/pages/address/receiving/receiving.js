@@ -61,10 +61,10 @@ Page({
 			wx.navigateTo({
   				url: '/pages/address/add/add'
 			});
-		}
-			
+		}		
 	},
 	drawStart(e){//手指刚放到屏幕触发
+<<<<<<< HEAD
 		timer=setInterval(()=>{
 			if(e.touches.length == 1){
 				this.setData({
@@ -82,9 +82,23 @@ Page({
 		let index = e.currentTarget.dataset.index;
 		var list = that.data.address;
 		 var that = this;
+=======
+		console.log(e.touches)
+		if(e.touches.length == 1){
+			this.setData({
+				startX:e.touches[0].clientX
+			})
+		}
+	},
+	drawMove(e){//触发时触发，手指在屏幕上没移动一次，触发一次
+		var index = e.currentTarget.dataset.index;
+		var that = this;
+		if (this.data.address[index].btnStyle == 'right:0px') return;
+>>>>>>> 57421eb20e388a8bc2569706168e859bf5fe8489
 		if(e.touches.length == 1){
 			var moveX = e.touches[0].clientX;
 			var disX = that.data.startX - moveX;
+			console.log(disX);
 			var delBtnWidth = that.data.delBtnWidth;
 			let txtStyle = "";
 			let btnStyle= "";
@@ -102,13 +116,18 @@ Page({
 				}
 			}
 			
+<<<<<<< HEAD
 			
 			
+=======
+			var list = that.data.address;
+>>>>>>> 57421eb20e388a8bc2569706168e859bf5fe8489
 			list[index].txtStyle = txtStyle;
 			list[index].btnStyle = btnStyle;
+			console.log(list[index].txtStyle);
 			this.setData({
 				address:list
-			})
+			});
 		}
 		
 

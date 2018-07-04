@@ -1,5 +1,5 @@
 <template name="activity">
-	<view class="pickertag" wx:if="{{pickertag}}" animation="{{pickertagAnimation}}">
+	<view class="pickertag" wx:if="{{pickertag}}" animation="{{pickertagAnimation}}" catchtouchmove="myCatchTouch">
 		<view class="news">
 			<view class="news-text"
 				wx:for="{{itemList.promotionActivityList}}" 

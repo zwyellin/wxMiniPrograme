@@ -35,9 +35,9 @@ Page({
     this.findCustomerAndComplainPhoneByUserXY();
     let loginMessage = wx.getStorageSync('loginMessage');
     let loginstatus = wx.getStorageSync('loginstatus');
-    if (loginMessage && loginstatus) {
+    if (loginMessage && typeof loginMessage == "object" && loginstatus && loginMessage.token) {
       this.findUserCenter();
-      this.findUserListAndCashbackAmtSum()
+      this.findUserListAndCashbackAmtSum();
       let name = loginMessage.mobile.toString();
       name = name.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
       this.setData({

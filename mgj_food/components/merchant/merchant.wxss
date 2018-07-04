@@ -21,6 +21,7 @@
 	position: relative;
 	display: flex;
 	padding: 30rpx 26rpx 20rpx;
+	background: #fff;
 }
 .icon{
 	position: relative;

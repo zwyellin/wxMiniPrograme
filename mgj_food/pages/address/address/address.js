@@ -82,7 +82,7 @@ Page({
 						},
 						get_poi:1,
 						poi_options:'policy=2'
-					} 
+					}; 
 			        getBMapLocation(obj).then(res=>{
 			        	if (res.status === 0) {
 			        		let poi = res.result.pois
@@ -114,7 +114,6 @@ Page({
 	//关键字查询
 	getSuggestion(address){
 		var that = this;
-		console.log(123456);
 		qqMap.getSuggestion({
 			keyword:address,
 			region:this.data.region,

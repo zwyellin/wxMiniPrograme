@@ -62,8 +62,12 @@ Page(Object.assign({}, merchantShop,{
 		listFoods:[]
 	},
 	onLoad(options) {
-		let { merchantid } = options;
+		let { merchantid,longitude,latitude} = options;
 		this.data.merchantId = merchantid;
+		if (longitude && latitude) {
+			app.globalData.longitude = longitude;
+        	app.globalData.latitude = latitude;
+		}
 		// this.data.merchantId = 402;
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
@@ -115,11 +119,7 @@ Page(Object.assign({}, merchantShop,{
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
-	onShow(){
-		console.log(12);
-	},
 	_imgOnLoad(e){
-		console.log(e)
 		let { parentindex, index } = e.currentTarget.dataset; 
 		let menu = this.data.menu;
 		menu[parentindex].goodsList[index].isImgLoadComplete = true;
@@ -189,11 +189,7 @@ Page(Object.assign({}, merchantShop,{
 		this.setData({
 			selectedFood:selectedFood,
 			
-		});
-		
-		
-		
-		
+		});	
 	},
 	isMinOrderNum(){
 		let goodsItem;
@@ -244,7 +240,7 @@ Page(Object.assign({}, merchantShop,{
 		let loginMessage = wx.getStorageSync('loginMessage');
     	let loginstatus = wx.getStorageSync('loginstatus');
 		if (this.data.totalcount === 0 || this.data.totalprice < this.data.minPrice) return;
-		if (loginMessage && loginstatus) {
+		if (loginMessage && typeof loginMessage == "object" && loginstatus) {
       		// wx.setStorageSync('food',this.data.selectFoods);
       		if (!this.data.getOrderStatus) {
       			let isMinOrderNum = this.isMinOrderNum();
@@ -273,7 +269,7 @@ Page(Object.assign({}, merchantShop,{
 					return;
 				}
 				this.data.getOrderStatus = true;
-				this.orderPreview().then((res)=>{
+				this.orderPreview(loginMessage).then((res)=>{
 	      			if (res.data.code === 0) {
 	      				this.setData({
 							value:res.data.value
@@ -311,7 +307,7 @@ Page(Object.assign({}, merchantShop,{
     	}
 	},
 	//请求订单
-	orderPreview(){
+	orderPreview(loginMessage){
 		wx.showToast({
 	        title: '加载中',
 	        icon: 'loading',
@@ -319,6 +315,8 @@ Page(Object.assign({}, merchantShop,{
 	        mask: true
 	    });
 		let orderItems = [];
+		app.globalData.token = loginMessage.token;
+		app.globalData.userId = loginMessage.id;
 		let data = {loginToken:app.globalData.token,userId:app.globalData.userId,merchantId:this.data.merchantId};
 		this.data.selectFoods.map((item,index)=>{
 			let json = {};
@@ -338,8 +336,8 @@ Page(Object.assign({}, merchantShop,{
         	data:{
         		params:{
         			data:JSON.stringify(data),
-        			longitude:app.globalData.longitude,
-        			latitude:app.globalData.latitude
+        			longitude:app.globalData.longitude || '1',
+        			latitude:app.globalData.latitude || '1'
         		},
         		token:app.globalData.token	
         	},
@@ -526,7 +524,7 @@ Page(Object.assign({}, merchantShop,{
 	},
 	//计算订单中某一商品的总数
 	getCartCount: function (id,priceObject) {
-		let selectFoods = this.data.selectFoods
+		let selectFoods = this.data.selectFoods;
 	    let count = 0;
 	    selectFoods.map((item)=>{
 			if (item.id == id) {
@@ -534,7 +532,7 @@ Page(Object.assign({}, merchantShop,{
 	      			count+= item.count;
 	      		}  
 	        }
-	    })
+	    });
 	    return count;
 	},
 	
@@ -583,20 +581,15 @@ Page(Object.assign({}, merchantShop,{
 				}
 			}
 		}
-		console.log(attributes)
 		console.log(food);
 		if (id) {
 	      	let tmpArr = this.data.selectFoods;
 	        //遍历数组 
         	let isFound = false;
         	tmpArr.map((item)=> {
-				
 	          	if (item.id == id) {
 	            	if (item.priceObject.id == priceObject.id) {
-						
 	            		if (item.attributes && rules) {            //规格判断
-							// let flag = true;
-							console.log(111)
 							if (attributes == item.attributes) {
 								item.count += 1;	
 								isFound = true;
@@ -604,34 +597,33 @@ Page(Object.assign({}, merchantShop,{
 	            		} else {
 	            			item.count += 1;
 	            			isFound = true;
-						}
-						
-						
+						}		
 	                }
 				} 
 				
 	        });
 	        if(!isFound){
 		      	if (rules) {
-					  tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});
-					
+		      		if (priceObject.minOrderNum) {
+		      			tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
+						feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+priceObject.minOrderNum+'份哦'});
+		      		} else {
+					  	tmpArr.push({attributes:attributes, id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});	
+		      		}
 	      		} else {
 	      			if (priceObject.minOrderNum) {
 	      				tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
-						  feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份'});
+						  feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
 						 
 	      			} else {
-						  tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });
-						 
+						tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });	 
 					}
 	      		}	  		
 	        }
-
-			console.log(tmpArr)
+			console.log(tmpArr);
 			this.setData({
 				selectFoods: tmpArr,
-				maskShow:true
-				
+				maskShow:true	
 			})
 	    }
 	 	this.totalprice();
@@ -676,8 +668,12 @@ Page(Object.assign({}, merchantShop,{
 	          			if (attributes) {
 		          			if (attributes == item.attributes) {
 								if (item.count > 1) {
-									  item.count -= 1;
-									  
+									if (item.priceObject.minOrderNum === item.count) {
+										tmpArr.splice(index, 1);
+										feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+				              		} else {
+				              			item.count -= 1;
+				              		} 
 				                } else {
 						        	tmpArr.splice(index, 1);
 						      	}
@@ -686,7 +682,7 @@ Page(Object.assign({}, merchantShop,{
 							if (item.count > 1) {
 			              		if (item.priceObject.minOrderNum === item.count) {
 									tmpArr.splice(index, 1);
-									feedbackApi.showToast({title: item.name+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+									feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+item.priceObject.minOrderNum+'份'});
 			              		} else {
 			              			item.count -= 1;
 			              		}
@@ -706,7 +702,7 @@ Page(Object.assign({}, merchantShop,{
 	        			if (item.count > 1) {
 		              		if (item.priceObject.minOrderNum === item.count) {
 								tmpArr.splice(index, 1);
-								feedbackApi.showToast({title: item.name+'商品最少购买'+item.priceObject.minOrderNum+'份'});
+								feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+item.priceObject.minOrderNum+'份'});
 		              		} else {
 		              			item.count -= 1;
 		              		}
@@ -736,7 +732,6 @@ Page(Object.assign({}, merchantShop,{
 	    }
 	    this.totalprice();
 	},
-	
 	//清空购物车
 	empty(){
 		this.setData({
@@ -772,7 +767,7 @@ Page(Object.assign({}, merchantShop,{
 	onShareAppMessage(res) {
     	return {
       		title: '马管家外卖',
-      		path: "/pages/shop/shop?merchantid=" + this.data.merchantId,
+      		path: '/pages/shop/shop?merchantid='+ this.data.merchantId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude,
       		success: function(res) {
         		// 转发成功
      		},
