@@ -448,7 +448,6 @@ Page(Object.assign({}, merchantShop,{
 		if (typeof total === 'number' && total%1 != 0) {
 			total = total.toFixed(2)
 		}
-		
 			let bank = '';
 			let Boos =false;
 			let ruleDtoList = this.data.ruleDtoList;
@@ -492,7 +491,6 @@ Page(Object.assign({}, merchantShop,{
 									})
 								}
 								bank=`下单减${present }元，再买${fullRange.toFixed(1)}元，可减${subRange}元 `
-			
 							}
 
 						})
@@ -523,9 +521,6 @@ Page(Object.assign({}, merchantShop,{
 				boos:Boos
 				
 			});
-		console.log(this.data.ruleDtoList)
-		console.log(this.data.bankName)
-		
 		
 		
 	},
