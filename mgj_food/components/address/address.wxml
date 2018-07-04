@@ -29,15 +29,8 @@
 				</view>
 			</view>
 		</view>
-<<<<<<< HEAD
-		
-	</view>
-	<view class="remove" data-index="{{index}}" bindtouchstart="removeAddress" style="{{item.btnStyle}}"  data-id="{{item.id}}">
-		<view>删除</view>
-=======
-		<!-- <view class="remove" bindtouchstart="removeAddress" style="{{item.btnStyle}}" data-id="{{item.id}}">
+		<view class="remove" bindtouchstart="removeAddress" style="{{item.btnStyle}}" data-id="{{item.id}}">
 			<view>删除</view>
-		</view> -->
->>>>>>> 57421eb20e388a8bc2569706168e859bf5fe8489
+		</view>
 	</view>
 </template>
