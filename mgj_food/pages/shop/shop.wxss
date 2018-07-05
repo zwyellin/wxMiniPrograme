@@ -327,6 +327,13 @@
 	z-index: -1;
 	width: 100%;
 }
+.shopcart-lists{
+	position: absolute;
+	left: 0;
+	bottom: 400rpx;
+	z-index: -1;
+	width: 100%;
+}
 .shopcart-list-top{
 	height: 40rpx;
 	width: 100%;
@@ -336,6 +343,9 @@
 	font-size: 24rpx;
 	color: #6e646c;
 	
+}
+.bankName{
+	color: #d56c2b;
 }
 .shopcart-list-top-tetx{
 	color: #d56c2b;
@@ -365,6 +375,11 @@
 }
 .list-content{
 	max-height: 164rpx;
+	overflow: hidden;
+	background: #fff;
+}
+.list-contents{
+	max-height: 492rpx;
 	overflow: hidden;
 	background: #fff;
 }

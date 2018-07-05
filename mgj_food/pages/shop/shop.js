@@ -56,10 +56,11 @@ Page(Object.assign({}, merchantShop,{
 		pickertag:false,
 		selects:false,
 		ruleDtoList:[],
-		bankName:'',
+		bankName:{},
 		boos:false,
 		code:false,
-		listFoods:[]
+		listFoods:[],
+		checkot:false
 	},
 	onLoad(options) {
 		let { merchantid,longitude,latitude} = options;
@@ -139,41 +140,61 @@ Page(Object.assign({}, merchantShop,{
 			}
   		}
 	},
+	boosList(){
+		if(this.data.boos){
+			this.setData({
+				code:!this.data.code,
+				fold:false
+			})
+			
+		}else{
+			this.setData({
+				code:false
+			})
+		}
+	},
 	//去凑单
 	boosLisr(){
-		var Code = false;
-		if(this.data.code){
-			Code = false;
-		}else{
-			Code = true;
-		}
-		let selectFoods = this.data.selectFoods;
-		console.log(selectFoods)
-		let listFoods = [];
-		let menu = this.data.menu;
-		menu.map(item=>{
-			item.goodsList.map(value=>{
-				
-				listFoods.push(value)
-				
+		if(this.data.boos){
+			let selectFoods = this.data.selectFoods;
+			// console.log(this.data.bankName);
+			let boos = this.data.bankName;
+			
+			console.log(this.data.totalcount)
+			console.log(boos);
+			console.log(selectFoods)
+			let listFoods = [];
+			let menu = this.data.menu;
+			menu.map(item=>{
+				item.goodsList.map(value=>{
+					
+					listFoods.push(value)
+					
+				})
 			})
-		})
-
-		selectFoods.map(value=>{
-			listFoods.push(value);
-		})
-		let obj = {};
-		
-		listFoods = listFoods.reduce((cur,next)=>{
-			obj[next.id] ? "":obj[next.id] = true && cur.push(next);
-			return cur;
-		},[])
-		console.log(listFoods)
-		this.setData({
-			code:Code,
-			listFoods:listFoods
-		})
-
+			selectFoods.map(value=>{
+				listFoods.push(value);
+			})
+			let obj = {};
+			listFoods = listFoods.reduce((cur,next)=>{
+				obj[next.id] ? "":obj[next.id] = true && cur.push(next);
+				return cur;
+			},[])
+			console.log(listFoods)
+			listFoods.sort((a,b)=>{
+				return a.goodsSpecList[0].price-b.goodsSpecList[0].price
+			});
+			
+			this.setData({
+				listFoods:listFoods,
+				code:!this.data.code,
+				fold:false
+			})
+		}else{
+			this.setData({
+				code:false
+			})
+		}
 	},
 	//选择商品规格
 	choiceTaste(e){
@@ -457,14 +478,15 @@ Page(Object.assign({}, merchantShop,{
 				ruleDtoList[0].fullRange=ruleDtoList[0].full-total;
 				ruleDtoList[0].subRange=ruleDtoList[0].sub;
 
-				Boos = ruleDtoList[0].fullRange=(ruleDtoList[0].fullRange/ruleDtoList[0].full)>0.8?true:false;
+				Boos = (total/ruleDtoList[0].full)>0.8?true:false;
 
-				bank = `再买${ruleDtoList[0].fullRange.toFixed(1)}元，可减${ruleDtoList[0].subRange}元 `
+				bank = {b:ruleDtoList[0].fullRange.toFixed(2),c:ruleDtoList[0].subRange,f:ruleDtoList[0].full}
 			}else if(total>=ruleDtoList[0].full){
 				let arr = [];
-				var fullRange;
-				var subRange;
-				var present;
+				var fullRange=0;
+				var subRange=0;
+				var present=0;
+				var fulls=0;
 				for(var j=0;j<ruleDtoList.length;j++){
 					ruleDtoList[j].fullRange=null;
 					ruleDtoList[j].subRange=null;
@@ -478,9 +500,11 @@ Page(Object.assign({}, merchantShop,{
 								if(item.full===ruleDtoList[i].full){
 									ruleDtoList[i].fullRange = item.full-total;
 									ruleDtoList[i].subRange = item.sub;
+									ruleDtoList[i].full = item.full;
+									fulls = ruleDtoList[i].full;
 									fullRange=ruleDtoList[i].fullRange;
 									subRange=ruleDtoList[i].subRange;
-									Boos =(fullRange/item.full)>0.8?true:false;
+									Boos =(total/item.full)>0.8?true:false;
 									ruleDtoList.map(value=>{
 										if(value.full<ruleDtoList[i].full){
 											ruleDtoList[i].present = value.sub;
@@ -488,7 +512,7 @@ Page(Object.assign({}, merchantShop,{
 										}
 									})
 								}
-								bank=`下单减${present }元，再买${fullRange.toFixed(1)}元，可减${subRange}元 `
+								bank={a:present,b:fullRange.toFixed(2),c:subRange,f:fulls}; 
 							}
 
 						})
@@ -497,13 +521,14 @@ Page(Object.assign({}, merchantShop,{
 							if(total>ruleDtoList[i].full){
 								ruleDtoList[i].fullRange = value.full;
 								ruleDtoList[i].subRange = value.sub;
+								fulls = value.full;
 								fullRange=ruleDtoList[i].fullRange;
 								subRange=ruleDtoList[i].subRange;
 							}
 
 						})
 						
-						bank = `已满${fullRange}元，可减${subRange}元 `;
+						bank = {b:fullRange,c:subRange,f:fulls}
 					}
 
 				}

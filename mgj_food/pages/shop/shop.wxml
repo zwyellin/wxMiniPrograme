@@ -284,7 +284,7 @@
     <!-- 商家 结束 -->
 
 	<view wx:if="{{tab.cur==='商品'}}" class="shopcart">
-		<view wx:if="{{totalcount===0 && ruleDtoList.length>0|| fold===false && ruleDtoList.length>0}}" class="shopcart-list-top lisTop">
+		<view wx:if="{{totalcount===0 && ruleDtoList.length>0|| fold===false && ruleDtoList.length>0&&code===false}}" class="shopcart-list-top lisTop">
 			<text 
 			wx:if="{{selectFoods.length==0}}"
 				wx:for="{{ruleDtoList}}"
@@ -292,10 +292,33 @@
 				wx:for-item="ruletion"
 				wx:key="index"
 				>满{{ruletion.full}}元减{{ruletion.sub}}元 </text>
-				<view wx:if="{{selectFoods.length>0}}">
-						<text
-						>{{bankName}}(在线支付专享)</text>
-						<text class="shopcart-list-top-tetx" wx:if="{{boos}}" bindtap="boosLisr"> [去凑单]</text>
+				<view wx:if="{{selectFoods.length>0}}" catchtap="boosList">
+						<view wx:if="{{ruleDtoList[0].full>totalprice}}">
+							再买
+							<text class="bankName">{{bankName.b}}元</text>
+							，可减
+							<text class="bankName">{{bankName.c}}元</text>
+							(在线支付专享)
+							<text class="shopcart-list-top-tetx" wx:if="{{boos}}" catchtap="boosLisr"> [去凑单]</text>
+						</view>
+						<view wx:if="{{totalprice>=ruleDtoList[0].full && bankName.f>totalprice}}">
+								下单减
+								<text class="bankName">{{bankName.a}}元</text>
+								，再买
+								<text class="bankName">{{bankName.b}}元</text>
+								，可减
+								<text class="bankName">{{bankName.c}}元</text>
+								(在线支付专享)
+								<text class="shopcart-list-top-tetx" wx:if="{{boos}}" catchtap="boosLisr"> [去凑单]</text>
+						</view>
+						<view wx:if="{{totalprice>=bankName.f}}">
+								已满
+								<text class="bankName">{{bankName.b}}元</text>
+								，可减
+								<text class="bankName">{{bankName.c}}元</text>
+								(在线支付专享)
+						</view>
+						
 					</view>
 			
 		</view>
@@ -319,31 +342,39 @@
 				</view>
 			</view>
 		</view>
-		<view wx:if="{{fold}}" class="shopcart-list">
-			<view wx:if="{{ruleDtoList.length>0}}" class="shopcart-list-top">
-					<text wx:if="{{selectFoods.length==0}}"
-					wx:for="{{ruleDtoList}}"
-					wx:for-index="index"
-					wx:for-item="ruletion"
-					wx:key="index"
-					>满{{ruletion.full}}元减{{ruletion.sub}}元 </text>
-					<view wx:if="{{selectFoods.length>0}}">
-						<text	
-						>{{bankName}}(在线支付专享)</text>
-						<text class="shopcart-list-top-tetx" wx:if="{{boos}}" bindtap="boosLisr"> [去凑单]</text>
-					</view>
-					
-			</view>
-			<view class="list-header"
-				wx:if="{{code?false:true}}"
-			>
-				<text class="list-title">购物车</text>
-				<text class="empty" bindtap="empty">清空</text>
+		<view wx:if="{{code&&totalcount>0}}"  class="shopcart-list">
+			<view class="shopcart-list-top">
+				<view  catchtap="boosList">
+						<view wx:if="{{ruleDtoList[0].full>totalprice}}">
+								再买
+								<text class="bankName">{{bankName.b}}元</text>
+								，可减
+								<text class="bankName">{{bankName.c}}元</text>
+								(在线支付专享)
+							</view>
+							<view wx:if="{{totalprice>=ruleDtoList[0].full && bankName.f>totalprice}}">
+									下单减
+									<text class="bankName">{{bankName.a}}元</text>
+									，再买
+									<text class="bankName">{{bankName.b}}元</text>
+									，可减
+									<text class="bankName">{{bankName.c}}元</text>
+									(在线支付专享)
+							</view>
+							<view wx:if="{{totalprice>=bankName.f}}">
+									已满
+									<text class="bankName">{{bankName.b}}元</text>
+									，可减
+									<text class="bankName">{{bankName.c}}元</text>
+									(在线支付专享)
+							</view>
+							
+						
+				</view>
 			</view>
 			<scroll-view
 				class="list-content"
-				scroll-y="code?true:false"
-				wx:if="{{code?true:false}}"
+				scroll-y="code"
 				style="{{listFoods.length>=2 ? 'height:82px': ''}}"
 			>
 				<block
@@ -357,15 +388,16 @@
 							<text wx:if="{{food.attributes}}">{{food.goodsSpecList[0].attributes}}</text>
 						</view>
 						<view class="price">
-							<text>￥{{tage.shopFloat(food.priceObject.price*food.count,2)}}</text>
+							<text wx:if="{{tage.getCount(selectFoods,food.id)==0}}">￥{{food.goodsSpecList[0].price}}</text>
+							<text wx:if="{{tage.getCount(selectFoods,food.id)!=0}}">￥{{tage.getCount(selectFoods,food.id)*food.goodsSpecList[0].price}}</text>
 						</view>
 						<view class="cartcontrol-wrapper">
 							<view class="control" style="height: 72rpx">
 								<view  class="cart-decrease" data-food="{{food}}" catchtap="decrease">
 									<image class="icon-add_circle" src="/images/images/decrease.png"></image>
 								</view>
-								<view wx:if="{{food.count>0}}" class="cart-count">
-									<text>{{food.count}}</text>
+								<view  class="cart-count">
+									<text>{{tage.getCount(selectFoods,food.id)}}</text>
 								</view>
 								<view class="cart-add" data-food="{{food}}" catchtap="addCart">
 									<image class="icon-add_circle" src="/images/images/add.png"></image>
@@ -375,8 +407,53 @@
 					</view>
 				</block>
 			</scroll-view>
-			<scroll-view class="list-content" 
+		</view>
+		<view wx:if="{{fold}}" class="shopcart-list">
+			<view wx:if="{{ruleDtoList.length>0}}" class="shopcart-list-top">
+					<text wx:if="{{selectFoods.length==0}}"
+					wx:for="{{ruleDtoList}}"
+					wx:for-index="index"
+					wx:for-item="ruletion"
+					wx:key="index"
+					>满{{ruletion.full}}元减{{ruletion.sub}}元 </text>
+					<view wx:if="{{selectFoods.length>0}}" catchtap="boosList">
+						<view wx:if="{{ruleDtoList[0].full>totalprice}}">
+							再买
+							<text class="bankName">{{bankName.b}}元</text>
+							，可减
+							<text class="bankName">{{bankName.c}}元</text>
+							(在线支付专享)
+							<text class="shopcart-list-top-tetx" wx:if="{{boos}}" catchtap="boosLisr"> [去凑单]</text>
+						</view>
+						<view wx:if="{{totalprice>=ruleDtoList[0].full && bankName.f>totalprice}}">
+								下单减
+								<text class="bankName">{{bankName.a}}元</text>
+								，再买
+								<text class="bankName">{{bankName.b}}元</text>
+								，可减
+								<text class="bankName">{{bankName.c}}元</text>
+								(在线支付专享)
+								<text class="shopcart-list-top-tetx" wx:if="{{boos}}" catchtap="boosLisr"> [去凑单]</text>
+						</view>
+						<view wx:if="{{totalprice>=bankName.f}}">
+								已满
+								<text class="bankName">{{bankName.b}}元</text>
+								，可减
+								<text class="bankName">{{bankName.c}}元</text>
+								(在线支付专享)
+						</view>
+							
+						
+					</view>
+					
+			</view>
+			<view class="list-header"
 				wx:if="{{code?false:true}}"
+			>
+				<text class="list-title">购物车</text>
+				<text class="empty" bindtap="empty">清空</text>
+			</view>
+			<scroll-view class="list-content" 
 				scroll-y="true" 
 				style="{{selectFoods.length>=2 ? 'height:182px': ''}}" >
 				<block
