@@ -133,8 +133,9 @@
 								</view>	
 							</view>
 						</view>
-						<view wx:if="{{food.goodsSpecList.length == 1 && (food.goodsSpecList[0].orderLimit || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum) && food.goodsAttributeList.length === 0}}" class="item-rules font-10">
-							<text wx:if="{{food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text>
+						<view wx:if="{{food.goodsSpecList.length == 1 && (food.everyGoodsEveryOrderBuyCount || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum) && food.goodsAttributeList.length === 0}}" class="item-rules font-10">
+							<!-- <text wx:if="{{food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text> -->
+							<text wx:if="{{food.everyGoodsEveryOrderBuyCount>0}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.everyGoodsEveryOrderBuyCount}}份</text>
 							<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <10}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
 							<text wx:if="{{food.goodsSpecList[0].minOrderNum}}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
 						</view>
@@ -388,8 +389,8 @@
 							<text wx:if="{{food.attributes}}">{{food.goodsSpecList[0].attributes}}</text>
 						</view>
 						<view class="price">
-							<text wx:if="{{tage.getCount(selectFoods,food.id)==0}}">￥{{food.goodsSpecList[0].price}}</text>
-							<text wx:if="{{tage.getCount(selectFoods,food.id)!=0}}">￥{{tage.getCount(selectFoods,food.id)*food.goodsSpecList[0].price}}</text>
+							<text wx:if="{{tage.getCount(selectFoods,food.id)==0 }}">￥{{food.goodsSpecList[0].price}}</text>
+							<text wx:if="{{tage.getCount(selectFoods,food.id)!=0 }}">￥{{tage.getCount(selectFoods,food.id)*food.goodsSpecList[0].price}}</text>
 						</view>
 						<view class="cartcontrol-wrapper">
 							<view class="control" style="height: 72rpx">
@@ -467,7 +468,8 @@
 							<text wx:if="{{food.attributes}}">{{food.attributes}}</text>
 						</view>
 						<view class="price">
-							<text>￥{{tage.shopFloat(food.priceObject.price*food.count,2)}}</text>
+							<text wx:if="{{food.everyGoodsEveryOrderBuyCount==0}}">￥{{tage.shopFloat(food.priceObject.price*food.count,2)}}</text>
+							<text wx:if="{{food.everyGoodsEveryOrderBuyCount!=0}}">￥{{price}}</text>
 						</view>
 						<view class="cartcontrol-wrapper">
 							<view class="control" style="height: 72rpx">

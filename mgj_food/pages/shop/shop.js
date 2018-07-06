@@ -60,7 +60,8 @@ Page(Object.assign({}, merchantShop,{
 		boos:false,
 		code:false,
 		listFoods:[],
-		checkot:false
+		checkot:false,
+		price:0
 	},
 	onLoad(options) {
 		let { merchantid,longitude,latitude} = options;
@@ -159,8 +160,6 @@ Page(Object.assign({}, merchantShop,{
 			let selectFoods = this.data.selectFoods;
 			// console.log(this.data.bankName);
 			let boos = this.data.bankName;
-			
-			console.log(this.data.totalcount)
 			console.log(boos);
 			console.log(selectFoods)
 			let listFoods = [];
@@ -454,9 +453,23 @@ Page(Object.assign({}, merchantShop,{
 	//购买商品总价和总个数
 	totalprice() {
 		let total = 0;
+		let totals = 0;
 		let count = 0;
+		let price = 0;
+		let add = 0;
 		this.data.selectFoods.forEach((food)=>{	
-			total+= parseFloat(food.priceObject.price)*food.count;
+			if(food.everyGoodsEveryOrderBuyCount!=0){
+				if(food.count > food.everyGoodsEveryOrderBuyCount){
+					add += parseFloat(food.priceObject.price)*food.everyGoodsEveryOrderBuyCount;
+					price += food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount)+add;
+				}else if(food.count <=food.everyGoodsEveryOrderBuyCount){
+					price += parseFloat(food.priceObject.price)*food.count;
+				}
+
+			}else{
+				totals+= parseFloat(food.priceObject.price)*food.count;
+			}	
+			total = totals + price;
 			count+= food.count;
 		});
 		if (count === 0) {
@@ -578,23 +591,53 @@ Page(Object.assign({}, merchantShop,{
 			priceObject = food.goodsSpecList[specIndex]; //产品价格
 			
 		}
-    	let name = food.name; //产品名称
-    	// console.log(food);
-    	if (priceObject.stock || priceObject.orderLimit) {
-
+		let name = food.name; //产品名称
+		let discount = 0;
+		let everyGoodsEveryOrderBuyCount = food.everyGoodsEveryOrderBuyCount;//每单限购数量
+		
+    	if (priceObject.stock || everyGoodsEveryOrderBuyCount ) {
 			let count = this.getCartCount(id,priceObject);
-			
+			var price = 0;
 			if (priceObject.stockType) {
-				console.log(count,priceObject.stock)
+				// console.log(count,priceObject.stock)
 				if (count >=priceObject.stock) {
 					feedbackApi.showToast({title: '该商品库存不足'});
 					return;
 				}
 			}
-			if (priceObject.orderLimit !=0 && count>=priceObject.orderLimit) {
-				feedbackApi.showToast({title: '该商品每单限购'+ count +'份'});
-				return;
+			//折扣库存大于限购数量
+			if(priceObject.stock > everyGoodsEveryOrderBuyCount){
+				//商品数量等于限购数量
+				if ( everyGoodsEveryOrderBuyCount != 0 && everyGoodsEveryOrderBuyCount==count) {
+					price= priceObject.price*everyGoodsEveryOrderBuyCount;
+					this.setData({
+						price:price
+					})
+					feedbackApi.showToast({title: '当前折扣商品限购'+ everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
+					
+				}else if(count>everyGoodsEveryOrderBuyCount && everyGoodsEveryOrderBuyCount !=0){//商品数量大于限购数量按原价购买
+					discount = priceObject.price*everyGoodsEveryOrderBuyCount;
+					price = discount+( priceObject.originalPrice*(count-everyGoodsEveryOrderBuyCount+1));
+					console.log(price)
+					this.setData({
+						price:price
+					})
+					
+				}else if(count<everyGoodsEveryOrderBuyCount && everyGoodsEveryOrderBuyCount !=0){
+					price = (priceObject.price*(count+1)).toFixed(2);
+					console.log(price)
+					this.setData({
+						price:price
+					})
+				}
+				
+			}else if(priceObject.stock = everyGoodsEveryOrderBuyCount){
+				if ( everyGoodsEveryOrderBuyCount != 0 && everyGoodsEveryOrderBuyCount==count) {
+					feedbackApi.showToast({title: '当前折扣商品限购'+ everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
+					
+				}
 			}
+			
     	}
 		// 商品规格
 		if (rules) {
@@ -606,9 +649,10 @@ Page(Object.assign({}, merchantShop,{
 				}
 			}
 		}
-		console.log(food);
+		// console.log(food);
 		if (id) {
-	      	let tmpArr = this.data.selectFoods;
+			  let tmpArr = this.data.selectFoods;
+			  console.log(tmpArr)
 	        //遍历数组 
         	let isFound = false;
         	tmpArr.map((item)=> {
@@ -641,11 +685,11 @@ Page(Object.assign({}, merchantShop,{
 						  feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
 						 
 	      			} else {
-						tmpArr.push({id: id, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });	 
+						tmpArr.push({id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });	 
 					}
 	      		}	  		
 	        }
-			console.log(tmpArr);
+			// console.log(tmpArr);
 			this.setData({
 				selectFoods: tmpArr,
 				maskShow:true	
@@ -665,8 +709,53 @@ Page(Object.assign({}, merchantShop,{
 		}
 		if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
+		}else {
+			priceObject = food.goodsSpecList[specIndex]; //产品价格
+			
 		}
-
+		let discount = 0;
+		
+		let price = 0;
+		let num = 0;
+		let everyGoodsEveryOrderBuyCount = food.everyGoodsEveryOrderBuyCount;
+		if(priceObject.stock || everyGoodsEveryOrderBuyCount){
+			let count = this.getCartCount(id,priceObject);
+			console.log(count)
+			//折扣库存大于限购数量
+			if(priceObject.stock > everyGoodsEveryOrderBuyCount){
+				//商品数量等于限购数量
+				
+				
+			}else if(priceObject.stock = everyGoodsEveryOrderBuyCount){
+				if ( everyGoodsEveryOrderBuyCount != 0 && everyGoodsEveryOrderBuyCount==count) {
+					price = priceObject.price*everyGoodsEveryOrderBuyCount;
+					this.setData({
+						price:price
+					})
+					feedbackApi.showToast({title: '当前折扣商品限购'+ everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
+					
+				}else if(count>everyGoodsEveryOrderBuyCount && everyGoodsEveryOrderBuyCount !=0){//商品数量大于限购数量按原价购买
+					count--;
+					console.log(count)
+					discount = priceObject.price*everyGoodsEveryOrderBuyCount;
+					price = discount+( priceObject.originalPrice*(count-everyGoodsEveryOrderBuyCount));
+					console.log(price)
+					this.setData({
+						price:price
+					})
+					
+				}else if(count<everyGoodsEveryOrderBuyCount && everyGoodsEveryOrderBuyCount !=0){
+					count--;
+					console.log(count)
+					price = (priceObject.price*(count)).toFixed(2);
+					console.log(price)
+					this.setData({
+						price:price
+					})
+				}
+			}
+			
+		}
 		//弹出层多规格删减匹配
 		if (food.goodsAttributeList && food.goodsAttributeList.length > 0) {
 			attributes = '';
@@ -681,7 +770,6 @@ Page(Object.assign({}, merchantShop,{
 		if (food.goodsSpecList && rules) {
 			priceObject = food.goodsSpecList[specIndex];
 		} 
-		console.log(food);
 		let isNum = 0;
 		let isNumstatus = false;
     	if (id) {
@@ -720,7 +808,7 @@ Page(Object.assign({}, merchantShop,{
 	                isNum++;
 	            }
 	        });
-	        console.log(isNum);
+	        // console.log(isNum);
 	        if (isNum === 1 && !isNumstatus) {
 	        	tmpArr.map((item,index)=>{
 	        		if (item.id === id) {
