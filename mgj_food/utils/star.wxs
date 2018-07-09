@@ -152,6 +152,33 @@ var cart = {
 			}	
 		}
 		return count;
+	},
+	//计算出折扣活动单个商品总价
+	price:function(selectedFood,id){
+		var count = 0;
+		for(var i=0;i<selectedFood.length;i++){
+			if(selectedFood[i].id === id){
+				if(selectedFood[i].everyGoodsEveryOrderBuyCount != 0){
+					if(selectedFood[i].count < selectedFood[i].everyGoodsEveryOrderBuyCount){
+						count = (selectedFood[i].priceObject.price*(selectedFood[i].count)).toFixed(2);
+					}else if(selectedFood[i].count == selectedFood[i].everyGoodsEveryOrderBuyCount){
+						count = (selectedFood[i].priceObject.price*selectedFood[i].everyGoodsEveryOrderBuyCount).toFixed(2);
+					}else{
+						var	discount = selectedFood[i].priceObject.price*selectedFood[i].everyGoodsEveryOrderBuyCount;
+						count = discount+( selectedFood[i].priceObject.originalPrice*(selectedFood[i].count-selectedFood[i].everyGoodsEveryOrderBuyCount));
+						
+					}
+				}
+			}
+
+		}
+		return count;
+	},
+	goodsSpecList:function(selectedFood,id){
+		var price = 0;
+		for(var i=0;i<selectedFood.length;i++){
+
+		}
 	}
 }
 
@@ -170,5 +197,6 @@ module.exports = {
   payDesc:cart.payDesc,
   round:cart.round,
   removefh:cart.removefh,
-  cartItemNum:cart.cartItemNum
+  cartItemNum:cart.cartItemNum,
+  price:cart.price
 };

@@ -61,7 +61,8 @@ Page(Object.assign({}, merchantShop,{
 		code:false,
 		listFoods:[],
 		checkot:false,
-		price:0
+		price:0,
+		goodsKey:0
 	},
 	onLoad(options) {
 		let { merchantid,longitude,latitude} = options;
@@ -177,15 +178,37 @@ Page(Object.assign({}, merchantShop,{
 				obj[next.id] ? "":obj[next.id] = true && cur.push(next);
 				return cur;
 			},[])
-			console.log(Number(boos.b)*2)
+			console.log(Number(boos.fullRange)*2)
 			list.map(item=>{
-				 if(item.goodsSpecList[0].price <= Number(boos.b)*2&&item.everyGoodsEveryOrderBuyCount==0){
-					listFoods.push(item);
-					if(listFoods.length>=10){
-						listFoods = listFoods.slice(0.9)
-					}
-				}
+				// if(item.goodsSpecList.length>1){
+					item.goodsSpecList.map((value,index)=>{
+						if(value.price <= Number(boos.fullRange)*2&&item.everyGoodsEveryOrderBuyCount==0||value.price<=boos.fullRange&&item.everyGoodsEveryOrderBuyCount==0){
+							console.log(value.id)
+							listFoods.push(item);
+							
+							if(listFoods.length>=10){
+								listFoods = listFoods.slice(0.9)
+							}
+							this.setData({
+								goodsKey:value
+							})
+						}
+					})
+				//  }else{
+					// if(item.goodsSpecList[0].price <= Number(boos.fullRange)*2&&item.everyGoodsEveryOrderBuyCount==0||item.goodsSpecList[0].price<=boos.fullRange&&item.everyGoodsEveryOrderBuyCount==0){
+					// 	listFoods.push(item);
+					// 	if(listFoods.length>=10){
+					// 		listFoods = listFoods.slice(0.9)
+					// 	}
+					// }
+				//  }
+				
+				
+				
+				
+				 
 			})
+			console.log(listFoods)
 			listFoods.sort((a,b)=>{
 					return a.goodsSpecList[0].price-b.goodsSpecList[0].price
 			});
@@ -466,12 +489,11 @@ Page(Object.assign({}, merchantShop,{
 		this.data.selectFoods.forEach((food)=>{	
 			if(food.everyGoodsEveryOrderBuyCount!=0){
 				if(food.count > food.everyGoodsEveryOrderBuyCount){
-					add += parseFloat(food.priceObject.price)*food.everyGoodsEveryOrderBuyCount;
+					add = parseFloat(food.priceObject.price)*food.everyGoodsEveryOrderBuyCount;
 					price += food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount)+add;
 				}else if(food.count <=food.everyGoodsEveryOrderBuyCount){
 					price += parseFloat(food.priceObject.price)*food.count;
 				}
-
 			}else{
 				totals+= parseFloat(food.priceObject.price)*food.count;
 			}	
@@ -489,73 +511,45 @@ Page(Object.assign({}, merchantShop,{
 			let bank = '';
 			let Boos =false;
 			let ruleDtoList = this.data.ruleDtoList;
-			if(total<ruleDtoList[0].full){
-				for(var j=0;j<ruleDtoList.length;j++){
-					ruleDtoList[j].fullRange=null;
-					ruleDtoList[j].subRange=null;
-				}
-				ruleDtoList[0].fullRange=ruleDtoList[0].full-total;
-				ruleDtoList[0].subRange=ruleDtoList[0].sub;
-
-				Boos = (total/ruleDtoList[0].full)>0.8?true:false;
-
-				bank = {b:ruleDtoList[0].fullRange.toFixed(2),c:ruleDtoList[0].subRange,f:ruleDtoList[0].full}
-			}else if(total>=ruleDtoList[0].full){
-				let arr = [];
-				var fullRange=0;
-				var subRange=0;
-				var present=0;
-				var fulls=0;
-				for(var j=0;j<ruleDtoList.length;j++){
-					ruleDtoList[j].fullRange=null;
-					ruleDtoList[j].subRange=null;
-				}
-				for(var i=0;i<ruleDtoList.length;i++){
+			let fulls = 0;
+			let fullRange = 0;
+			let subRange = 0;
+			let present = 0;
+			 
+			this.data.ruleDtoList.forEach((item,index)=>{
+				if(total<ruleDtoList[0].full){
 					
-					if(total<ruleDtoList[i].full){
-						arr.push(ruleDtoList[i])
-						arr.find(item=>{
-							if(total<=item.full){
-								if(item.full===ruleDtoList[i].full){
-									ruleDtoList[i].fullRange = item.full-total;
-									ruleDtoList[i].subRange = item.sub;
-									ruleDtoList[i].full = item.full;
-									fulls = ruleDtoList[i].full;
-									fullRange=ruleDtoList[i].fullRange;
-									subRange=ruleDtoList[i].subRange;
-									Boos =(total/item.full)>0.8?true:false;
-									ruleDtoList.map(value=>{
-										if(value.full<ruleDtoList[i].full){
-											ruleDtoList[i].present = value.sub;
-											present = ruleDtoList[i].present;
-										}
-									})
-								}
-								bank={a:present,b:fullRange.toFixed(2),c:subRange,f:fulls}; 
-							}
-
-						})
-					}else if(total>=ruleDtoList[i].full){
-						ruleDtoList.find(value=>{
-							if(total>ruleDtoList[i].full){
-								ruleDtoList[i].fullRange = value.full;
-								ruleDtoList[i].subRange = value.sub;
-								fulls = value.full;
-								fullRange=ruleDtoList[i].fullRange;
-								subRange=ruleDtoList[i].subRange;
-							}
-
-						})
+					fullRange=ruleDtoList[0].full-total;
+					subRange=ruleDtoList[0].sub;
+	
+					Boos = (total/ruleDtoList[0].full) > 0.8 ? true : false;
+	
+					bank = {fullRange:fullRange.toFixed(2),subRange:subRange,full:ruleDtoList[0].full}
+				} else {
+					if(total<=item.full||total<=ruleDtoList[2].full){
+						if(total<ruleDtoList[1].full){
+							fulls = ruleDtoList[1].full;
+							fullRange = fulls-total;
+							subRange = ruleDtoList[1].sub;
+							present = ruleDtoList[0].sub;
+						}else{
+							fulls = item.full;
+							fullRange = item.full-total;
+							subRange = item.sub;
+							present = ruleDtoList[1].sub;
+						}
+						Boos =(total/fulls)>0.8?true:false;
+						bank={present:present,fullRange:fullRange.toFixed(2),subRange:subRange,full:fulls};
 						
-						bank = {b:fullRange,c:subRange,f:fulls}
+					} else{
+						fulls = item.full;
+						fullRange = item.full-total;
+						subRange = item.sub;
+						bank={fullRange:fullRange.toFixed(2),subRange:subRange,full:fulls};
 					}
-
+					 	
 				}
-				
-				
-				
-				
-			}
+			})
 			this.setData({
 				totalprice:total,
 				totalcount: count,
@@ -597,45 +591,19 @@ Page(Object.assign({}, merchantShop,{
 			
 		}
 		let name = food.name; //产品名称
-		let discount = 0;
 		let everyGoodsEveryOrderBuyCount = food.everyGoodsEveryOrderBuyCount;//每单限购数量
 		let tmpArr = this.data.selectFoods;
 		var price = 0;
-		tmpArr.map(item=>{
-			if(item.everyGoodsEveryOrderBuyCount !=0){
-				if (item.priceObject.stock || item.everyGoodsEveryOrderBuyCount ) {
-					// let count = this.getCartCount(id,priceObject);
-					if (item.priceObject.stockType) {
-						// console.log(count,priceObject.stock)
-						if (item.count >=item.priceObject.stock) {
-							feedbackApi.showToast({title: '该商品库存不足'});
-							return;
-						}
-					}
-					//折扣库存大于限购数量
-					if(item.priceObject.stock > item.everyGoodsEveryOrderBuyCount&&item.everyGoodsEveryOrderBuyCount != 0){
-						//商品数量等于限购数量
-						if (item.count<item.everyGoodsEveryOrderBuyCount) {
-							price = (item.priceObject.price*(item.count+1)).toFixed(2);
-						}else if(item.count===item.everyGoodsEveryOrderBuyCount){//商品数量等于限购数量按原价购买
-							price= item.priceObject.price*item.everyGoodsEveryOrderBuyCount;
-							feedbackApi.showToast({title: '当前折扣商品限购'+ item.everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
-			
-						}else if(item.count>item.everyGoodsEveryOrderBuyCount ){
-							discount = item.priceObject.price*item.everyGoodsEveryOrderBuyCount;
-							price = discount+( item.priceObject.originalPrice*(item.count-item.everyGoodsEveryOrderBuyCount+1));
-							
-						}
-					}else if(item.priceObject.stock == item.everyGoodsEveryOrderBuyCount){
-						if (item.everyGoodsEveryOrderBuyCount==item.count) {
-							feedbackApi.showToast({title: '当前折扣商品限购'+ item.everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
-							
-						}
-					}
-					
+		let count = this.getCartCount(id,priceObject);
+		if(priceObject.stock){
+			if (priceObject.stockType) {
+				// console.log(count,priceObject.stock)
+				if (count >=priceObject.stock) {
+					feedbackApi.showToast({title: '该商品库存不足'});
+					return;
 				}
 			}
-		})
+		}
     	
 		
 		console.log(price)
@@ -689,13 +657,20 @@ Page(Object.assign({}, merchantShop,{
 						tmpArr.push({id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });	 
 					}
 	      		}	  		
-	        }
-			// console.log(tmpArr);
+			}
+			
+			
+			// tmpArr.map(item=>{
+				if(priceObject.stock >=everyGoodsEveryOrderBuyCount&&everyGoodsEveryOrderBuyCount != 0){
+					if(count===everyGoodsEveryOrderBuyCount){//商品数量等于限购数量按原价购买
+						feedbackApi.showToast({title: '当前折扣商品限购'+ everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
+					}
+				}
+			//  })
+			console.log(tmpArr)
 			this.setData({
 				selectFoods: tmpArr,
-				maskShow:true,
-				price:price
-				
+				maskShow:true
 			})
 	    }
 	 	this.totalprice();
@@ -713,40 +688,7 @@ Page(Object.assign({}, merchantShop,{
 		if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
 		}
-		// let discount = 0;
 		
-		// let price = 0;
-		
-		// let everyGoodsEveryOrderBuyCount = food.everyGoodsEveryOrderBuyCount;
-		// if(priceObject.stock || everyGoodsEveryOrderBuyCount){
-		// 	let count = this.getCartCount(id,priceObject);
-		// 	console.log(count)
-		// 	//折扣库存大于限购数量
-		// 	if(priceObject.stock > everyGoodsEveryOrderBuyCount){
-		// 		//商品数量等于限购数量
-				
-				
-		// 	}else if(priceObject.stock = everyGoodsEveryOrderBuyCount){
-		// 		if ( everyGoodsEveryOrderBuyCount != 0 && everyGoodsEveryOrderBuyCount==count) {
-		// 			price = priceObject.price*everyGoodsEveryOrderBuyCount;
-		// 			feedbackApi.showToast({title: '当前折扣商品限购'+ everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
-					
-		// 		}else if(count>everyGoodsEveryOrderBuyCount && everyGoodsEveryOrderBuyCount !=0){//商品数量大于限购数量按原价购买
-		// 			count--;
-		// 			console.log(count)
-		// 			discount = priceObject.price*everyGoodsEveryOrderBuyCount;
-		// 			price = discount+( priceObject.originalPrice*(count-everyGoodsEveryOrderBuyCount+1));
-		// 			console.log(price)
-					
-		// 		}else if(count<everyGoodsEveryOrderBuyCount && everyGoodsEveryOrderBuyCount !=0){
-		// 			count--;
-		// 			console.log(count)
-		// 			price = (priceObject.price*(count+1)).toFixed(2);
-		// 			console.log(price)
-		// 		}
-		// 	}
-			
-		// }
 		//弹出层多规格删减匹配
 		if (food.goodsAttributeList && food.goodsAttributeList.length > 0) {
 			attributes = '';
