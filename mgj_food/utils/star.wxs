@@ -158,17 +158,27 @@ var cart = {
 		var count = 0;
 		for(var i=0;i<selectedFood.length;i++){
 			if(selectedFood[i].id === id){
-				if(selectedFood[i].everyGoodsEveryOrderBuyCount != 0){
-					if(selectedFood[i].count < selectedFood[i].everyGoodsEveryOrderBuyCount){
-						count = (selectedFood[i].priceObject.price*(selectedFood[i].count)).toFixed(2);
-					}else if(selectedFood[i].count == selectedFood[i].everyGoodsEveryOrderBuyCount){
-						count = (selectedFood[i].priceObject.price*selectedFood[i].everyGoodsEveryOrderBuyCount).toFixed(2);
+				if(selectedFood[i].hasDiscount==1){
+					if(selectedFood[i].surplusDiscountStock >=selectedFood[i].everyGoodsEveryOrderBuyCount){
+						if(selectedFood[i].everyGoodsEveryOrderBuyCount != 0){
+							if(selectedFood[i].count <= selectedFood[i].everyGoodsEveryOrderBuyCount){
+								count = (selectedFood[i].priceObject.price*(selectedFood[i].count)).toFixed(2);
+							}else{
+								var	discount = selectedFood[i].priceObject.price*selectedFood[i].everyGoodsEveryOrderBuyCount;
+								count = discount+( selectedFood[i].priceObject.originalPrice*(selectedFood[i].count-selectedFood[i].everyGoodsEveryOrderBuyCount));
+							
+							}
+						}
 					}else{
-						var	discount = selectedFood[i].priceObject.price*selectedFood[i].everyGoodsEveryOrderBuyCount;
-						count = discount+( selectedFood[i].priceObject.originalPrice*(selectedFood[i].count-selectedFood[i].everyGoodsEveryOrderBuyCount));
-						
+						if(selectedFood[i].count<=selectedFood[i].surplusDiscountStock){
+							count += parseFloat(selectedFood[i].priceObject.price)*selectedFood[i].count;
+						}else{
+							var add = parseFloat(selectedFood[i].priceObject.price)*selectedFood[i].surplusDiscountStock;
+							count += selectedFood[i].priceObject.originalPrice*(selectedFood[i].count - selectedFood[i].surplusDiscountStock)+add;
+						}
 					}
 				}
+				
 			}
 
 		}

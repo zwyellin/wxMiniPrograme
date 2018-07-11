@@ -155,10 +155,13 @@ Page(Object.assign({}, merchantShop,{
 			})
 		}
 	},
+	
 	//去凑单
-	boosLisr(){
+	boosLisr(e){
+		let specIndex = e.currentTarget.dataset.specindex || 0;
 		if(this.data.boos){
 			let selectFoods = this.data.selectFoods;
+
 			let boos = this.data.bankName;
 			let list = [];
 			var listFoods = [];
@@ -178,45 +181,51 @@ Page(Object.assign({}, merchantShop,{
 				obj[next.id] ? "":obj[next.id] = true && cur.push(next);
 				return cur;
 			},[])
-			console.log(Number(boos.fullRange)*2)
-			list.map(item=>{
-				// if(item.goodsSpecList.length>1){
-					item.goodsSpecList.map((value,index)=>{
-						if(value.price <= Number(boos.fullRange)*2&&item.everyGoodsEveryOrderBuyCount==0||value.price<=boos.fullRange&&item.everyGoodsEveryOrderBuyCount==0){
-							console.log(value.id)
-							listFoods.push(item);
-							
-							if(listFoods.length>=10){
-								listFoods = listFoods.slice(0.9)
-							}
-							this.setData({
-								goodsKey:value
-							})
-						}
-					})
-				//  }else{
-					// if(item.goodsSpecList[0].price <= Number(boos.fullRange)*2&&item.everyGoodsEveryOrderBuyCount==0||item.goodsSpecList[0].price<=boos.fullRange&&item.everyGoodsEveryOrderBuyCount==0){
-					// 	listFoods.push(item);
-					// 	if(listFoods.length>=10){
-					// 		listFoods = listFoods.slice(0.9)
-					// 	}
-					// }
-				//  }
-				
-				
-				
-				
-				 
-			})
-			console.log(listFoods)
-			listFoods.sort((a,b)=>{
-					return a.goodsSpecList[0].price-b.goodsSpecList[0].price
+			list.sort((a,b)=>{
+					
+				return a.goodsSpecList[0].price-b.goodsSpecList[0].price
 			});
+			let num =0;
+			let arr = [];
+			// console.log(Number(boos.fullRange)*2)
+			console.log(specIndex)
+			list.map(item=>{
+				if(item.hasDiscount==0){
+					
+						item.goodsSpecList.map((value,index)=>{
+							if(value.price<=Number(boos.fullRange)*2){
+								console.log(value)
+								arr.push(value);
+								console.log(arr[specIndex])
+
+								listFoods.push(item);
+								console.log(listFoods)
+								if(listFoods.length>=10){
+									listFoods = listFoods.slice(0,9)
+								}
+								
+							}
+						})
+
+
+
+						// if(item.goodsSpecList[specIndex].price <= Number(boos.fullRange)*2||item.goodsSpecList[specIndex].price<=boos.fullRange&&item.everyGoodsEveryOrderBuyCount==0){
+						// 	listFoods.push(item);
+						// 	if(listFoods.length>=10){
+						// 		listFoods = listFoods.slice(0,9)
+						// 	}
+							
+						// }
+					
+					
+				}
+			})
 			
 			this.setData({
 				listFoods:listFoods,
 				code:!this.data.code,
-				fold:false
+				fold:false,
+				goodsKey:num
 			})
 		}else{
 			this.setData({
@@ -487,15 +496,27 @@ Page(Object.assign({}, merchantShop,{
 		let price = 0;
 		let add = 0;
 		this.data.selectFoods.forEach((food)=>{	
-			if(food.everyGoodsEveryOrderBuyCount!=0){
-				if(food.count > food.everyGoodsEveryOrderBuyCount){
-					add = parseFloat(food.priceObject.price)*food.everyGoodsEveryOrderBuyCount;
-					price += food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount)+add;
-				}else if(food.count <=food.everyGoodsEveryOrderBuyCount){
-					price += parseFloat(food.priceObject.price)*food.count;
+			if(food.hasDiscount==1){
+				if(food.surplusDiscountStock >=food.everyGoodsEveryOrderBuyCount){
+					if(food.everyGoodsEveryOrderBuyCount !=0){
+						if(food.count > food.everyGoodsEveryOrderBuyCount){
+							add = parseFloat(food.priceObject.price)*food.everyGoodsEveryOrderBuyCount;
+							price += food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount)+add;
+						}else if(food.count <=food.everyGoodsEveryOrderBuyCount){
+							price += parseFloat(food.priceObject.price)*food.count;
+						}
+					}
+				}else{
+					if(food.count<=food.surplusDiscountStock){
+						price += parseFloat(food.priceObject.price)*food.count;
+					}else{
+						add = parseFloat(food.priceObject.price)*food.surplusDiscountStock;
+						price += food.priceObject.originalPrice*(food.count - food.surplusDiscountStock)+add;
+					}
 				}
+				
 			}else{
-				totals+= parseFloat(food.priceObject.price)*food.count;
+				totals +=parseFloat(food.priceObject.price)*food.count;
 			}	
 			total = totals + price;
 			count+= food.count;
@@ -526,7 +547,7 @@ Page(Object.assign({}, merchantShop,{
 	
 					bank = {fullRange:fullRange.toFixed(2),subRange:subRange,full:ruleDtoList[0].full}
 				} else {
-					if(total<=item.full||total<=ruleDtoList[2].full){
+					if(total<=item.full){
 						if(total<ruleDtoList[1].full){
 							fulls = ruleDtoList[1].full;
 							fullRange = fulls-total;
@@ -590,24 +611,25 @@ Page(Object.assign({}, merchantShop,{
 			priceObject = food.goodsSpecList[specIndex]; //产品价格
 			
 		}
+		console.log(food)
 		let name = food.name; //产品名称
-		let everyGoodsEveryOrderBuyCount = food.everyGoodsEveryOrderBuyCount;//每单限购数量
-		let tmpArr = this.data.selectFoods;
-		var price = 0;
+		let everyGoodsEveryOrderBuyCount = food.everyGoodsEveryOrderBuyCount;//每单最多可购买数量
+		let everyOrderBuyCount = food.everyOrderBuyCount;//每单可购买几个折扣商品
+		let surplusDiscountStock = food.surplusDiscountStock//剩余折扣库存
+		let hasDiscount = food.hasDiscount;//是否有折扣 0:否;1:是
+		
+		
 		let count = this.getCartCount(id,priceObject);
 		if(priceObject.stock){
 			if (priceObject.stockType) {
-				// console.log(count,priceObject.stock)
+				
 				if (count >=priceObject.stock) {
-					feedbackApi.showToast({title: '该商品库存不足'});
+					feedbackApi.showToast({title: '您购买的商品库存不足'});
 					return;
 				}
 			}
 		}
     	
-		
-		console.log(price)
-		console.log(tmpArr)
 		// 商品规格
 		if (rules) {
 			for (let i = 0; i < food.goodsAttributeList.length; i++) {
@@ -620,8 +642,7 @@ Page(Object.assign({}, merchantShop,{
 		}
 		// console.log(food);
 		if (id) {
-			  
-			//   console.log(tmpArr)
+			let tmpArr = this.data.selectFoods;
 	        //遍历数组 
         	let isFound = false;
         	tmpArr.map((item)=> {
@@ -639,34 +660,74 @@ Page(Object.assign({}, merchantShop,{
 	                }
 				} 
 				
-	        });
+			});
+			
 	        if(!isFound){
 		      	if (rules) {
 		      		if (priceObject.minOrderNum) {
-		      			tmpArr.push({attributes:attributes, id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
+		      			tmpArr.push({attributes:attributes, id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount,everyOrderBuyCount:everyOrderBuyCount,surplusDiscountStock:surplusDiscountStock,hasDiscount:hasDiscount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
 						feedbackApi.showToast({title: priceObject.spec+'商品最少购买'+priceObject.minOrderNum+'份哦'});
 		      		} else {
-					  	tmpArr.push({attributes:attributes, id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});	
+					  	tmpArr.push({attributes:attributes, id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount,everyOrderBuyCount:everyOrderBuyCount,surplusDiscountStock:surplusDiscountStock,hasDiscount:hasDiscount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1});	
 		      		}
 	      		} else {
-	      			if (priceObject.minOrderNum) {
-	      				tmpArr.push({id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
+	      			if (priceObject.minOrderNum||hasDiscount&&count>surplusDiscountStock) {
+	      				tmpArr.push({id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount,everyOrderBuyCount:everyOrderBuyCount,surplusDiscountStock:surplusDiscountStock,hasDiscount:hasDiscount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1*priceObject.minOrderNum});
 						  feedbackApi.showToast({title: name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
 						 
 	      			} else {
-						tmpArr.push({id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });	 
+						tmpArr.push({id: id,everyGoodsEveryOrderBuyCount:everyGoodsEveryOrderBuyCount,everyOrderBuyCount:everyOrderBuyCount,surplusDiscountStock:surplusDiscountStock,hasDiscount:hasDiscount, categoryId:categoryId, name: name, priceObject: priceObject, count: 1 });	 
 					}
 	      		}	  		
 			}
 			
-			
-			// tmpArr.map(item=>{
-				if(priceObject.stock >=everyGoodsEveryOrderBuyCount&&everyGoodsEveryOrderBuyCount != 0){
-					if(count===everyGoodsEveryOrderBuyCount){//商品数量等于限购数量按原价购买
-						feedbackApi.showToast({title: '当前折扣商品限购'+ everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
+				if(hasDiscount){
+					
+					if(surplusDiscountStock>=everyGoodsEveryOrderBuyCount){
+						if(count===everyGoodsEveryOrderBuyCount){
+							feedbackApi.showToast({title: '当前折扣商品限购'+ everyGoodsEveryOrderBuyCount +'件，多余部分需原价购买'});
+						}
+						
+					}else{
+						if(count==surplusDiscountStock){
+							feedbackApi.showToast({title: '当前折扣商品库存不足，多余部分需原价购买'});
+							
+						}
 					}
+					if(priceObject.stockType){
+						if(priceObject.orderLimit !=0 &&count>=priceObject.orderLimit){
+							count = priceObject.orderLimit;
+							feedbackApi.showToast({title: '您购买的商品已超过限购数量'});
+							return;
+						}
+					}else{
+						if(priceObject.orderLimit !=0 &&count>=priceObject.orderLimit){
+							count = priceObject.orderLimit;
+							feedbackApi.showToast({title: '您购买的商品已超过限购数量'});
+							return;
+						}
+					}
+					
+				}else{
+					if(priceObject.stockType){
+						if(priceObject.orderLimit !=0 &&count>=priceObject.orderLimit){
+							count = priceObject.orderLimit;
+							feedbackApi.showToast({title: '您购买的商品已超过限购数量'});
+							return;
+						}
+					}else{
+						if(priceObject.orderLimit !=0 &&count>=priceObject.orderLimit){
+							count = priceObject.orderLimit;
+							feedbackApi.showToast({title: '您购买的商品已超过限购数量'});
+							return;
+						}
+					}
+					
 				}
-			//  })
+				
+				
+			
+			
 			console.log(tmpArr)
 			this.setData({
 				selectFoods: tmpArr,

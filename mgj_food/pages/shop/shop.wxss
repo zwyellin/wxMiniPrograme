@@ -335,13 +335,13 @@
 	width: 100%;
 }
 .shopcart-list-top{
-	height: 40rpx;
 	width: 100%;
 	line-height: 40rpx;
 	background-color: #fff8db;
 	text-align: center;
 	font-size: 24rpx;
 	color: #6e646c;
+	word-wrap:break-word;
 	
 }
 .bankName{
