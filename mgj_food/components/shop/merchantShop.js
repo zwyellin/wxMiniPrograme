@@ -6,7 +6,7 @@ const merchantShop = {
 	//获取商家详情
 	findMerchantInfo(){
 		wxRequest({
-        	url:'/merchant/userClient?m=findMerchantInfo',
+        	url:'/merchant/userClient?m=findMerchantInfo2',
         	method:'POST',
         	data:{
         		token:app.globalData.token,
@@ -32,9 +32,18 @@ const merchantShop = {
 					itemList:value.merchant,
 					item:value.merchant,
 					minPrice:value.merchant.minPrice,
-					shipScore:value.merchant.shipScore
+					shipScore:value.merchant.shipScore,
+					ruleDtoList:value.merchant.ruleDtoList,
 				});
-				ActivityListHeight += this.data.itemList.promotionActivityList.length*16
+				if (wx.getStorageSync('shoppingCart')) {
+					this.totalprice();	
+				}
+				value.merchant.activitySharedRelationList.forEach(item=>{
+					if (item.promotionActivityType === 5 && item.relationPromotionActivityType === 2) {
+						this.data.activitySharedStatus = item.status;
+					}
+				});
+				ActivityListHeight += this.data.itemList.promotionActivityList.length*16;
 				if (value.merchant.merchantRedBagList.length != 0) {
 					merchantRedBagList.map((item)=>{
 						item.isReceive = '立即领取';
@@ -110,8 +119,8 @@ const merchantShop = {
         	}
         }).then(res=>{
 			if (res.data.code === 0) {
-				let list = res.data.value
-				let evaluate = this.data.evaluate
+				let list = res.data.value;
+				let evaluate = this.data.evaluate;
 				if (isLoadMore) {
 					if (list.length === 0) {
 						this.setData({

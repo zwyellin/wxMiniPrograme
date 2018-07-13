@@ -74,8 +74,8 @@ Page(Object.assign({}, merchantObj, {
 						}
 					}; 
 					let { longitude, latitude } = gcj02tobd09(lng,lat);
-					app.globalData.longitude = longitude;
-					app.globalData.latitude = latitude;
+					// app.globalData.longitude = longitude;
+					// app.globalData.latitude = latitude;
 					this.init().then((res)=>{
 						if (res.data.code === 0) {
 							let value = res.data.value;
@@ -484,7 +484,7 @@ Page(Object.assign({}, merchantObj, {
         	start:this.data.start
 		};
 		wxRequest({
-        	url:'/merchant/userClient?m=findTakeAwayMerchant&uuid=' + parseInt(Math.random()*1000000000000000),
+        	url:'/merchant/userClient?m=findTakeAwayMerchant4&uuid=' + parseInt(Math.random()*1000000000000000),
         	method:'POST',
         	data:{
         		uuid:parseInt(Math.random()*1000000000000000),

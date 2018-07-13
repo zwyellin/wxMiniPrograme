@@ -7,6 +7,7 @@ Page({
 		select:false,
 		totalPrice:0,
 		discountAmt:0,
+		discountGoodsDiscountAmt: 0, //订单优惠价格
 		orderMessage: {},    //订单信息
 		addressInfo:null,    //用户订单地址信息
 		addressInfoId:null,
@@ -35,12 +36,13 @@ Page({
 		let { merchantId } = options;
 		let pages = getCurrentPages();
 	    let prevPage = pages[pages.length - 2];
-	    console.log(prevPage.data.value)
+	    console.log(prevPage.data.value);
 	    this.setData({
 	    	merchantId:merchantId,
 			orderMessage:prevPage.data.value,
 			totalPrice:prevPage.data.value.totalPrice,
 			discountAmt:prevPage.data.value.discountAmt,
+			discountGoodsDiscountAmt:prevPage.data.value.discountGoodsDiscountAmt,
 			addressInfo:prevPage.data.value.addressInfo,
 			redBagUsableCount:prevPage.data.value.redBagUsableCount,
 			payList:prevPage.data.value.payments,
@@ -63,7 +65,6 @@ Page({
 		if (typeof this.data.initTime === 'undefined') {
 			let expectedArrivalTime = sendTime[0]
 			let initTime = arr[0][expectedArrivalTime]
-			console.log(sendTime)
 			this.setData({
 				initTime:initTime,
 				expectedArrivalTime:expectedArrivalTime
@@ -81,7 +82,7 @@ Page({
 					this.setData({
 						orderMessage:orderMessage,
 						addressInfo:addressInfo
-					})
+					});
 				}
 	        }).finally(()=>{
 	        	wx.hideLoading()
@@ -104,7 +105,7 @@ Page({
         	data:{
         		token:app.globalData.token,
         		params:{
-        			itemsPrice: this.data.orderMessage.itemsPrice,
+        			itemsPrice: this.data.orderMessage.totalPrice,
 					merchantId: this.data.merchantId,
 					promoInfoJson: this.data.promoInfoJson
         		}	
@@ -223,7 +224,7 @@ Page({
 	redPage(){
 		if (!this.data.redBagUsableCount) return;
 		wx.navigateTo({
-  			url: '/pages/sendred/sendred?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.orderMessage.itemsPrice
+  			url: '/pages/sendred/sendred?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.orderMessage.totalPrice
 		});
 	},
 	//确认订单
@@ -254,7 +255,7 @@ Page({
 			};
 			data.orderItems = this.data.orderMessage.orderItems;
 			wxRequest({
-	        	url:'/merchant/userClient?m=orderSubmit',
+	        	url:'/merchant/userClient?m=orderSubmit2',
 	        	method:'POST',
 	        	data:{
 	        		params:{
@@ -313,7 +314,7 @@ Page({
 		data.orderPayType = this.data.payIndex+1;
 		data.userAddressId = this.data.addressInfoId
 		return wxRequest({
-        	url:'/merchant/userClient?m=orderPreview',
+        	url:'/merchant/userClient?m=orderPreview2',
         	method:'POST',
         	data:{
         		params:{

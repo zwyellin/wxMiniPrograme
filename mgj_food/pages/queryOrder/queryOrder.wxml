@@ -125,9 +125,10 @@
 				<text>待支付</text>
 				<text class="font-18">￥ {{orderMessage.totalPrice}}</text>
 			</text>
-			<text wx:if="{{discountAmt != 0}}" class="txt-pay" >
+			<text wx:if="{{orderMessage.discountGoodsDiscountAmt+orderMessage.discountAmt != 0}}" class="txt-pay" >
 				<text>已优惠</text>
-				<text>￥ {{orderMessage.discountAmt}}</text>
+				<!-- <text>￥ {{orderMessage.discountAmt}}</text> -->
+				<text>￥ {{orderMessage.discountGoodsDiscountAmt+orderMessage.discountAmt}}</text>
 			</text>
 		</view>
 		<view class="check-right font-18" bindtap="postOrder">
