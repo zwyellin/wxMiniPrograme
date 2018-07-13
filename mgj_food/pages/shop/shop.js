@@ -68,7 +68,6 @@ Page(Object.assign({}, merchantShop,{
 	onLoad(options) {
 		let { merchantid,longitude,latitude} = options;
 		this.data.merchantId = merchantid;
-		// this.data.merchantId = 221;
 		// this.data.merchantId = 402;
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
