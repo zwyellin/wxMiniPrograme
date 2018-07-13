@@ -8,7 +8,7 @@
 		<view wx:if="{{cart.getCount(selectFoods,food.id)>0}}" class="cart-count">
 			<text>{{cart.getCount(selectFoods,food.id)}}</text>
 		</view>		
-		<view wx:if="{{(food.goodsSpecList.length === 1 && food.goodsAttributeList.length === 0) && (!food.goodsSpecList[0].stockType ||food.goodsSpecList[0].stock != 0 && food.goodsSpecList[0].stockType)}}" class="cart-add"  data-food="{{food}}" catchtap="addCart">
+		<view wx:if="{{(food.goodsSpecList.length === 1 && food.goodsAttributeList.length === 0) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount)}}" class="cart-add"  data-food="{{food}}" catchtap="addCart">
 			<image class="icon-add_circle" src="/images/images/add.png"></image>
 		</view>
 	</view>

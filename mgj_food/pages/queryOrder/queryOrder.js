@@ -272,11 +272,22 @@ Page({
 	        		let price = res.data.value.totalPrice;
 	        		console.log(price)
 	        		if (res.data.value.paymentType ===1) {
+	        			let merchantId = this.data.merchantId;
+		                let shoppingCart = wx.getStorageSync('shoppingCart');
+		                if (shoppingCart[merchantId]) {
+		                  shoppingCart[merchantId] = []
+		                }
+                		wx.setStorageSync('shoppingCart',shoppingCart);
 	        			wx.navigateTo({
 					  		url: '/pages/pay/pay?orderId=' + orderId + '&price=' + price + '&merchantId=' + this.data.merchantId,
 						});
 	        		} 
 	        		if (res.data.value.paymentType ===2){
+	        			let merchantId = this.data.merchantId;
+		                let shoppingCart = wx.getStorageSync('shoppingCart');
+		                if (shoppingCart[merchantId]) {
+		                  shoppingCart[merchantId] = [];
+		                }
 	        			setTimeout(()=>{
 	        				wx.redirectTo({
 		                    	url: '/pages/goods/cartDetail/cartDetail?orderid='+orderId,

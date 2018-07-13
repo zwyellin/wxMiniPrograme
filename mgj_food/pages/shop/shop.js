@@ -647,7 +647,7 @@ Page(Object.assign({}, merchantShop,{
     	} 
     	if(priceObject.stockType && food.hasDiscount===1 || priceObject.orderLimit && food.hasDiscount===1) {
     		if (food.surplusDiscountStock < food.everyGoodsEveryOrderBuyCount && food.surplusDiscountStock) {
-    			if(count > food.surplusDiscountStock) {
+    			if(count >= food.surplusDiscountStock) {
 					let surCount = count - food.surplusDiscountStock;
 					console.log(surCount,priceObject.stock);
 					if (surCount >=priceObject.stock &&priceObject.stockType) {
@@ -660,14 +660,15 @@ Page(Object.assign({}, merchantShop,{
 					}	
 				}
     		} else if (food.surplusDiscountStock >=food.everyGoodsEveryOrderBuyCount && food.surplusDiscountStock) {
-				if (count>food.everyGoodsEveryOrderBuyCount) {
+				if (count>=food.everyGoodsEveryOrderBuyCount) {
+					console.log(23343);
 					let surCount
 					if (food.everyGoodsEveryOrderBuyCount !=0) {
 						surCount = count - food.everyGoodsEveryOrderBuyCount;
 					} else {
 						surCount = count - food.surplusDiscountStock;
 					}
-					if (surCount >=priceObject.stock &&priceObject.stockType) {
+					if (surCount >= priceObject.stock && priceObject.stockType) {
 						feedbackApi.showToast({title: '你购买的商品库存不足'});
 						return;
 					}
@@ -884,7 +885,7 @@ Page(Object.assign({}, merchantShop,{
 					let isToastTip = false;
 					if (priceObject.stockType) {
 						if (priceObject.stock === 0) {
-							feedbackApi.showToast({title: '该商品库存不足'});
+							// feedbackApi.showToast({title: '该商品库存不足'});
 							isToastTip = true;
 						}
 					}
@@ -903,7 +904,7 @@ Page(Object.assign({}, merchantShop,{
 					let isToastTip = false;
 					if (priceObject.stockType) {
 						if (priceObject.stock === 0) {
-							feedbackApi.showToast({title: '该商品库存不足'});
+							// feedbackApi.showToast({title: '该商品库存不足'});
 							isToastTip = true;
 						}
 					}

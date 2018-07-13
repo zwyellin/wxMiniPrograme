@@ -123,12 +123,11 @@
 								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
 									<text>商家休息中</text>
 								</view>
-								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && (food.status === 0|| food.goodsSpecList[0].stock === 0 &&food.goodsSpecList[0].stockType && food.goodsSpecList.length === 1)}}" class="choice-else font-10">
+								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && (food.status === 0 || food.goodsSpecList[0].stock === 0 &&food.goodsSpecList[0].stockType && food.goodsSpecList.length === 1 && !food.surplusDiscountStock)}}" class="choice-else font-10">
 									<text>商品已售罄</text>
 								</view>
-
 								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
-									<view wx:if="{{food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{food}}" catchtap="choice" >
+									<view wx:if="{{(food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount) }}" class="choice font-10" data-food="{{food}}" catchtap="choice" >
 										<text>选规格</text>
 									</view>
 								</view>	
@@ -500,11 +499,11 @@
 			<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
 				<text>商家休息中</text>
 			</view>
-			<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && (selectedFood.status === 0|| selectedFood.goodsSpecList[0].stock === 0 &&selectedFood.goodsSpecList[0].stockType && selectedFood.goodsSpecList.length === 1)}}" class="choice-else font-10" >
+			<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && (selectedFood.status === 0|| selectedFood.goodsSpecList[0].stock === 0 &&selectedFood.goodsSpecList[0].stockType && selectedFood.goodsSpecList.length === 1 && !selectedFood.surplusDiscountStock)}}" class="choice-else font-10" >
 				<text>商品已售罄</text>
 			</view>
 			<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
-				<view wx:if="{{selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{selectedFood}}" catchtap="choice" >
+				<view wx:if="{{(selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1) && !(selectedFood.goodsSpecList[0].stock === 0 && selectedFood.goodsSpecList[0].stockType && !selectedFood.surplusDiscountStock && !selectedFood.hasDiscount)}}" class="choice font-10" data-food="{{selectedFood}}" catchtap="choice" >
 					<text>选规格</text>
 				</view>
 			</view>	
