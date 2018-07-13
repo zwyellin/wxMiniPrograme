@@ -130,30 +130,56 @@ var cart = {
 			return '去结算';
 		}
 	},
-	cartItemNum:function(selectedFood,specIndex,selectFoods){
-		var  count = 0;
-		var id = selectedFood.id
-		var attributes = '';
-		for (var i = 0; i < selectedFood.goodsAttributeList.length; i++) {
-			if (i === selectedFood.goodsAttributeList.length-1) {
-				attributes += selectedFood.goodsAttributeList[i].select;
-			} else {
-				attributes += selectedFood.goodsAttributeList[i].select+',';
-			}
-		}
-		var  priceObject = selectedFood.goodsSpecList[specIndex]
-		for(var i=0;i<selectFoods.length;i++){
-			if(id === selectFoods[i].id){
-				if(priceObject.id === selectFoods[i].priceObject.id){
-					if(attributes === selectFoods[i].attributes){
-						count = selectFoods[i].count
-					}
-				}
-			}	
+	fullItemNum:function(food,cartlist){
+		var count = 0;
+		var attributes = food.attributes;
+		var priceObject = food.priceObject;
+		for (var i = 0; i < cartlist.length; i++) {
+			if (cartlist[i].priceObject.id == priceObject.id) {
+        		if (cartlist[i].attributes ==  attributes) {            //规格判断
+					count = cartlist[i].count;		
+        		} else {
+        			count = cartlist[i].count;
+        		}
+            }
 		}
 		return count;
+	},
+	price:function(food){
+		var price = 0;
+		var totalPrice = 0;
+		if(food.hasDiscount){
+			if (food.surplusDiscountStock > food.everyGoodsEveryOrderBuyCount) {
+				if (food.everyGoodsEveryOrderBuyCount === 0) {
+					if (food.count > food.surplusDiscountStock) {
+						price = food.priceObject.price*food.surplusDiscountStock;
+						totalPrice = food.priceObject.originalPrice*(food.count - food.surplusDiscountStock) + price;
+					} else {
+						totalPrice = food.priceObject.price*food.count;
+					}
+				} else {
+					if (food.count > food.everyGoodsEveryOrderBuyCount) {
+						price = food.priceObject.price*food.everyGoodsEveryOrderBuyCount;
+						totalPrice = food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount) + price;
+					}else {
+						totalPrice = food.priceObject.price*food.count;
+					}	
+				}	
+			} else {
+				if(food.count > food.surplusDiscountStock){
+					price = food.priceObject.price*food.surplusDiscountStock;
+					totalPrice = food.priceObject.originalPrice*(food.count - food.surplusDiscountStock) + price;
+				}else {
+					totalPrice = food.priceObject.price*food.count;
+				}
+			}
+		}else{
+			totalPrice = parseFloat(food.priceObject.price)*food.count;
+		}
+
+		return Math.round(totalPrice*Math.pow(10, 2))/Math.pow(10, 2);
 	}
-}
+};
 
 module.exports = {
   itemClasses: cart.itemClasses,
@@ -170,5 +196,6 @@ module.exports = {
   payDesc:cart.payDesc,
   round:cart.round,
   removefh:cart.removefh,
-  cartItemNum:cart.cartItemNum
+  fullItemNum:cart.fullItemNum,
+  price:cart.price
 };

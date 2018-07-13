@@ -41,7 +41,7 @@ Page({
             });
         }
         wxRequest({
-            url:'/merchant/userClient?m=searchTakeAwayMerchant',
+            url:'/merchant/userClient?m=searchTakeAwayMerchant2',
             method:'POST',
             data:{
                 token: app.globalData.token,

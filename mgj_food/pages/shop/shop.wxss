@@ -25,16 +25,17 @@
 }
 .avatar {
 	height: 110rpx;
-	width:136rpx;
+	width:110rpx;
 	border-radius: 110rpx;
 	margin-right: 20rpx;
 	overflow: hidden;
 }
 .icon-image {
 	height: 110rpx;
-	width:136rpx;
+	width:110rpx;
 }
 .content {
+	flex:1;
 	width:100%;
 }
 
@@ -323,9 +324,38 @@
 .shopcart-list{
 	position: absolute;
 	left: 0;
-	bottom: 98rpx;
+	bottom: 97rpx;
 	z-index: -1;
 	width: 100%;
+}
+.shopcart-lists{
+	position: absolute;
+	left: 0;
+	bottom: 400rpx;
+	z-index: -1;
+	width: 100%;
+}
+.shopcart-list-top{
+	height: 40rpx;
+	width: 100%;
+	line-height: 40rpx;
+	background-color: #fff8db;
+	text-align: center;
+	font-size: 24rpx;
+	color: #6e646c;
+	
+}
+.bankName{
+	color: #d56c2b;
+}
+.shopcart-list-top-tetx{
+	color: #d56c2b;
+	margin-left: 10rpx;
+}
+.lisTop{
+	position: fixed;
+	bottom: 97rpx;
+	left: 0;
 }
 .shopcart-list .list-title{
 	float:left;
@@ -345,7 +375,12 @@
 	border-bottom: 1rpx solid rgba(7,17,27,0.1);	
 }
 .list-content{
-	max-height: 164rpx;
+	max-height: 328rpx;
+	overflow: hidden;
+	background: #fff;
+}
+.list-contents{
+	max-height: 492rpx;
 	overflow: hidden;
 	background: #fff;
 }

@@ -190,11 +190,6 @@ Page({
               console.log(err.extra);
               if (result == "success") {
                 let merchantId = that.data.merchantId
-                let shoppingCart = wx.getStorageSync('shoppingCart');
-                if (shoppingCart[merchantId]) {
-                  shoppingCart[merchantId] = []
-                }
-                wx.setStorageSync('shoppingCart',shoppingCart);
                 let isRedBag = true;
                 setTimeout(()=>{
                   wx.redirectTo({
@@ -262,11 +257,6 @@ Page({
     }).then(res=>{
       if (res.data.code === 0) {
         let merchantId = res.data.value.merchantId
-        let shoppingCart = wx.getStorageSync('shoppingCart');
-        if (shoppingCart[merchantId]) {
-          shoppingCart[merchantId] = []
-        }
-        wx.setStorageSync('shoppingCart',shoppingCart);
         let isRedBag = true;
         setTimeout(()=>{
           wx.redirectTo({
