@@ -281,9 +281,40 @@
 				</view>
 			</view>
   		</view>
+  		<view class="shop-content font-18" wx:if="{{itemList.businessLicenseImg || itemList.hygieneLicenseImg}}">
+  			<view class="shop-message shop-message-letter" >
+  				<text>商家资质</text>
+  			</view>
+  			<view class="merchant-aptitude flex">
+  				<view class="merchant-aptitude-img">
+  					<image class="aptitude-img" src="{{itemList.businessLicenseImg}}?imageView2/0/w/560/h/380/q/100!" 
+  						data-img="{{itemList.businessLicenseImg}}" 
+  						catchtap="scaleImg">	
+  					</image>
+  				</view>
+  				<view class="merchant-aptitude-img">
+  					<image class="aptitude-img" src="{{itemList.hygieneLicenseImg}}?imageView2/0/w/560/h/380/q/100!" 
+  						data-img="{{itemList.hygieneLicenseImg}}" 
+  						catchtap="scaleImg">	
+  					</image>
+  				</view>
+  			</view>
+  		</view>
     </view>
     <!-- 商家 结束 -->
 
+    <!-- 商家 资质图片 -->
+    <view wx:if="{{maskimgShow}}" class="maskimg">
+    	<scroll-view scroll-x="true" scroll-y="true" style="width:680rpx;height:1130rpx" >
+	    	<image class="aptitude-scaleimg" src="{{merchantAptitudeImg}}?q/100!" 
+	    		style="width: {{ touch.scaleWidth }}rpx;height: {{ touch.scaleHeight }}rpx"
+	    		catchtap="hideScaleImg" 
+	    		bindtouchstart="touchstartCallback"
+	    		bindtouchmove="touchmoveCallback">
+	    	</image>
+	    </scroll-view>
+    </view>
+	<view wx:if="{{maskimgShow}}" class="mask-black"></view>
 	<view wx:if="{{tab.cur==='商品'}}" class="shopcart">
 		<view wx:if="{{totalcount===0 && ruleDtoList.length > 0 && !activitySharedShow || !fold && ruleDtoList.length>0 && !isShowTogether && !activitySharedShow}}" class="shopcart-list-top lisTop">
 			<text 
