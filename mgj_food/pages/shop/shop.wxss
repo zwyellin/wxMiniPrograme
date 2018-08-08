@@ -342,8 +342,7 @@
 	background-color: #fff8db;
 	text-align: center;
 	font-size: 24rpx;
-	color: #6e646c;
-	
+	color: #6e646c;	
 }
 .bankName{
 	color: #d56c2b;
@@ -376,6 +375,11 @@
 }
 .list-content{
 	max-height: 328rpx;
+	overflow: hidden;
+	background: #fff;
+}
+.list-contents{
+	max-height: 492rpx;
 	overflow: hidden;
 	background: #fff;
 }

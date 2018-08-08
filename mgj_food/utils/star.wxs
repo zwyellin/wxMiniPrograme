@@ -176,7 +176,6 @@ var cart = {
 		}else{
 			totalPrice = parseFloat(food.priceObject.price)*food.count;
 		}
-
 		return Math.round(totalPrice*Math.pow(10, 2))/Math.pow(10, 2);
 	}
 };

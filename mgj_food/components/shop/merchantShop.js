@@ -20,6 +20,8 @@ const merchantShop = {
 			if (res.data.code === 0) {
 				let value = res.data.value;
 				let name = value.merchant.name;
+				let ruleDtoList =value.merchant.ruleDtoList;
+				console.log(ruleDtoList)
 				let merchantRedBagList = value.merchant.merchantRedBagList
 				wx.setNavigationBarTitle({
 				  	title: name
@@ -44,6 +46,7 @@ const merchantShop = {
 					}
 				});
 				ActivityListHeight += this.data.itemList.promotionActivityList.length*16;
+
 				if (value.merchant.merchantRedBagList.length != 0) {
 					merchantRedBagList.map((item)=>{
 						item.isReceive = '立即领取';

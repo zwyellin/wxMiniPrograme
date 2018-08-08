@@ -2,7 +2,7 @@ const { wxRequest } = require('../../../utils/util.js');
 const app = getApp();
 const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 
-
+var timer=null;
 
 Page({
 	data:{
@@ -11,12 +11,14 @@ Page({
 		merchantId:null,
 		editIndex:0,
 		delBtnWidth:100,
-		id:null 
+		
 	},
 	onLoad(options){
+		
 		this.setData({
 			merchantId:options.merchantId,
-			windowHeight:app.globalData.windowHeight
+			windowHeight:app.globalData.windowHeight,
+			
 		});	
 	},
 	onShow(){
@@ -62,6 +64,7 @@ Page({
 		}		
 	},
 	drawStart(e){//手指刚放到屏幕触发
+
 		console.log(e.touches)
 		if(e.touches.length == 1){
 			this.setData({
@@ -78,13 +81,14 @@ Page({
 			var disX = that.data.startX - moveX;
 			console.log(disX);
 			var delBtnWidth = that.data.delBtnWidth;
-			var txtStyle = "";
-			var btnStyle= "";
+			let txtStyle = "";
+			let btnStyle= "";
 			if(disX == 0 || disX < 0){
-				txtStyle = "left:12px";
+				txtStyle = "left:0px";
 				btnStyle = "right:-100px";
 
 			}else if(disX > 0){
+				if (list[index].btnStyle == 'right:0px') return
 				txtStyle = "left:-"+disX+"px";
 				btnStyle = "right:"+(-100+disX)+"px";
 				if(disX >= delBtnWidth){
@@ -92,7 +96,6 @@ Page({
 					btnStyle = "right:0px";
 				}
 			}
-			
 			var list = that.data.address;
 			list[index].txtStyle = txtStyle;
 			list[index].btnStyle = btnStyle;
@@ -101,9 +104,18 @@ Page({
 				address:list
 			});
 		}
+		
+
+
 	},
+	// angle(start,end){
+	// 	let _X = end.X - start.X;
+	// 	let _Y = end.Y - start.Y;
+	// 	return 360 * Math.atan(_Y/_X) / (2 * Math.PI);
+	// },
 	drawEnd(e){//手指移动结束后触发位置
 		console.log(3333)
+		clearInterval(timer);
 		var that = this;
 		if(e.changedTouches.length == 1){
 			var endX = e.changedTouches[0].clientX;
@@ -115,6 +127,7 @@ Page({
 			console.log(index)
 			console.log(txtStyle)
 			var list = that.data.address;
+			
 			list[index].txtStyle = txtStyle;
 			list[index].btnStyle = btnStyle;
 			this.setData({

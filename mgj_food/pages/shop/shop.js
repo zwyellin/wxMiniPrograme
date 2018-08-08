@@ -288,7 +288,7 @@ Page(Object.assign({}, merchantShop,{
 				fold:false
 			});
 			console.log(this.data.listFoods);
-		}else{
+		} else {
 			this.setData({
 				isShowTogether:false
 			});
@@ -687,6 +687,7 @@ Page(Object.assign({}, merchantShop,{
 		let specIndex = e.currentTarget.dataset.specindex || 0;
 		// console.log(specIndex)
 		let { food, rules, fullActivity} = e.currentTarget.dataset;
+
 		// console.log(food, rules)
 		let attributes = '';
 		let id = food.id; //选择的产品id
@@ -766,13 +767,12 @@ Page(Object.assign({}, merchantShop,{
 		}
 		let isToastZK = false;
 		if (id) {
-			  
 	        //遍历数组 
         	let isFound = false;
         	let isHasDiscount = false;
         	let isHasDiscountShare = false;
         	tmpArr.map((item)=> {
-	          	if (item.id == id) {
+	          	if (item.id == id && item.everyGoodsEveryOrderBuyCount == everyGoodsEveryOrderBuyCount) {
 	            	if (item.priceObject.id == priceObject.id) {
 	            		if (item.attributes && rules) {            //规格判断
 							if (attributes == item.attributes) {
@@ -935,8 +935,7 @@ Page(Object.assign({}, merchantShop,{
 		      		} 
 	      		}	  		
 	        }
-			console.log(tmpArr);
-			
+			console.log(tmpArr);		
 	    }
 	    
 		if (food.hasDiscount) {
@@ -1005,7 +1004,6 @@ Page(Object.assign({}, merchantShop,{
 		if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
 		}
-		console.log(food);
 		//弹出层多规格删减匹配
 		if (food.goodsAttributeList && food.goodsAttributeList.length > 0) {
 			attributes = '';

@@ -9,7 +9,7 @@
 }
 .receiving-addres-item{
 	background: #fff;
-	position: absolute;
+	
 	
 }
 .receiving-headerimg {
@@ -106,7 +106,7 @@
 	vertical-align: middle;
 }
 .remove{
-    width: 100rpx;
+    width: 100px;
 	height: 100%;
 	font-size: 24rpx;
     background-color: red;
@@ -117,5 +117,5 @@
     display: flex;
     justify-content: center;
 	align-items: center;
-	z-index: 99999;
 }
+

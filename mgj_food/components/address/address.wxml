@@ -1,7 +1,8 @@
 <template name="add-address">
-	<view class="receiving-address-item">
+	<view class="receiving-address-item ">
 		<image class="receiving-headerimg" src="../../../images/images/address.png"></image>
-		<view class="receiving-address font-14"  style="{{item.txtStyle}}" 
+		<view class="receiving-address font-14 " 
+			style="{{item.txtStyle}}"
 			data-item="{{item}}"
 			data-index="{{index}}"
 			catchtap="selectAddress">
@@ -28,9 +29,8 @@
 				</view>
 			</view>
 		</view>
-		<!-- <view class="remove" bindtouchstart="removeAddress" style="{{item.btnStyle}}" data-id="{{item.id}}">
+		<view class="remove" bindtouchstart="removeAddress" style="{{item.btnStyle}}" data-id="{{item.id}}">
 			<view>删除</view>
-		</view> -->
+		</view>
 	</view>
-	
 </template>
