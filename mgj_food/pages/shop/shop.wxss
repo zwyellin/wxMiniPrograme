@@ -496,6 +496,17 @@
     opacity: 0.7;
     background: #000;
 }
+.mask-black {
+	position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /*opacity: 0.7;*/
+    background: #000;
+}
 .shoprules{
 	position: absolute;
 	width: 575rpx;
@@ -724,6 +735,32 @@
   margin-right:16rpx;
   margin-top:-2rpx;
 }
-
+.merchant-aptitude {
+	padding: 60rpx;
+	justify-content:space-between;
+}
+.merchant-aptitude-img {
+	width: 280rpx;
+	height: 190rpx;
+	overflow: hidden;
+}
+.aptitude-img {
+	width: 280rpx;
+	height: 190rpx;
+}
+.aptitude-scaleimg {
+	width: 680rpx;
+	height: 1126rpx;
+}
+.maskimg {
+	padding: 20px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+}
+ 
 
 

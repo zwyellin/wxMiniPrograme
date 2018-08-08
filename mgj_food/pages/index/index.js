@@ -371,15 +371,17 @@ Page(Object.assign({}, merchantObj, {
 				imgUrls.map((item)=>{
 					item.picUrl = item.picUrl +'?imageView2/0/w/710/h/240';
 				});
-				if (imgUrls.length === 1) {
-					this.setData({
-	      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:false,indicatorDots:false})
-	    			});
-				} else {
-					this.setData({
-	      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:true,indicatorDots:true})
-	    			});
-				}
+				if (imgUrls.length) {
+					if (imgUrls.length === 1) {
+						this.setData({
+		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:false,indicatorDots:false})
+		    			});
+					} else {
+						this.setData({
+		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:true,indicatorDots:true})
+		    			});
+					}
+				}	
 			}
         });
 	},

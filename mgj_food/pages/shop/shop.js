@@ -63,12 +63,22 @@ Page(Object.assign({}, merchantShop,{
 		everyOrderBuyCount:0,      //每单限购折扣商品数量
 		activitySharedStatus:null,  //折扣商品与满减活动共享关系
 		activitySharedShow:false,  //折扣商品与满减活动共享关系显示与隐藏控制
-		isTipOne:false             //折扣商品与满减活动不共享关系提示一次
+		isTipOne:false,            //折扣商品与满减活动不共享关系提示一次
+		maskimgShow:false,          //商家资质图片弹出放大
+		merchantAptitudeImg:'',
+		touch: {
+            distance: 0,
+            scale: 1,
+            baseWidth: 680,
+            baseHeight: 1126,
+            scaleWidth: 680,
+            scaleHeight: 1126
+        }
 	},
 	onLoad(options) {
 		let { merchantid,longitude,latitude} = options;
 		this.data.merchantId = merchantid;
-		// this.data.merchantId = 402;
+		// this.data.merchantId = 25336;
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
         	app.globalData.latitude = latitude;
@@ -130,6 +140,64 @@ Page(Object.assign({}, merchantShop,{
 		this.setData({
 			menu:menu
 		});
+	},
+	//商家资质图片
+	scaleImg(e){
+		let { img } = e.currentTarget.dataset;
+		this.setData({
+			merchantAptitudeImg: img,
+			maskimgShow:true,
+		});
+	},
+	hideScaleImg(e){
+		this.setData({
+			maskimgShow:false,
+			'touch.distance': 0,
+            'touch.scale': 1,
+            'touch.baseWidth': 680,
+            'touch.baseHeight': 1126,
+            'touch.scaleWidth': 680,
+            'touch.scaleHeight': 1126,
+           	'touch.diff': 0
+		});
+	},
+	touchstartCallback: function(e) {
+        // 单手指缩放开始，也不做任何处理 
+        if(e.touches.length == 1) return;
+        // 注意touchstartCallback 真正代码的开始 // 一开始我并没有这个回调函数，会出现缩小的时候有瞬间被放大过程的bug // 当两根手指放上去的时候，就将distance 初始化。 
+        let xMove = e.touches[1].clientX - e.touches[0].clientX;
+        let yMove = e.touches[1].clientY - e.touches[0].clientY;
+        let distance = Math.sqrt(xMove * xMove + yMove * yMove);
+        this.setData({
+           'touch.distance': distance,
+        });
+    },
+	touchmoveCallback(e){
+		let touch = this.data.touch;
+		// 单手指缩放我们不做任何操作 
+		if(e.touches.length == 1) return;
+		let xMove = e.touches[1].clientX - e.touches[0].clientX;
+        let yMove = e.touches[1].clientY - e.touches[0].clientY;
+        // 新的 ditance 
+        let distance = Math.sqrt(xMove * xMove + yMove * yMove);
+        let distanceDiff = distance - touch.distance;
+        let newScale = touch.scale + 0.005 * distanceDiff
+        // 为了防止缩放得太大，所以scale需要限制，同理最小值也是 
+        if(newScale >= 2) {
+            newScale = 2;
+        }
+        if(newScale <= 1) {
+            newScale = 1;
+        }
+        let scaleWidth = newScale * touch.baseWidth;
+        let scaleHeight = newScale * touch.baseHeight;
+        this.setData({
+           'touch.distance': distance,
+           'touch.scale': newScale,
+           'touch.scaleWidth': scaleWidth,
+           'touch.scaleHeight': scaleHeight,
+           'touch.diff': distanceDiff
+        });
 	},
 	//获取购物车缓存数据
 	getStorageShop(merchantId){
