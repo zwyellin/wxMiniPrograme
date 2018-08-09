@@ -1,6 +1,7 @@
 @import "../../components/merchant/merchant.wxss";
 @import "../../components/star/star.wxss";
 @import "../../components/common/common.wxss";
+@import "../../components/redbag.wxss";
 .page {
   padding: 0 20rpx;
   background: #fff;
