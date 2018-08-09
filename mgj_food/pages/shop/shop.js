@@ -772,7 +772,7 @@ Page(Object.assign({}, merchantShop,{
         	let isHasDiscount = false;
         	let isHasDiscountShare = false;
         	tmpArr.map((item)=> {
-	          	if (item.id == id && item.everyGoodsEveryOrderBuyCount == everyGoodsEveryOrderBuyCount) {
+	          	if (item.id == id) {
 	            	if (item.priceObject.id == priceObject.id) {
 	            		if (item.attributes && rules) {            //规格判断
 							if (attributes == item.attributes) {

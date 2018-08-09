@@ -75,14 +75,27 @@
 		</navigator>
 	</view>
 	<view class="mt20">
-		<view class="order-menu"
-			wx:for="{{orderMessage.orderItems}}" 
-			wx:for-item="food" 
-			wx:for-index="index" 
-			wx:key="index">
-			<text class="order-name">{{food.name}}<text wx:if="{{food.spec}}"> / {{food.spec}}</text><text wx:if="{{food.attributes}}"> / {{food.attributes}}</text></text>
-			<text class="fr" style="width: 250rpx;text-align:right">￥{{query.shopFloat(food.price*food.quantity,2)}}</text>
-			<text class="fr" style="color:#b6b6b6">x {{food.quantity}}</text>
+		<view class="order-listmenu">
+			<view class="order-listitem flex"
+				wx:for="{{orderMessage.orderItems}}" 
+				wx:for-item="food" 
+				wx:for-index="index" 
+				wx:key="index">
+				<view class="order-name flex">
+					<image class="commodity-logo" src="{{query.removefh(food.labelUrl,70,70)}}"></image>
+					<view class="order-leftname">
+						<view><text>{{food.name}}</text></view>
+						<view style="color:#999">
+							<text wx:if="{{food.spec}}">{{food.spec}}</text>
+							<text wx:if="{{food.attributes}}"> / {{food.attributes}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="order-num" style="width: 250rpx">
+					<text style="margin-right:156rpx;color:#b6b6b6">x {{food.quantity}}</text>
+					<text style="text-align:right">￥{{query.shopFloat(food.price*food.quantity,2)}}</text>
+				</view>
+			</view>
 		</view>
 		<view wx:if="{{orderMessage.boxPrice != 0 || orderMessage.boxPrice != ''}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
 			<text style="color:#333">包装费</text>

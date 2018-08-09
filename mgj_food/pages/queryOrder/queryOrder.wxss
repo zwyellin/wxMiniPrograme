@@ -39,12 +39,36 @@
   color: #333;
   background: #fff
 }
+.order-listmenu {
+  padding: 24rpx 24rpx 16rpx 30rpx;
+  font-size: 26rpx;
+  color: #333;
+  background: #fff
+}
+.order-listitem {
+  margin-top: 44rpx;
+  align-items: center;
+}
+.order-listitem:first-child {
+  margin-top: 0;
+}
+.commodity-logo {
+  width:70rpx;
+  height:70rpx;
+  border-radius: 5rpx;
+}
 .order-name {
-  display: inline-block;
-  width: 50%;
+  flex:1;
+  align-items: center;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.order-num {
+  
+}
+.order-leftname {
+  margin-left: 24rpx;
 }
 .shipmenttip-txt {
   width:80%;
