@@ -172,14 +172,14 @@
 	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close" catchtouchmove="myCatchTouch" >	
 	</view>
 	<!-- 平台红包 -->
-	<view class="redbag" catchtouchmove="myCatchTouch">
+	<view class="redbag" wx:if="{{platformRedList.length != 0}}" catchtouchmove="myCatchTouch">
 		<view class="redbag-close">
 			<image class="redbag-close-img" catchtap="close" src="../../images/images/close_red.png"></image>
 		</view>
 		<view class="redbag-header">
 			<image class="redbag-img" src="../../images/merchant/tian_redbag@2x.png"></image>
 		</view>
-		<view style="background: #e3003a;border-radius:0 0 20rpx 20rpx;overflow: hidden;">
+		<scroll-view class="redlist-content" scroll-y="true" style="{{platformRedList.length >=3 ? 'height:440rpx': ''}}">
 			<view class="redbag-content">
 				<view class="lottery-content flex">
 					<view class="lottery-icon" style="color: #ff3e4a">
@@ -195,54 +195,27 @@
 					</view>
 				</view>
 			</view>
-			<view class="redbag-content">
-				<view class="lottery-content flex">
-					<view class="lottery-icon" style="color: #ff3e4a">
-						<text style="font-size:36rpx">￥</text>
-						<text style="font-size:60rpx">4</text>
-					</view>
-					<view class="lottery-content-right font-14">
-						<view class="lottery-content-text">王者荣耀</view>
-						<view class="money" >蛮8元可用</view>
-						<view class="get-redbag font-10" >
-							<text>去使用</text>
-						</view>
-					</view>
-				</view>
+		</scroll-view>
+		<view class="redbag-food">
+			<text style="margin-top: 20rpx;display: block">如获得非外卖品类的红包，可去马管家App消费吧</text>
+		</view>
+	</view>
+	<!-- 未注册平台红包弹框 -->
+	<view class="no-redRegisterPage">
+		<view class="no-redbag" wx:if="{{isRegisterGetRedBag && platformRedList.length == 0}}" animation="{{platformRedAnimation}}" catchtouchmove="myCatchTouch">
+			<view class="redbag-header" style="position: relative;">
+				<image class="redbag-img" src="../../images/merchant/tian_redbag@2x.png"></image>
+				<view class="redbag-img-txt"><text>正在发放中...</text></view>
 			</view>
-			<view class="redbag-content">
-				<view class="lottery-content flex">
-					<view class="lottery-icon" style="color: #ff3e4a">
-						<text style="font-size:36rpx">￥</text>
-						<text style="font-size:60rpx">4</text>
-					</view>
-					<view class="lottery-content-right font-14">
-						<view class="lottery-content-text">王者荣耀</view>
-						<view class="money" >蛮8元可用</view>
-						<view class="get-redbag font-10" >
-							<text>去使用</text>
-						</view>
-					</view>
+			<view style="background: #e3003a;height: 22rpx;margin-top: -1rpx;"></view>
+			<view class="no-register-red">
+				<view class="no-register-redcontent" style="color:#ff3d4a">
+					<view style="font-weight: 900;font-size: 34rpx">注册马管家,即可领取大额红包</view>
+					<view style="font-weight: 500;font-size: 26rpx;margin: 24rpx 0">数量有限,发完即止</view>
+					<image class="no-redbutton" src="../../images/merchant/red_button@2x.png" catchtap="registerGetRedBag"></image>
 				</view>
-			</view>
-			<view class="redbag-content">
-				<view class="lottery-content flex">
-					<view class="lottery-icon" style="color: #ff3e4a">
-						<text style="font-size:36rpx">￥</text>
-						<text style="font-size:60rpx">4</text>
-					</view>
-					<view class="lottery-content-right font-14">
-						<view class="lottery-content-text">王者荣耀</view>
-						<view class="money" >蛮8元可用</view>
-						<view class="get-redbag font-10" >
-							<text>去使用</text>
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="redbag-food">
-				<text>恭喜获得天降红包，可抵扣在线支付时的订单金额</text>
 			</view>
 		</view>
 	</view>
+	
 </View>

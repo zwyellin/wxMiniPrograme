@@ -164,8 +164,22 @@ Page({
 							});
 				  		}
 					});
+				} else if(this.data.switch === 'homepage'){
+					let pages = getCurrentPages();
+	    			let prevPage = pages[pages.length - 2];
+					wx.navigateBack({
+				  		delta: 1,
+				  		success : function(){
+				  			that.setData({
+								switch:''
+							});
+							prevPage.setData({
+								isloginGetPlatformRedBag:true,
+							});
+							wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过首页登录领取过平台红包
+				  		}
+					});
 				} else {
-					console.log(2);
 					wx.navigateBack({
 				  		delta: 1,
 				  		fail : function(err){

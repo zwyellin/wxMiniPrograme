@@ -5,9 +5,9 @@ App({
     //调用API从本地缓存中获取数据
     let loginMessage = wx.getStorageSync('loginMessage');
     let shoppingCart = wx.getStorageSync('shoppingCart');
-    if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
-      this.findAppUserByToken(loginMessage);
-    }
+    // if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
+    //   this.findAppUserByToken();
+    // }
     if (shoppingCart) {
       wx.removeStorageSync('shoppingCart');
     }
@@ -42,28 +42,39 @@ App({
     }
   },
   
-  findAppUserByToken(loginMessage){
+  findAppUserByToken(cb){
     var that = this;
-    wx.request({
-      url:this.globalData.domain+'/merchant/userClient?m=findAppUserByToken',
-      method:'POST',
-      data:{
-        imei: "mgjwm"+loginMessage.mobile,
-        token: loginMessage.token
-      },
-      success:function(res){
-        var value = res.data.value;
-        if (value.code === 0) {
-          that.globalData.token = value.token;
-          that.globalData.userId = value.id;
-          wx.setStorageSync('loginMessage',value);
-        }
-      },
-      fail:function(err){
-        that.globalData.token = loginMessage.token;
-        that.globalData.userId = loginMessage.id;
-      }
-    });
+    if (this.globalData.token) {
+      typeof cb == "function" && cb(this.globalData.token);
+    } else {
+      let loginMessage = wx.getStorageSync('loginMessage');
+      if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
+        wx.request({
+          url:this.globalData.domain+'/merchant/userClient?m=findAppUserByToken',
+          method:'POST',
+          data:{
+            imei: "mgjwm"+loginMessage.mobile,
+            token: loginMessage.token
+          },
+          success:function(res){
+            var value = res.data.value;
+            if (res.data.code === 0) {
+              that.globalData.token = value.token;
+              that.globalData.userId = value.id;
+              typeof cb == "function" && cb(that.globalData.token);
+              wx.setStorageSync('loginMessage',value);
+            }
+          },
+          fail:function(err){
+            that.globalData.token = loginMessage.token;
+            that.globalData.userId = loginMessage.id;
+            typeof cb == "function" && cb(that.globalData.token);
+          }
+        });
+      } else {
+        typeof cb == "function" && cb(this.globalData.token);
+      }  
+    } 
   },
   globalData: {
     token:'',

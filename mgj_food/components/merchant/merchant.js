@@ -143,7 +143,9 @@ let merchantObj = {
 			classShow:false,
 			sortShow:false,
 			shipShow:false,
-			islocal:false
+			islocal:false,
+			platformRedList:[],
+			isRegisterGetRedBag:false
 		});
 	},
 	//处理商家无logo占位图

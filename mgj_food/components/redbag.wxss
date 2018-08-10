@@ -28,10 +28,19 @@
 	width:580rpx;
 	height: 309rpx;
 }
+.redlist-content {
+	margin-top: -1rpx;
+	background: #e3003a;
+	border-radius:0 0 20rpx 20rpx;
+	overflow: hidden;
+}
 .redbag-content {
 	padding: 0 32rpx;
 	background: #e3003a;
 	margin-bottom: 20rpx;
+}
+.redbag-content:last-child {
+	margin-bottom: 0;
 }
 .lottery-content {
 	padding: 32rpx 0 22rpx 0rpx;
@@ -94,4 +103,47 @@
 }
 .receive{
 	background: #a9adb3;
+}
+/* 未注册 */
+.no-redRegisterPage {
+	position:absolute;
+	display:flex;
+	top:0;
+	width:100%;
+	height:100%;
+	align-items: center;
+}
+.no-redbag {
+	position: absolute;
+	width:580rpx;
+	left: 85rpx;
+	max-height: 892rpx;
+	margin: 0 auto;
+	border-radius: 20rpx;
+	z-index: 1000;
+}
+.redbag-img-txt {
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	transform: translateX(-50%);
+	color: #fff;
+	font-weight: 700;
+	font-size: 26rpx;
+	letter-spacing: 4rpx;
+}
+.no-register-red {
+	margin-top: -1rpx;
+	padding: 0 21rpx 25rpx;
+	background: #e3003a;
+}
+.no-register-redcontent {
+	padding: 44rpx 0;
+	text-align: center;
+	background: #fff;
+	color:#ff3d4a
+}
+.no-redbutton {
+	width: 296rpx;
+	height: 54rpx;
 }
