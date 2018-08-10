@@ -1,0 +1,203 @@
+page{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .navbar{
+    flex: none;
+    display: flex;
+    background: #fff;
+  }
+  .navbar .item{
+    position: relative;
+    flex: auto;
+    text-align: center;
+    line-height: 90rpx;
+    font-size: 30rpx;
+    color: #ffd0a3;
+   
+    
+  }
+  
+  .navbar .item.active{
+    color: #FF8000;
+
+  }
+  .navbar .item.active:after{
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 1rpx;
+    left: 0;
+    right: 0;
+    height: 4rpx;
+    background: #FF8000;
+  }
+  .redenvelopes{
+      padding:0 30rpx;
+      box-sizing: border-box;
+      height: 100%;
+      background-color: #ededed;
+  }
+  .sigma-content{
+    text-align: center;
+    height: 72rpx;
+}
+.sigma-middle-line{
+    content: '';
+    display: block;
+    height: 1rpx;
+    width: 100%;
+    background-color: #666;/*颜色需与主题大背景色一致*/ 
+    position: relative;
+    top: 36rpx;/*调节线高*/
+    left: 0;
+}
+.sigma-line-text{
+    display: inline-block;
+    background: #ededed;
+    padding: 0 24rpx;
+    box-sizing: border-box;
+    position: relative;
+    top: -30rpx;
+    font-size: 24rpx;
+   
+}
+.redenvelopes-center{
+    padding: 38rpx 38rpx 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    width: 100%;
+    border-bottom: 1rpx dashed #333;
+    position: relative;
+}
+.semi-circle-left{
+    position: absolute;
+    left: 0;
+    bottom: -10rpx;
+    height: 20rpx;
+    width: 20rpx;
+    border-radius: 0 40rpx 40rpx 0;
+    background-color: #ededed;
+    z-index: 6;
+}
+.semi-circle-right{
+    position: absolute;
+    right: 0;
+    bottom: -10rpx;
+    height: 20rpx;
+    width: 20rpx;
+    border-radius: 40rpx 0 0 40rpx;
+    background-color: #ededed;
+    z-index: 6;
+}
+.redenvelopes-name{
+    font-size: 40rpx;
+    color: #333;
+    margin-bottom: 14rpx;
+
+}
+.redenvelopes-tiem{
+    font-size: 24rpx;
+    color: #333;
+    margin-bottom: 14rpx;
+}
+.redenvelopes-available{
+    font-size: 22rpx;
+    color: #999;
+    margin-bottom: 14rpx;
+}
+.redenvelopes-number{
+    font-size: 22rpx;
+    color: #999;
+    margin-bottom: 24rpx;
+}
+.redenvelopes-rmb-red{
+    font-size: 40rpx;
+    color: #ff5959;
+}
+.redenvelopes-number-red{
+    font-size: 70rpx;
+    color: #ff5959;
+}
+.redenvelopes-rmb-black{
+    font-size: 40rpx;
+    color: #777;
+}
+.redenvelopes-number-black{
+    font-size: 70rpx;
+    color: #777;
+}
+.redenvelopes-threshold{
+    margin-top: 12rpx;
+    color: #333;
+    font-size: 24rpx;
+   
+}
+.redenvelopes-threshold-color{
+    margin-top: 12rpx;
+    color: #999;
+    font-size: 24rpx;
+}
+.redenvelopes-number{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+.redenvelopes-category{
+    background-color: #fff;
+    padding:  0 30rpx;
+    box-shadow: 0rpx 5rpx 1rpx #ccc;
+}
+.redenvelopes-category-text{
+    font-size: 24rpx;
+    color: #333;
+    line-height: 52rpx;
+}
+.redenvelopes-category-color{
+    flex-direction: column;
+    background-color: #f8f8f8;
+    padding:  0 30rpx;
+    z-index: 8;
+    box-shadow: 0rpx 5rpx 1rpx #ccc;
+}
+.redenvelopes-img{
+    height: 20rpx;
+    width: 20rpx;
+    font-size: 20rpx;
+}
+.redenvelopes-category-text-red{
+    font-size: 24rpx;
+    color: #ff5959;
+    line-height: 52rpx;
+}
+.redenvelopes-footer{
+    padding-bottom: 20rpx;
+    box-sizing: border-box;
+}
+.redenvelopes-reason{
+    color: #666;
+    font-size: 24rpx;
+    height: 42rpx;
+    line-height: 42rpx;
+    margin-left: 10rpx;
+    position: relative;
+}
+.redenvelopes-reason-text{
+    position: absolute;
+    left: -10rpx;
+    top: 20rpx;
+    height: 5rpx;
+    width: 5rpx;
+    border-radius: 50%;
+    background-color: black;
+}
+.redenvelopes-history{
+    height: 80rpx;
+    color: #999;
+    font-size: 24rpx;
+    justify-content: center;
+    align-items: center;
+
+}

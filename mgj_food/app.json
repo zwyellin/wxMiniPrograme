@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/redEnvelopes/redEnvelopes",
     "pages/index/index",
     "pages/classPage/classPage",
     "pages/shop/shop",
@@ -25,6 +26,7 @@
     "pages/firends/service/service",
     "pages/firends/serviceText/serviceText",
     "pages/firends/results/results"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",

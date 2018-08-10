@@ -192,23 +192,20 @@ Page(Object.assign({}, merchantShop,{
 			list.map(item=>{
 				if(item.hasDiscount==0){
 					
-						item.goodsSpecList.map((value,index)=>{
+						item.goodsSpecList.find((value,index)=>{
 							if(value.price<=Number(boos.fullRange)*2){
-								console.log(value)
-								arr.push(value);
-								console.log(arr[specIndex])
-
+								
+								console.log(value.price)
 								listFoods.push(item);
 								console.log(listFoods)
 								if(listFoods.length>=10){
 									listFoods = listFoods.slice(0,9)
 								}
 								
+							
+								
 							}
 						})
-
-
-
 						// if(item.goodsSpecList[specIndex].price <= Number(boos.fullRange)*2||item.goodsSpecList[specIndex].price<=boos.fullRange&&item.everyGoodsEveryOrderBuyCount==0){
 						// 	listFoods.push(item);
 						// 	if(listFoods.length>=10){
