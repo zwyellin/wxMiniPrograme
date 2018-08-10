@@ -24,7 +24,7 @@
 			<view class="desc clearfix">
 				<view class="fl desc-content">
 					<template is="star-add" data="{{size,item}}"></template>
-					<text class="desc-count">{{fixed.fomatFloat(item.merchantScore,1)}}分</text>
+					<text class="desc-count">{{fixed.fomatFloat(item.averageScore,1)}}分</text>
 					<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
 				</view>
 				<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>

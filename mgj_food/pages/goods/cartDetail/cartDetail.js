@@ -17,7 +17,8 @@ Page({
 		orderid:null,
 		value:{},
 		expectArrivalTime:null,          //送达时间
-		show:false
+		show:false,
+		shareShow:false                  //控制分享红包弹框显示
 	},
 	onLoad(options){
 		let { orderid, isredbag} = options;

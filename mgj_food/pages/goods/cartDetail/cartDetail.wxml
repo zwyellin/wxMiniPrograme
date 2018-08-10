@@ -236,5 +236,19 @@
 			
 		</view> 
 	</view>
+	<!-- 订单完成后出现发红包按钮图片 -->
+	<image class="red-img-big" src="../../../images/merchant/shareredbag.png"></image>
+	<!--  -->
+	<view class="sharered-page" wx:if="{{shareShow}}" catchtouchmove="myCatchTouch">
+		<view class="red-page-img flex">
+			<image class="faredbagimg" src="../../../images/merchant/faredbag.png"></image>
+		</view>
+		<view class="share-txt" style="font-weight: 900;margin: 26rpx 0">【 送你一个拼手气红包 】</view>
+		<view class="share-txt">快分享给小伙伴看看谁会撞大运</view>
+		<view class="red-page-footer flex">
+			<view class="flex-item">取消</view>
+			<view class="flex-item" style="color:#faa761;border-left: 1rpx solid #d8d8d8;">发红包</view>
+		</view>
+	</view>	
 	<template is="showToast" data="{{showToast: showToast}}" />
 </view>

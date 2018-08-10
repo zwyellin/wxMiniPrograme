@@ -97,7 +97,7 @@
 	width:530rpx;
 	left: 50%;
 	transform:translateX(-50%);
-	z-index: 1000;
+	z-index: 1200;
 }
 .redbag-close {
 	position: absolute;
@@ -179,7 +179,35 @@
   color: #333;
   margin-top: 36rpx;
 }
-
+/* 分享红包 */
+.sharered-page {
+	position: absolute;
+	width: 560rpx;
+	left: 50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+	border-radius: 12rpx;
+	color: #333;
+	background: #fff;
+	z-index:1100;
+}
+.faredbagimg {
+	margin: 0 auto;
+	width: 280rpx;
+	height: 190rpx;
+}
+.share-txt {
+	font-size: 30rpx;
+	text-align: center;
+}
+.red-page-footer {
+	margin-top: 34rpx;
+	height: 86rpx;
+	line-height: 86rpx;
+	box-sizing: border-box;
+	border-top: 1rpx solid #d8d8d8;
+	text-align: center;
+}
 /* 订单追踪 */
 .track-entrance {
 	position: absolute;
@@ -279,5 +307,12 @@
 	top: 0;
 	bottom:0;
 	overflow: hidden;
+}
+.red-img-big {
+	width: 130rpx;
+	height: 150rpx;
+	position: fixed;
+	bottom: 400rpx;
+	right: 25rpx
 }	
 

@@ -178,7 +178,7 @@ Page({
       });
       let { food } = e.currentTarget.dataset;
       wxRequest({
-          url:'/merchant/userClient?m=againOrderPreview',
+          url:'/merchant/userClient?m=againOrderPreview2',
           method:'POST',
           data:{
               token:app.globalData.token,

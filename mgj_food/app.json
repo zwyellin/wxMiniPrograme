@@ -2,10 +2,10 @@
   "pages": [
     "pages/redEnvelopes/redEnvelopes",
     "pages/index/index",
-    "pages/classPage/classPage",
     "pages/shop/shop",
-    "pages/queryOrder/queryOrder",
+    "pages/classPage/classPage",
     "pages/address/add/add",
+    "pages/queryOrder/queryOrder",
     "pages/address/receiving/receiving",
     "pages/address/address/address",
     "pages/login/login",

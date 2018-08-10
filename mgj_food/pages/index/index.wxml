@@ -165,10 +165,84 @@
 			<text>本区域暂未开通外卖服务</text>
 		</view>
 		<view class="agent-txt font-14" style="margin-top: 20rpx">
-			<text>加盟热线：400-997-9393</text>
+			<text>加盟热线：0791-83805660</text>
 		</view>
 	</view>
 	<!-- 无代理商结束 -->
 	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close" catchtouchmove="myCatchTouch" >	
+	</view>
+	<!-- 平台红包 -->
+	<view class="redbag" catchtouchmove="myCatchTouch">
+		<view class="redbag-close">
+			<image class="redbag-close-img" catchtap="close" src="../../images/images/close_red.png"></image>
+		</view>
+		<view class="redbag-header">
+			<image class="redbag-img" src="../../images/merchant/tian_redbag@2x.png"></image>
+		</view>
+		<view style="background: #e3003a;border-radius:0 0 20rpx 20rpx;overflow: hidden;">
+			<view class="redbag-content">
+				<view class="lottery-content flex">
+					<view class="lottery-icon" style="color: #ff3e4a">
+						<text style="font-size:36rpx">￥</text>
+						<text style="font-size:60rpx">4</text>
+					</view>
+					<view class="lottery-content-right font-14">
+						<view class="lottery-content-text">王者荣耀</view>
+						<view class="money" >蛮8元可用</view>
+						<view class="get-redbag font-10" >
+							<text>去使用</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="redbag-content">
+				<view class="lottery-content flex">
+					<view class="lottery-icon" style="color: #ff3e4a">
+						<text style="font-size:36rpx">￥</text>
+						<text style="font-size:60rpx">4</text>
+					</view>
+					<view class="lottery-content-right font-14">
+						<view class="lottery-content-text">王者荣耀</view>
+						<view class="money" >蛮8元可用</view>
+						<view class="get-redbag font-10" >
+							<text>去使用</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="redbag-content">
+				<view class="lottery-content flex">
+					<view class="lottery-icon" style="color: #ff3e4a">
+						<text style="font-size:36rpx">￥</text>
+						<text style="font-size:60rpx">4</text>
+					</view>
+					<view class="lottery-content-right font-14">
+						<view class="lottery-content-text">王者荣耀</view>
+						<view class="money" >蛮8元可用</view>
+						<view class="get-redbag font-10" >
+							<text>去使用</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="redbag-content">
+				<view class="lottery-content flex">
+					<view class="lottery-icon" style="color: #ff3e4a">
+						<text style="font-size:36rpx">￥</text>
+						<text style="font-size:60rpx">4</text>
+					</view>
+					<view class="lottery-content-right font-14">
+						<view class="lottery-content-text">王者荣耀</view>
+						<view class="money" >蛮8元可用</view>
+						<view class="get-redbag font-10" >
+							<text>去使用</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="redbag-food">
+				<text>恭喜获得天降红包，可抵扣在线支付时的订单金额</text>
+			</view>
+		</view>
 	</view>
 </View>
