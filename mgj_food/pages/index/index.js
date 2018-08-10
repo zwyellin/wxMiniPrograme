@@ -423,6 +423,7 @@ Page(Object.assign({}, merchantObj, {
         });
 	},
 	getDataList(status,Boos){
+		console.log('你好')
 		if (!status) {
 			wx.showToast({
 		        title: '加载中',

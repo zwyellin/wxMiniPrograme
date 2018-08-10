@@ -260,6 +260,7 @@ Page(Object.assign({}, merchantShop,{
 					}	
 				});
 			});
+
 			if (listFoods.length === 0) {
 				removalMenuList.map(item=>{
 					let attributes = "";
