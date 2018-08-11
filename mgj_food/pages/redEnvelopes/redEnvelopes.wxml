@@ -1,8 +1,6 @@
 <view class="navbar">
     <view wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap"> {{item}}
     </view>
-    <!-- <text wx:if="{{currentTab ==0}}">({{redEnvelopesObjct.platformRedBagCount}}个)</text> -->
-    
 </view>
 <view hidden="{{currentTab!==0}}" class="redenvelopes">
     
