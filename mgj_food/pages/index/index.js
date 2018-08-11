@@ -54,7 +54,12 @@ Page(Object.assign({}, merchantObj, {
 		maskAnimation:null,   //遮罩层动画
 		start:0,
 		dataList:[],      //商家列表
-		initClassList:initClassList	  //分类列表
+		initClassList:initClassList,	  //分类列表
+		platformRedList:[],               //平台红包列表
+		isloginGetPlatformRedBag:false,   //是否登录领取过平台红包
+		isRegisterGetRedBag:false,
+		platformNoRedAnimation:null,        // 平台未注册动画
+		platformGetRedAnimation:null,        // 领取平台红包动画
 	}, 
 	onLoad(){
 		wxGetLocation({type:'gcj02'}).then(()=>{
@@ -256,6 +261,15 @@ Page(Object.assign({}, merchantObj, {
 				cartObject:shoppingCart
 			});	
   		}
+  		if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+  			console.log(12);
+  			let isloginGetPlatformRedBag = wx.getStorageSync('isloginGetPlatformRedBag');  // 是否通过首页登录领取过平台红包
+  			console.log(isloginGetPlatformRedBag);
+			if (isloginGetPlatformRedBag) {
+				this.getPlatformRedBag();
+				wx.setStorageSync('isloginGetPlatformRedBag',false);
+			}
+  		}
 		if (this.data.refreshData) {
 			this.setData({
 				type1:'分类',
@@ -302,45 +316,55 @@ Page(Object.assign({}, merchantObj, {
 	        });
 		}
 	},
-	
-	// runAddress(cityObject){
-	// 	let { cityName } = cityObject;
-	// 	let length = cityName.length * (this.data.addressSize/2);    //文字长度
-	// 	console.log(this.data.city.cityName);
-	//     let windowWidth = 79;// 屏幕宽度
-	//     this.setData({
-	//       length: length,
-	//       windowWidth: windowWidth,
-	//       marquee2_margin: length < windowWidth ? windowWidth - length : this.data.marquee2_margin //当文字长度小于屏幕长度时，需要增加补白
-	//     });
-	//     this.run();      // 第一个字消失后立即从右边出现
-	// },
-	// run() {
-	// 	clearInterval(interval);
-	//     interval = setInterval(()=>{
-	//       if (-this.data.marqueeDistance2 < this.data.length) {
-	//         // 如果文字滚动到出现marquee2_margin=30px的白边，就接着显示
-	//         this.setData({
-	//           marqueeDistance2: this.data.marqueeDistance2 - this.data.marqueePace,    //滚动距离
-	//           marquee2copy_status: this.data.length + this.data.marqueeDistance2 <= this.data.windowWidth + this.data.marquee2_margin,
-	//         });
-	//       } else {
-	//         if (-this.data.marqueeDistance2 >= this.data.marquee2_margin) { // 当第二条文字滚动到最左边时
-	//           this.setData({
-	//             marqueeDistance2: this.data.marquee2_margin // 直接重新滚动
-	//           });
-	//           clearInterval(interval);
-	//           this.run();
-	//         } else {
-	//           clearInterval(interval);
-	//           this.setData({
-	//             marqueeDistance2: -this.data.windowWidth
-	//           });
-	//           this.run();
-	//         }
-	//       }
-	//     }, this.data.interval);
-	// },
+	// 领取平台红包
+	getPlatformRedBag(){
+		wxRequest({
+        	url:'/merchant/userClient?m=getPlatformRedBag',
+        	method:'POST',
+        	data:{
+        		token: app.globalData.token,
+        		params:{
+        			longitude:app.globalData.longitude,
+        			latitude:app.globalData.latitude
+        		}	
+        	},
+        }).then(res=>{
+			if (res.data.code === 0) {
+				if (res.data.value.status == 1) { // 该代理商有平台红包
+					let loginMessage = wx.getStorageSync('loginMessage');
+					let loginStatus = wx.getStorageSync('loginstatus',true);
+					if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+						let platformRedList = res.data.value.redBagList;
+						if (platformRedList.length != 0) {
+							this.platfromRedShowAnimation();
+							this.setData({
+								platformRedList: platformRedList,
+								maskShow:true
+							});
+						}
+					} else {
+						this.platformRegisterShowAnimation();
+						this.setData({
+							isRegisterGetRedBag:true,
+							maskShow:true
+						});
+					}
+				}
+			}
+        });
+	},
+	registerGetRedBag(){
+		let that = this;
+		wx.navigateTo({
+			url:'/pages/login/login?switch=homepage',
+			success:function(){
+				that.setData({
+					isRegisterGetRedBag: false,
+					maskShow: false
+				})	
+			}
+		});
+	},
 	bannerMerchant(e){
 		let { item } = e.currentTarget.dataset;
 		if (item.merchantId) {
@@ -614,5 +638,39 @@ Page(Object.assign({}, merchantObj, {
         		// 转发失败
       		}
     	};
-  	}
+  	},
+  	platformRegisterShowAnimation(){
+		let animation = wx.createAnimation({ 
+			transformOrigin: "50% 50%", 
+			duration: 500,
+			timingFunction: "ease",
+		});
+		setTimeout(()=> {
+	      	animation.opacity(1).scale(1,1).step();
+	      	this.setData({
+	        	platformNoRedAnimation: animation.export(),
+	      	});
+	    }, 200);
+		animation.opacity(0).scale(0,0).step();//修改透明度,放大  
+		this.setData({  
+		   platformNoRedAnimation: animation.export()  
+		}); 
+	},
+	platformRegisterHideAnimation(){
+		let animation = wx.createAnimation({ 
+			transformOrigin: "50% 50%", 
+			duration: 500,
+			timingFunction: "ease",
+		});
+		setTimeout(()=> {
+	      	animation.opacity(1).scale(0,0).translateX(-50+'%').step();
+	      	this.setData({
+	        	platformNoRedAnimation: animation.export(),
+	      	});
+	    }, 200);
+		animation.opacity(0).scale(1,1).translateX(-50+'%').step();//修改透明度,放大  
+		this.setData({  
+		   platformNoRedAnimation: animation.export()  
+		}); 
+	},
 }));

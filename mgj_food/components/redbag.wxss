@@ -1,10 +1,8 @@
 .redbag {
 	position: absolute;
 	width:580rpx;
-	max-height: 892rpx;
-	top: 50%;
 	left: 50%;
-	transform:translate(-50%,-50%);
+	transform:translateX(-50%);
 	border-radius: 20rpx;
 	z-index: 1000;
 }
