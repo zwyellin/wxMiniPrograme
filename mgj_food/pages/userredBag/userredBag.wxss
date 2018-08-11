@@ -1,3 +1,4 @@
+@import "../redEnvelopes/redEnvelopes.wxss";
 .no-order {
   position: absolute;
   left: 50%;
@@ -60,7 +61,7 @@
 	color:#333;
 }
 .active {
-	background: #ff5959;
-	border-bottom:1rpx dashed #ff5959; 
+	/* background: #ff5959; */
+	/* border-bottom:1rpx dashed #ff5959;  */
 	color:#fff;
 }

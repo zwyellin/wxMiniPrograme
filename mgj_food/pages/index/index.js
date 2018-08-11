@@ -1,5 +1,3 @@
-//index.js
-
 //获取应用实例
 const app = getApp();
 const { Promise, wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
@@ -65,11 +63,74 @@ Page(Object.assign({}, merchantObj, {
 	}, 
 	onLoad(){
 		wxGetLocation({type:'gcj02'}).then(()=>{
-			this.appLocationMessage();
-			app.findAppUserByToken((token)=>{
-	  			app.globalData.token = token;
-				this.getPlatformRedBag();
-	  		});
+			this.getSeting().then(()=>{
+				wxGetLocation({
+					type:'gcj02'
+				}).then(res=>{
+					console.log(res);
+					let lat = res.latitude;
+					let lng = res.longitude;
+					this.data.obj = {
+						location:{
+							longitude:lng,
+							latitude:lat
+						}
+					}; 
+					let { longitude, latitude } = gcj02tobd09(lng,lat);
+					app.globalData.longitude = longitude;
+					app.globalData.latitude = latitude;
+					this.init().then((res)=>{
+						if (res.data.code === 0) {
+							let value = res.data.value;
+							if (value) {
+								app.globalData.agentId = value.id;
+								if (value.phone) {
+									app.globalData.agentPhone = value.phone;
+								} else {
+									app.globalData.agentPhone = null;
+								}
+							} else {
+								app.globalData.agentPhone = null;
+								app.globalData.agentId = null;
+							}
+							this.initBanner();
+							this.initClass();
+							this.getDataList(false,false);
+		        			this.findTagCategory();	
+						}	
+			        }).catch(err=>{
+			        	this.setData({
+							isAgentId:true
+						});
+			        });
+			        getBMapLocation(this.data.obj).then(res=>{
+						console.log(res);
+						let address;
+						if (res.status === 0) {
+							console.log(res)
+							address = res.result.address;
+							// address =res.result.address_component.street_number
+							console.log(address);
+							this.setData({
+				      			city:Object.assign({},this.data.city,{cityName:address})
+				    		});
+				    		// this.runAddress(this.data.city);
+						}
+				    }).catch(err=>{
+				    	this.setData({
+							isAgentId:true
+						});
+				    });
+				}).catch(err=>{
+					this.setData({
+						isAgentId:true
+					});
+				}); 
+			}).catch(err=>{
+				this.setData({
+					isAgentId:true
+				});
+			});
 		}).catch(err=>{
 			this.setData({
 				isAgentId:true
@@ -95,8 +156,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				//app.globalData.longitude = longitude;
-				//app.globalData.latitude = latitude;
+				app.globalData.longitude = longitude;
+				app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
@@ -194,8 +255,6 @@ Page(Object.assign({}, merchantObj, {
 	},
 	onShow(){
 		this.data.clickPage = false;
-		let loginMessage = wx.getStorageSync('loginMessage');
-		let loginStatus = wx.getStorageSync('loginstatus',true);
 		if (wx.getStorageSync('shoppingCart')) {
 			let shoppingCart = wx.getStorageSync('shoppingCart');
 			this.setData({
@@ -233,17 +292,16 @@ Page(Object.assign({}, merchantObj, {
 						if (value.phone) {
 							app.globalData.agentPhone = value.phone;
 						} else {
-							app.globalData.agentPhone = null;
+							app.globalData.agentPhone = null
 						}
 					} else {
-						app.globalData.agentPhone = null;
+						app.globalData.agentPhone = null
 						app.globalData.agentId = null;
 					}
 					this.getDataList(false,false);//getinitDataList
 					this.initClass();
         			this.initBanner();
-        			this.findTagCategory();
-        			this.getPlatformRedBag();	
+        			this.findTagCategory();	
 				} else {
 					this.setData({
 						isAgentId:true
@@ -554,14 +612,21 @@ Page(Object.assign({}, merchantObj, {
 	//下拉刷新
     onPullDownRefresh() {
     	if (this.data.maskShow) {
-    		wx.stopPullDownRefresh();
-    		return false;
+    		wx.stopPullDownRefresh()
+    		return false
     	}
-    	this.data.start = 0;
+    	this.data.start = 0
       	this.initClass();
       	this.findTagCategory();
       	this.getDataList(false,true);
     },
+	// onHide() {
+	// 	clearInterval(interval);
+	// 	this.setData({
+	// 		marqueeDistance2: 0,
+	//     	marquee2copy_status: false
+	// 	});
+	// },
 	onShareAppMessage(res) {
     	return {
       		title: '马管家外卖',
@@ -609,4 +674,3 @@ Page(Object.assign({}, merchantObj, {
 		}); 
 	},
 }));
-
