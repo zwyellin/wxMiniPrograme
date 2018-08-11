@@ -1,13 +1,14 @@
-	<wxs module="time" src="../../utils/star.wxs"></wxs>
+<wxs module="time" src="../../utils/star.wxs"></wxs>
+<view>
 	<view class="navbar">
 		<view wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap"> {{item}}</view>
 	</view>
 	<view hidden="{{currentTab!==0}}" class="redenvelopes">
-		<view class="sigma-content">
+		<!-- <view class="sigma-content">
 			<view class="sigma-middle-line ">
 				<text class="sigma-line-text ">可使用红包 ({{redEnvelopesObjct.platformRedBagCount}}个)</text>
 			</view>
-		</view>
+		</view> -->
 		<view class="redenvelopes-center-box"  wx:for="{{redEnvelopesObjct.platformRedBagList}}"
 			wx:for-index="idx" 
 			wx:for-item="item" 
@@ -16,17 +17,17 @@
 				<view class="semi-circle-left"></view>
 				<view class="semi-circle-right"></view>
 				<view class="flex-item">
-					<view class="redenvelopes-name">天降红包</view>
+					<view class="redenvelopes-name">{{item.name}}</view>
 					<view class="redenvelopes-tiem">有效期至{{item.expirationTime}}</view>
-					<view class="redenvelopes-available">{{item.createTime}}可用</view>
-					<view class="redenvelopes-number">限收货人手机号{{item.mobile}}</view>
+					<!-- <view class="redenvelopes-available">{{item.createTime}}可用</view> -->
+					<view class="redenvelopes-mobile">限收货人手机号{{item.mobile}}</view>
 				</view>
-				<view class="redenvelopes-number flex-item flex ">
-					<view>
+				<view class="redenvelopes-number flex">
+					<view style="height:70rpx">
 						<text class="redenvelopes-rmb-red">¥</text>
 						<text class="redenvelopes-number-red">{{item.amt}}</text>
 					</view>
-					<view class="redenvelopes-threshold">无门槛红包</view>
+					<view class="redenvelopes-threshold">{{item.restrictAmt != null ? '满'+item.restrictAmt+'元可用' : '无门槛红包'}}</view>
 				</view>
 			</view>
 			<view class="redenvelopes-category flex">
@@ -75,7 +76,7 @@
 				</view>
 			</view>
 		</view> -->
-		<view class="redenvelopes-history flex">查看历史红包 》</view>
+		<!-- <view class="redenvelopes-history flex">查看历史红包 》</view> -->
 	</view>
 	<view hidden="{{currentTab!==1}}" class="container page-common">
 		<view wx:if="{{redBagList.length === 0 && show}}" class="no-order">
@@ -110,4 +111,5 @@
 			</view>
 		</view>
 	</view>
+</view>
 	

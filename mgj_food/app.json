@@ -1,5 +1,6 @@
 {
   "pages": [    
+    "pages/userredBag/userredBag",
     "pages/index/index",
     "pages/shop/shop",
     "pages/classPage/classPage",
@@ -9,7 +10,6 @@
     "pages/address/address/address",
     "pages/login/login",
     "pages/userCenter/userCenter",
-    "pages/userredBag/userredBag",
     "pages/goods/cartItem/cartItem",
     "pages/goods/cartDetail/cartDetail",
     "pages/goods/refundDetail/refundDetail",
@@ -24,8 +24,7 @@
     "pages/firends/shareFirend/shareFirend",
     "pages/firends/service/service",
     "pages/firends/serviceText/serviceText",
-    "pages/firends/results/results",
-    "pages/redEnvelopes/redEnvelopes"
+    "pages/firends/results/results"
   ],
   "window": {
     "backgroundTextStyle": "light",

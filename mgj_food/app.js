@@ -41,7 +41,6 @@ App({
       });
     }
   },
-  
   findAppUserByToken(cb){
     var that = this;
     if (this.globalData.token) {

@@ -63,74 +63,11 @@ Page(Object.assign({}, merchantObj, {
 	}, 
 	onLoad(){
 		wxGetLocation({type:'gcj02'}).then(()=>{
-			this.getSeting().then(()=>{
-				wxGetLocation({
-					type:'gcj02'
-				}).then(res=>{
-					console.log(res);
-					let lat = res.latitude;
-					let lng = res.longitude;
-					this.data.obj = {
-						location:{
-							longitude:lng,
-							latitude:lat
-						}
-					}; 
-					let { longitude, latitude } = gcj02tobd09(lng,lat);
-					app.globalData.longitude = longitude;
-					app.globalData.latitude = latitude;
-					this.init().then((res)=>{
-						if (res.data.code === 0) {
-							let value = res.data.value;
-							if (value) {
-								app.globalData.agentId = value.id;
-								if (value.phone) {
-									app.globalData.agentPhone = value.phone;
-								} else {
-									app.globalData.agentPhone = null;
-								}
-							} else {
-								app.globalData.agentPhone = null;
-								app.globalData.agentId = null;
-							}
-							this.initBanner();
-							this.initClass();
-							this.getDataList(false,false);
-		        			this.findTagCategory();	
-						}	
-			        }).catch(err=>{
-			        	this.setData({
-							isAgentId:true
-						});
-			        });
-			        getBMapLocation(this.data.obj).then(res=>{
-						console.log(res);
-						let address;
-						if (res.status === 0) {
-							console.log(res)
-							address = res.result.address;
-							// address =res.result.address_component.street_number
-							console.log(address);
-							this.setData({
-				      			city:Object.assign({},this.data.city,{cityName:address})
-				    		});
-				    		// this.runAddress(this.data.city);
-						}
-				    }).catch(err=>{
-				    	this.setData({
-							isAgentId:true
-						});
-				    });
-				}).catch(err=>{
-					this.setData({
-						isAgentId:true
-					});
-				}); 
-			}).catch(err=>{
-				this.setData({
-					isAgentId:true
-				});
-			});
+			this.appLocationMessage();
+			app.findAppUserByToken((token)=>{
+	  			app.globalData.token = token;
+				this.getPlatformRedBag();
+	  		});
 		}).catch(err=>{
 			this.setData({
 				isAgentId:true
@@ -255,6 +192,8 @@ Page(Object.assign({}, merchantObj, {
 	},
 	onShow(){
 		this.data.clickPage = false;
+		let loginMessage = wx.getStorageSync('loginMessage');
+		let loginStatus = wx.getStorageSync('loginstatus',true);
 		if (wx.getStorageSync('shoppingCart')) {
 			let shoppingCart = wx.getStorageSync('shoppingCart');
 			this.setData({
@@ -301,18 +240,17 @@ Page(Object.assign({}, merchantObj, {
 					this.getDataList(false,false);//getinitDataList
 					this.initClass();
         			this.initBanner();
-        			this.findTagCategory();	
+        			this.findTagCategory();
+        			this.getPlatformRedBag();	
 				} else {
 					this.setData({
 						isAgentId:true
 					});
 				}
-				// this.runAddress(this.data.city);	
 	        }).catch(err=>{
 	        	this.setData({
 					isAgentId:true
 				});
-				// this.runAddress(this.data.city);
 	        });
 		}
 	},

@@ -38,7 +38,7 @@ Page({
 		  url:'/merchant/userClient?m=queryRedBagList',
 		  method:'POST',
 		  data:{
-			token:app.globalData.token,
+			token:'c935876b48414cd3998f61d30f68d281',
 			params:{
 			  start:this.data.start,
 			  size:20,
@@ -51,9 +51,9 @@ Page({
 			let redEnvelopesObjct = res.data.value;
 		   
 			this.setData({
-			  redEnvelopesObjct:redEnvelopesObjct,
-			
-			})
+			  	redEnvelopesObjct:redEnvelopesObjct,
+				
+			});
 			
 	
 		  }
