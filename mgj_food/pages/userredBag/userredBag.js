@@ -15,8 +15,53 @@ Page({
 	onLoad(){
 		this.findUserRedBagListNew();
 		this.reasonList();
-    	this.queryRedBagList();
+		this.queryRedBagList()
 	},
+	navbarTap: function(e){
+		this.setData({
+		  currentTab: e.currentTarget.dataset.idx
+		})
+	  },
+	reasonList(){
+		this.setData({
+			reason:!this.data.reason
+		})
+	},
+	queryRedBagList(){
+		wx.showToast({
+			title: '加载中',
+			icon: 'loading',
+			duration: 200000,
+			mask: true
+		});
+		wxRequest({
+		  url:'/merchant/userClient?m=queryRedBagList',
+		  method:'POST',
+		  data:{
+			token:app.globalData.token,
+			params:{
+			  start:this.data.start,
+			  size:20,
+			  redBagType:1,
+			  isDisabled:this.data.isDisabled
+			}
+		  },
+		}).then(res=>{
+		  if(res.data.code === 0){
+			let redEnvelopesObjct = res.data.value;
+		   
+			this.setData({
+			  redEnvelopesObjct:redEnvelopesObjct,
+			
+			})
+			
+	
+		  }
+		}).finally(()=>{
+		  wx.hideLoading()
+		})
+	
+	  },
 	findUserRedBagListNew(){
 		wx.showToast({
 	        title: '加载中',
@@ -59,50 +104,5 @@ Page({
 		wx.redirectTo({
 		  url: '/pages/shop/shop?merchantid=' + id
 		});
-	},
-	navbarTap(e){
-		this.setData({
-		  currentTab: e.currentTarget.dataset.idx
-		})
-	  },
-	  reasonList(){
-		this.setData({
-			reason:!this.data.reason
-		})
-	  },
-	  queryRedBagList(){
-		wx.showToast({
-			title: '加载中',
-			icon: 'loading',
-			duration: 200000,
-			mask: true
-		});
-		wxRequest({
-		  url:'/merchant/userClient?m=queryRedBagList',
-		  method:'POST',
-		  data:{
-			token:app.globalData.token,
-			params:{
-			  start:this.data.start,
-			  size:20,
-			  redBagType:1,
-			  isDisabled:this.data.isDisabled
-			}
-		  },
-		}).then(res=>{
-		  if(res.data.code === 0){
-			let redEnvelopesObjct = res.data.value;
-		   
-			this.setData({
-			  redEnvelopesObjct:redEnvelopesObjct,
-			
-			})
-			
-	
-		  }
-		}).finally(()=>{
-		  wx.hideLoading()
-		})
-	
-	  }
+	}
 });

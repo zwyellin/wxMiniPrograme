@@ -67,13 +67,7 @@
 		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../../images/images/down.png" ></image>
 				</view>
 			</navigator>
-			<!-- <navigator class="order-header" url="/pages/redEnvelopes/redEnvelopes">
-				<view class="header-text">
-					<image class="header-img" src="/images/images/icon_red.png" ></image>
-		  			<text class="header-txt">平台红包</text>
-		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../../images/images/down.png" ></image>
-				</view>
-			</navigator> -->
+			
 	  	</view>
   	</view>
   	
