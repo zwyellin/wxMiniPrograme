@@ -1,7 +1,9 @@
 <wxs module="time" src="../../utils/star.wxs"></wxs>
 <view>
 	<view class="navbar">
-		<view wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap"> {{item}}</view>
+		<view wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap">
+			 {{item}}
+		</view>
 	</view>
 	<view hidden="{{currentTab!==0}}" class="redenvelopes">
 		<!-- <view class="sigma-content">
