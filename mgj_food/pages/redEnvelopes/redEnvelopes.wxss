@@ -2,6 +2,7 @@ page{
     display: flex;
     flex-direction: column;
     height: 100%;
+    background-color: #ededed;
   }
   .navbar{
     flex: none;
@@ -63,6 +64,9 @@ page{
     font-size: 24rpx;
    
 }
+.redenvelopes-center-box{
+    margin-bottom: 20rpx;
+}
 .redenvelopes-center{
     padding: 38rpx 38rpx 0;
     box-sizing: border-box;
@@ -70,6 +74,7 @@ page{
     width: 100%;
     border-bottom: 1rpx dashed #333;
     position: relative;
+    
 }
 .semi-circle-left{
     position: absolute;

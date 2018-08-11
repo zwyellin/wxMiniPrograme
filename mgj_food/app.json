@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/redEnvelopes/redEnvelopes",
     "pages/index/index",
     "pages/shop/shop",
     "pages/classPage/classPage",
@@ -25,7 +24,8 @@
     "pages/firends/shareFirend/shareFirend",
     "pages/firends/service/service",
     "pages/firends/serviceText/serviceText",
-    "pages/firends/results/results"
+    "pages/firends/results/results",
+    "pages/redEnvelopes/redEnvelopes"
     
   ],
   "window": {
