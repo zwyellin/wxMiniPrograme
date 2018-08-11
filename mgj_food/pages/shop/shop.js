@@ -1113,7 +1113,6 @@ Page(Object.assign({}, merchantShop,{
 	        		if (item.id === id) {
 	        			if (item.count > 1) {
 	        				if (food.hasDiscount) {
-								console.log(123);
 								if (food.surplusDiscountStock >=food.everyGoodsEveryOrderBuyCount) {
 									let orderBuyCount;
 									if (food.everyGoodsEveryOrderBuyCount === 0) {

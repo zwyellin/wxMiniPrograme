@@ -60,7 +60,8 @@ Page(Object.assign({}, merchantObj, {
 		platformRedList:[],               //平台红包列表
 		isloginGetPlatformRedBag:false,   //是否登录领取过平台红包
 		isRegisterGetRedBag:false,
-		platformRedAnimation:null,        // 平台未注册动画
+		platformNoRedAnimation:null,        // 平台未注册动画
+		platformGetRedAnimation:null,        // 领取平台红包动画
 	}, 
 	onLoad(){
 		wxGetLocation({type:'gcj02'}).then(()=>{
@@ -202,7 +203,9 @@ Page(Object.assign({}, merchantObj, {
 			});	
   		}
   		if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+  			console.log(12);
   			let isloginGetPlatformRedBag = wx.getStorageSync('isloginGetPlatformRedBag');  // 是否通过首页登录领取过平台红包
+  			console.log(isloginGetPlatformRedBag);
 			if (isloginGetPlatformRedBag) {
 				this.getPlatformRedBag();
 				wx.setStorageSync('isloginGetPlatformRedBag',false);
@@ -275,12 +278,14 @@ Page(Object.assign({}, merchantObj, {
 					if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
 						let platformRedList = res.data.value.redBagList;
 						if (platformRedList.length != 0) {
+							this.platfromRedShowAnimation();
 							this.setData({
-								platformRedList: platformRedList
+								platformRedList: platformRedList,
+								maskShow:true
 							});
 						}
 					} else {
-						this.platformRedShowAnimation();
+						this.platformRegisterShowAnimation();
 						this.setData({
 							isRegisterGetRedBag:true,
 							maskShow:true
@@ -295,8 +300,10 @@ Page(Object.assign({}, merchantObj, {
 		wx.navigateTo({
 			url:'/pages/login/login?switch=homepage',
 			success:function(){
-				that.isRegisterGetRedBag = false;
-				that.maskShow = false;
+				that.setData({
+					isRegisterGetRedBag: false,
+					maskShow: false
+				})	
 			}
 		});
 	},
@@ -423,7 +430,6 @@ Page(Object.assign({}, merchantObj, {
         });
 	},
 	getDataList(status,Boos){
-		console.log('你好')
 		if (!status) {
 			wx.showToast({
 		        title: '加载中',
@@ -568,7 +574,7 @@ Page(Object.assign({}, merchantObj, {
       		}
     	};
   	},
-  	platformRedShowAnimation(){
+  	platformRegisterShowAnimation(){
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
 			duration: 500,
@@ -577,15 +583,15 @@ Page(Object.assign({}, merchantObj, {
 		setTimeout(()=> {
 	      	animation.opacity(1).scale(1,1).step();
 	      	this.setData({
-	        	platformRedAnimation: animation.export(),
+	        	platformNoRedAnimation: animation.export(),
 	      	});
 	    }, 200);
 		animation.opacity(0).scale(0,0).step();//修改透明度,放大  
 		this.setData({  
-		   platformRedAnimation: animation.export()  
+		   platformNoRedAnimation: animation.export()  
 		}); 
 	},
-	platformRedHideAnimation(){
+	platformRegisterHideAnimation(){
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
 			duration: 500,
@@ -594,12 +600,12 @@ Page(Object.assign({}, merchantObj, {
 		setTimeout(()=> {
 	      	animation.opacity(1).scale(0,0).translateX(-50+'%').step();
 	      	this.setData({
-	        	platformRedAnimation: animation.export(),
+	        	platformNoRedAnimation: animation.export(),
 	      	});
 	    }, 200);
 		animation.opacity(0).scale(1,1).translateX(-50+'%').step();//修改透明度,放大  
 		this.setData({  
-		   platformRedAnimation: animation.export()  
+		   platformNoRedAnimation: animation.export()  
 		}); 
 	},
 }));

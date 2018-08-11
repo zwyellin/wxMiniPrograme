@@ -172,7 +172,7 @@
 	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close" catchtouchmove="myCatchTouch" >	
 	</view>
 	<!-- 平台红包 -->
-	<view class="redbag" wx:if="{{platformRedList.length != 0}}" catchtouchmove="myCatchTouch">
+	<view class="redbag" wx:if="{{platformRedList.length != 0}}" animation="{{platformGetRedAnimation}}" catchtouchmove="myCatchTouch">
 		<view class="redbag-close">
 			<image class="redbag-close-img" catchtap="close" src="../../images/images/close_red.png"></image>
 		</view>
@@ -201,8 +201,8 @@
 		</view>
 	</view>
 	<!-- 未注册平台红包弹框 -->
-	<view class="no-redRegisterPage">
-		<view class="no-redbag" wx:if="{{isRegisterGetRedBag && platformRedList.length == 0}}" animation="{{platformRedAnimation}}" catchtouchmove="myCatchTouch">
+	<view class="no-redRegisterPage" wx:if="{{isRegisterGetRedBag && platformRedList.length == 0}}">
+		<view class="no-redbag" animation="{{platformNoRedAnimation}}" catchtouchmove="myCatchTouch">
 			<view class="redbag-header" style="position: relative;">
 				<image class="redbag-img" src="../../images/merchant/tian_redbag@2x.png"></image>
 				<view class="redbag-img-txt"><text>正在发放中...</text></view>

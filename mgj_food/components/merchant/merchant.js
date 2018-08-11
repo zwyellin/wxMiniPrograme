@@ -139,6 +139,7 @@ let merchantObj = {
 	},
 	close(){//关闭弹窗
 		this.maskHideAnimation();
+		this.platfromRedHideAnimation();
 		this.setData({
 			classShow:false,
 			sortShow:false,
@@ -212,6 +213,45 @@ let merchantObj = {
 		animation.opacity(0.3).step();//修改透明度,放大  
 		this.setData({  
 		   maskAnimation: animation.export()  
+		}); 
+	},
+	platfromRedShowAnimation(){
+		let animation = wx.createAnimation({ 
+			transformOrigin: "50% 50%", 
+			duration: 500,
+			timingFunction: "ease",
+		});
+		setTimeout(()=> {
+	      	animation.translate(-50+'%').top(20+'%').step();
+	      	this.setData({
+	        	platformGetRedAnimation: animation.export(),
+	      	});
+	    }, 200);
+		animation.top(-1000+'rpx').step();
+		this.setData({  
+		   platformGetRedAnimation: animation.export()  
+		}); 
+	},
+	platfromRedHideAnimation(){
+		let animation = wx.createAnimation({ 
+			transformOrigin: "50% 50%", 
+			duration: 500,
+			timingFunction: "ease",
+		});
+		setTimeout(()=> {
+	      	animation.translate(-50+'%').top(150+'%').step();
+	      	setTimeout(()=>{
+	      		this.setData({
+	        		platformRedList:[]
+	      		});
+	      	},1000)
+	      	this.setData({
+	        	platformGetRedAnimation: animation.export(),
+	      	});
+	    }, 200);
+		animation.translate(-50+'%').top(20+'%').step(); 
+		this.setData({  
+		   platformGetRedAnimation: animation.export()  
 		}); 
 	},
 };

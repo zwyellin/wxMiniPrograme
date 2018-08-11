@@ -278,7 +278,6 @@ const merchantShop = {
 		}); 
 	},
 	pickertagShowAnimation(){
-		
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
 			duration: 500,
