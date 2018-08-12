@@ -1,9 +1,13 @@
  .navbar{
-    flex: none;
+    position: fixed;
+    top: 0;
+    height: 90rpx;
+    width: 100%;
     display: flex;
     background: #fff;
+    z-index: 1000;
   }
-  .navbar .item{
+  .navbar .navbar-item{
     position: relative;
     flex: auto;
     text-align: center;
@@ -11,10 +15,10 @@
     font-size: 30rpx;
     color: #ffd0a3;  
   }
-  .navbar .item.active{
+  .navbar .navbar-item.active{
     color: #FF8000;
   }
-  .navbar .item.active:after{
+  .navbar .navbar-item.active:after{
     content: "";
     display: block;
     position: absolute;
@@ -25,7 +29,7 @@
     background: #FF8000;
   }
   .redenvelopes{
-      padding:20rpx 30rpx;
+      padding:130rpx 30rpx 20rpx;
       box-sizing: border-box;
       height: 100%;
       background-color: #ededed;

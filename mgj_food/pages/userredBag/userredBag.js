@@ -3,65 +3,104 @@ const app = getApp();
 Page({
 	data:{
 		show:false,
-		isDisable:0,   //默认0，0（可用）1（不可用）
+		isDisabled:0,   //默认0，0（可用）1（不可用）
+		loading:false,
 		redBagList:[],
 		navbar: ['红包', '代金券'],
 		currentTab: 0,
 		reason:false,
 		start:0,
-		isDisabled:0,
-		redEnvelopesObjct:{}
+		redEnvelopesObjct:{},
+		platfromRedBagList:[]
 	},
 	onLoad(){
-		this.findUserRedBagListNew();
+		this.queryRedBagList(false);
+		// this.findUserRedBagListNew();
 		this.reasonList();
-		this.queryRedBagList()
 	},
 	navbarTap: function(e){
+		if (e.currentTarget.dataset.idx == 0) {
+			this.data.start = this.data.platfromRedBagList.length;
+		} else {
+			this.data.start = this.data.redBagList.length;
+		}
+		this.queryRedBagList(true);
 		this.setData({
-		  currentTab: e.currentTarget.dataset.idx
-		})
-	  },
+		  	currentTab: e.currentTarget.dataset.idx,
+		  	loading:false
+		});
+  	},
 	reasonList(){
 		this.setData({
 			reason:!this.data.reason
-		})
-	},
-	queryRedBagList(){
-		wx.showToast({
-			title: '加载中',
-			icon: 'loading',
-			duration: 200000,
-			mask: true
 		});
-		wxRequest({
-		  url:'/merchant/userClient?m=queryRedBagList',
-		  method:'POST',
-		  data:{
-			token:'c935876b48414cd3998f61d30f68d281',
-			params:{
-			  start:this.data.start,
-			  size:20,
-			  redBagType:1,
-			  isDisabled:this.data.isDisabled
-			}
-		  },
-		}).then(res=>{
-		  if(res.data.code === 0){
-			let redEnvelopesObjct = res.data.value;
-		   
-			this.setData({
-			  	redEnvelopesObjct:redEnvelopesObjct,
-				
+	},
+	queryRedBagList(isloadMore){
+		if (!isloadMore) {
+			wx.showToast({
+				title: '加载中',
+				icon: 'loading',
+				duration: 200000,
+				mask: true
 			});
-			
-	
-		  }
+		}
+		wxRequest({
+		  	url:'/merchant/userClient?m=queryRedBagList',
+		  	method:'POST',
+		  	data:{
+				token:'c935876b48414cd3998f61d30f68d281',
+				params:{
+			  		start:this.data.start,
+			  		size:5,
+			  		redBagType:1,
+			  		isDisabled:this.data.isDisabled
+				}
+		  	},
+		}).then(res=>{
+			if(res.data.code === 0){
+				if (this.data.currentTab == 0) {
+					let nowPlatfromRedBagList = this.data.platfromRedBagList;
+					let platfromRedBagList = res.data.value.platformRedBagList;
+					nowPlatfromRedBagList = nowPlatfromRedBagList.concat(platfromRedBagList);
+					if (platfromRedBagList.length === 0) {
+						this.setData({
+					  		platfromRedBagList:nowPlatfromRedBagList,
+							loading:true
+						});
+					} else {
+						this.setData({
+					  		platfromRedBagList:nowPlatfromRedBagList,	
+						});
+					}
+				} else {
+					let nowRedBagList = this.data.redBagList;
+					let vouchersList = res.data.value.vouchersList;
+					vouchersList.map((item)=>{
+						item.modifyTime = item.modifyTime.replace(/-/g,'/');
+						item.modifyTime = new Date(item.modifyTime).getTime();
+						item.modifyTime = format(item.modifyTime,".");
+						item.expirationTime = format(item.expirationTime,".");
+					});
+					nowRedBagList = nowRedBagList.concat(vouchersList);
+					if (vouchersList.length === 0) {
+						this.setData({
+					  		redBagList:nowRedBagList,
+							loading:true
+						});
+					} else {
+						this.setData({
+					  		redBagList:nowRedBagList,	
+						});
+					}
+				}	
+			}
 		}).finally(()=>{
-		  wx.hideLoading()
-		})
-	
-	  },
+			this.setData({
+        		show:true
+        	});
+		  	wx.hideLoading();
+		});
+	},
 	findUserRedBagListNew(){
 		wx.showToast({
 	        title: '加载中',
@@ -82,12 +121,7 @@ Page({
         	console.log(res);
 			if (res.data.code === 0) {
 				let valueList = res.data.value;
-				valueList.map((item)=>{
-					item.modifyTime = item.modifyTime.replace(/-/g,'/');
-					item.modifyTime = new Date(item.modifyTime).getTime();
-					item.modifyTime = format(item.modifyTime,".");
-					item.expirationTime = format(item.expirationTime,".");
-				});
+				
 				this.setData({
 					redBagList:valueList
 				});	
@@ -95,7 +129,7 @@ Page({
         }).finally(()=>{
         	this.setData({
         		show:true
-        	})
+        	});
         	wx.hideLoading();
         });
 	},
@@ -104,5 +138,15 @@ Page({
 		wx.redirectTo({
 		  url: '/pages/shop/shop?merchantid=' + id
 		});
+	},
+	// 上拉加载更多
+	onReachBottom(){
+		if (this.data.currentTab == 0) {
+			this.data.start = this.data.platfromRedBagList.length;
+			this.queryRedBagList(true);
+		} else {
+			this.data.start = this.data.redBagList.length;
+			this.queryRedBagList(true);
+		}
 	}
 });

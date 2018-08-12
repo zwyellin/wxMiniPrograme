@@ -1,17 +1,25 @@
 <wxs module="time" src="../../utils/star.wxs"></wxs>
 <view>
 	<view class="navbar">
-		<view wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap">
+		<view 
+			class="navbar-item {{currentTab==index ? 'active' : ''}}"
+			wx:for="{{navbar}}"
+			wx:for-index="index" 
+		    wx:for-item="item" 
+		    wx:key="index" 
+			data-idx="{{index}}"  
+			bindtap="navbarTap">
 			 {{item}}
 		</view>
 	</view>
-	<view hidden="{{currentTab!==0}}" class="redenvelopes">
+	<view wx:if="{{currentTab == 0}}" class="container page-common redenvelopes">
 		<!-- <view class="sigma-content">
 			<view class="sigma-middle-line ">
 				<text class="sigma-line-text ">可使用红包 ({{redEnvelopesObjct.platformRedBagCount}}个)</text>
 			</view>
 		</view> -->
-		<view class="redenvelopes-center-box"  wx:for="{{redEnvelopesObjct.platformRedBagList}}"
+		<view class="redenvelopes-center-box"  
+			wx:for="{{platfromRedBagList}}"
 			wx:for-index="idx" 
 			wx:for-item="item" 
 			wx:key="id">
@@ -80,7 +88,7 @@
 		</view> -->
 		<!-- <view class="redenvelopes-history flex">查看历史红包 》</view> -->
 	</view>
-	<view hidden="{{currentTab!==1}}" class="container page-common">
+	<view wx:if="{{currentTab == 1}}" class="container page-common">
 		<view wx:if="{{redBagList.length === 0 && show}}" class="no-order">
 			<image class="no-order-img" src="../../images/images/login@2x.png"></image>
 			<view class="no-order-text">
@@ -113,5 +121,12 @@
 			</view>
 		</view>
 	</view>
+	<view class="loading-info" style="background: #ededed" wx:if="{{!loading && platfromRedBagList.length > 4 || redBagList.length>4}}">
+        <image src="/images/merchant/loading.png" class="img-loading"></image>
+        <view class="loading-text">正在加载，请稍候</view>
+    </view>
+    <!-- <view class="bottom-info" wx:if="{{!evaluate.length && loading}}">
+ 		<view class="bottom-text">暂无更多红包</view>
+	</view> -->
 </view>
 	
