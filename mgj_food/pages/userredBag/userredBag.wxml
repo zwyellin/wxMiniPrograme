@@ -12,7 +12,7 @@
 			 {{item}}
 		</view>
 	</view>
-	<view wx:if="{{currentTab == 0}}" class="container page-common redenvelopes">
+	<view wx:if="{{currentTab == 0}}" class="container page-common redenvelopes redenvelopes-else">
 		<!-- <view class="sigma-content">
 			<view class="sigma-middle-line ">
 				<text class="sigma-line-text ">可使用红包 ({{redEnvelopesObjct.platformRedBagCount}}个)</text>

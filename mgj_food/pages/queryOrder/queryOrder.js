@@ -14,11 +14,13 @@ Page({
 		deliveryTimes:[],    //配送时间信息
 		expectedArrivalTime:1,
 		redBagUsableCount:0,    //可用红包个数
-		redBagList:[],
+		redBagList:[],          //可用的商家红包列表
+		platformRedBagList:[],  //可用的平台红包列表  
+		disabledPlatformRedBagList:[], //不可用的平台红包列表   
 		useRedBagList:null,       //本次订单使用的红包列表
 		select:true,            //红包使用状态
 		redBagMoney:0,
-		promoInfoJson:[],       //本次订单使用的红包信息  不明字段
+		promoInfoJson:[],       //本次订单参与的商家活动json  不明字段
 		day:'',
 		initTime:'',
 		timeIndex:0,
@@ -44,6 +46,7 @@ Page({
 			discountAmt:prevPage.data.value.discountAmt,
 			discountGoodsDiscountAmt:prevPage.data.value.discountGoodsDiscountAmt,
 			addressInfo:prevPage.data.value.addressInfo,
+			promoInfoJson:prevPage.data.value.promoList,
 			redBagUsableCount:prevPage.data.value.redBagUsableCount,
 			payList:prevPage.data.value.payments,
 			deliveryTimes:prevPage.data.value.deliveryTimes,
@@ -63,14 +66,15 @@ Page({
 			timeArr:arr
 		});
 		if (typeof this.data.initTime === 'undefined') {
-			let expectedArrivalTime = sendTime[0]
-			let initTime = arr[0][expectedArrivalTime]
+			let expectedArrivalTime = sendTime[0];
+			let initTime = arr[0][expectedArrivalTime];
 			this.setData({
 				initTime:initTime,
 				expectedArrivalTime:expectedArrivalTime
-			})
+			});
 		}
 		this.filterUsableRedBagList();
+		this.queryPlatformRedBagList();
 	},
 	onShow(){
 		if (this.data.useRedBagList != null || this.data.addressInfoId != null) {
@@ -97,7 +101,7 @@ Page({
 	        }		
 		}
 	},
-	//获取可用红包
+	//获取商家可用红包
 	filterUsableRedBagList(){
 		wxRequest({
         	url:'/merchant/userClient?m=filterUsableRedBagList',
@@ -107,7 +111,7 @@ Page({
         		params:{
         			itemsPrice: this.data.orderMessage.totalPrice,
 					merchantId: this.data.merchantId,
-					promoInfoJson: this.data.promoInfoJson
+					promoInfoJson: JSON.stringify(this.data.promoInfoJson)
         		}	
         	},
         }).then(res=>{
@@ -121,6 +125,41 @@ Page({
 				this.setData({
 					redBagList:valueList
 				});	
+			} else {
+				let msg = res.data.value;
+				feedbackApi.showToast({title: msg});
+			}
+        });
+	},
+	//获取平台可用红包
+	queryPlatformRedBagList(){
+		console.log(this.data.promoInfoJson);
+		wxRequest({
+        	url:'/merchant/userClient?m=queryPlatformRedBagList',
+        	method:'POST',
+        	data:{
+        		token:app.globalData.token,
+        		params:{
+        			itemsPrice: this.data.orderMessage.totalPrice,
+					merchantId: this.data.merchantId,
+					agentId:3,
+					promoInfoJson: JSON.stringify(this.data.promoInfoJson),
+					businessType:1
+        		}	
+        	},
+        }).then(res=>{
+        	console.log(res);
+			if (res.data.code === 0) {
+				console.log(res);
+				let platformRedBagAvailableList = res.data.value.platformRedBagAvailableList;    //不可使用的平台红包
+				let platformRedBagList = res.data.value.platformRedBagList;      //可使用的平台红包
+				platformRedBagAvailableList.map(item=>{
+					item.lookReason = false;
+				});
+				this.setData({
+					disabledPlatformRedBagList:platformRedBagAvailableList,
+					platformRedBagList:platformRedBagList
+				});
 			} else {
 				let msg = res.data.value;
 				feedbackApi.showToast({title: msg});
@@ -222,7 +261,7 @@ Page({
 	    }
 	},
 	redPage(){
-		if (!this.data.redBagUsableCount) return;
+		// if (!this.data.redBagUsableCount) return;
 		wx.navigateTo({
   			url: '/pages/sendred/sendred?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.orderMessage.totalPrice
 		});

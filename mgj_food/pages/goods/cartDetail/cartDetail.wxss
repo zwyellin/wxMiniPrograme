@@ -180,12 +180,19 @@
   margin-top: 36rpx;
 }
 /* 分享红包 */
+.order-overPage {
+	position:absolute;
+	display:flex;
+	top:0;
+	width:100%;
+	height:100%;
+	align-items: center;
+	justify-content: center;
+}
 .sharered-page {
 	position: absolute;
 	width: 560rpx;
-	left: 50%;
-	top:50%;
-	transform: translate(-50%,-50%);
+	top:35%;
 	border-radius: 12rpx;
 	color: #333;
 	background: #fff;

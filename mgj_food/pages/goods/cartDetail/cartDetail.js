@@ -18,7 +18,10 @@ Page({
 		value:{},
 		expectArrivalTime:null,          //送达时间
 		show:false,
-		shareShow:false                  //控制分享红包弹框显示
+		shareRedBagInfo:{},              //红包分享规则
+		shareShow:false,                  //控制分享红包弹框显示
+		shareShowImg:false,
+		shareRedBagAnimation:null
 	},
 	onLoad(options){
 		let { orderid, isredbag} = options;
@@ -27,11 +30,15 @@ Page({
 		this.findNewTOrderById();
 		this.findCustomerAndComplainPhoneByUserXY();
 		if (this.data.isredbag) {
-			this.maskShowAnimation()
+			// this.maskShowAnimation();
+			// this.setData({
+			// 	maskShow:true,
+			// });
+			let shareRedbagLeft = (app.globalData.windowWidth-280)/2;
 			this.setData({
-				maskShow:true,
-			})
-			this.data.isredbag = true;
+				shareRedbagLeft:shareRedbagLeft+'px',
+				isredbag:true
+			});
 			this.getMerchantRedBagByOrderId();
 		}		
 	},
@@ -56,7 +63,20 @@ Page({
 	        },
 	      }).then(res=>{
 	        if (res.data.code === 0) {
-	          	let expectArrivalTime = parseInt(res.data.value.expectArrivalTime)
+	        	let orderDetail = res.data.value;
+	          	let expectArrivalTime = parseInt(res.data.value.expectArrivalTime);
+	          	if (this.data.isredbag) {
+	          		if (orderDetail.shareRedBagInfo != null) {
+	          			this.shareRedBagShowAnimation();
+	          			this.maskShowAnimation();
+						this.setData({
+							shareRedBagInfo:orderDetail.shareRedBagInfo,
+							maskShow:true,
+							shareShow:true,
+							shareShowImg:true
+						});
+	          		}
+	          	}
 	          	if (expectArrivalTime === 1) {
 	          		this.setData({
 	          			orderDetail:res.data.value,
@@ -73,10 +93,10 @@ Page({
 	          		});
 	          	}
 	        } else {
-	          	let msg = res.data.value;
+	          	let msg = res.data.msg;
 	        } 
 	    }).finally(()=>{
-	    	wx.hideLoading()
+	    	wx.hideLoading();
 	    });
 	},
 	//获取客服电话
@@ -123,11 +143,12 @@ Page({
 					this.setData({
 						show:true
 					})
-		        } else {
-		        	setTimeout(()=>{
-						this.maskHideAnimation()
-					},2000);
 		        } 
+		   //      else {
+		   //      	setTimeout(()=>{
+					// 	this.maskHideAnimation()
+					// },2000);
+		   //      } 
 		    }
 	    }).catch(err=> {
 	    	
@@ -245,6 +266,7 @@ Page({
 	close(){
 		this.maskHideAnimation();
 		this.choiceHideAnimation();
+		this.shareRedBagHideAnimation()
 		this.setData({
 			trackShow:false
 		})
@@ -423,6 +445,70 @@ Page({
 		animation.translate(-50+'%').top(20+'%').step();//修改透明度,放大  
 		this.setData({  
 		   orderRedAnimation: animation.export()  
+		}); 
+	},
+	//关闭红包分享页面
+	closeShare(){
+		this.shareRedBagHideAnimation()
+		this.maskHideAnimation();
+	},
+	//订单完成后出现发红包按钮
+	clickImgShareShowWX(){
+		this.shareRedBagShowAnimation();
+		this.maskShowAnimation();
+		this.setData({
+			shareRedBagInfo:orderDetail.shareRedBagInfo,
+			maskShow:true,
+			shareShow:true
+		});
+	},
+	onShareAppMessage(res) {
+		console.log(1)
+    	return {
+      		title: '马管家红包来袭',
+      		path: this.data.shareRedBagInfo.url,
+      		img: this.data.shareRedBagInfo.img,
+      		success: function(res) {
+        		// 转发成功
+     		},
+      		fail: function(res) {
+        		// 转发失败
+      		}
+    	};
+  	},
+  	shareRedBagShowAnimation(){
+		let animation = wx.createAnimation({ 
+			transformOrigin: "50% 50%", 
+			duration: 500,
+			timingFunction: "ease",
+		});
+		setTimeout(()=> {
+	      	animation.opacity(1).scale(1,1).step();
+	      	this.setData({
+	        	shareRedBagAnimation: animation.export(),
+	      	});
+	    }, 200);
+		animation.opacity(0).scale(0,0).step();//修改透明度,放大  
+		this.setData({  
+		   shareRedBagAnimation: animation.export()  
+		}); 
+	},
+	shareRedBagHideAnimation(){
+		let animation = wx.createAnimation({ 
+			transformOrigin: "50% 50%", 
+			duration: 500,
+			timingFunction: "ease",
+		});
+		setTimeout(()=> {
+	      	animation.opacity(1).scale(0,0).step();
+	      	this.setData({
+	        	shareRedBagAnimation: animation.export(),
+	        	shareShow:false,
+	      	});
+	    }, 200);
+		animation.opacity(0).scale(1,1).step();//修改透明度,放大  
+		this.setData({  
+		   shareRedBagAnimation: animation.export()  
 		}); 
 	},
 	selectTab(e){

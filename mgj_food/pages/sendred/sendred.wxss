@@ -1,3 +1,4 @@
+@import "../redEnvelopes/redEnvelopes.wxss";
 .lottery {
 	margin-top: 20rpx;
 	padding: 0 30rpx;
@@ -67,4 +68,11 @@
 	background: #ff5959;
 	border-bottom:1rpx dashed #ff5959; 
 	color:#fff;
+}
+.itemReason-footer {
+	height: 36rpx
+}
+.disable-redbag{
+	color: #999 !important;
+	font-weight: 200!important;
 }

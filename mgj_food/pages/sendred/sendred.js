@@ -3,8 +3,11 @@ const app = getApp();
 Page({
 	data:{
 		select:null,
+		currentTab:0,
 		itemsPrice:0,
 		redBagList:[],
+		disabledPlatformRedBagList:[],
+		platformRedBagList:[],
 		useRedBagList:[],       //本次订单使用的红包列表      
 		promoInfoJson:[],
 		merchantId:null
@@ -12,8 +15,11 @@ Page({
 	onLoad(){
 		let pages = getCurrentPages();
 	    let prevPage = pages[pages.length - 2];
+	    console.log(prevPage.data.platformRedBagList);
 		this.setData({
 			redBagList:prevPage.data.redBagList,
+			disabledPlatformRedBagList:prevPage.data.disabledPlatformRedBagList,
+			platformRedBagList:prevPage.data.platformRedBagList,
 			useRedBagList:prevPage.data.useRedBagList || [],
 			select:prevPage.data.select,
 		});	
@@ -33,6 +39,20 @@ Page({
 		wx.navigateBack({
 		  	delta: 1
 		});
+	},
+	reasonList(e){
+		let { index } = e.currentTarget.dataset;
+		if (this.data.disabledPlatformRedBagList[index].lookReason) {
+			this.data.disabledPlatformRedBagList[index].lookReason = false;
+			this.setData({
+				disabledPlatformRedBagList:this.data.disabledPlatformRedBagList
+			});
+		} else {
+			this.data.disabledPlatformRedBagList[index].lookReason = true;
+			this.setData({
+				disabledPlatformRedBagList:this.data.disabledPlatformRedBagList
+			});
+		}
 	},
 	selectTab(e){
 		let pages = getCurrentPages();

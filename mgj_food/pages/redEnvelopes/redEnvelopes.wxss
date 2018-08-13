@@ -1,4 +1,4 @@
- .navbar{
+.navbar{
     position: fixed;
     top: 0;
     height: 90rpx;
@@ -6,19 +6,19 @@
     display: flex;
     background: #fff;
     z-index: 1000;
-  }
-  .navbar .navbar-item{
+}
+.navbar .navbar-item{
     position: relative;
     flex: auto;
     text-align: center;
     line-height: 90rpx;
     font-size: 30rpx;
     color: #ffd0a3;  
-  }
-  .navbar .navbar-item.active{
+}
+.navbar .navbar-item.active{
     color: #FF8000;
-  }
-  .navbar .navbar-item.active:after{
+}
+.navbar .navbar-item.active:after{
     content: "";
     display: block;
     position: absolute;
@@ -27,16 +27,20 @@
     right: 0;
     height: 4rpx;
     background: #FF8000;
-  }
-  .redenvelopes{
-      padding:130rpx 30rpx 20rpx;
-      box-sizing: border-box;
-      height: 100%;
-      background-color: #ededed;
-  }
-  .sigma-content{
+}
+.redenvelopes{
+    padding:0rpx 30rpx 0rpx;
+    box-sizing: border-box;
+    height: 100%;
+    background-color: #ededed;
+}
+.redenvelopes-else {
+    padding-top: 130rpx;
+}
+.sigma-content{
     text-align: center;
     height: 72rpx;
+    color:#666;
 }
 .sigma-middle-line{
     content: '';
@@ -170,9 +174,9 @@
     box-shadow: 0rpx 5rpx 1rpx #ccc;
 }
 .redenvelopes-img{
-    height: 20rpx;
-    width: 20rpx;
-    font-size: 20rpx;
+    height: 15rpx;
+    width: 24rpx;
+    margin-left: 8rpx;
 }
 .redenvelopes-category-text-red{
     font-size: 24rpx;
