@@ -1,3 +1,4 @@
+const app = getApp();
 let merchantObj = {
 	moveDown(e){
 		if (!this.data.moveDown) {
@@ -145,7 +146,6 @@ let merchantObj = {
 			sortShow:false,
 			shipShow:false,
 			islocal:false,
-			platformRedList:[],
 			isRegisterGetRedBag:false
 		});
 	},
@@ -216,13 +216,14 @@ let merchantObj = {
 		}); 
 	},
 	platfromRedShowAnimation(){
+		let redBagLeft = (app.globalData.windowWidth-290)/2;
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
 			duration: 500,
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
-	      	animation.translate(-50+'%').top(20+'%').step();
+	      	animation.left(redBagLeft+'px').top(13+'%').step();
 	      	this.setData({
 	        	platformGetRedAnimation: animation.export(),
 	      	});
@@ -233,23 +234,24 @@ let merchantObj = {
 		}); 
 	},
 	platfromRedHideAnimation(){
+		let redBagLeft = (app.globalData.windowWidth-290)/2;
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
 			duration: 500,
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
-	      	animation.translate(-50+'%').top(150+'%').step();
+	      	animation.left(redBagLeft+'px').top(150+'%').step();
 	      	setTimeout(()=>{
 	      		this.setData({
 	        		platformRedList:[]
 	      		});
-	      	},1000)
+	      	},1000);
 	      	this.setData({
 	        	platformGetRedAnimation: animation.export(),
 	      	});
 	    }, 200);
-		animation.translate(-50+'%').top(20+'%').step(); 
+		animation.left(redBagLeft+'px').top(13+'%').step(); 
 		this.setData({  
 		   platformGetRedAnimation: animation.export()  
 		}); 

@@ -550,10 +550,10 @@ Page(Object.assign({}, merchantObj, {
 	//下拉刷新
     onPullDownRefresh() {
     	if (this.data.maskShow) {
-    		wx.stopPullDownRefresh()
-    		return false
+    		wx.stopPullDownRefresh();
+    		return false;
     	}
-    	this.data.start = 0
+    	this.data.start = 0;
       	this.initClass();
       	this.findTagCategory();
       	this.getDataList(false,true);
@@ -578,13 +578,14 @@ Page(Object.assign({}, merchantObj, {
     	};
   	},
   	platformRegisterShowAnimation(){
+  		let redBagLeft = (app.globalData.windowWidth-290)/2;
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
 			duration: 500,
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
-	      	animation.opacity(1).scale(1,1).step();
+	      	animation.opacity(1).scale(1,1).left(redBagLeft+'px').step();
 	      	this.setData({
 	        	platformNoRedAnimation: animation.export(),
 	      	});
