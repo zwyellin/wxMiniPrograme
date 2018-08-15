@@ -52,6 +52,44 @@
   				<!-- <text class="order-name">{{food.name}}</text> -->
 				<!-- <text class="fr" style="color:#b6b6b6">x {{food.quantity}}</text> -->
   			</view>
+  			<view wx:if="{{orderDetail.boxPrice != 0 || orderDetail.boxPrice != ''}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
+				<text style="color:#333">包装费</text>
+				<text class="fr">￥{{orderDetail.boxPrice}}</text>
+			</view>
+			<view wx:if="{{orderDetail.shipmentType === 2 && orderDetail.shippingFee}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
+				<text style="color:#333" class="shipmenttip-txt">配送费<text style="color:#b6b6b6;font-size: 22rpx"> ({{orderDetail.shipmentTip}})</text></text>
+				<text class="fr">￥{{orderDetail.shippingFee}}</text>
+			</view>
+			<view wx:if="{{orderDetail.shipmentType === 1 && orderDetail.shippingFee}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
+				<text style="color:#333" class="shipmenttip-txt">{{orderDetail.shipmentTip}}</text>
+				<text class="fr">￥{{orderDetail.shippingFee}}</text>
+			</view>
+			<view class="query-message font-12 clearfix"
+				wx:for="{{orderDetail.promoList}}" 
+				wx:for-index="idx" 
+				wx:for-item="promotion"
+				wx:key="idx">
+				<view class="fl font-14">
+					<image class="bran-img" src="{{promotion.promoImg}}"></image>
+					<text>{{promotion.rule}}</text>
+				</view>
+				<view class="fr">
+					<text wx:if="{{promotion.discountAmt}}" style="color:#ff5959">- ￥{{promotion.discountAmt}}</text>	
+				</view>
+			</view>
+			<view class="query-message font-12 clearfix"
+				wx:for="{{orderDetail.redBagList}}" 
+				wx:for-index="idx" 
+				wx:for-item="item"
+				wx:key="idx">
+				<view class="fl font-14">
+					<image class="bran-img" src="../../../images/images/icon_red.png"></image>
+					<text>{{item.title}}</text>
+				</view>
+				<view class="fr">
+					<text style="color:#ff5959">- ￥{{item.amt}}</text>
+				</view>
+			</view>
   			<view wx:if="{{orderDetail.orderItems}}" class="order-menu" style="margin-top:0;height:90rpx;line-height:90rpx">
   				<text class="fr" style="color:#aaaaaa">共{{cart.getCartCount(orderDetail.orderItems)}}件商品 合计 : <text style="color:#333;font-size: 28rpx;font-weight: 500" >￥{{orderDetail.totalPrice}}</text></text>
   			</view>
@@ -127,16 +165,18 @@
 					</view>
 					<view class="lottery-content-right font-14">
 						<view class="lottery-content-text">返现红包</view>
-						<view class="money" >满{{getMerchantRedBagList.restrictAmt}}元可用</view>
+						<view class="money">满{{getMerchantRedBagList.restrictAmt}}元可用</view>
 					</view>
 				</view>
 			</view>
 			<view class="redbag-food">
-				<text>恭喜获得天降红包，可抵扣在线支付时的订单金额</text>
+				<text>下单返红包，可抵扣在线支付时的订单金额</text>
 			</view>
 		</view>
 	</view>
 	<view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close" catchtouchmove="myCatchTouch">	
+	</view>
+	<view wx:if="{{shareShow}}" class="common-mask-share" catchtap="closeShare" catchtouchmove="myCatchTouch">	
 	</view>
 	<view wx:if="{{trackShow}}" class="order-track" catchtouchmove="myCatchTouch">
 		<view class="track-header flex">
@@ -239,8 +279,8 @@
 	<!-- 订单完成后出现发红包按钮图片 -->
 	<image wx:if="{{shareShowImg}}" class="red-img-big" src="../../../images/merchant/shareredbag.png" bindtap="clickImgShareShowWX"></image>
 	<!--  -->
-	<view class="order-overPage" wx:if="{{shareShow}}">
-		<view class="sharered-page" style="left:{{shareRedbagLeft}}" wx:if="{{shareShow}}" animation="{{shareRedBagAnimation}}" catchtouchmove="myCatchTouch">
+	<view class="order-overPage flex" wx:if="{{shareShow}}">
+		<view class="sharered-page" wx:if="{{shareShow}}" animation="{{shareRedBagAnimation}}" catchtouchmove="myCatchTouch">
 			<view style="left:{{shareRedbagLeft}}">
 				<view class="red-page-img flex">
 					<image class="faredbagimg" src="../../../images/merchant/faredbag.png"></image>
@@ -248,8 +288,8 @@
 				<view class="share-txt" style="font-weight: 900;margin: 26rpx 0">【 送你一个拼手气红包 】</view>
 				<view class="share-txt">快分享给小伙伴看看谁会撞大运</view>
 				<view class="red-page-footer flex">
-					<view class="flex-item" catchtab="closeShare">取消</view>
-					<button open-type="share" class="flex-item" style="color:#faa761;border-left: 1rpx solid #d8d8d8;background: #fff">发红包</button>
+					<view class="flex-item" bindtab="closeShare">取消</view>
+					<button open-type="share" class="flex-item send-wxshare">发红包</button>
 				</view>
 			</view>
 		</view>	

@@ -4,7 +4,6 @@ const app = getApp();
 Page({
 	data:{
 		isDisable:false,
-		select:false,
 		totalPrice:0,
 		discountAmt:0,
 		discountGoodsDiscountAmt: 0, //订单优惠价格
@@ -13,13 +12,22 @@ Page({
 		addressInfoId:null,
 		deliveryTimes:[],    //配送时间信息
 		expectedArrivalTime:1,
-		redBagUsableCount:0,    //可用红包个数
+
+		redBagUsableCount:0,    //可用商家红包个数
 		redBagList:[],          //可用的商家红包列表
+		useRedBagList:null,       //本次订单使用的商家红包列表
+		select:true,                //商家红包使用状态
+		redBagMoney:0,               //商家红包使用金额
+		redText:'暂无可用红包',      
+
 		platformRedBagList:[],  //可用的平台红包列表  
 		disabledPlatformRedBagList:[], //不可用的平台红包列表   
-		useRedBagList:null,       //本次订单使用的红包列表
-		select:true,            //红包使用状态
-		redBagMoney:0,
+		usePlatformRedBagList:null,       //本次订单使用的平台红包列表
+		platformSelect:true,        //平台红包使用状态
+		platformRedBagMoney:0,       //平台红包使用金额
+		platformRedBagCount:0,  //可使用的平台红包个数
+		platformRedText:'无可用红包',
+
 		promoInfoJson:[],       //本次订单参与的商家活动json  不明字段
 		day:'',
 		initTime:'',
@@ -30,9 +38,9 @@ Page({
 		payList:[],
 		redPackage:[],       //红包信息
 		remarks: '',          //备注信息
-		redText:'暂无可用红包',
 		maskShow:false,
-		timePageShow:false
+		timePageShow:false,
+		isOpenOrderMenu:false   //控制订单商品展开显示
 	},
 	onLoad(options){
 		let { merchantId } = options;
@@ -77,26 +85,38 @@ Page({
 		this.queryPlatformRedBagList();
 	},
 	onShow(){
-		if (this.data.useRedBagList != null || this.data.addressInfoId != null) {
+		if (this.data.useRedBagList != null || this.data.addressInfoId != null || this.data.usePlatformRedBagList != null) {
 			let redBagMoney = 0;
+			let platformRedBagMoney = 0;
 			this.orderPreview().then(res=>{
 				if (res.data.code === 0) {
-					let orderMessage = res.data.value
-					let addressInfo = res.data.value.addressInfo
+					let orderMessage = res.data.value;
+					let addressInfo = res.data.value.addressInfo;
 					this.setData({
 						orderMessage:orderMessage,
 						addressInfo:addressInfo
 					});
 				}
 	        }).finally(()=>{
-	        	wx.hideLoading()
+	        	wx.hideLoading();
 	        });
+	        if (this.data.addressInfoId != null && this.data.usePlatformRedBagList === null) {
+	        	this.queryPlatformRedBagList();
+	        }
 	        if (this.data.useRedBagList != null) {
 	        	this.data.useRedBagList.map(item=>{
 					redBagMoney += item.amt;
 				});
 				this.setData({
 					redBagMoney:redBagMoney
+				});
+	        }
+	        if (this.data.usePlatformRedBagList != null) {
+	        	this.data.usePlatformRedBagList.map(item=>{
+					platformRedBagMoney += item.amt;
+				});
+				this.setData({
+					platformRedBagMoney:platformRedBagMoney
 				});
 	        }		
 		}
@@ -133,7 +153,6 @@ Page({
 	},
 	//获取平台可用红包
 	queryPlatformRedBagList(){
-		console.log(this.data.promoInfoJson);
 		wxRequest({
         	url:'/merchant/userClient?m=queryPlatformRedBagList',
         	method:'POST',
@@ -142,9 +161,11 @@ Page({
         		params:{
         			itemsPrice: this.data.orderMessage.totalPrice,
 					merchantId: this.data.merchantId,
+					userAddressId:this.data.addressInfoId,
 					agentId:3,
 					promoInfoJson: JSON.stringify(this.data.promoInfoJson),
-					businessType:1
+					businessType:1,
+					discountGoodsDiscountAmt:this.data.orderMessage.discountGoodsDiscountAmt
         		}	
         	},
         }).then(res=>{
@@ -153,11 +174,13 @@ Page({
 				console.log(res);
 				let platformRedBagAvailableList = res.data.value.platformRedBagAvailableList;    //不可使用的平台红包
 				let platformRedBagList = res.data.value.platformRedBagList;      //可使用的平台红包
+				let platformRedBagCount = res.data.value.platformRedBagCount;      //可使用的平台红包个数
 				platformRedBagAvailableList.map(item=>{
 					item.lookReason = false;
 				});
 				this.setData({
 					disabledPlatformRedBagList:platformRedBagAvailableList,
+					platformRedBagCount:platformRedBagCount,
 					platformRedBagList:platformRedBagList
 				});
 			} else {
@@ -218,6 +241,12 @@ Page({
 			timePageShow:true
 		});
 	},
+	//订单商品展开显示隐藏
+	openOrderMenu(){
+		this.setData({
+			isOpenOrderMenu:!this.data.isOpenOrderMenu
+		});
+	},
 	//请求地址
 	findUserAddress(){
 		wx.navigateTo({
@@ -260,10 +289,27 @@ Page({
 	        });
 	    }
 	},
-	redPage(){
-		// if (!this.data.redBagUsableCount) return;
+	platformRedPage(){
+		// 不可与商家优惠代金券同时使用
+		if (this.data.useRedBagList && this.data.useRedBagList.length != 0) {
+			if (this.data.orderMessage.redBagSharedRelation == 0) {    //不共享
+				feedbackApi.showToast({title:'不可与商家优惠代金券同时使用'});
+				return false;
+			}
+		}
 		wx.navigateTo({
-  			url: '/pages/sendred/sendred?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.orderMessage.totalPrice
+  			url: '/pages/redbag/platformRedbag/platformRedbag?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.orderMessage.totalPrice
+		});
+	},
+	merchantRedPage(){
+		if (this.data.usePlatformRedBagList && this.data.usePlatformRedBagList.length != 0) {
+			if (this.data.orderMessage.redBagSharedRelation == 0) {    //不共享
+				feedbackApi.showToast({title:'不可与平台红包优惠同时使用'});
+				return false;
+			}
+		}
+		wx.navigateTo({
+  			url: '/pages/redbag/merchantRedbag/merchantRedbag?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.orderMessage.totalPrice
 		});
 	},
 	//确认订单
@@ -282,6 +328,27 @@ Page({
 		        mask: true
 		    });
 			this.data.isDisable = true;
+			let orderUseRedBagList = [];
+			if (this.data.useRedBagList) {
+				this.data.useRedBagList.map(item=>{
+					let json = {}
+					json.id = item.id;
+					json.amt = item.amt;
+					json.name = item.name;
+					json.promotionType = item.promotionType
+					orderUseRedBagList.push(json)
+				})
+			}
+			if (this.data.usePlatformRedBagList) {
+				this.data.usePlatformRedBagList.map(item=>{
+					let json = {}
+					json.id = item.id;
+					json.amt = item.amt;
+					json.name = item.name;
+					json.promotionType = item.promotionType
+					orderUseRedBagList.push(json)
+				})
+			}
 			let data = {
 				loginToken:app.globalData.token,
 				expectedArrivalTime:this.data.expectedArrivalTime,
@@ -290,7 +357,7 @@ Page({
 				userAddressId:this.data.addressInfo.id,
 				userId:this.data.orderMessage.userId,
 				caution:this.data.remarks,
-				redBags:this.data.useRedBagList
+				redBags:orderUseRedBagList.length === 0 ? null : orderUseRedBagList
 			};
 			data.orderItems = this.data.orderMessage.orderItems;
 			wxRequest({
@@ -327,7 +394,7 @@ Page({
 		                if (shoppingCart[merchantId]) {
 		                  shoppingCart[merchantId] = [];
 		                }
-	        			setTimeout(()=>{
+	        			setTimeout(()=> {
 	        				wx.redirectTo({
 		                    	url: '/pages/goods/cartDetail/cartDetail?orderid='+orderId,
                   			});
@@ -357,10 +424,31 @@ Page({
 	        duration: 200000,
 	        mask: true
 	    });
+	    let orderUseRedBagList = []
+	    if (this.data.useRedBagList) {
+			this.data.useRedBagList.map(item=>{
+				let json = {}
+				json.id = item.id;
+				json.amt = item.amt;
+				json.name = item.name;
+				json.promotionType = item.promotionType
+				orderUseRedBagList.push(json)
+			})
+		}
+		if (this.data.usePlatformRedBagList) {
+			this.data.usePlatformRedBagList.map(item=>{
+				let json = {}
+				json.id = item.id;
+				json.amt = item.amt;
+				json.name = item.name;
+				json.promotionType = item.promotionType
+				orderUseRedBagList.push(json)
+			})
+		}
 		let orderItems = [];
 		let data = {loginToken:app.globalData.token,userId:app.globalData.userId,merchantId:this.data.merchantId};
 		data.orderItems = this.data.orderMessage.orderItems;
-		data.redBags = this.data.useRedBagList;
+		data.redBags = orderUseRedBagList.length === 0 ? null : orderUseRedBagList;
 		data.orderPayType = this.data.payIndex+1;
 		data.userAddressId = this.data.addressInfoId
 		return wxRequest({

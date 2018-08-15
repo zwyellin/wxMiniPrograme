@@ -52,14 +52,24 @@
 				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>	
 			</view>
 		</picker>
-		<view wx:if="{{payIndex=== 0}}" class="query-message font-14 clearfix" bindtap="redPage">
+		<view wx:if="{{payIndex=== 0}}" class="query-message font-14 clearfix" bindtap="platformRedPage">
 			<view class="fl font-16">
-				<text>我的红包</text>
+				<text>平台红包</text>
 			</view>
 			<view class="fr">
-				<text wx:if="{{redBagUsableCount===0}}" style="color:#999">{{redText}}</text>
-				<text wx:if="{{redBagUsableCount&& redBagMoney === 0}}" style="color:#999">{{redBagUsableCount}}个红包可用</text>
-				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">红包金额为{{redBagMoney}}元</text>
+				<text wx:if="{{platformRedBagCount===0}}" style="color:#999">{{platformRedText}}</text>
+				<text wx:if="{{platformRedBagCount && platformRedBagMoney === 0}}" style="color:#ff9595">有{{platformRedBagCount}}个红包可用</text>
+				<text wx:if="{{platformRedBagMoney != 0}}" style="color:#ff9595">-￥{{platformRedBagMoney}}</text>
+				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
+			</view>
+		</view>
+		<view wx:if="{{payIndex=== 0 && redBagUsableCount!==0}}" class="query-message font-14 clearfix" bindtap="merchantRedPage">
+			<view class="fl font-16">
+				<text>商家代金券</text>
+			</view>
+			<view class="fr">
+				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个代金券可用</text>
+				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">代金券金额为{{redBagMoney}}元</text>
 				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
 			</view>
 		</view>
@@ -75,7 +85,7 @@
 		</navigator>
 	</view>
 	<view class="mt20">
-		<view class="order-listmenu">
+		<view class="order-listmenu" style="height:{{orderMessage.orderItems.length>3&&!isOpenOrderMenu ? '298rpx' : ''}}">
 			<view class="order-listitem flex"
 				wx:for="{{orderMessage.orderItems}}" 
 				wx:for-item="food" 
@@ -95,6 +105,13 @@
 					<text style="margin-right:156rpx;color:#b6b6b6">x {{food.quantity}}</text>
 					<text style="text-align:right">￥{{query.shopFloat(food.price*food.quantity,2)}}</text>
 				</view>
+			</view>
+		</view>
+		<view class="open-ordermenu flex" wx:if="{{orderMessage.orderItems.length >3}}">
+			<view class="open-ordermenubutton flex" bindtap="openOrderMenu">
+				<view>{{!isOpenOrderMenu ? '点击展开' : '点击收起'}}</view>
+				<image wx:if="{{!isOpenOrderMenu}}" class="open-ordermenuimg" src="/images/images/down.png" ></image>
+				<image wx:if="{{isOpenOrderMenu}}"  class="open-ordermenuimg"  src="/images/images/up.png"></image>
 			</view>
 		</view>
 		<view wx:if="{{orderMessage.boxPrice != 0 || orderMessage.boxPrice != ''}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
@@ -123,7 +140,7 @@
 			<text wx:if="{{promotion.discountAmt}}" style="color:#ff9900">- ￥{{promotion.discountAmt}}</text>	
 		</view>
 	</view>
-	<view wx:if="{{payIndex=== 0 && useRedBagList.length != 0 && useRedBagList.length != null}}" class="query-message font-12 clearfix">
+	<!-- <view wx:if="{{payIndex=== 0 && useRedBagList.length != 0 && useRedBagList.length != null}}" class="query-message font-12 clearfix">
 		<view class="fl font-14">
 			<image class="bran-img" src="../../images/images/icon_red.png"></image>
 			<text>红包抵扣</text>
@@ -131,7 +148,7 @@
 		<view class="fr">
 			<text style="color:#ff9595">- ￥{{redBagMoney}}</text>
 		</view>
-	</view>
+	</view> -->
 	<view class="query-check">
 		<view class="check-left font-16">
 			<text class="query-check-text" >

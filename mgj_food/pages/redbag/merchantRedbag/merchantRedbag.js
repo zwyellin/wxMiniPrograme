@@ -1,4 +1,4 @@
-const { wxRequest } = require('../../utils/util.js');
+const { wxRequest } = require('../../../utils/util.js');
 const app = getApp();
 Page({
 	data:{
@@ -67,7 +67,7 @@ Page({
 		let isFound = false;
 		useRedBagList.map((item,index)=>{
 			if (item.promotionType === redBagList[index].promotionType) {
-				useRedBagList.splice(index,1,item);
+				useRedBagList.splice(index,1,redBagList[index]);
 				isFound = true;
 			}	
 		});

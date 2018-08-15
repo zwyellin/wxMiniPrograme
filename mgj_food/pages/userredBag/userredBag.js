@@ -48,7 +48,7 @@ Page({
 		  	url:'/merchant/userClient?m=queryRedBagList',
 		  	method:'POST',
 		  	data:{
-				token:'c935876b48414cd3998f61d30f68d281',
+				token:app.globalData.token,
 				params:{
 			  		start:this.data.start,
 			  		size:5,

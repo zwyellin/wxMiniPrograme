@@ -12,7 +12,6 @@
 	background: #fff;
   color:#333;
 }
-
 .query-img {
 	width: 30rpx;
   height: 14rpx;
@@ -43,7 +42,8 @@
   padding: 24rpx 24rpx 16rpx 30rpx;
   font-size: 26rpx;
   color: #333;
-  background: #fff
+  background: #fff;
+  overflow:hidden;
 }
 .order-listitem {
   margin-top: 44rpx;
@@ -183,4 +183,23 @@
     overflow: auto;
     opacity: 0.3;
     background: #000;
+}
+.open-ordermenu {
+    justify-content: center;
+    background: #fff;
+}
+.open-ordermenubutton {
+    align-items: center;
+    justify-content: center;
+    height: 46rpx;
+    line-height: 46rpx;
+    width: 134rpx;
+    text-align: center;
+    border: 1rpx solid #e0e0e0;
+    color:#666;
+    font-size: 24rpx;
+}
+.open-ordermenuimg {
+    height: 10rpx;
+    width: 18rpx;
 }

@@ -558,13 +558,14 @@ Page(Object.assign({}, merchantObj, {
       	this.findTagCategory();
       	this.getDataList(false,true);
     },
-	// onHide() {
-	// 	clearInterval(interval);
-	// 	this.setData({
-	// 		marqueeDistance2: 0,
-	//     	marquee2copy_status: false
-	// 	});
-	// },
+	onHide() {
+		if (this.data.isRegisterGetRedBag) {
+			this.setData({
+				isRegisterGetRedBag: false,
+				maskShow: false
+			})
+		}
+	},
 	onShareAppMessage(res) {
     	return {
       		title: '马管家外卖',

@@ -131,12 +131,24 @@ let merchantObj = {
 			this.getDataList(false,true);
 		}	
 	},
+	getUserRedBag(){
+		let that = this;
+		wx.navigateTo({
+			url:"/pages/userredBag/userredBag",
+			success:function(){
+				that.setData({
+					platformRedList:[],
+					maskShow: false
+				});	
+			}
+		});
+	},
 	//商家配送方式
 	selectShip(e){
 		let { index } = e.currentTarget.dataset;
 		this.setData({
 			shipFilter:index
-		})
+		});
 	},
 	close(){//关闭弹窗
 		this.maskHideAnimation();

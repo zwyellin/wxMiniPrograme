@@ -1,4 +1,4 @@
-@import "../redEnvelopes/redEnvelopes.wxss";
+@import "../../../components/redbag/orderPreview.wxss";
 .lottery {
 	margin-top: 20rpx;
 	padding: 0 30rpx;

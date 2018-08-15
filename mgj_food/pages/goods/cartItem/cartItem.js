@@ -15,26 +15,31 @@ Page({
       firstRefresh:false
   	},
   	onShow(){
-      let loginMessage = wx.getStorageSync('loginMessage');
-      let loginstatus = wx.getStorageSync('loginstatus');
-      if (loginMessage && loginstatus) {
-        this.setData({
-          start:0,
-          loginsuccess:true,
-        });
-        // if (!this.data.firstRefresh) {
-        //     this.findNewUserTOrders();
-        //     this.data.firstRefresh = true;
-        // } else {
-        //  wx.startPullDownRefresh();
-        // }
-        this.findNewUserTOrders();
-      }	else {
-        this.setData({
-          loginsuccess:false,
-          show:true
-        });
-      }
+        let loginMessage = wx.getStorageSync('loginMessage');
+        let loginStatus = wx.getStorageSync('loginstatus');
+        if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+            this.setData({
+                start:0,
+                loginsuccess:true,
+            });
+            this.findNewUserTOrders();
+          // if (!this.data.firstRefresh) {
+          //     this.findNewUserTOrders();
+          //     this.data.firstRefresh = true;
+          // } else {
+          //  wx.startPullDownRefresh();
+          // }
+            let isloginGetPlatformRedBag = wx.getStorageSync('isloginGetPlatformRedBag');  // 是否登录过领取过平台红包
+            if (isloginGetPlatformRedBag) {
+                this.getPlatformRedBag();
+                wx.setStorageSync('isloginGetPlatformRedBag',false);
+            }
+        }	else {
+            this.setData({
+                loginsuccess:false,
+                show:true
+            });
+        }
   	},
     checkTime(i){  
       if(i < 10 ){  
@@ -253,5 +258,25 @@ Page({
     onReachBottom(){
       this.data.start = this.data.orderList.length;
       this.findNewUserTOrders(true);  
+    },
+    // 领取平台红包
+    getPlatformRedBag(){
+      wxRequest({
+        url:'/merchant/userClient?m=getPlatformRedBag',
+        method:'POST',
+        data:{
+          token: app.globalData.token,
+          params:{
+            longitude:app.globalData.longitude,
+            latitude:app.globalData.latitude
+          } 
+        },
+      }).then(res=>{
+        if (res.data.code === 0) {
+          if (res.data.value.status == 1) { // 该代理商有平台红包
+              console.log('领取成功')
+          }
+        }
+      });
     },
 });

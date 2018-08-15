@@ -80,7 +80,7 @@ Page({
     var that = this;
     if (!this.data.payWxColor && !this.data.payChannelColor) {
       feedbackApi.showToast({title:'请选择支付方式'});
-      return
+      return;
     }
     // 微信支付
     if (this.data.payWxColor && !this.data.isPayStatus) {

@@ -34,8 +34,8 @@ Page({
   onShow () {
     this.findCustomerAndComplainPhoneByUserXY();
     let loginMessage = wx.getStorageSync('loginMessage');
-    let loginstatus = wx.getStorageSync('loginstatus');
-    if (loginMessage && typeof loginMessage == "object" && loginstatus && loginMessage.token) {
+    let loginStatus = wx.getStorageSync('loginstatus');
+    if (loginMessage && typeof loginMessage == "object" && loginStatus && loginMessage.token) {
       this.findUserCenter();
       this.findUserListAndCashbackAmtSum();
       let name = loginMessage.mobile.toString();
@@ -45,6 +45,12 @@ Page({
         userInfo:loginMessage,
         mobile:name
       });
+      // 是否登录过领取过平台红包
+      let isloginGetPlatformRedBag = wx.getStorageSync('isloginGetPlatformRedBag');  
+      if (isloginGetPlatformRedBag) {
+          this.getPlatformRedBag();
+          wx.setStorageSync('isloginGetPlatformRedBag',false);
+      }
     }
   },
   //获取客服电话
@@ -129,5 +135,24 @@ Page({
     wx.makePhoneCall({
       phoneNumber: this.data.servicePhone   //电话号码
     })
-  }
+  },
+  getPlatformRedBag(){
+      wxRequest({
+        url:'/merchant/userClient?m=getPlatformRedBag',
+        method:'POST',
+        data:{
+          token: app.globalData.token,
+          params:{
+            longitude:app.globalData.longitude,
+            latitude:app.globalData.latitude
+          } 
+        },
+      }).then(res=>{
+        if (res.data.code === 0) {
+          if (res.data.value.status == 1) { // 该代理商有平台红包
+              console.log('领取成功');
+          }
+        }
+      });
+    },
 });

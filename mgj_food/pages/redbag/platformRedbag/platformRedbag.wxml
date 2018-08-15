@@ -1,34 +1,9 @@
 <view class="container page-common">
 	<view class="lottery">
 		<text class="lottery-text">不使用红包</text>
-		<text class="lottery-style fr {{select ? 'lottery-style-active' : ''}}" bindtap="selectradio"></text>
+		<text class="lottery-style fr {{platformSelect ? 'lottery-style-active' : ''}}" bindtap="selectradio"></text>
 	</view>
-	<!-- <view class="lottery-wrapper"
-		wx:for="{{redBagList}}"   
-      	wx:for-item="item"
-      	wx:for-index="index" 
-      	wx:key="index" 
-      	data-index="{{index}}"
-      	bindtap="selectTab">
-		<view class="lottery-content flex {{item.selectStatus ? 'active' : ''}}">
-			<view class="lottery-icon">
-				<image class="lottery-icon-img" src="{{item.merchantLogo}}"></image>
-			</view>
-			<view class="lottery-content-right font-14">
-				<view class="lottery-content-text">{{item.merchantName}}</view>
-				<view class="money {{item.selectStatus ? 'active' : ''}}" >满{{item.restrictAmt}}元可用</view>
-			</view>
-			<view class="lottery-content-price {{item.selectStatus ? 'active' : ''}}">
-				<text>￥</text><text style="font-size:60rpx">{{item.amt}}</text>
-			</view>
-		</view>
-		<view class="lottery-express {{item.selectStatus ? 'active' : ''}}">
-			<text style="margin-right: 20rpx">有效期至</text>
-			<text> {{item.expirationTime}}</text>
-			<text class="fr">外卖</text>
-		</view>
-	</view> -->
-	<view wx:if="{{currentTab == 0}}" class="container page-common redenvelopes">
+	<view class="container page-common redenvelopes">
 		<view wx:if="{{platformRedBagList.length != 0}}">
 			<view class="sigma-content">
 				<view class="sigma-middle-line">
@@ -39,14 +14,17 @@
 				wx:for="{{platformRedBagList}}"
 				wx:for-index="idx" 
 				wx:for-item="item" 
-				wx:key="id">
+				wx:key="id"
+				data-index="{{idx}}"
+      			bindtap="selectTab">
 				<view class="redenvelopes-center flex">
+					<image wx:if="{{item.selectStatus}}" class="select-useredbag" src="../../../images/merchant/usered@2x.png"></image>
 					<view class="semi-circle-left"></view>
 					<view class="semi-circle-right"></view>
 					<view class="flex-item">
 						<view class="redenvelopes-name">{{item.name}}</view>
 						<view class="redenvelopes-tiem">有效期至{{item.expirationTime}}</view>
-						<view wx:if="{{item.isRestrictTime == 1}}" class="redenvelopes-available">10:00-12:00可用</view>
+						<!-- <view wx:if="{{item.isRestrictTime == 1}}" class="redenvelopes-available">10:00-12:00可用</view> -->
 						<view class="redenvelopes-mobile">限收货人手机号{{item.mobile}}</view>
 					</view>
 					<view class="redenvelopes-number flex">
@@ -82,7 +60,7 @@
 						<view class="flex-item">
 							<view class="redenvelopes-name disable-redbag">{{item.name}}</view>
 							<view class="redenvelopes-tiem disable-redbag">有效期至{{item.expirationTime}}</view>
-							<view wx:if="{{item.isRestrictTime == 1}}" class="redenvelopes-available">10:00-12:00可用</view>
+							<!-- <view wx:if="{{item.isRestrictTime == 1}}" class="redenvelopes-available">10:00-12:00可用</view> -->
 							<view class="redenvelopes-mobile">限收货人手机号{{item.mobile}}</view>
 						</view>
 						<view class="redenvelopes-number flex-item flex ">
@@ -94,11 +72,6 @@
 							</view>
 						</view>
 					</view>
-					<!-- <view class="redenvelopes-category flex">
-						<view class="redenvelopes-category-text">
-							限品类:{{item.businessTypeName}}
-						</view>
-					</view> -->
 					<view class="redenvelopes-category-color flex" style="{{item.lookReason ? 'padding-bottom: 14rpx' : ''}}">
 						<view class="redenvelopes-category-text-red" bindtap="reasonList" data-index="{{idx}}">
 							<text>不可用原因</text>

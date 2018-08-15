@@ -107,7 +107,7 @@ Page({
 			feedbackApi.showToast({title: '手机号不能为空'});
 			return;
 		}
-		if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(this.data.phone))) {
+		if (!(/^1[3456789]\d{9}$/.test(parseInt(this.data.phone)))) {
 			feedbackApi.showToast({title: '请输入正确的手机号'});
 			return;
 		}
@@ -139,6 +139,7 @@ Page({
 				if (this.data.switch === 'switch') {
 					let pages = getCurrentPages();
 	    			let prevPage = pages[pages.length - 2];
+	    			wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过个人中心页登录领取过平台红包
 					wx.switchTab({
 				  		url:'/pages/userCenter/userCenter',
 				  		success : function(){
@@ -153,6 +154,7 @@ Page({
 				} else if (this.data.switch === 'cartitem') {
 					let pages = getCurrentPages();
 	    			let prevPage = pages[pages.length - 2];
+	    			wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过订单页登录领取过平台红包
 					wx.switchTab({
 				  		url:'/pages/goods/cartItem/cartItem',
 				  		success : function(){
@@ -211,7 +213,7 @@ Page({
 			feedbackApi.showToast({title: '手机号不能为空'});
 			return;
 		}
-		if (!(/^1(3|4|5|7|8)\d{9}$/.test(this.data.phone))) {
+		if (!(/^1[3456789]\d{9}$/.test(parseInt(this.data.phone)))) {
 			feedbackApi.showToast({title: '请输入正确的手机号'});
 			return;
 		}

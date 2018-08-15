@@ -34,16 +34,9 @@ Page({
 			// this.setData({
 			// 	maskShow:true,
 			// });
-			let shareRedbagLeft = (app.globalData.windowWidth-280)/2;
-			this.setData({
-				shareRedbagLeft:shareRedbagLeft+'px',
-				isredbag:true
-			});
+			this.data.isredbag = true;
 			this.getMerchantRedBagByOrderId();
 		}		
-	},
-	onShow(){
-		
 	},
 	findNewTOrderById(){
 		wx.showToast({
@@ -68,10 +61,8 @@ Page({
 	          	if (this.data.isredbag) {
 	          		if (orderDetail.shareRedBagInfo != null) {
 	          			this.shareRedBagShowAnimation();
-	          			this.maskShowAnimation();
 						this.setData({
 							shareRedBagInfo:orderDetail.shareRedBagInfo,
-							maskShow:true,
 							shareShow:true,
 							shareShowImg:true
 						});
@@ -134,15 +125,13 @@ Page({
 		    if (res.data.code === 0) {
 		        let getMerchantRedBagList = res.data.value;
 		        if (getMerchantRedBagList) {
-		        	console.log(12)
+		        	this.maskShowAnimation();
+		        	this.choiceShowAnimation();
 		        	this.setData({
-		          		getMerchantRedBagList:getMerchantRedBagList
+		          		getMerchantRedBagList:getMerchantRedBagList,
+		          		maskShow:true,
+		          		show:true
 		        	});
-		        	// this.maskShowAnimation();
-					this.choiceShowAnimation();
-					this.setData({
-						show:true
-					})
 		        } 
 		   //      else {
 		   //      	setTimeout(()=>{
@@ -151,7 +140,7 @@ Page({
 		   //      } 
 		    }
 	    }).catch(err=> {
-	    	
+	    	console.log(err);
 	    });
 	},
 	//再来一单
@@ -260,13 +249,11 @@ Page({
       	});
     },
     myCatchTouch(){
-    	console.log(12)
 		return false
 	},
 	close(){
 		this.maskHideAnimation();
 		this.choiceHideAnimation();
-		this.shareRedBagHideAnimation()
 		this.setData({
 			trackShow:false
 		})
@@ -450,24 +437,20 @@ Page({
 	//关闭红包分享页面
 	closeShare(){
 		this.shareRedBagHideAnimation()
-		this.maskHideAnimation();
 	},
 	//订单完成后出现发红包按钮
 	clickImgShareShowWX(){
 		this.shareRedBagShowAnimation();
-		this.maskShowAnimation();
 		this.setData({
-			shareRedBagInfo:orderDetail.shareRedBagInfo,
-			maskShow:true,
+			shareRedBagInfo:this.data.orderDetail.shareRedBagInfo,
 			shareShow:true
 		});
 	},
 	onShareAppMessage(res) {
-		console.log(1)
     	return {
       		title: '马管家红包来袭',
       		path: this.data.shareRedBagInfo.url,
-      		img: this.data.shareRedBagInfo.img,
+      		imageUrl: this.data.shareRedBagInfo.img,
       		success: function(res) {
         		// 转发成功
      		},
@@ -501,9 +484,13 @@ Page({
 		});
 		setTimeout(()=> {
 	      	animation.opacity(1).scale(0,0).step();
+	      	setTimeout(()=>{
+	      		this.setData({
+	        		shareShow:false,
+	      		});
+	      	},1000);
 	      	this.setData({
 	        	shareRedBagAnimation: animation.export(),
-	        	shareShow:false,
 	      	});
 	    }, 200);
 		animation.opacity(0).scale(1,1).step();//修改透明度,放大  

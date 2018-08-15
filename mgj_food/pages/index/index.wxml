@@ -165,7 +165,7 @@
 			<text>本区域暂未开通外卖服务</text>
 		</view>
 		<view class="agent-txt font-14" style="margin-top: 20rpx">
-			<text>加盟热线：0791-83805660</text>
+			<text>加盟热线：400-9979393</text>
 		</view>
 	</view>
 	<!-- 无代理商结束 -->
@@ -180,17 +180,25 @@
 			<image class="redbag-img" src="../../images/merchant/tian_redbag@2x.png"></image>
 		</view>
 		<scroll-view class="redlist-content" scroll-y="true" style="{{platformRedList.length >=3 ? 'height:440rpx': ''}}">
-			<view class="redbag-content">
+			<view class="redbag-content"
+				wx:for="{{platformRedList}}"
+				wx:for-index="idx" 
+				wx:for-item="item" 
+				wx:key="id">
 				<view class="lottery-content flex">
-					<view class="lottery-icon" style="color: #ff3e4a">
-						<text style="font-size:36rpx">￥</text>
-						<text style="font-size:60rpx">4</text>
+					<view class="lottery-content-right flex-item font-14">
+						<view class="lottery-content-text">{{item.name}}</view>
+						<view class="lottry-date" >有效期至{{item.expirationTime}}</view>
+						<view class="lottry-date" style="margin-top: 8rpx">{{item.isRestrictTime == 1 ? item.restrictTime+'可用' : ''}}</view>
+						<view class="lottry-category flex">
+							限品类:{{item.businessTypeName}}
+						</view>
 					</view>
-					<view class="lottery-content-right font-14">
-						<view class="lottery-content-text">王者荣耀</view>
-						<view class="money" >蛮8元可用</view>
-						<view class="get-redbag font-10" >
-							<text>去使用</text>
+					<view class="lottery-content-price">
+						<view><text>￥</text><text style="font-size:50rpx;font-weight: 900">{{item.amt}}</text></view>
+						<view class="lottery-money-text">{{item.restrictAmt != null ? '满'+item.restrictAmt+'元可用' : '无门槛红包'}}</view>
+						<view class="get-redbag font-10" bindtap="getUserRedBag">
+							<text>去查看</text>
 						</view>
 					</view>
 				</view>

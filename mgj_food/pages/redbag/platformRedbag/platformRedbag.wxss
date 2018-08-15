@@ -1,17 +1,21 @@
-@import "../../components/redbag/orderPreview.wxss";
-.no-order {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
+@import "../../../components/redbag/orderPreview.wxss";
+.lottery {
+	margin-top: 20rpx;
+	padding: 0 30rpx;
+	height: 90rpx;
+	line-height: 90rpx;
+	background: #fff;
 }
-.no-order-img {
-  width: 201rpx;
-  height: 175rpx;
+.lottery-style {
+	display: inline-block;
+	width: 42rpx;
+	height: 42rpx;
+	border: 2rpx solid #999;
+	border-radius: 42rpx;
+	margin-top: 22rpx;
 }
-.no-order-text {
-  font-size: 22rpx;
-  text-align: center;
+.lottery-style-active {
+	background: #ff9900
 }
 .lottery-wrapper {
 	padding: 20rpx 30rpx 0;
@@ -29,11 +33,11 @@
 	margin-right: 20rpx;
 	overflow: hidden;
 }
-.lottery-img {
+.lottery-icon-img {
 	width: 110rpx;
 	height: 110rpx;
 }
-.lottery-icon-img {
+.lottery-img {
 	width: 110rpx;
 	height: 110rpx;
 }
@@ -61,7 +65,14 @@
 	color:#333;
 }
 .active {
-	/* background: #ff5959; */
-	/* border-bottom:1rpx dashed #ff5959;  */
+	background: #ff5959;
+	border-bottom:1rpx dashed #ff5959; 
 	color:#fff;
+}
+.itemReason-footer {
+	height: 36rpx
+}
+.disable-redbag{
+	color: #999 !important;
+	font-weight: 200!important;
 }

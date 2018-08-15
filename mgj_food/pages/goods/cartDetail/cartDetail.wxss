@@ -60,6 +60,30 @@
 	display: inline-block;
 	vertical-align: middle;
 }
+.shipmenttip-txt {
+  	width:80%;
+  	display:inline-block;
+  	height:88rpx;
+  	white-space: nowrap;
+  	text-overflow: ellipsis;
+  	overflow:hidden;
+}
+.query-message {
+	padding: 0 24rpx 0 30rpx;
+	height:88rpx;
+	line-height: 88rpx;
+	border-bottom: 1rpx solid #ededed;
+	background: #fff;
+  	color:#333;
+}
+.bran-img {
+  	display:inline-block;
+  	vertical-align:middle;
+  	width:34rpx;
+  	height:34rpx;
+  	margin-right:16rpx;
+  	margin-top:-2rpx;
+}
 .order-detail {
 	margin-top: 20rpx;
 	background: #fff;
@@ -97,7 +121,7 @@
 	width:530rpx;
 	left: 50%;
 	transform:translateX(-50%);
-	z-index: 1200;
+	z-index: 2200;
 }
 .redbag-close {
 	position: absolute;
@@ -157,7 +181,7 @@
 }
 .common-mask {
     position: fixed;
-    z-index: 999;
+    z-index: 1999;
     top: 0;
     left: 0;
     width: 100%;
@@ -166,10 +190,21 @@
     /*opacity: 0.3;*/
     background: #000;
 }
+.common-mask-share {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    opacity: 0.6;
+    background: #000;
+}
 .order-name-else {
 	display: inline-block;
   	width: 50%;
- 	 white-space: nowrap;
+ 	white-space: nowrap;
   	text-overflow: ellipsis;
   	overflow: hidden;
 }
@@ -182,7 +217,6 @@
 /* 分享红包 */
 .order-overPage {
 	position:absolute;
-	display:flex;
 	top:0;
 	width:100%;
 	height:100%;
@@ -215,6 +249,12 @@
 	border-top: 1rpx solid #d8d8d8;
 	text-align: center;
 }
+.send-wxshare {
+	padding: 0!important;
+	color:#faa761;
+	border-left: 1rpx solid #d8d8d8;
+	background: #fff!important;
+}
 /* 订单追踪 */
 .track-entrance {
 	position: absolute;
@@ -231,7 +271,7 @@
 	height: 828rpx;
 	color:#333;
 	background: #fff;
-	z-index: 1000;
+	z-index: 2100;
 }
 .track-header {
 	position: relative;
@@ -292,7 +332,7 @@
 	/*margin-top: -9rpx;*/
 	border-radius: 30rpx;
 	background: #ff9900;
-	z-index: 1001;
+	z-index: 2005;
 }
 .track-location {
 	position: relative;
@@ -321,5 +361,5 @@
 	position: fixed;
 	bottom: 400rpx;
 	right: 25rpx
-}	
+}
 

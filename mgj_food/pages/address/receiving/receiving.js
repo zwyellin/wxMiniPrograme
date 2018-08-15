@@ -64,7 +64,6 @@ Page({
 		}		
 	},
 	drawStart(e){//手指刚放到屏幕触发
-
 		console.log(e.touches)
 		if(e.touches.length == 1){
 			this.setData({
@@ -104,9 +103,6 @@ Page({
 				address:list
 			});
 		}
-		
-
-
 	},
 	// angle(start,end){
 	// 	let _X = end.X - start.X;
