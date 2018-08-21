@@ -125,7 +125,8 @@ var cart = {
 			return '¥' + minprice+'元起送';
 		}else if(totalprice < minprice){
 			var dif=minprice - totalprice;
-			return '还差¥'+ dif + '元';
+			console.log(dif);
+			return '还差¥'+ cart.shopFloat(dif,2) + '元';
 		}else{
 			return '去结算';
 		}

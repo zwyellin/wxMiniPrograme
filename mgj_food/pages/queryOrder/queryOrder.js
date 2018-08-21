@@ -3,6 +3,7 @@ const feedbackApi=require('../../components/showToast/showToast.js');  //引入�
 const app = getApp();
 Page({
 	data:{
+		agentId:null,
 		isDisable:false,
 		totalPrice:0,
 		discountAmt:0,
@@ -54,6 +55,8 @@ Page({
 			discountAmt:prevPage.data.value.discountAmt,
 			discountGoodsDiscountAmt:prevPage.data.value.discountGoodsDiscountAmt,
 			addressInfo:prevPage.data.value.addressInfo,
+			addressInfoId:prevPage.data.value.addressInfo ? prevPage.data.value.addressInfo.id : null,
+			agentId:prevPage.data.value.agentId,
 			promoInfoJson:prevPage.data.value.promoList,
 			redBagUsableCount:prevPage.data.value.redBagUsableCount,
 			payList:prevPage.data.value.payments,
@@ -80,6 +83,9 @@ Page({
 				initTime:initTime,
 				expectedArrivalTime:expectedArrivalTime
 			});
+		}
+		if (app.globalData.agentId == this.data.agentId) {
+			
 		}
 		this.filterUsableRedBagList();
 		this.queryPlatformRedBagList();
@@ -129,8 +135,11 @@ Page({
         	data:{
         		token:app.globalData.token,
         		params:{
-        			itemsPrice: this.data.orderMessage.totalPrice,
+        			itemsPrice: this.data.orderMessage.itemsPrice,
 					merchantId: this.data.merchantId,
+					latitude: -1,
+					longitude: -1,
+					discountGoodsDiscountAmt:this.data.orderMessage.discountGoodsDiscountAmt,
 					promoInfoJson: JSON.stringify(this.data.promoInfoJson)
         		}	
         	},
@@ -159,10 +168,10 @@ Page({
         	data:{
         		token:app.globalData.token,
         		params:{
-        			itemsPrice: this.data.orderMessage.totalPrice,
+        			itemsPrice: this.data.orderMessage.itemsPrice,
 					merchantId: this.data.merchantId,
 					userAddressId:this.data.addressInfoId,
-					agentId:3,
+					agentId:app.globalData.agentId,
 					promoInfoJson: JSON.stringify(this.data.promoInfoJson),
 					businessType:1,
 					discountGoodsDiscountAmt:this.data.orderMessage.discountGoodsDiscountAmt

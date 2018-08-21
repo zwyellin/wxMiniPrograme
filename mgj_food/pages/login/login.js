@@ -136,7 +136,7 @@ Page({
         		app.globalData.userId = loginMessage.id;
         		wx.setStorageSync('loginstatus',true);
         		wx.setStorageSync('loginMessage',loginMessage);
-				if (this.data.switch === 'switch') {
+				if (this.data.switch === 'usercenter') {
 					let pages = getCurrentPages();
 	    			let prevPage = pages[pages.length - 2];
 	    			wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过个人中心页登录领取过平台红包
@@ -167,6 +167,16 @@ Page({
 				  		}
 					});
 				} else if(this.data.switch === 'homepage'){
+					wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过首页登录领取过平台红包
+					wx.navigateBack({
+				  		delta: 1,
+				  		success : function(){
+				  			that.setData({
+								switch:''
+							});	
+				  		}
+					});
+				} else if(this.data.switch === 'shop'){
 					wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过首页登录领取过平台红包
 					wx.navigateBack({
 				  		delta: 1,

@@ -101,9 +101,9 @@
 						</view>
 					</view>
 				</view>
-				<view class="order-num" style="width: 250rpx">
-					<text style="margin-right:156rpx;color:#b6b6b6">x {{food.quantity}}</text>
-					<text style="text-align:right">￥{{query.shopFloat(food.price*food.quantity,2)}}</text>
+				<view class="order-num flex" style="width: 250rpx">
+					<text style="color:#b6b6b6;width:52rpx;display: inline-block;">x {{food.quantity}}</text>
+					<text style="text-align:right;flex:1">￥{{query.shopFloat(food.price*food.quantity,2)}}</text>
 				</view>
 			</view>
 		</view>
@@ -158,7 +158,7 @@
 			<text wx:if="{{orderMessage.discountGoodsDiscountAmt+orderMessage.discountAmt != 0}}" class="txt-pay" >
 				<text>已优惠</text>
 				<!-- <text>￥ {{orderMessage.discountAmt}}</text> -->
-				<text>￥ {{orderMessage.discountGoodsDiscountAmt+orderMessage.discountAmt}}</text>
+				<text>￥ {{query.shopFloat(orderMessage.discountGoodsDiscountAmt+orderMessage.discountAmt,2)}}</text>
 			</text>
 		</view>
 		<view class="check-right font-18" bindtap="postOrder">

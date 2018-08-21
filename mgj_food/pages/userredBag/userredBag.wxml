@@ -1,18 +1,20 @@
 <wxs module="time" src="../../utils/star.wxs"></wxs>
-<view>
+<view class="container">
 	<view class="navbar">
-		<view 
-			class="navbar-item {{currentTab==index ? 'active' : ''}}"
-			wx:for="{{navbar}}"
-			wx:for-index="index" 
-		    wx:for-item="item" 
-		    wx:key="index" 
-			data-idx="{{index}}"  
-			bindtap="navbarTap">
-			 {{item}}
+		<view class="navbar-item" data-idx="{{0}}" bindtap="navbarTap">
+			<view class="navbar-item-platform {{currentTab==0 ? 'active' : ''}}">红包{{platformRedBagCount}}个</view>
+		</view>
+		<view class="navbar-item"  data-idx="{{1}}" bindtap="navbarTap">
+			<view class="navbar-item-merchant {{currentTab==1 ? 'active' : ''}}">代金券{{vouchersCount}}张</view>
 		</view>
 	</view>
-	<view wx:if="{{currentTab == 0}}" class="container page-common redenvelopes redenvelopes-else">
+	<view hidden="{{currentTab !== 0}}" class="container page-common redenvelopes redenvelopes-else">
+		<view wx:if="{{platfromRedBagList.length === 0 && show}}" class="no-order">
+			<image class="no-order-img" src="../../images/images/login@2x.png"></image>
+			<view class="no-order-text">
+  			<text>暂无红包</text>
+			</view>
+		</view>
 		<view class="redenvelopes-center-box"  
 			wx:for="{{platfromRedBagList}}"
 			wx:for-index="idx" 
@@ -25,6 +27,7 @@
 					<view class="redenvelopes-name">{{item.name}}</view>
 					<view class="redenvelopes-tiem">有效期至{{item.expirationTime}}</view>
 					<!-- <view class="redenvelopes-available">{{item.createTime}}可用</view> -->
+					<view wx:if="{{item.isRestrictTime == 1}}" style="margin-bottom: 0" class="redenvelopes-available">{{item.restrictTime}}可用</view>
 					<view class="redenvelopes-mobile">限收货人手机号{{item.mobile}}</view>
 				</view>
 				<view class="redenvelopes-number flex">
@@ -42,7 +45,7 @@
 			</view>
 		</view>
 	</view>
-	<view wx:if="{{currentTab == 1}}" class="container page-common" style="padding-top: 110rpx">
+	<view hidden="{{currentTab !== 1}}" class="container page-common" style="padding-top: 110rpx">
 		<view wx:if="{{redBagList.length === 0 && show}}" class="no-order">
 			<image class="no-order-img" src="../../images/images/login@2x.png"></image>
 			<view class="no-order-text">

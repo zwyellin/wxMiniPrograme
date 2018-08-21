@@ -2,6 +2,7 @@ const { wxRequest } = require('../../../utils/util.js');
 const app = getApp();
 Page({
 	data:{
+		show:false,
 		platformSelect:null,
 		currentTab:0,
 		itemsPrice:0,
@@ -20,6 +21,7 @@ Page({
 			platformRedBagList:prevPage.data.platformRedBagList,
 			usePlatformRedBagList:prevPage.data.usePlatformRedBagList || [],
 			platformSelect:prevPage.data.platformSelect,
+			show:true
 		});	
 	},
 	selectradio(e){
@@ -64,10 +66,8 @@ Page({
 		platformRedBagList[index].selectStatus = true;
 		let isFound = false;
 		usePlatformRedBagList.map((item,idx)=>{
-			if (item.promotionType === platformRedBagList[index].promotionType) {
-				usePlatformRedBagList.splice(idx,1,platformRedBagList[index]);
-				isFound = true;
-			}	
+			usePlatformRedBagList.splice(idx,1,platformRedBagList[index]);
+			isFound = true;	
 		});
 		if (!isFound) {
 			usePlatformRedBagList.push(platformRedBagList[index]);

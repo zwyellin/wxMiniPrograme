@@ -15,17 +15,40 @@
     font-size: 30rpx;
     color: #ffd0a3;  
 }
-.navbar .navbar-item.active{
+.navbar-item-platform {
+    width: 150rpx;
+    margin: 0 auto;
+}
+.navbar-item-merchant {
+    width: 156rpx;
+    margin: 0 auto;
+}
+.no-order {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+.no-order-img {
+  width: 201rpx;
+  height: 175rpx;
+}
+.no-order-text {
+  font-size: 22rpx;
+  text-align: center;
+}
+.navbar .navbar-item .active{
     color: #FF8000;
 }
-.navbar .navbar-item.active:after{
+.navbar .navbar-item .active:after{
     content: "";
     display: block;
+    width: 150rpx;
     position: absolute;
-    bottom: 1rpx;
-    left: 0;
-    right: 0;
-    height: 4rpx;
+    bottom: 14rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 8rpx;
     background: #FF8000;
 }
 .redenvelopes{

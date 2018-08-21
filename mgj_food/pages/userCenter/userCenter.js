@@ -150,9 +150,11 @@ Page({
       }).then(res=>{
         if (res.data.code === 0) {
           if (res.data.value.status == 1) { // 该代理商有平台红包
-              console.log('领取成功');
+              if (res.data.value.redBagList != 0) {
+                this.findUserCenter();
+              }
           }
         }
       });
-    },
+  },
 });

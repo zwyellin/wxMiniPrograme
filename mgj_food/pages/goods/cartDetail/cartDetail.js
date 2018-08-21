@@ -30,10 +30,10 @@ Page({
 		this.findNewTOrderById();
 		this.findCustomerAndComplainPhoneByUserXY();
 		if (this.data.isredbag) {
-			// this.maskShowAnimation();
-			// this.setData({
-			// 	maskShow:true,
-			// });
+			this.maskShowAnimation();
+			this.setData({
+				maskShow:true,
+			});
 			this.data.isredbag = true;
 			this.getMerchantRedBagByOrderId();
 		}		
@@ -58,16 +58,16 @@ Page({
 	        if (res.data.code === 0) {
 	        	let orderDetail = res.data.value;
 	          	let expectArrivalTime = parseInt(res.data.value.expectArrivalTime);
-	          	if (this.data.isredbag) {
-	          		if (orderDetail.shareRedBagInfo != null) {
-	          			this.shareRedBagShowAnimation();
-						this.setData({
-							shareRedBagInfo:orderDetail.shareRedBagInfo,
-							shareShow:true,
-							shareShowImg:true
-						});
-	          		}
-	          	}
+	     //      	if (this.data.isredbag) {
+	     //      		if (orderDetail.shareRedBagInfo != null) {
+	     //      			this.shareRedBagShowAnimation();
+						// this.setData({
+						// 	shareRedBagInfo:orderDetail.shareRedBagInfo,
+						// 	shareShow:true,
+						// 	shareShowImg:true
+						// });
+	     //      		}
+	     //      	}
 	          	if (expectArrivalTime === 1) {
 	          		this.setData({
 	          			orderDetail:res.data.value,
@@ -75,8 +75,7 @@ Page({
 	          			expectArrivalTime:'立即送达'
 	          		});
 	          	} else {
-	          		let	time = formatTime(expectArrivalTime)
-						console.log(time)
+	          		let	time = formatTime(expectArrivalTime);
 	          			this.setData({
 	          			orderDetail:res.data.value,
 	          			trackDetailDate:res.data.value,
@@ -120,7 +119,7 @@ Page({
 	        	params:{
 	          		orderId:this.data.orderid
 	        	} 
-	      },
+	      	},
 	    }).then(res=>{
 		    if (res.data.code === 0) {
 		        let getMerchantRedBagList = res.data.value;
@@ -132,12 +131,11 @@ Page({
 		          		maskShow:true,
 		          		show:true
 		        	});
+		        } else {
+		        	setTimeout(()=>{
+						this.maskHideAnimation();
+					},1500);
 		        } 
-		   //      else {
-		   //      	setTimeout(()=>{
-					// 	this.maskHideAnimation()
-					// },2000);
-		   //      } 
 		    }
 	    }).catch(err=> {
 	    	console.log(err);
@@ -249,14 +247,14 @@ Page({
       	});
     },
     myCatchTouch(){
-		return false
+		return false;
 	},
 	close(){
 		this.maskHideAnimation();
 		this.choiceHideAnimation();
 		this.setData({
 			trackShow:false
-		})
+		});
 	},
 	bagListShow(){
 		this.setData({
@@ -446,19 +444,19 @@ Page({
 			shareShow:true
 		});
 	},
-	onShareAppMessage(res) {
-    	return {
-      		title: '马管家红包来袭',
-      		path: this.data.shareRedBagInfo.url,
-      		imageUrl: this.data.shareRedBagInfo.img,
-      		success: function(res) {
-        		// 转发成功
-     		},
-      		fail: function(res) {
-        		// 转发失败
-      		}
-    	};
-  	},
+	// onShareAppMessage(res) {
+ //    	return {
+ //      		title: '马管家红包来袭',
+ //      		path: this.data.shareRedBagInfo.url,
+ //      		imageUrl: this.data.shareRedBagInfo.img,
+ //      		success: function(res) {
+ //        		// 转发成功
+ //     		},
+ //      		fail: function(res) {
+ //        		// 转发失败
+ //      		}
+ //    	};
+ //  	},
   	shareRedBagShowAnimation(){
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 

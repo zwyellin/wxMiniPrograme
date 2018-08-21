@@ -1,3 +1,79 @@
-<view>
-	
+<import src="../../components/showToast/showToast.wxml" />
+<view class="container" style="background:#ff2853">
+	<image class="header-img" src="../../../images/merchant/shareredbag/redback.png"></image>
+	<view class="red-content">
+		<view class="red-register">
+			<view id="register-wrapper">
+				<view class="register-mobile flex" style="display: none" id="register_mobile">
+					<input type="text" placeholder="请输入手机号" class="input-mobile flex-item" />
+				</view>
+				<view id="codema" class="flex" style="display: none">
+					<input type="text" placeholder="请输入手机短信验证码" class="code-ma flex-item" id="pass" />
+					<view class="getregister-ma">获取验证码</view>
+				</view>
+			</view>
+			<view id="red-number" style="display: none">
+				<view class="red-number-text">今日领取次数已用完</view>
+				<view class="receive-number flex">领劵手机号：  <text style="color:#ff3d4a"> 修改 ></text></view>
+			</view>
+			<view id="red_lottery" style="display: none">
+				<view class="lottery-content flex">
+					<view class="lottery-content-right font-14">
+						<view class="lottery-content-text">拼手气红包</view>
+						<view class="lottry-date" >有效期至</view>
+						<view class="lottry-date flex">
+							限品类:外卖外卖外卖外卖外卖外卖
+						</view>
+					</view>
+					<view class="lottery-content-price">
+						<view><text>￥</text><text style="font-size:70rpx">20</text></view>
+						<view class="lottery-money-text">无门槛红包</view>
+					</view>
+				</view>
+			</view>
+			<view id="red_late" style="display: none">
+				<view class="red_late_content">
+					<view class="red_late-txt1"><text>来迟了, 红包已被抢完</text></view>
+					<view class="red_late-txt2">手气重要, 手速也很重要</view>
+				</view>
+				<view class="receive-number flex">领劵手机号：  <text style="color:#ff3d4a"> 修改 ></text></view>
+			</view>
+			<view class="register-receive" id="register-receive">立即领取</view>
+		</view>
+		<view class="redbag-history">
+			<view class="flex title">
+				<view class="line"></view>
+				<view class="text">查看大家手气</view>
+				<view class="line"></view>
+			</view>
+			<view class="redbag-people" id="red_people">
+				<view class="flex people-item">
+					<image src="" alt="" class="people-logo"></image>
+					<view class="people-right flex-item">
+						<view class="clearfix">
+							<text class="fl">曹波</text>
+							<text class="fr">10元</text>
+						</view>
+						<view class="red-bag-faminy">2018-01-02</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="activity-rule">
+			<view class="flex title">
+				<view class="line"></view>
+				<view class="text" style="padding: 0 52rpx">活动规则</view>
+				<view class="line"></view>
+			</view>
+			<view style="margin-top: 26rpx">
+				<view class="rule-item">1. 下单即可分享红包给小伙伴</view>
+				<view class="rule-item">2. 每个链接红包个数有限</view>
+				<view class="rule-item">3. 每人每天可领取红包个数有限</view>
+				<view class="rule-item">4. 使用红包时的下单手机号需为抢红包时的手机号</view>
+				<view class="rule-item">5. 红包仅在线支付时使用, 红包不找零</view>
+				<view class="rule-item">6. 其他未尽事宜, 请咨询客服</view>
+			</view>
+		</view>
+	</view>
+	<template is="showToast" data="{{showToast: showToast}}" />
 </view>

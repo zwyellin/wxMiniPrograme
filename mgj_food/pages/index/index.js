@@ -64,10 +64,6 @@ Page(Object.assign({}, merchantObj, {
 	onLoad(){
 		wxGetLocation({type:'gcj02'}).then(()=>{
 			this.appLocationMessage();
-			app.findAppUserByToken((token)=>{
-	  			app.globalData.token = token;
-				this.getPlatformRedBag();
-	  		});
 		}).catch(err=>{
 			this.setData({
 				isAgentId:true
@@ -93,8 +89,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				// app.globalData.longitude = longitude;
-				// app.globalData.latitude = latitude;
+				app.globalData.longitude = longitude;
+				app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
@@ -137,6 +133,10 @@ Page(Object.assign({}, merchantObj, {
 						isAgentId:true
 					});
 			    });
+			    app.findAppUserByToken((token)=>{
+		  			app.globalData.token = token;
+					this.getPlatformRedBag();
+		  		});
 			}).catch(err=>{
 				this.setData({
 					isAgentId:true
@@ -201,7 +201,6 @@ Page(Object.assign({}, merchantObj, {
 			});	
   		}
   		if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
-  			console.log(12);
   			let isloginGetPlatformRedBag = wx.getStorageSync('isloginGetPlatformRedBag');  // 是否通过首页登录领取过平台红包
   			console.log(isloginGetPlatformRedBag);
 			if (isloginGetPlatformRedBag) {
@@ -329,7 +328,11 @@ Page(Object.assign({}, merchantObj, {
 			if (res.data.code === 0) {
 				let imgUrls = res.data.value;
 				imgUrls.map((item)=>{
-					item.picUrl = item.picUrl +'?imageView2/0/w/710/h/240';
+					if(!item.picUrl || !/.*(\.png|\.jpg)$/i.test(item.picUrl)){
+						item.picUrl = '/images/merchant/advertisement.png'
+					} else {
+						item.picUrl = item.picUrl +'?imageView2/0/w/710/h/240';
+					}
 				});
 				if (imgUrls.length) {
 					if (imgUrls.length === 1) {

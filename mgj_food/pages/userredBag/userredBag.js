@@ -10,6 +10,8 @@ Page({
 		currentTab: 0,
 		reason:false,
 		start:0,
+		vouchersCount:0,
+		platformRedBagCount:0,
 		redEnvelopesObjct:{},
 		platfromRedBagList:[]
 	},
@@ -24,11 +26,11 @@ Page({
 		} else {
 			this.data.start = this.data.redBagList.length;
 		}
-		this.queryRedBagList(true);
 		this.setData({
 		  	currentTab: e.currentTarget.dataset.idx,
 		  	loading:false
 		});
+		this.queryRedBagList(true);
   	},
 	reasonList(){
 		this.setData({
@@ -61,20 +63,27 @@ Page({
 				if (this.data.currentTab == 0) {
 					let nowPlatfromRedBagList = this.data.platfromRedBagList;
 					let platfromRedBagList = res.data.value.platformRedBagList;
+					let platformRedBagCount = res.data.value.platformRedBagCount;
+					let vouchersCount = res.data.value.vouchersCount;
 					nowPlatfromRedBagList = nowPlatfromRedBagList.concat(platfromRedBagList);
 					if (platfromRedBagList.length === 0) {
 						this.setData({
 					  		platfromRedBagList:nowPlatfromRedBagList,
+					  		platformRedBagCount:platformRedBagCount,
+					  		vouchersCount:vouchersCount,
 							loading:true
 						});
 					} else {
 						this.setData({
-					  		platfromRedBagList:nowPlatfromRedBagList,	
+					  		platfromRedBagList:nowPlatfromRedBagList,
+					  		vouchersCount:vouchersCount,
+					  		platformRedBagCount:platformRedBagCount,	
 						});
 					}
 				} else {
 					let nowRedBagList = this.data.redBagList;
 					let vouchersList = res.data.value.vouchersList;
+					let vouchersCount = res.data.value.vouchersCount;
 					vouchersList.map((item)=>{
 						item.modifyTime = item.modifyTime.replace(/-/g,'/');
 						item.modifyTime = new Date(item.modifyTime).getTime();
@@ -82,14 +91,16 @@ Page({
 						item.expirationTime = format(item.expirationTime,".");
 					});
 					nowRedBagList = nowRedBagList.concat(vouchersList);
-					if (vouchersList.length === 0) {
+					if (vouchersList.length == 0) {
 						this.setData({
 					  		redBagList:nowRedBagList,
+					  		vouchersCount:vouchersCount,
 							loading:true
 						});
 					} else {
 						this.setData({
-					  		redBagList:nowRedBagList,	
+					  		redBagList:nowRedBagList,
+					  		vouchersCount:vouchersCount	
 						});
 					}
 				}	

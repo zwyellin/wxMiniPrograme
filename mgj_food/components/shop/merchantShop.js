@@ -98,7 +98,7 @@ const merchantShop = {
 				if (res.data.code === 100000 ) {
 					setTimeout(()=>{
 						wx.navigateTo({
-							url:'/pages/login/login'
+							url:'/pages/login/login?switch=shop'
 						});
 					},1000);	
 					feedbackApi.showToast({title: '你还没有登录,请先去登录'});

@@ -77,8 +77,8 @@ Page(Object.assign({}, merchantShop,{
 	},
 	onLoad(options) {
 		let { merchantid,longitude,latitude} = options;
-		// this.data.merchantId = merchantid;
-		this.data.merchantId = 402;
+		this.data.merchantId = merchantid;
+		// this.data.merchantId = 402;
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
         	app.globalData.latitude = latitude;
@@ -132,6 +132,39 @@ Page(Object.assign({}, merchantShop,{
 		    }
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
+	},
+	onShow(){
+		let loginMessage = wx.getStorageSync('loginMessage');
+		let loginStatus = wx.getStorageSync('loginstatus',true);
+		if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+  			let isloginGetPlatformRedBag = wx.getStorageSync('isloginGetPlatformRedBag');  // 是否通过商家页登录领取过平台红包
+			if (isloginGetPlatformRedBag) {
+				this.getPlatformRedBag();
+				wx.setStorageSync('isloginGetPlatformRedBag',false);
+			}
+  		}
+	},
+	//领取平台红包
+	getPlatformRedBag(){
+	    wxRequest({
+	        url:'/merchant/userClient?m=getPlatformRedBag',
+	        method:'POST',
+	        data:{
+	          	token: app.globalData.token,
+	          	params:{
+	            	longitude:app.globalData.longitude,
+	            	latitude:app.globalData.latitude
+	          	} 
+	        },
+      	}).then(res=>{
+        	if (res.data.code === 0) {
+          		if (res.data.value.status == 1) { // 该代理商有平台红包
+              		if (res.data.value.redBagList != 0) {
+            			// feedbackApi.showToast({title:''});
+              		}
+          		}
+        	}
+        });
 	},
 	_imgOnLoad(e){
 		let { parentindex, index } = e.currentTarget.dataset; 
@@ -438,7 +471,7 @@ Page(Object.assign({}, merchantShop,{
     	} else {
 			setTimeout(()=>{
 				wx.navigateTo({
-					url:'/pages/login/login'
+					url:'/pages/login/login?switch=shop'
 				})
 			},1000);	
 			feedbackApi.showToast({title: '你还没有登录,请先去登录'});	

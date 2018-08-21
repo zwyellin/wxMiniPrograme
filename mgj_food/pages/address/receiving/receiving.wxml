@@ -1,7 +1,7 @@
 <import src="../../../components/address/address.wxml" />
 <import src="../../../components/showToast/showToast.wxml" />
 <view class="container page-common">
-	<view style="padding-bottom:100rpx">
+	<view style="padding-bottom:120rpx">
 		<view class="address-top"
 			wx:for="{{address}}" 
 	    	wx:for-item="item" 
