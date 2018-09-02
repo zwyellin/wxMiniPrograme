@@ -1,0 +1,30 @@
+<wxs module="tage" src="../../utils/star.wxs"></wxs>
+<template name="full">
+	<block>
+		<view wx:if="{{ruleDtoList[0].full>totalprice}}">
+			再买
+			<text class="bankName">{{tage.shopFloat(fullPrice.fullRange,2)}} </text>
+			可减
+			<text class="bankName">{{fullPrice.subRange}} </text>
+			(在线支付专享)
+			<text class="shopcart-list-top-tetx" wx:if="{{isTogether}}" > [去凑单]</text>
+		</view>
+		<view wx:if="{{totalprice>=ruleDtoList[0].full && fullPrice.full>totalprice}}">
+			下单减
+			<text class="bankName">{{fullPrice.present}}, </text>
+			再买
+			<text class="bankName">{{tage.shopFloat(fullPrice.fullRange,2)}} </text>
+			可减
+			<text class="bankName">{{fullPrice.subRange}} </text>
+			(在线支付专享)
+			<text class="shopcart-list-top-tetx" wx:if="{{isTogether}}"> [去凑单]</text>
+		</view>
+		<view wx:if="{{totalprice>=fullPrice.full}}">
+			已满
+			<text class="bankName">{{fullPrice.fullRange}} </text>
+			可减
+			<text class="bankName">{{fullPrice.subRange}} </text>
+			(在线支付专享)
+		</view>	
+	</block>	
+</template>

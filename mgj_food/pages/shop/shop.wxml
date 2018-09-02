@@ -1,6 +1,7 @@
 <import src="../../components/control/control.wxml" />
 <import src="../../components/star/star.wxml" />
 <import src="../../components/shop/activity.wxml" />
+<import src="../../components/shop/manfull.wxml" />
 <import src="../../components/showToast/showToast.wxml" />
 <wxs module="tage" src="../../utils/star.wxs"></wxs>
 <view class="container page-index">
@@ -57,8 +58,8 @@
         <text>{{item}}</text>
       </view>
     </view>
-    <!-- 商品 开始 -->
-    <view wx:if="{{tab.cur==='商品'}}" class="goods">
+    <!-- 外卖商品 开始 -->
+    <view wx:if="{{tab.cur==='商品' && merchantType == 0}}" class="goods">
     	<scroll-view class="menu-wrapper" 
     		scroll-y="true"
     		style="height:{{windowScrollHeight-48}}px"
@@ -88,8 +89,98 @@
 		    wx:for-item="item" 
 		    wx:for-index="parentIndex" 
 		    wx:key="parentIndex" >
-		    <view data-cateno="A{{parentIndex+1}}" id="r_A{{parentIndex+1}}">
+		    <view wx:if="{{item.goodsList != null}}" data-cateno="A{{parentIndex+1}}" id="r_A{{parentIndex+1}}">
 				<text class="food-title">{{item.name}}</text>
+				<view class="food-item" 
+					wx:for="{{item.goodsList}}" 
+				    wx:for-item="food" 
+				    wx:for-index="index" 
+				    wx:key="id"
+				    data-food="{{food}}"
+				    bindtap="selectefood">
+					<view class="icon">
+						<!-- <image style="display: none" class="icon_img" src="{{tage.removefh(food.imgs,114,114)}}" data-parentindex="{{parentIndex}}" data-index="{{index}}" bindload="_imgOnLoad" />
+						<image class="icon_img" src="{{food.isImgLoadComplete ? tage.removefh(food.imgs,114,114) : '/images/merchant/merchantLogo.png'}}" /> -->
+						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs,114,114)}}" />
+					</view>
+					<view class="content">
+						<view class="detail-name">
+							<text>{{food.name}}</text>
+						</view>
+						<view class="detail-descs">
+							<text>{{food.description}}</text>
+						</view>
+						<view class="detail-extra">
+							<text class="detail-count">月售{{food.monthSaled}}</text>
+							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
+						</view>
+						<view class="detail-price flex">
+							<text class="now">¥{{food.goodsSpecList[0].price}}<text wx:if="{{food.goodsSpecList[0].originalPrice}}" class="old-price">￥{{food.goodsSpecList[0].originalPrice}}<text class="del"></text></text>
+							</text>
+							<view class="cartcontrol-wrapper">
+								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && food.status != 0}}">
+									<template is="contorl-add" data="{{food,selectFoods}}" ></template>
+								</view>
+								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
+									<text>商家休息中</text>
+								</view>
+								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && (food.status === 0 || food.goodsSpecList[0].stock === 0 &&food.goodsSpecList[0].stockType && food.goodsSpecList.length === 1 && !food.surplusDiscountStock)}}" class="choice-else font-10">
+									<text>商品已售罄</text>
+								</view>
+								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
+									<view wx:if="{{(food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount) }}" class="choice font-10" data-food="{{food}}" catchtap="choice" >
+										<text>选规格</text>
+									</view>
+								</view>	
+							</view>
+						</view>
+						<view wx:if="{{food.goodsSpecList.length == 1 && (food.everyGoodsEveryOrderBuyCount || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum)}}" class="item-rules font-10">
+							<text wx:if="{{food.hasDiscount === 0 && food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text>
+							<text wx:if="{{food.hasDiscount === 1 && food.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.everyGoodsEveryOrderBuyCount}}份</text>
+							<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <10 && food.hasDiscount === 0&& food.goodsSpecList[0].stock >0}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
+							<text wx:if="{{food.goodsSpecList[0].minOrderNum >1 && food.hasDiscount === 0}}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			</block>
+		</scroll-view>
+    </view>
+    <!-- 商品 结束 -->
+
+	<!-- 不是外卖商品 开始 -->
+    <view wx:if="{{tab.cur==='商品' && merchantType == 1}}" class="goods">
+    	<scroll-view class="menu-wrapper" 
+    		scroll-y="true"
+    		style="height:{{windowScrollHeight-48}}px"
+    		scroll-into-view="{{leftToView}}" >
+	    	<block 
+		    	wx:for="{{menu}}" 
+		    	wx:for-item="item" 
+		    	wx:for-index="index" 
+		    	wx:key="index" >
+		    	<view class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
+					<text class="menu-item-text">
+						<text wx:if="{{item.icon}}" class="text" style="background: url({{item.icon}});background-size: 24rpx 24rpx">
+						</text>{{item.name}}
+					</text>
+					<text wx:if="{{tage.getItemCount(item.id,selectFoods) > 0}}" class="menu-item-num">{{tage.getItemCount(item.id,selectFoods)}}</text>
+		    	</view>	
+			</block>
+		</scroll-view>
+		<scroll-view  class="foods-wrapper" 
+			scroll-y="true"
+			style="height:{{windowScrollHeight-48}}px"
+			scroll-into-view="{{rightToView}}" 
+			bindscrolltolower="loadMoreGoods">
+		    <block
+		    class="food-list food-list-hook"
+		    wx:for="{{menu}}" 
+		    wx:for-item="item" 
+		    wx:for-index="parentIndex" 
+		    wx:key="parentIndex" >
+		    <view wx:if="{{item.goodsList != null}}" data-cateno="A{{parentIndex+1}}" id="r_A{{parentIndex+1}}">
+				<!-- <text class="food-title">{{item.name}}</text> -->
 				<view class="food-item" 
 					wx:for="{{item.goodsList}}" 
 				    wx:for-item="food" 
@@ -325,31 +416,7 @@
 				wx:key="index"
 				>满{{ruletion.full}}减{{ruletion.sub}}<text wx:if="{{index != ruleDtoList.length-1}}">, </text>  </text>
 			<view wx:if="{{totalcount > 0}}" catchtap="boosLisr">
-				<view wx:if="{{ruleDtoList[0].full>totalprice}}">
-					再买
-					<text class="bankName">{{tage.shopFloat(fullPrice.fullRange,2)}} </text>
-					可减
-					<text class="bankName">{{fullPrice.subRange}} </text>
-					(在线支付专享)
-					<text class="shopcart-list-top-tetx" wx:if="{{isTogether}}" > [去凑单]</text>
-				</view>
-				<view wx:if="{{totalprice>=ruleDtoList[0].full && fullPrice.full>totalprice}}">
-					下单减
-					<text class="bankName">{{fullPrice.present}}, </text>
-					再买
-					<text class="bankName">{{tage.shopFloat(fullPrice.fullRange,2)}} </text>
-					可减
-					<text class="bankName">{{fullPrice.subRange}} </text>
-					(在线支付专享)
-					<text class="shopcart-list-top-tetx" wx:if="{{isTogether}}"> [去凑单]</text>
-				</view>
-				<view wx:if="{{totalprice>=fullPrice.full}}">
-					已满
-					<text class="bankName">{{fullPrice.fullRange}} </text>
-					可减
-					<text class="bankName">{{fullPrice.subRange}} </text>
-					(在线支付专享)
-				</view>	
+				<template is="full" data="{{totalcount,ruleDtoList,totalprice,fullPrice,isTogether}}"></template>
 			</view>	
 		</view>
 		<view class="content">
@@ -375,30 +442,9 @@
 		<view wx:if="{{isShowTogether&&totalcount>0&& !activitySharedShow}}"  class="shopcart-list">
 			<view class="shopcart-list-top">
 				<view catchtap="boosList">
-					<view wx:if="{{ruleDtoList[0].full>totalprice}}">
-						再买
-						<text class="bankName">{{tage.shopFloat(fullPrice.fullRange,2)}} </text>
-						可减
-						<text class="bankName">{{fullPrice.subRange}} </text>
-						(在线支付专享)
-					</view>
-					<view wx:if="{{totalprice>=ruleDtoList[0].full && fullPrice.full>totalprice}}">
-						下单减
-						<text class="bankName">{{fullPrice.present}}, </text>
-						再买
-						<text class="bankName">{{tage.shopFloat(fullPrice.fullRange,2)}} </text>
-						可减
-						<text class="bankName">{{fullPrice.subRange}} </text>
-						(在线支付专享)
-					</view>
-					<view wx:if="{{totalprice >= fullPrice.full}}">
-						已满
-						<text class="bankName">{{fullPrice.fullRange}} </text>
-						可减
-						<text class="bankName">{{fullPrice.subRange}} </text>
-						(在线支付专享)
-					</view>
+					<template is="full" data="{{totalcount,ruleDtoList,totalprice,fullPrice,isTogether}}"></template>
 				</view>
+				
 			</view>
 			<scroll-view
 				class="list-content"
@@ -437,31 +483,7 @@
 		<view wx:if="{{fold}}" class="shopcart-list">
 			<view wx:if="{{ruleDtoList.length>0 && !activitySharedShow}}" class="shopcart-list-top">
 				<view wx:if="{{selectFoods.length>0}}" catchtap="boosLisr">
-					<view wx:if="{{ruleDtoList[0].full > totalprice}}">
-						再买
-						<text class="bankName">{{tage.shopFloat(fullPrice.fullRange,2)}} </text>
-						可减
-						<text class="bankName">{{fullPrice.subRange}} </text>
-						(在线支付专享)
-						<text class="shopcart-list-top-tetx" wx:if="{{isTogether}}" catchtap="boosLisr"> [去凑单]</text>
-					</view>
-					<view wx:if="{{totalprice >= ruleDtoList[0].full && fullPrice.full > totalprice}}">
-						下单减
-						<text class="bankName">{{fullPrice.present}}, </text>
-						再买
-						<text class="bankName">{{tage.shopFloat(fullPrice.fullRange,2)}} </text>
-						可减
-						<text class="bankName">{{fullPrice.subRange}} </text>
-						(在线支付专享)
-						<text class="shopcart-list-top-tetx" wx:if="{{isTogether}}" > [去凑单]</text>
-					</view>
-					<view wx:if="{{totalprice >= fullPrice.full}}">
-						已满
-						<text class="bankName">{{fullPrice.fullRange}} </text>
-						可减
-						<text class="bankName">{{fullPrice.subRange}} </text>
-						(在线支付专享)
-					</view>
+					<template is="full" data="{{totalcount,ruleDtoList,totalprice,fullPrice,isTogether}}"></template>
 				</view>		
 			</view>
 			<view class="list-header"wx:if="{{!isShowTogether}}" >
