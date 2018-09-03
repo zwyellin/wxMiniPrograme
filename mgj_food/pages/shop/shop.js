@@ -5,6 +5,8 @@ const app = getApp();
 let ActivityListHeight = 149;
 Page(Object.assign({}, merchantShop,{
 	data:{
+		merchantType:null,    //商家类型
+		itemCategoryList:[],  //某分类下的商品
 		loading:false,
 		isHide:false,         //控制本地购物车缓存
 		getOrderStatus:false,
@@ -87,6 +89,7 @@ Page(Object.assign({}, merchantShop,{
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
 			let menu = res.data.value.menu;
+			let type = res.data.value.type;
 			// menu.map((leftItem,index) =>{
 			// 	if (index != 0 ) {
 			// 		leftItem.goodsList.map(leftItemShop =>{
@@ -98,25 +101,40 @@ Page(Object.assign({}, merchantShop,{
 			// 		});
 			// 	}	
 			// });
-        	this.setData({
-        		menu:menu,
-        		orderList:res.data.value.orderList
-        	});
-        	setRightScrollItemHeight: {
-		      let cate_size = [];
-		      let sumscrollheight = 0;//总高度
-		      let catebarheigth = 26;//单个分类bar的高度
-		      let goodsviewheight = 100;//单个产品view的高度
-		      this.data.menu.forEach((item,index)=> {
-		        let unitheight = catebarheigth + item.goodsList.length * goodsviewheight;//每个分类单元的高度=分类bar的高度+每个产品view的高度*该分类下的产品数
-		        cate_size.push({ cateno: "A"+(index+1), scrollheight: sumscrollheight });
-		        sumscrollheight += unitheight;
-		      });
-		      this.setData({
-		        catesScrollHeight: cate_size.reverse()//分类scroll数组倒序处理后写入data
-		      });
-		      this.removalMenuList();
-		    }
+			// if (type == 0) {
+				this.setData({
+	        		menu:menu,
+	        		orderList:res.data.value.orderList,
+	        		merchantType:type
+	        	});
+	        	setRightScrollItemHeight: {
+			      let cate_size = [];
+			      let sumscrollheight = 0;//总高度
+			      let catebarheight = 26;//单个分类bar的高度
+			      let goodsviewheight = 100;//单个产品view的高度
+			      this.data.menu.forEach((item,index)=> {
+			      	if (item.goodsList != null) {
+			      		let unitheight = catebarheight + item.goodsList.length * goodsviewheight;//每个分类单元的高度=分类bar的高度+每个产品view的高度*该分类下的产品数
+			        	cate_size.push({ cateno: "A"+(index+1), scrollheight: sumscrollheight });
+			        	sumscrollheight += unitheight;
+			      	}
+			      });
+			      this.setData({
+			        catesScrollHeight: cate_size.reverse()//分类scroll数组倒序处理后写入data
+			      });
+			      this.removalMenuList();
+			    }
+			// }
+        	if (type == 2) {
+        		itemCategoryList = menu[0].goodsList;
+				this.setData({
+	        		menu:menu,
+	        		itemCategoryList:itemCategoryList,
+	        		orderList:res.data.value.orderList,
+	        		merchantType:type
+	        	});
+	        	this.removalMenuList();
+        	}
         }).finally(()=>{
         	wx.hideLoading();
         });
@@ -254,12 +272,14 @@ Page(Object.assign({}, merchantShop,{
 		let menu = this.data.menu;
 		let removalMenuList = [];
 		menu.map(item=>{
-			item.goodsList.map((value,index)=>{
-				removalMenuList.push(value);
-				if (value.hasDiscount ===1) {
-					this.data.everyOrderBuyCount = value.everyOrderBuyCount;
-				}	
-			});
+			if (item.goodsList != null) {
+				item.goodsList.map((value,index)=>{
+					removalMenuList.push(value);
+					if (value.hasDiscount ===1) {
+						this.data.everyOrderBuyCount = value.everyOrderBuyCount;
+					}	
+				});
+			}
 		});
 		let obj = {};
 		removalMenuList = removalMenuList.reduce((cur,next)=>{
@@ -1215,6 +1235,10 @@ Page(Object.assign({}, merchantShop,{
 		    rightToView: 'r_' + cateno,
 	      	leftScrollClick: true
 	    });
+	},
+	// 不是外卖商家，scroll-view加载更多商品
+	loadMoreGoods(e) {
+		
 	},
 	//产品右侧滚动事件
 	rightScroll(e) {

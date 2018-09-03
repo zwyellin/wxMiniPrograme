@@ -2,7 +2,7 @@
 <template name="star-add">
 	<view class="star star-{{size}}" >
 		<block
-			wx:for="{{star.itemClasses(item.merchantScore)}}" 
+			wx:for="{{star.itemClasses(item.averageScore)}}" 
 	      	wx:for-index="idx" 
 	      	wx:for-item="item" 
 	      	wx:key="idx">

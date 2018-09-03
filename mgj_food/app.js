@@ -89,8 +89,8 @@ App({
     windowWidth:0,
     // latitude:'39.977261',
     // longitude:'116.336983'
-    latitude:'',
-    longitude:'',
+    latitude:'35.395',
+    longitude:'103.85955',
   }
 });
 // prelaunch
