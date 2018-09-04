@@ -27,6 +27,7 @@
 }
 .foods-wrapper .food-item:last-child{
 	margin-bottom:0;
+	border-bottom:none;
 }
 .foods-wrapper .icon{
 	flex:0 0 114rpx;

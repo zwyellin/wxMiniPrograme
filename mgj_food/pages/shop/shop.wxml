@@ -69,7 +69,7 @@
 		    	wx:for-item="item" 
 		    	wx:for-index="index" 
 		    	wx:key="index" >
-		    	<view class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
+		    	<view wx:if="{{item.goodsList != null}}" class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
 					<text class="menu-item-text">
 						<text wx:if="{{item.icon}}" class="text" style="background: url({{item.icon}});background-size: 24rpx 24rpx">
 						</text>{{item.name}}
@@ -84,7 +84,6 @@
 			scroll-into-view="{{rightToView}}" 
 			bindscroll="rightScroll" >
 		    <block
-		    class="food-list food-list-hook"
 		    wx:for="{{menu}}" 
 		    wx:for-item="item" 
 		    wx:for-index="parentIndex" 
@@ -148,7 +147,7 @@
     </view>
     <!-- 商品 结束 -->
 
-	<!-- 不是外卖商品 开始 -->
+	<!-- 外卖大容量商品 开始 -->
     <view wx:if="{{tab.cur==='商品' && merchantType == 1}}" class="goods">
     	<scroll-view class="menu-wrapper" 
     		scroll-y="true"
@@ -159,7 +158,7 @@
 		    	wx:for-item="item" 
 		    	wx:for-index="index" 
 		    	wx:key="index" >
-		    	<view class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
+		    	<view class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" data-index="{{index}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
 					<text class="menu-item-text">
 						<text wx:if="{{item.icon}}" class="text" style="background: url({{item.icon}});background-size: 24rpx 24rpx">
 						</text>{{item.name}}
@@ -171,18 +170,10 @@
 		<scroll-view  class="foods-wrapper" 
 			scroll-y="true"
 			style="height:{{windowScrollHeight-48}}px"
-			scroll-into-view="{{rightToView}}" 
+			scroll-top="{{scrollTop}}" 
 			bindscrolltolower="loadMoreGoods">
-		    <block
-		    class="food-list food-list-hook"
-		    wx:for="{{menu}}" 
-		    wx:for-item="item" 
-		    wx:for-index="parentIndex" 
-		    wx:key="parentIndex" >
-		    <view wx:if="{{item.goodsList != null}}" data-cateno="A{{parentIndex+1}}" id="r_A{{parentIndex+1}}">
-				<!-- <text class="food-title">{{item.name}}</text> -->
 				<view class="food-item" 
-					wx:for="{{item.goodsList}}" 
+					wx:for="{{itemCategoryList}}" 
 				    wx:for-item="food" 
 				    wx:for-index="index" 
 				    wx:key="id"
@@ -232,8 +223,9 @@
 						</view>
 					</view>
 				</view>
-			</view>
-			</block>
+				<view class="loading-info" wx:if="{{!goodsMoreLoading && itemCategoryList.length > 10}}" style="padding: 0">
+			        <image src="/images/merchant/loading.png" class="img-loading"></image>
+			    </view>
 		</scroll-view>
     </view>
     <!-- 商品 结束 -->
