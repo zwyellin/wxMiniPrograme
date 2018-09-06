@@ -5,6 +5,11 @@ const app = getApp();
 let ActivityListHeight = 149;
 Page(Object.assign({}, merchantShop,{
 	data:{
+		merchantType:null,    //商家类型
+		categoryId:null,
+		goodsMoreLoading:false, //加载更多
+		scrollTop:0,          //设置滚动条位置
+		itemCategoryList:[],  //某分类下的商品
 		loading:false,
 		isHide:false,         //控制本地购物车缓存
 		getOrderStatus:false,
@@ -87,6 +92,7 @@ Page(Object.assign({}, merchantShop,{
 		this.findMerchantInfo();
 		this.getShopList().then((res)=>{
 			let menu = res.data.value.menu;
+			let type = res.data.value.type;
 			// menu.map((leftItem,index) =>{
 			// 	if (index != 0 ) {
 			// 		leftItem.goodsList.map(leftItemShop =>{
@@ -98,25 +104,42 @@ Page(Object.assign({}, merchantShop,{
 			// 		});
 			// 	}	
 			// });
-        	this.setData({
-        		menu:menu,
-        		orderList:res.data.value.orderList
-        	});
-        	setRightScrollItemHeight: {
-		      let cate_size = [];
-		      let sumscrollheight = 0;//总高度
-		      let catebarheigth = 26;//单个分类bar的高度
-		      let goodsviewheight = 100;//单个产品view的高度
-		      this.data.menu.forEach((item,index)=> {
-		        let unitheight = catebarheigth + item.goodsList.length * goodsviewheight;//每个分类单元的高度=分类bar的高度+每个产品view的高度*该分类下的产品数
-		        cate_size.push({ cateno: "A"+(index+1), scrollheight: sumscrollheight });
-		        sumscrollheight += unitheight;
-		      });
-		      this.setData({
-		        catesScrollHeight: cate_size.reverse()//分类scroll数组倒序处理后写入data
-		      });
-		      this.removalMenuList();
-		    }
+			if (type == 0) {
+				this.setData({
+	        		menu:menu,
+	        		orderList:res.data.value.orderList,
+	        		merchantType:type
+	        	});
+	        	setRightScrollItemHeight: {
+			      let cate_size = [];
+			      let sumscrollheight = 0;//总高度
+			      let catebarheight = 26;//单个分类bar的高度
+			      let goodsviewheight = 100;//单个产品view的高度
+			      this.data.menu.forEach((item,index)=> {
+			      	if (item.goodsList != null) {
+			      		let unitheight = catebarheight + item.goodsList.length * goodsviewheight;//每个分类单元的高度=分类bar的高度+每个产品view的高度*该分类下的产品数
+			        	cate_size.push({ cateno: "A"+(index+1), scrollheight: sumscrollheight });
+			        	sumscrollheight += unitheight;
+			      	}
+			      });
+			      this.setData({
+			        catesScrollHeight: cate_size.reverse()//分类scroll数组倒序处理后写入data
+			      });
+			      this.removalMenuList();
+			    }
+			}
+        	if (type == 1) {
+        		let itemCategoryList = menu[0].goodsList;
+        		let categoryId = menu[0].id;
+				this.setData({
+	        		menu:menu,
+	        		itemCategoryList:itemCategoryList,
+	        		categoryId:categoryId,
+	        		orderList:res.data.value.orderList,
+	        		merchantType:type
+	        	});
+	        	this.removalMenuList();
+        	}
         }).finally(()=>{
         	wx.hideLoading();
         });
@@ -254,12 +277,14 @@ Page(Object.assign({}, merchantShop,{
 		let menu = this.data.menu;
 		let removalMenuList = [];
 		menu.map(item=>{
-			item.goodsList.map((value,index)=>{
-				removalMenuList.push(value);
-				if (value.hasDiscount ===1) {
-					this.data.everyOrderBuyCount = value.everyOrderBuyCount;
-				}	
-			});
+			if (item.goodsList != null) {
+				item.goodsList.map((value,index)=>{
+					removalMenuList.push(value);
+					if (value.hasDiscount ===1) {
+						this.data.everyOrderBuyCount = value.everyOrderBuyCount;
+					}	
+				});
+			}
 		});
 		let obj = {};
 		removalMenuList = removalMenuList.reduce((cur,next)=>{
@@ -427,11 +452,22 @@ Page(Object.assign({}, merchantShop,{
 		                confirmText:'好的',
 		                success: function (res) {
 		                  	if (res.confirm) {
-		                    	that.setData({
-							      	currentCateno: 'A'+index,
-							      	rightToView: 'r_A' + index,
-							      	leftScrollClick: true
-							    });
+		                  		if (that.data.merchantType == 0) {
+		                  			that.setData({
+							      		currentCateno: 'A'+index,
+							      		rightToView: 'r_A' + index,
+							      		leftScrollClick: true
+							    	});
+		                  		} else {
+		                  			that.data.itemCategoryList = []
+									that.data.categoryId = isMandatoryGoods.id
+									that.loadMoreGoods()
+		                  			that.setData({
+							      		currentCateno: 'A'+index,
+							      		scrollTop:0,
+							      		goodsMoreLoading:false
+							    	});
+		                  		}
 		                  	} else if (res.cancel) {
 		                    	console.log('用户点击取消');
 		                  	}
@@ -1209,12 +1245,92 @@ Page(Object.assign({}, merchantShop,{
 	},
 	//产品左侧分类菜单点击事件
 	scrollLeftTap(e) {
-	    let cateno = e.currentTarget.dataset.cateno;
-	    this.setData({
-		    currentCateno: cateno,
-		    rightToView: 'r_' + cateno,
-	      	leftScrollClick: true
-	    });
+		let { cateno,index } = e.currentTarget.dataset
+		if (this.data.type == 0) {
+		    this.setData({
+			    currentCateno: cateno,
+			    rightToView: 'r_' + cateno,
+		      	leftScrollClick: true
+		    });
+		} else {
+			let categoryId = this.data.menu[index].id
+			let goodsList = this.data.menu[index].goodsList
+			if (goodsList === null) {
+				this.data.itemCategoryList = []
+				this.data.categoryId = categoryId
+				this.loadMoreGoods()
+				this.setData({
+					currentCateno: cateno,
+					scrollTop:0
+				})
+			} else {
+				this.setData({
+					itemCategoryList:goodsList,
+					categoryId : categoryId,
+					currentCateno: cateno,
+					goodsMoreLoading:false,
+					scrollTop:0
+				})
+			}	
+		}   
+	},
+	// 外卖大容量，scroll-view加载更多商品
+	loadMoreGoods() {
+		if (this.data.categoryId != null) {
+			if (!this.data.isLoadCategoryMoreGoods) {
+				this.data.isLoadCategoryMoreGoods = true;
+				this.showMerchantTakeAwayFindByCategoryId2().then(res=>{
+					if (res.data.code === 0) {
+						let searchList = res.data.value
+						let itemCategoryList = this.data.itemCategoryList;
+						if (searchList.length != 0) {
+							this.data.menu.map((item,index)=>{
+								if (item.id == this.data.categoryId) {
+									if (item.goodsList === null) {
+										item.goodsList = searchList
+									} else {
+										item.goodsList = item.goodsList.concat(searchList)
+									}
+								}	
+							})
+							itemCategoryList = itemCategoryList.concat(searchList)
+							this.setData({
+								itemCategoryList:itemCategoryList,
+								goodsMoreLoading:false
+							})
+							setTimeout(()=>{
+								this.removalMenuList()
+							}, 0);
+						} else {
+							this.setData({
+								goodsMoreLoading:true
+							})
+						}
+		    		}
+		    		this.data.isLoadCategoryMoreGoods = false;
+				}).catch(()=>{
+					this.data.isLoadCategoryMoreGoods = false;
+				})
+			}
+		} else {
+			this.setData({
+				goodsMoreLoading:true
+			})
+		}		
+	},
+	// 外卖大容量，针对大容量商品加载分类下的商品
+	showMerchantTakeAwayFindByCategoryId2(){
+		return wxRequest({
+        	url:'/merchant/userClient?m=showMerchantTakeAwayFindByCategoryId2',
+        	method:'POST',
+        	data:{
+        		params:{
+        			categoryId: this.data.categoryId,
+					size: 20,
+					start: this.data.itemCategoryList.length
+        		}	
+        	}
+        })
 	},
 	//产品右侧滚动事件
 	rightScroll(e) {
