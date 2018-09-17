@@ -1,0 +1,13 @@
+<view class="container">
+	<view class="video-content">
+		<block
+		wx:for="{{merchantVideo}}"   
+      	wx:for-item="item"
+      	wx:for-index="index" 
+      	wx:key="index">
+			<view class="section tc">
+			  <video class="video" src="{{item.videoSrc}}" enable-progress-gesture controls poster="{{item.videoPic ? item.videoPic : '/images/merchant/merchantLogo.png'}}"></video>
+			</view>
+		</block>
+	</view>
+</view>

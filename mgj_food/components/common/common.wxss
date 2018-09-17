@@ -134,5 +134,39 @@
   color:#fff;
   letter-spacing: 4rpx;
   background: #ff9a01;
-
+}
+/* 新的筛选方式 */
+.shipfilter-new_content {
+  padding: 32rpx 38rpx 0 30rpx;
+  color:#333;
+  font-weight: 500;
+}
+.merchant-feature {
+  padding: 36rpx 0 36rpx 10rpx;
+  flex-wrap:wrap;
+  justify-content: space-between;
+}
+.merchant-feature-item {
+  width: 192rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  text-align: center;
+  background: #f8f8f8;
+}
+.shipfilter-new_active {
+  color:#ff911e;
+  background: #fed8a9;
+}
+.merchant-feature-item:nth-child(4) {
+  margin-top: 30rpx;
+}
+.shipfilter-new_footer {
+  border-top:1rpx solid #e5e5e5;
+}
+.shipfilter-new_button {
+  flex:1;
+   height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+  letter-spacing: 2px;
 }

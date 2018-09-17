@@ -96,7 +96,6 @@
   line-height: 58rpx;
 }
 .class-block {
-  display: flex;
   flex-wrap:wrap;
   padding: 40rpx 40rpx 0 46rpx;
   color:#333;

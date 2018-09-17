@@ -57,7 +57,7 @@
 	
 	<view wx:if="{{!isAgentId}}" >
 		<!-- 外卖分类 开始 -->
-		<view class="class-block">
+		<view class="class-block flex">
 			<navigator class="class-content" url="/pages/classPage/classPage?id={{item.tagCategoryId}}&name={{item.name}}"
 				wx:for="{{initClassList}}" 
 			    wx:for-index="index" 
@@ -152,7 +152,7 @@
 		<template is="sort-common" data="{{sortList,sortIndex:sortIndex}}"></template>
 	</view>
 	<view wx:if="{{shipShow}}">
-		<template is="shipfilter-common" data="{{shipFilter}}"></template>
+		<template is="shipfilter-common" data="{{shipFilter,merchantFeature,merchantActive}}"></template>
 	</view>
 	<!-- 分类结束 -->
 

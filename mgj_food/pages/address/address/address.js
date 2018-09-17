@@ -163,10 +163,8 @@ Page({
 	    }
 	},
 	reset(){
-		wx.showToast({
+		wx.showLoading({
 	        title: '正在重新定位',
-	        icon: 'loading',
-	        duration: 200000,
 	        mask: true
 	    });
 		this.setData({

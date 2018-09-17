@@ -1,0 +1,32 @@
+<wxs module="fixed" src="../../../utils/star.wxs"></wxs>
+<view class="container">
+	<view class="share-firend" style="background-image: url(http://7xu5hi.com1.z0.glb.clouddn.com/201805051352003971186.png);background-size:100% 100%">
+	</view>
+	<view class="share-money">
+		<text>￥{{fixed.fomatFloat(cashbackAmtSum,2)}}</text>
+	</view>
+	<navigator class="share-result" url="/other/firends/results/results">
+		<text>邀请战果 >></text>
+	</navigator>
+	<view class="title">
+		<text class="line"></text>
+		<text class="text">我邀请过的好友</text>
+		<text class="line"></text>
+	</view>
+	<view class="firends" style="background: #f94f69">
+		<scroll-view scroll-y="true" style="height:{{windowScrollHeight-410}}px">
+			<view class="firends-content"
+				wx:for="{{userList}}" 
+		    	wx:for-item="item" 
+		    	wx:for-index="index" 
+		    	wx:key="index">
+		    	<view class="portrait">
+					<image wx:if="{{item.headImg}}" class="portrait-img" src="{{item.headImg}}"></image>
+					<image wx:if="{{!item.headImg}}" class="portrait-img" src="../../../images/images/login_no.png"></image>
+				</view>
+	      		<text class="user font-16">{{item.mobile}}</text>
+	      		<text class="fr" style="margin-top: 30rpx;font-size: 28rpx">{{item.regTime}}</text>
+	  		</view>
+	  	</scroll-view>
+	</view>
+</view>

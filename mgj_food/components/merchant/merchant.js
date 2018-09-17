@@ -29,7 +29,7 @@ let merchantObj = {
 		if (!this.data.clickPage) {
 			this.data.clickPage = true;
 			wx.navigateTo({
-				url:"/pages/shop/shop?merchantid=" + id,
+				url:"/goods/shop/shop?merchantid=" + id,
 			});
 		}
 	},
@@ -150,6 +150,30 @@ let merchantObj = {
 			shipFilter:index
 		});
 	},
+	selectMerchantSort(e){
+		let { index, name } = e.currentTarget.dataset;
+		if (name === 'merchantFeature') {
+			let merchantFeature = this.data.merchantFeature;
+			if (merchantFeature[index].isSelect) {
+				merchantFeature[index].isSelect = false;
+			} else {
+				merchantFeature[index].isSelect = true;
+			}
+			this.setData({
+				merchantFeature:merchantFeature
+			});
+		} else if(name === 'merchantActive') {
+			let merchantActive = this.data.merchantActive;
+			if (merchantActive[index].isSelect) {
+				merchantActive[index].isSelect = false;
+			} else {
+				merchantActive[index].isSelect = true;
+			}
+			this.setData({
+				merchantActive:merchantActive
+			});
+		}
+  	},
 	close(){//关闭弹窗
 		this.maskHideAnimation();
 		this.platfromRedHideAnimation();
@@ -175,14 +199,36 @@ let merchantObj = {
 	},
 	clear(){
 		this.maskHideAnimation();
+		this.data.merchantTags = '';
+		let merchantFeature = this.data.merchantFeature;
+		let merchantActive = this.data.merchantActive;
+		merchantFeature.map(item=>item.isSelect = false);
+		merchantActive.map(item=>item.isSelect = false);
 		this.setData({
-			shipFilter:null,
+			merchantActive:merchantActive,
+			merchantFeature:merchantFeature,
 			shipShow:false,
 			maskShow:false
 		});
+		this.getDataList(false,true);
 	},
 	query(){
 		this.maskHideAnimation();
+		this.data.merchantTags = '';
+		this.data.merchantFeature.map((item,index)=>{
+			if (item.isSelect === true) {
+				if (index === this.data.merchantFeature.length-1) {
+					this.data.merchantTags += item.feature + ' ';
+				} else {
+					this.data.merchantTags += item.feature;
+				}
+			}
+		})
+		this.data.merchantActive.map((item,index)=>{
+			if (item.isSelect === true) {
+				this.data.merchantTags += ' ' + item.active;
+			}
+		})
 		this.setData({
 			shipShow:false,
 			maskShow:false,

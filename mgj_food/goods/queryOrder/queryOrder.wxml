@@ -1,0 +1,203 @@
+<import src="../../components/address/address.wxml" />
+<import src="../../components/showToast/showToast.wxml" />
+<wxs module="query" src="../../utils/star.wxs"></wxs>
+<view  class="container page-common" style="padding-bottom: 100rpx">
+	<view wx:if="{{addressInfo != null}}" class="query-address" bindtap="findUserAddress">
+		<view style="background: #fff">
+			<image class="receiving-headerimg" src="../../images/images/address.png"></image>
+			<view class="receiving-address font-14">
+				<view class="receiving-content">
+					<view class="receiving-text">
+						<text class="text">{{addressInfo.name}}</text>
+						<text class="text1">{{addressInfo.gender}}</text>
+						<text>{{addressInfo.mobile}}</text>
+					</view>
+					<view class="receiving-text-txt">
+						<text class="text1 text-adress">{{addressInfo.address}}</text>
+						<text wx:if="{{addressInfo.houseNumber != null}}">{{addressInfo.houseNumber}}</text>
+					</view>  
+				</view>
+				<view class="receiving-contentimg" catchtap="editAddress">
+					<image class="receiving-img" src="../../images/images/pen.png" ></image>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view wx:if="{{addressInfo === null}}" class="query-message font-14 clearfix" bindtap="findUserAddress">
+		<view class="fl font-16">
+			<image class="address-map" src="../../images/images/map_1.png"></image>
+			<text class="address-map-text">请填写收货地址</text>
+		</view>
+		<view class="fr">
+			<image class="query-img fr" style="margin-top: 36rpx" src="../../images/images/down.png" ></image>
+		</view>
+	</view>
+	<view class="query-message font-14 clearfix" style="position: relative" bindtap="openTime">
+		<view class="fl font-16">
+			<image class="address-time" src="../../images/images/time_z.png"></image>
+			<text class="address-map-text">送达时间</text>
+		</view>
+		<view class="fr">
+			<text style="color:#049eb5">{{initTime}}</text>
+			<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
+		</view>
+	</view>
+	<view class="mt20">
+		<picker class="query-message font-14 clearfix" value="{{payIndex}}" range="{{payList}}" range-key="paymentName" bindchange="bindPayChange">
+			<view class="fl font-16">
+				<text>支付方式</text>
+			</view>
+			<view class="fr">
+				<text>{{payList[payIndex].paymentName}}</text>
+				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>	
+			</view>
+		</picker>
+		<view wx:if="{{payIndex=== 0}}" class="query-message font-14 clearfix" bindtap="platformRedPage">
+			<view class="fl font-16">
+				<text>平台红包</text>
+			</view>
+			<view class="fr">
+				<text wx:if="{{platformRedBagCount===0}}" style="color:#999">{{platformRedText}}</text>
+				<text wx:if="{{platformRedBagCount && platformRedBagMoney === 0}}" style="color:#ff9595">有{{platformRedBagCount}}个红包可用</text>
+				<text wx:if="{{platformRedBagMoney != 0}}" style="color:#ff9595">-￥{{platformRedBagMoney}}</text>
+				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
+			</view>
+		</view>
+		<view wx:if="{{payIndex=== 0 && redBagUsableCount!==0}}" class="query-message font-14 clearfix" bindtap="merchantRedPage">
+			<view class="fl font-16">
+				<text>商家代金券</text>
+			</view>
+			<view class="fr">
+				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个代金券可用</text>
+				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">代金券金额为{{redBagMoney}}元</text>
+				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
+			</view>
+		</view>
+		<navigator class="query-message font-14 clearfix" url="/goods/remarks/remarks">
+			<view class="fl font-16">
+				<text>订单备注</text>
+			</view>
+			<view class="fr">
+				<text wx:if="{{!remarks}}" style="color:#999">偏好等其他需求</text>
+				<text wx:if="{{remarks}}" style="color:#333">{{remarks}}</text>
+				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
+			</view>
+		</navigator>
+	</view>
+	<view class="mt20">
+		<view class="order-listmenu" style="height:{{orderMessage.orderItems.length>3&&!isOpenOrderMenu ? '298rpx' : ''}}">
+			<view class="order-listitem flex"
+				wx:for="{{orderMessage.orderItems}}" 
+				wx:for-item="food" 
+				wx:for-index="index" 
+				wx:key="index">
+				<view class="order-name flex">
+					<view class="commodity-logowrapper">
+						<image class="commodity-logo" src="{{query.removefh(food.labelUrl,70,70)}}"></image>
+					</view>
+					<view class="order-leftname">
+						<view class="orderitems-title">{{food.name}}</view>
+						<view style="color:#999;font-size: 24rpx">
+							<text wx:if="{{food.spec}}">{{food.spec}}</text>
+							<text wx:if="{{food.attributes}}"> / {{food.attributes}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="order-num flex" style="width: 250rpx">
+					<text style="color:#b6b6b6;width:52rpx;display: inline-block;">x {{food.quantity}}</text>
+					<text style="text-align:right;flex:1">￥{{query.shopFloat(food.price*food.quantity,2)}}</text>
+				</view>
+			</view>
+		</view>
+		<view class="open-ordermenu flex" wx:if="{{orderMessage.orderItems.length >3}}">
+			<view class="open-ordermenubutton flex" bindtap="openOrderMenu">
+				<view>{{!isOpenOrderMenu ? '点击展开' : '点击收起'}}</view>
+				<image wx:if="{{!isOpenOrderMenu}}" class="open-ordermenuimg" src="/images/images/down.png" ></image>
+				<image wx:if="{{isOpenOrderMenu}}"  class="open-ordermenuimg"  src="/images/images/up.png"></image>
+			</view>
+		</view>
+		<view wx:if="{{orderMessage.boxPrice != 0 || orderMessage.boxPrice != ''}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
+			<text style="color:#333">包装费</text>
+			<text class="fr">￥{{orderMessage.boxPrice}}</text>
+		</view>
+		<view wx:if="{{orderMessage.shipmentType === 2}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
+			<text style="color:#333" class="shipmenttip-txt">配送费<text style="color:#b6b6b6;font-size: 22rpx"> ({{orderMessage.shipmentTip}})</text></text>
+			<text class="fr">￥{{orderMessage.shippingFee}}</text>
+		</view>
+		<view wx:if="{{orderMessage.shipmentType === 1}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
+			<text style="color:#333" class="shipmenttip-txt">{{orderMessage.shipmentTip}}</text>
+			<text class="fr">￥{{orderMessage.shippingFee}}</text>
+		</view>
+	</view>
+	<view wx:if="{{payIndex=== 0}}" class="query-message font-12 clearfix"
+		wx:for="{{orderMessage.promoList}}" 
+		wx:for-index="idx" 
+		wx:for-item="promotion"
+		wx:key="idx">
+		<view class="fl font-14">
+			<image class="bran-img" src="{{promotion.promoImg}}"></image>
+			<text>{{promotion.rule}}</text>
+		</view>
+		<view class="fr">
+			<text wx:if="{{promotion.discountAmt}}" style="color:#ff9900">- ￥{{promotion.discountAmt}}</text>	
+		</view>
+	</view>
+	<!-- <view wx:if="{{payIndex=== 0 && useRedBagList.length != 0 && useRedBagList.length != null}}" class="query-message font-12 clearfix">
+		<view class="fl font-14">
+			<image class="bran-img" src="../../images/images/icon_red.png"></image>
+			<text>红包抵扣</text>
+		</view>
+		<view class="fr">
+			<text style="color:#ff9595">- ￥{{redBagMoney}}</text>
+		</view>
+	</view> -->
+	<view class="query-check">
+		<view class="check-left font-16">
+			<text class="query-check-text" >
+				<text>待支付</text>
+				<text class="font-18">￥ {{orderMessage.totalPrice}}</text>
+			</text>
+			<text wx:if="{{orderMessage.discountGoodsDiscountAmt+orderMessage.discountAmt != 0}}" class="txt-pay" >
+				<text>已优惠</text>
+				<!-- <text>￥ {{orderMessage.discountAmt}}</text> -->
+				<text>￥ {{query.shopFloat(orderMessage.discountGoodsDiscountAmt+orderMessage.discountAmt,2)}}</text>
+			</text>
+		</view>
+		<view class="check-right font-18" bindtap="postOrder">
+			<tetx>确认订单</tetx>
+		</view>
+	</view>
+	<view class="time" wx:if="{{timePageShow}}">
+		<view class="flex font-14">
+		    <scroll-view class="time-left" scroll-y="true" style="height:610rpx">
+			    <view class="time-left-text {{timeIndex===index ? 'time-active' : ''}}" style="color:#808080"
+			    	wx:for="{{deliveryTimes}}"   
+      				wx:for-item="item"
+     				wx:for-index="index" 
+     				wx:key="index"
+     				catchtap="selectData"
+     				data-index ="{{index}}">
+			        <text>{{item.day}}</text>
+			    </view>   
+		    </scroll-view>
+		    <scroll-view class="time-right" scroll-y="true" style="height:610rpx">
+		     	<view class="time-right-text"
+		     		wx:for="{{sendTime}}"   
+      				wx:for-item="item"
+     				wx:for-index="index" 
+     				wx:key="index"
+     				data-time="{{item}}"
+     				data-index="{{index}}"
+     				catchtap="selectSendTime">
+		        	<text>{{timeArr[index][item]}}</text>
+		      	</view>
+		    </scroll-view>
+		</view>
+		<view class="time-food" catchtap="close">
+		    <text>取消</text>
+		</view>
+	</view>
+	<view wx:if="{{maskShow}}" class="mask" catchtap="close">	
+	</view>
+	<template is="showToast" data="{{showToast: showToast}}" />
+</view>

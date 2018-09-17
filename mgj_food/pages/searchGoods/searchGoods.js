@@ -33,10 +33,8 @@ Page({
     },
     search(value,status){
         if (status) {
-            wx.showToast({
+            wx.showLoading({
                 title: '加载中',
-                icon: 'loading',
-                duration: 200000,
                 mask: true
             });
         }
@@ -96,7 +94,7 @@ Page({
 		if (!this.data.clickPage) {
             this.data.clickPage = true;
             wx.navigateTo({
-                url:"/pages/shop/shop?merchantid=" + id,
+                url:"/goods/shop/shop?merchantid=" + id,
             });
         }
 	},
