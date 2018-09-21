@@ -3,6 +3,7 @@
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
+    // this.updataApp();
     let loginMessage = wx.getStorageSync('loginMessage');
     let shoppingCart = wx.getStorageSync('shoppingCart');
     // if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
@@ -37,6 +38,9 @@ App({
           that.globalData.userInfo = res.userInfo;
           console.log(that.globalData.userInfo);
           typeof cb == "function" && cb(that.globalData.userInfo);
+        },
+        fail: function (err) {
+          console.log(err);
         }
       });
     }
@@ -75,6 +79,29 @@ App({
       }  
     } 
   },
+  updataApp() {//版本更新
+    if (wx.canIUse('getUpdateManager')) {
+      const updateManager = wx.getUpdateManager();
+      updateManager.onCheckForUpdate((res)=> {
+        if (res.hasUpdate) { // 请求完新版本信息的回调
+          updateManager.onUpdateReady(()=> {
+            wx.showModal({
+              title: '更新提示',
+              content: '新版本已经准备好，是否重启应用？',
+              success: (res)=> {
+                if (res.confirm) {// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+                  updateManager.applyUpdate();
+                }
+              }
+            });
+          });
+          updateManager.onUpdateFailed(()=> {
+            console.log('新版本下载失败');
+          });
+        }
+      });
+    }
+  },
   globalData: {
     token:'',
     agentPhone:null,
@@ -87,10 +114,10 @@ App({
     domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    // latitude:'39.977261',
-    // longitude:'116.336983'
-    latitude:'',
-    longitude:'',
+    latitude:'39.977261',
+    longitude:'116.336983'
+    // latitude:'',
+    // longitude:'',
   }
 });
 // prelaunch

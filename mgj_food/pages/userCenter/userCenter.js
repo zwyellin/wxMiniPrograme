@@ -22,7 +22,7 @@ Page({
     loading: false
   },
   onLoad(options) {
-    if (app.globalData.userInfo.avatarUrl) {
+    if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
       let avatarUrl = app.globalData.userInfo.avatarUrl;
       let nickName = app.globalData.userInfo.nickName;
       this.setData({

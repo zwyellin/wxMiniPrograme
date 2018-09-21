@@ -39,10 +39,8 @@ Page({
 		}		
 	},
 	findNewTOrderById(){
-		wx.showToast({
+		wx.showLoading({
 	        title: '加载中',
-	        icon: 'loading',
-	        duration: 200000,
 	        mask: true
 	    });
 		wxRequest({
@@ -143,10 +141,8 @@ Page({
 	},
 	//再来一单
 	nextOrder(e){
-	    wx.showToast({
+	    wx.showLoading({
 	        title: '正在提交订单',
-	        icon: 'loading',
-	        duration: 200000,
 	        mask: true
 	    });
       	wxRequest({
@@ -172,7 +168,7 @@ Page({
                 feedbackApi.showToast({title: msg});
               } else {
                 wx.navigateTo({
-                  url: '/pages/queryOrder/queryOrder?merchantId='+this.data.orderDetail.merchantId
+                  url: '/goods/queryOrder/queryOrder?merchantId='+this.data.orderDetail.merchantId
                 });
               }
               wx.hideLoading()   
@@ -201,10 +197,8 @@ Page({
             cancelText: '还是不了',
             success: function (res) {
               if (res.confirm) {
-              	wx.showToast({
+              	wx.showLoading({
 			        title: '取消中',
-			        icon: 'loading',
-			        duration: 200000,
 			        mask: true
 			    });
       			that.maskShowAnimation();
@@ -237,7 +231,7 @@ Page({
 	},
 	evaluateOrder(){
 		wx.navigateTo({
-			url: '/pages/evaluate/evaluate'
+			url: '/goods/evaluate/evaluate'
 		});
 	},
 	refundDetail(e){
@@ -498,7 +492,7 @@ Page({
 	},
 	selectTab(e){
 		wx.navigateTo({
-		  url: '/pages/shop/shop?merchantid='+this.data.orderDetail.merchantId
+		  url: '/goods/shop/shop?merchantid='+this.data.orderDetail.merchantId
 		});
 	},
 	onUnload(){

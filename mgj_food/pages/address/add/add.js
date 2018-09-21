@@ -124,10 +124,8 @@ Page({
 		}
 		if (!this.data.submitStatus) {
 			this.data.submitStatus = true;
-			wx.showToast({
+			wx.showLoading({
 		        title: '正在提交',
-		        icon: 'loading',
-		        duration: 200000,
 		        mask: true
 		    });
 		}

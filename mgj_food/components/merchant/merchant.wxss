@@ -57,6 +57,7 @@
 	background: #ee5650;
 	color: #fff;
 	text-align: center;
+	z-index: 10;
 }
 .name {
 	display: block;
@@ -106,8 +107,15 @@
 	border-bottom: 1rpx dashed #ebebeb;
 }
 .extra-img {
-	width: 26rpx;
-	height: 26rpx;
+	width: 30rpx;
+	height: 30rpx;
+}
+.merchant-brand {
+	position: absolute;
+	right:0;
+	top:0;
+	width: 54rpx;
+	height: 34rpx;
 }
 .count{
 	margin-right: 24rpx;

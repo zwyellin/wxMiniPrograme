@@ -52,12 +52,12 @@
   				<!-- <text class="order-name">{{food.name}}</text> -->
 				<!-- <text class="fr" style="color:#b6b6b6">x {{food.quantity}}</text> -->
   			</view>
-  			<view wx:if="{{orderDetail.boxPrice != 0 || orderDetail.boxPrice != ''}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
+  			<view wx:if="{{orderDetail.boxPrice != 0 || orderDetail.boxPrice != ''}}" class="order-menu-else" style="border-bottom: 1rpx solid #ededed;">
 				<text style="color:#333">包装费</text>
 				<text class="fr">￥{{orderDetail.boxPrice}}</text>
 			</view>
-			<view wx:if="{{orderDetail.shipmentType === 2 && orderDetail.shippingFee}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
-				<text style="color:#333" class="shipmenttip-txt">配送费<text style="color:#b6b6b6;font-size: 22rpx"> ({{orderDetail.shipmentTip}})</text></text>
+			<view wx:if="{{orderDetail.shipmentType === 2 && orderDetail.shippingFee}}" class="order-menu-else" style="border-bottom: 1rpx solid #ededed;">
+				<text style="color:#333" class="shipmenttip-txt">配送费<text style="color:#b6b6b6;font-size: 22rpx"></text></text>
 				<text class="fr">￥{{orderDetail.shippingFee}}</text>
 			</view>
 			<view class="query-message font-12 clearfix"
@@ -73,10 +73,6 @@
 				<view class="fr">
 					<text style="color:#ff5959">- ￥{{item.amt}}</text>
 				</view>
-			</view>
-			<view wx:if="{{orderDetail.shipmentType === 1 && orderDetail.shippingFee}}" class="order-menu" style="border-bottom: 1rpx solid #ededed;">
-				<text style="color:#333" class="shipmenttip-txt">{{orderDetail.shipmentTip}}</text>
-				<text class="fr">￥{{orderDetail.shippingFee}}</text>
 			</view>
 			<view class="query-message font-12 clearfix"
 				wx:for="{{orderDetail.promoList}}" 

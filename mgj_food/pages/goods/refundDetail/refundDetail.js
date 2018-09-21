@@ -11,10 +11,8 @@ Page({
 		this.refundInfo()
 	},
 	refundInfo(){
-		wx.showToast({
+		wx.showLoading({
           title: '加载中',
-          icon: 'loading',
-          duration: 200000,
           mask: true
         });
 		wxRequest({

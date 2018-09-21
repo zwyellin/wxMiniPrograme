@@ -50,7 +50,7 @@
 		<template is="sort-common"  data="{{sortList,sortIndex:sortIndex}}"></template>
 	</view>
 	<view wx:if="{{shipShow}}">
-		<template is="shipfilter-common" data="{{shipFilter}}"></template>
+		<template is="shipfilter-common" data="{{shipFilter,merchantFeature,merchantActive}}"></template>
 	</view>
 	<!-- 分类结束 -->
 

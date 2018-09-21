@@ -13,13 +13,12 @@
 			<view wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</view>
 			<image wx:if="{{item.status === 0}}" class="merchant-status" src="/images/merchant/pause_business_new.png"></image>
 			<image wx:if="{{item.status != 0 && item.businessStatus === 1}}" class="merchant-status" src="/images/merchant/rest_business.png"></image>
+			<image wx:if="{{item.isBrandMerchant === 1}}" class="merchant-brand" src="/images/images/brand.png"></image>
 		</view>
 		<view class="content">
 			<view class="name">
 				<view class="name-txt"><text>{{item.name}}</text></view>
-				<view class="fr">
-					<text style="font-size: 26rpx;color: #666;font-weight: 500">{{fixed.round(item.distance)}}km</text>
-				</view>
+				<image wx:if="{{item.hasVisualRestaurant == 1}}" class="extra-img fr" src="/images/images/can_see.png"></image>
 			</view>
 			<view class="desc clearfix">
 				<view class="fl desc-content">
@@ -27,13 +26,15 @@
 					<text class="desc-count">{{fixed.fomatFloat(item.averageScore,1)}}分</text>
 					<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
 				</view>
-				<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
+				<view class="fr">
+					<text style="font-size: 26rpx;color: #666;font-weight: 500">{{fixed.round(item.distance)}}km</text>
+				</view>
 			</view>
 			<view class="extra">
 				<text class="count">起送价￥{{item.minPrice}}</text>
 				<text class="count">|</text>
 				<text>配送费￥{{item.shipFee}}</text>
-				<!-- <image class="extra-img fr" src="/images/images/pay.png"></image> -->
+				<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
 			</view>
 			<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.isHeight :''}}">
 				<view class="cartcontrol-content flex"

@@ -49,7 +49,7 @@
 		</view>
 	</view>
 </template>
-<template name="shipfilter-common">
+<!-- <template name="shipfilter-common">
 	<view class="time" style="height:246rpx" catchtouchmove="myCatchTouch">
 		<view class="flex font-14 shipfilter-content">
 		    <view class="shipfilter-left" style="text-indent: 18rpx">
@@ -66,6 +66,53 @@
 				<text>清空</text>
 			</view>
 			<view class="shipfilter-query font-16" bindtap="query">
+				<text>确定</text>
+			</view>
+		</view>
+	</view>
+</template> -->
+<template name="shipfilter-common">
+	<view class="shipfilter_new" catchtouchmove="myCatchTouch">
+		<view class="font-14 shipfilter-new_content">
+		    <view><text>商家特色</text></view>
+		    <view class="merchant-feature flex">
+		    	<block
+		   			wx:for="{{merchantFeature}}"   
+  					wx:for-item="item"
+ 					wx:for-index="index" 
+ 					wx:key="index">
+		   			<view 
+		   				class="merchant-feature-item flex {{item.isSelect ? 'shipfilter-new_active' : ''}}"
+		   				catchtap="selectMerchantSort"
+		   				data-index ="{{index}}"
+ 						data-name="merchantFeature">
+ 						<image src="{{item.picUrl}}" class="shipfilter-new_imgs"></image>
+		   				<text>{{item.feature}}</text>
+		   			</view>
+		   		</block>
+		    </view>
+		    <view><text>优惠活动</text></view>
+		   	<view class="merchant-feature flex">
+		   		<block
+			   		wx:for="{{merchantActive}}"   
+	  				wx:for-item="item"
+	 				wx:for-index="index" 
+	 				wx:key="index">
+			   		<view 
+			   			class="merchant-feature-item {{item.isSelect ? 'shipfilter-new_active' : ''}}"
+			   			catchtap="selectMerchantSort"
+	 					data-index="{{index}}"
+	 					data-name="merchantActive">
+			   			<text>{{item.active}}</text>
+			   		</view>
+			   	</block>
+		   	</view>
+		</view>
+		<view class="flex shipfilter-new_footer font-16">
+			<view class="shipfilter-new_button" bindtap="clear">
+				<text>清空</text>
+			</view>
+			<view class="shipfilter-new_button" bindtap="query" style="background:#ff9900;color:#fff">
 				<text>确定</text>
 			</view>
 		</view>

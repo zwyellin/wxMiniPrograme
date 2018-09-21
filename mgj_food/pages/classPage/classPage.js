@@ -1,5 +1,6 @@
 const app = getApp();
 const { wxRequest } = require('../../utils/util.js');
+const { merchantFeature, merchantActive } = require('../../components/homeClass.js');
 const { merchantObj } = require('../../components/merchant/merchant.js');
 Page(Object.assign({}, merchantObj, {
 	data: {
@@ -19,6 +20,9 @@ Page(Object.assign({}, merchantObj, {
 		timeIndex:0,
 		queryType:1,  //排序类型
 		sortList:["智能排序","距离最近","销量最高","起送价最低","配送速度最快","评分最高"],
+		merchantFeature:merchantFeature,
+		merchantActive:merchantActive,
+		merchantTags:'',
 		sortIndex:0,
 		tagParentId:0,
 		tagId:null,
@@ -75,10 +79,8 @@ Page(Object.assign({}, merchantObj, {
 	
 	getDataList(status){
 		if (!status) {
-			wx.showToast({
+			wx.showLoading({
 		        title: '加载中',
-		        icon: 'loading',
-		        duration: 200000,
 		        mask: true
 		    });
 		}
@@ -87,7 +89,8 @@ Page(Object.assign({}, merchantObj, {
         	longitude:app.globalData.longitude,
         	latitude:app.globalData.latitude,
         	queryType:this.data.queryType,
-        	shipFilter:this.data.shipFilter,
+        	merchantTags:this.data.merchantTags,
+        	// shipFilter:this.data.shipFilter,
 			tagId:this.data.tagId,
         	tagParentId:this.data.tagParentId,
         	size:10,

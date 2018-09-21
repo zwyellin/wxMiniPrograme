@@ -1,0 +1,11 @@
+.video-content {
+	padding: 0 20rpx;
+}
+.section {
+	margin-top: 20rpx;
+}
+.video {
+	width:100%;
+	background: #fff;
+	height: 344rpx;
+}

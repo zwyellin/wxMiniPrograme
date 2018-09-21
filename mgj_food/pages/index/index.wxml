@@ -26,7 +26,7 @@
 			    	<image src="/images/images/search.png" class="icon-adress_search"></image>
 			   	</view>
 			   	<view class="search-input">
-			   		<input placeholder="想吃啥，搜啥" placeholder-class="search-placeholder" bindfocus="focusToSearch" />
+			   		<view class="search-placeholder" bindtap="focusToSearch">想吃啥，搜啥</view>
 			   	</view>
 	    	</view>
 		</view>
@@ -34,7 +34,7 @@
 
 		<!-- 轮播图 开始 -->
 		<swiper 
-			wx:if="{{!isAgentId}}"
+			wx:if="{{!isAgentId && !isSwipper}}"
 		    class="swiper-banner"
 		    indicator-dots="{{swiper.indicatorDots}}" 
 		    autoplay="{{swiper.autoplay}}" 
@@ -53,11 +53,20 @@
 		    </block>
 		</swiper>
 		<!-- 轮播图 结束 -->
+		<view class="swiper-banner" wx:if="{{!isAgentId && isSwipper}}">
+			<block 
+		      wx:for="{{swiper.imgUrls}}" 
+		      wx:for-index="idx" 
+		      wx:for-item="item" 
+		      wx:key="id">
+				<image bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" />
+			</block>
+		</view>
 	</view>
 	
 	<view wx:if="{{!isAgentId}}" >
 		<!-- 外卖分类 开始 -->
-		<view class="class-block">
+		<view class="class-block flex">
 			<navigator class="class-content" url="/pages/classPage/classPage?id={{item.tagCategoryId}}&name={{item.name}}"
 				wx:for="{{initClassList}}" 
 			    wx:for-index="index" 
@@ -152,7 +161,7 @@
 		<template is="sort-common" data="{{sortList,sortIndex:sortIndex}}"></template>
 	</view>
 	<view wx:if="{{shipShow}}">
-		<template is="shipfilter-common" data="{{shipFilter}}"></template>
+		<template is="shipfilter-common" data="{{shipFilter,merchantFeature,merchantActive}}"></template>
 	</view>
 	<!-- 分类结束 -->
 

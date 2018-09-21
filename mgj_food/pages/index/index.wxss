@@ -90,13 +90,13 @@
   font-size: 20rpx;
   height: 58rpx;
   line-height: 58rpx;
+  color:#666;
 }
 .search-input input {
   height: 58rpx;
   line-height: 58rpx;
 }
 .class-block {
-  display: flex;
   flex-wrap:wrap;
   padding: 40rpx 40rpx 0 46rpx;
   color:#333;

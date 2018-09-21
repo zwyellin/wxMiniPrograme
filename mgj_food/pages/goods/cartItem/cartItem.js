@@ -103,10 +103,8 @@ Page({
     },
     findNewUserTOrders(status){
       if (!status) {
-        wx.showToast({
+        wx.showLoading({
           title: '加载中',
-          icon: 'loading',
-          duration: 200000,
           mask: true
         });
       }
@@ -175,10 +173,8 @@ Page({
     },
     //再来一单
     nextOrder(e){
-      wx.showToast({
+      wx.showLoading({
         title: '正在提交订单',
-        icon: 'loading',
-        duration: 200000,
         mask: true
       });
       let { food } = e.currentTarget.dataset;
@@ -205,7 +201,7 @@ Page({
                 feedbackApi.showToast({title: msg});
               } else {
                 wx.navigateTo({
-                  url: '/pages/queryOrder/queryOrder?merchantId='+food.merchantId
+                  url: '/goods/queryOrder/queryOrder?merchantId='+food.merchantId
                 });
               }
           } else {
@@ -232,7 +228,7 @@ Page({
     payMoney(e){
       let { food } = e.currentTarget.dataset
       wx.navigateTo({
-          url: '/pages/pay/pay?orderId=' + food.id + '&price=' + food.totalPrice,
+          url: '/goods/pay/pay?orderId=' + food.id + '&price=' + food.totalPrice,
       });
     },
     //评价
@@ -240,7 +236,7 @@ Page({
       let { food } = e.currentTarget.dataset;
       this.data.orderDetail = food;
       wx.navigateTo({
-        url: '/pages/evaluate/evaluate'
+        url: '/goods/evaluate/evaluate'
       });
     },
     refundDetail(e){

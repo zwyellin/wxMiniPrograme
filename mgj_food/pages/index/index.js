@@ -1,7 +1,7 @@
 //获取应用实例
 const app = getApp();
 const { Promise, wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
-const { initClassList, imgUrls } = require('../../components/homeClass.js');
+const { initClassList, imgUrls, merchantFeature, merchantActive } = require('../../components/homeClass.js');
 const { merchantObj } = require('../../components/merchant/merchant.js');
 console.log(merchantObj);
 let interval;
@@ -14,6 +14,7 @@ Page(Object.assign({}, merchantObj, {
   		isAgentId:false,
   		clickPage:false,
   		cartObject:null,
+  		isSwipper:false,
   		isShoppingCart:false,
 	    swiper: {
 	      imgUrls: imgUrls,
@@ -38,17 +39,21 @@ Page(Object.assign({}, merchantObj, {
 		type1:'分类',
 		type2:'排序',
 		type3:'筛选',
+		isPaiXunTop:false,
 		classList:[],
 		childTagCategoryList:[],
 		classShow:false,
 		shipShow:false,
 		timeIndex:0,
-		queryType:0,  //排序类型
+		queryType:1,  //排序类型
 		sortList:["智能排序","距离最近","销量最高","起送价最低","配送速度最快","评分最高"],
+		merchantActive:merchantActive,
+		merchantFeature:merchantFeature,
 		sortIndex:0,
 		tagParentId:0,
 		tagId:null,
 		shipFilter:null,
+		merchantTagsList:[],  //筛选类型
 		sortShow:false,
 		maskShow:false,
 		maskAnimation:null,   //遮罩层动画
@@ -202,7 +207,6 @@ Page(Object.assign({}, merchantObj, {
   		}
   		if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
   			let isloginGetPlatformRedBag = wx.getStorageSync('isloginGetPlatformRedBag');  // 是否通过首页登录领取过平台红包
-  			console.log(isloginGetPlatformRedBag);
 			if (isloginGetPlatformRedBag) {
 				this.getPlatformRedBag();
 				wx.setStorageSync('isloginGetPlatformRedBag',false);
@@ -216,7 +220,7 @@ Page(Object.assign({}, merchantObj, {
 				tagParentId:0,
 				tagId:null,
 				shipFilter:null,
-				queryType:0,
+				queryType:1,
 				sortIndex:0,
 				timeIndex:0,
 				start:0,
@@ -230,10 +234,10 @@ Page(Object.assign({}, merchantObj, {
 						if (value.phone) {
 							app.globalData.agentPhone = value.phone;
 						} else {
-							app.globalData.agentPhone = null
+							app.globalData.agentPhone = null;
 						}
 					} else {
-						app.globalData.agentPhone = null
+						app.globalData.agentPhone = null;
 						app.globalData.agentId = null;
 					}
 					this.getDataList(false,false);//getinitDataList
@@ -253,6 +257,18 @@ Page(Object.assign({}, merchantObj, {
 	        });
 		}
 	},
+	onPageScroll(e){ //监听商家筛选的高度
+		if (parseInt(e.scrollTop) > 399 && this.data.isPaiXunTop === false) {
+			this.setData({
+				isPaiXunTop:true
+			});
+		}
+		if(parseInt(e.scrollTop) < 399 && this.data.isPaiXunTop === true) {
+			this.setData({
+				isPaiXunTop:false
+			});
+		}
+  	},
 	// 领取平台红包
 	getPlatformRedBag(){
 		wxRequest({
@@ -307,7 +323,7 @@ Page(Object.assign({}, merchantObj, {
 		if (item.merchantId) {
 			let merchantId = item.merchantId;
 			wx.navigateTo({
-				url:"/pages/shop/shop?merchantid=" + merchantId,
+				url:"/goods/shop/shop?merchantid=" + merchantId,
 			});
 		}
 	},
@@ -335,13 +351,15 @@ Page(Object.assign({}, merchantObj, {
 					}
 				});
 				if (imgUrls.length) {
-					if (imgUrls.length === 1) {
+					if (imgUrls.length == 1) {
 						this.setData({
-		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:false,indicatorDots:false})
+		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:false,indicatorDots:false}),
+		      				isSwipper:true
 		    			});
 					} else {
 						this.setData({
-		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:true,indicatorDots:true})
+		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:true,indicatorDots:true}),
+		      				isSwipper:false
 		    			});
 					}
 				}	
@@ -385,9 +403,13 @@ Page(Object.assign({}, merchantObj, {
 					if (i === 8) break
 					if (initClassList[i].graySwitch === 0 && !initClassList[i].picUrl || initClassList[i].picUrl && !/.*(\.png|\.jpg)$/i.test(initClassList[i].picUrl)) {
 						initClassList[i].picUrl = '/images/merchant/classification_eva@2x.png'
+					} else {
+						initClassList[i].picUrl = initClassList[i].picUrl +'?imageView2/0/w/86/h/86';
 					}
 					if (initClassList[i].graySwitch === 1 && !initClassList[i].grayUrl || initClassList[i].picUrl && !/.*(\.png|\.jpg)$/i.test(initClassList[i].grayUrl)) {
 						initClassList[i].grayUrl = '/images/merchant/classification_eva@2x.png'
+					} else {
+						initClassList[i].grayUrl = initClassList[i].grayUrl +'?imageView2/0/w/86/h/86';
 					}
 					classArr.push(initClassList[i])
 				}
@@ -430,7 +452,7 @@ Page(Object.assign({}, merchantObj, {
 	},
 	getDataList(status,Boos){
 		if (!status) {
-			wx.showToast({
+			wx.showLoading({
 		        title: '加载中',
 		        icon: 'loading',
 		        duration: 200000,
@@ -442,7 +464,8 @@ Page(Object.assign({}, merchantObj, {
         	longitude:app.globalData.longitude,
         	latitude:app.globalData.latitude,
         	queryType:this.data.queryType,
-        	shipFilter:this.data.shipFilter,
+        	merchantTags:this.data.merchantTagsList.join(' '),
+        	// shipFilter:this.data.shipFilter,
 			tagId:this.data.tagId,
         	tagParentId:this.data.tagParentId,
         	size:10,
@@ -456,7 +479,7 @@ Page(Object.assign({}, merchantObj, {
         		params:data
         	}	
         }).then(res=>{
-			let dataList =this.data.dataList;
+			let dataList = this.data.dataList;
 			let list = res.data.value;		
 			if (res.data.code === 0) {
 				if(Boos){

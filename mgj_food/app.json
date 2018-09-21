@@ -1,31 +1,16 @@
 {
   "pages": [  
     "pages/index/index",
-    "pages/shop/shop",
     "pages/classPage/classPage",
     "pages/address/add/add",
-    "pages/queryOrder/queryOrder",
     "pages/address/receiving/receiving",
     "pages/address/address/address",
     "pages/login/login",
     "pages/userCenter/userCenter",
-    "pages/userredBag/userredBag",
     "pages/goods/cartItem/cartItem",
     "pages/goods/cartDetail/cartDetail", 
     "pages/goods/refundDetail/refundDetail",
-    "pages/searchGoods/searchGoods",
-    "pages/redbag/merchantRedbag/merchantRedbag",
-    "pages/redbag/platformRedbag/platformRedbag",
-    "pages/remarks/remarks",
-    "pages/evaluate/evaluate",
-    "pages/address/load/load",
-    "pages/register/register",
-    "pages/pay/pay",
-    "pages/firends/person/person",
-    "pages/firends/shareFirend/shareFirend",
-    "pages/firends/service/service",
-    "pages/firends/serviceText/serviceText",
-    "pages/firends/results/results"
+    "pages/searchGoods/searchGoods"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -58,5 +43,31 @@
         "selectedIconPath": "/images/images/tabbar-pcenter-active.png"
       }
     ]
-  }
+  },
+  "subPackages": [{
+      "root": "other",
+      "pages": [
+        "firends/person/person",
+        "firends/shareFirend/shareFirend",
+        "firends/service/service",
+        "firends/serviceText/serviceText",
+        "firends/results/results",
+        "firends/load/load",
+        "register/register"
+      ]
+    },{
+      "root": "goods", 
+      "pages": [
+        "shop/shop",
+        "queryOrder/queryOrder",
+        "pay/pay",
+        "video/video",
+        "userredBag/userredBag",
+        "redbag/merchantRedbag/merchantRedbag",
+        "redbag/platformRedbag/platformRedbag",
+        "remarks/remarks",
+        "evaluate/evaluate"
+      ]
+    }
+  ]
 }
