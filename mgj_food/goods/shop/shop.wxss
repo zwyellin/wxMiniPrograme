@@ -791,14 +791,17 @@
 	height: 166rpx;
 	border-radius: 10rpx;
 }
+.extra-video-img {
+	margin-left: 10rpx;
+	width: 30rpx;
+	height: 30rpx;
+}
 .video-bottom {
 	position: absolute;
 	bottom: 0;
 	width: 248rpx;
 	height: 60rpx;
-	/*white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;*/
+	align-items: center;
 }
 .video-logo {
 	width: 248rpx;

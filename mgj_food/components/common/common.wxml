@@ -72,7 +72,7 @@
 	</view>
 </template> -->
 <template name="shipfilter-common">
-	<view class="time" style="height:542rpx" catchtouchmove="myCatchTouch">
+	<view class="shipfilter_new" catchtouchmove="myCatchTouch">
 		<view class="font-14 shipfilter-new_content">
 		    <view><text>商家特色</text></view>
 		    <view class="merchant-feature flex">
@@ -82,10 +82,11 @@
  					wx:for-index="index" 
  					wx:key="index">
 		   			<view 
-		   				class="merchant-feature-item {{item.isSelect ? 'shipfilter-new_active' : ''}}"
+		   				class="merchant-feature-item flex {{item.isSelect ? 'shipfilter-new_active' : ''}}"
 		   				catchtap="selectMerchantSort"
 		   				data-index ="{{index}}"
  						data-name="merchantFeature">
+ 						<image src="{{item.picUrl}}" class="shipfilter-new_imgs"></image>
 		   				<text>{{item.feature}}</text>
 		   			</view>
 		   		</block>

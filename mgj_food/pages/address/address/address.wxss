@@ -50,7 +50,8 @@
 	vertical-align: middle;
 }
 .nearby-address {
-	padding-bottom: 100rpx;
+	/*padding-bottom: 100rpx;*/
+	padding-bottom: 32rpx;
 }
 .nearby-address-text {
 	letter-spacing: 2rpx;

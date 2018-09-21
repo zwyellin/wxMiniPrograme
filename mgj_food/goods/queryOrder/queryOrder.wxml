@@ -95,7 +95,7 @@
 					<view class="commodity-logowrapper">
 						<image class="commodity-logo" src="{{query.removefh(food.labelUrl,70,70)}}"></image>
 					</view>
-					<view class="order-leftname">
+					<view class="order-leftname" style="width:352rpx">
 						<view class="orderitems-title">{{food.name}}</view>
 						<view style="color:#999;font-size: 24rpx">
 							<text wx:if="{{food.spec}}">{{food.spec}}</text>

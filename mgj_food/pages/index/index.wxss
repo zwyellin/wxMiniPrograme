@@ -90,6 +90,7 @@
   font-size: 20rpx;
   height: 58rpx;
   line-height: 58rpx;
+  color:#666;
 }
 .search-input input {
   height: 58rpx;

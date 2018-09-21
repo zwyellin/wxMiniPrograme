@@ -36,13 +36,16 @@ const imgUrls = [{
     },];
 const merchantFeature = [{
 		feature:'可视餐厅',
-		isSelect:false
+		isSelect:false,
+		picUrl:'/images/merchant/see.png',
 	},{
 		feature:'跨天预订',
-		isSelect:false
+		isSelect:false,
+		picUrl:'/images/merchant/xin.png',
 	},{
 		feature:'点评高分',
-		isSelect:false
+		isSelect:false,
+		picUrl:'/images/merchant/eye.png',
 	}];
 const merchantActive = [{
 		active:'首单立减',

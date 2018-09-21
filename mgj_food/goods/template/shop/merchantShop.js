@@ -11,6 +11,8 @@ const merchantShop = {
         	data:{
         		token:app.globalData.token,
         		params:{
+        			latitude:app.globalData.latitude,
+    				longitude:app.globalData.longitude,
         			agentId:app.globalData.agentId,
         			merchantId:this.data.merchantId
         		}	
@@ -21,8 +23,7 @@ const merchantShop = {
 				let value = res.data.value;
 				let name = value.merchant.name;
 				let ruleDtoList =value.merchant.ruleDtoList;
-				console.log(ruleDtoList)
-				let merchantRedBagList = value.merchant.merchantRedBagList
+				let merchantRedBagList = value.merchant.merchantRedBagList;
 				wx.setNavigationBarTitle({
 				  	title: name
 				});

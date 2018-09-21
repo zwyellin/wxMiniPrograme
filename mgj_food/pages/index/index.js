@@ -14,6 +14,7 @@ Page(Object.assign({}, merchantObj, {
   		isAgentId:false,
   		clickPage:false,
   		cartObject:null,
+  		isSwipper:false,
   		isShoppingCart:false,
 	    swiper: {
 	      imgUrls: imgUrls,
@@ -52,7 +53,7 @@ Page(Object.assign({}, merchantObj, {
 		tagParentId:0,
 		tagId:null,
 		shipFilter:null,
-		merchantTags:'', //筛选类型
+		merchantTagsList:[],  //筛选类型
 		sortShow:false,
 		maskShow:false,
 		maskAnimation:null,   //遮罩层动画
@@ -93,8 +94,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				// app.globalData.longitude = longitude;
-				// app.globalData.latitude = latitude;
+				app.globalData.longitude = longitude;
+				app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
@@ -350,13 +351,15 @@ Page(Object.assign({}, merchantObj, {
 					}
 				});
 				if (imgUrls.length) {
-					if (imgUrls.length === 1) {
+					if (imgUrls.length == 1) {
 						this.setData({
-		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:false,indicatorDots:false})
+		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:false,indicatorDots:false}),
+		      				isSwipper:true
 		    			});
 					} else {
 						this.setData({
-		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:true,indicatorDots:true})
+		      				swiper:Object.assign({},this.data.swiper,{imgUrls:imgUrls,autoplay:true,indicatorDots:true}),
+		      				isSwipper:false
 		    			});
 					}
 				}	
@@ -400,9 +403,13 @@ Page(Object.assign({}, merchantObj, {
 					if (i === 8) break
 					if (initClassList[i].graySwitch === 0 && !initClassList[i].picUrl || initClassList[i].picUrl && !/.*(\.png|\.jpg)$/i.test(initClassList[i].picUrl)) {
 						initClassList[i].picUrl = '/images/merchant/classification_eva@2x.png'
+					} else {
+						initClassList[i].picUrl = initClassList[i].picUrl +'?imageView2/0/w/86/h/86';
 					}
 					if (initClassList[i].graySwitch === 1 && !initClassList[i].grayUrl || initClassList[i].picUrl && !/.*(\.png|\.jpg)$/i.test(initClassList[i].grayUrl)) {
 						initClassList[i].grayUrl = '/images/merchant/classification_eva@2x.png'
+					} else {
+						initClassList[i].grayUrl = initClassList[i].grayUrl +'?imageView2/0/w/86/h/86';
 					}
 					classArr.push(initClassList[i])
 				}
@@ -457,7 +464,7 @@ Page(Object.assign({}, merchantObj, {
         	longitude:app.globalData.longitude,
         	latitude:app.globalData.latitude,
         	queryType:this.data.queryType,
-        	merchantTags:this.data.merchantTags,
+        	merchantTags:this.data.merchantTagsList.join(' '),
         	// shipFilter:this.data.shipFilter,
 			tagId:this.data.tagId,
         	tagParentId:this.data.tagParentId,

@@ -3,7 +3,7 @@
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
-    this.updataApp();
+    // this.updataApp();
     let loginMessage = wx.getStorageSync('loginMessage');
     let shoppingCart = wx.getStorageSync('shoppingCart');
     // if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
@@ -38,6 +38,9 @@ App({
           that.globalData.userInfo = res.userInfo;
           console.log(that.globalData.userInfo);
           typeof cb == "function" && cb(that.globalData.userInfo);
+        },
+        fail: function (err) {
+          console.log(err);
         }
       });
     }
@@ -108,7 +111,7 @@ App({
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain: 'https://prelaunch.horsegj.com',
+    domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
     latitude:'39.977261',

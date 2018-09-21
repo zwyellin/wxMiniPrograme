@@ -47,7 +47,7 @@
 	background: #e3003a;
 	margin-top: -20rpx; 
 }
-.common-mask {
+/*.common-mask {
     position: fixed;
     z-index: 999;
     top: 0;
@@ -57,7 +57,7 @@
     overflow: auto;
     opacity: 0.3;
     background: #000;
-}
+}*/
 .receive{
 	background: #a9adb3;
 }

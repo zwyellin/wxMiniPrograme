@@ -164,11 +164,17 @@ let merchantObj = {
 			});
 		} else if(name === 'merchantActive') {
 			let merchantActive = this.data.merchantActive;
-			if (merchantActive[index].isSelect) {
-				merchantActive[index].isSelect = false;
-			} else {
-				merchantActive[index].isSelect = true;
-			}
+			merchantActive.map((item,i)=>{
+				if (index == i) {
+					if (merchantActive[index].isSelect == true) {
+						item.isSelect = false;
+					} else {
+						item.isSelect = true;
+					}
+				} else {
+					item.isSelect = false;
+				}	
+			});
 			this.setData({
 				merchantActive:merchantActive
 			});
@@ -199,7 +205,7 @@ let merchantObj = {
 	},
 	clear(){
 		this.maskHideAnimation();
-		this.data.merchantTags = '';
+		this.data.merchantTagsList = [];
 		let merchantFeature = this.data.merchantFeature;
 		let merchantActive = this.data.merchantActive;
 		merchantFeature.map(item=>item.isSelect = false);
@@ -214,19 +220,15 @@ let merchantObj = {
 	},
 	query(){
 		this.maskHideAnimation();
-		this.data.merchantTags = '';
+		this.data.merchantTagsList = [];
 		this.data.merchantFeature.map((item,index)=>{
-			if (item.isSelect === true) {
-				if (index === this.data.merchantFeature.length-1) {
-					this.data.merchantTags += item.feature + ' ';
-				} else {
-					this.data.merchantTags += item.feature;
-				}
+			if (item.isSelect == true) {
+				this.data.merchantTagsList.push(item.feature);
 			}
 		})
 		this.data.merchantActive.map((item,index)=>{
-			if (item.isSelect === true) {
-				this.data.merchantTags += ' ' + item.active;
+			if (item.isSelect == true) {
+				this.data.merchantTagsList.push(item.active);
 			}
 		})
 		this.setData({

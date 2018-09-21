@@ -266,7 +266,7 @@
 		    	wx:for-index="index" 
 		    	wx:key="index">
     			<view class="flex font-12">
-	    			<template is="star-add" data="{{size,item}}"></template>
+	    			<template is="star-userevaluate" data="{{size,item}}"></template>
 					<text class="text-left font-16" style="margin-top: -6rpx">{{item.merchantScore}}分</text>
 					<image class="message-img" src="../../images/images/time.png"></image>
 					<text style="margin-top: 4rpx">{{item.deliveryCost || 0}}分钟送达</text>
@@ -317,19 +317,19 @@
   			</view>
   			<view wx:if="{{itemList.shipmentMode === 1}}" class="user-message">
   				<view class="font-12"><text>商家自配送</text></view>
-  				<view class="mt10"><text style="color:#333">{{itemList.practicalShipFee || 0}}元</text></view>
+  				<view class="mt10"><text style="color:#333">{{itemList.shipFee || 0}}元</text></view>
   			</view>
   			<view class="user-message">
   				<view class="font-12"><text>平均配送时间</text></view>
   				<view class="mt10"><text style="color:#333">{{itemList.avgDeliveryTime}}分钟</text></view>
   			</view>
   		</view>
-  		<view class="shop-content font-16">
+  		<view wx:if="{{itemList.visualRestaurantList && itemList.visualRestaurantList.length != 0}}" class="shop-content font-16">
   			<view class="shop-message shop-message-letter" style="color:#666;padding-left: 10rpx;border: none">
   				<text>可视餐厅</text>
   			</view>
-  			<scroll-view scroll-x="true" class="flex" style="width: 1000px;height: 166rpx;padding-bottom: 20rpx">
-				<block 
+  			<scroll-view scroll-x="true" class="flex" style="width: 1200rpx;height: 166rpx;padding-bottom: 20rpx">
+				<block
 					wx:for="{{itemList.visualRestaurantList}}"   
 			      	wx:for-item="item"
 			      	wx:for-index="index" 
@@ -338,7 +338,7 @@
 			      		<image class="video-logo" src="{{tage.removefh(item.videoPic,248,166)}}"></image>
 			      		<image class="video-top" src="/images/merchant/video_top.png"></image>
 			      		<view class="video-bottom flex">
-			      			<image class="extra-img" src="/images/images/can_see.png"></image>
+			      			<image class="extra-video-img" src="/images/images/can_see.png"></image>
 			      			<text class="font-12" style="color:#fff;margin-left:10rpx">{{item.positionName}}</text>
 			      		</view>
 			      	</navigator>
