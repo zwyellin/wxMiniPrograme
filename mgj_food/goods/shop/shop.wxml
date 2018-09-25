@@ -114,7 +114,7 @@
 							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
 						</view>
 						<view class="detail-price flex">
-							<text class="now">¥{{food.goodsSpecList[0].price}}<text wx:if="{{food.goodsSpecList[0].originalPrice}}" class="old-price">￥{{food.goodsSpecList[0].originalPrice}}<text class="del"></text></text>
+							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}<text class="del"></text></text>
 							</text>
 							<view class="cartcontrol-wrapper">
 								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && food.status != 0}}">
@@ -196,7 +196,7 @@
 							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
 						</view>
 						<view class="detail-price flex">
-							<text class="now">¥{{food.goodsSpecList[0].price}}<text wx:if="{{food.goodsSpecList[0].originalPrice}}" class="old-price">￥{{food.goodsSpecList[0].originalPrice}}<text class="del"></text></text>
+							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}<text class="del"></text></text>
 							</text>
 							<view class="cartcontrol-wrapper">
 								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && food.status != 0}}">
@@ -551,13 +551,9 @@
 			<text class="detail-old">月售{{selectedFood.monthSaled}}份</text>
 		</view>
 		<view class="selectdetail-desc" style="padding-bottom: 20rpx;">
-			<text class="detail-name" style="color:#ff8282">￥{{selectedFood.goodsSpecList[0].price}}</text>
+			<text class="detail-name" style="color:#ff8282">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
 			<text detail-old>￥{{selectedFood.now}}</text>
 		</view>
-		<!-- <view class="button"> -->
-			<!-- <image class="button-img" src="../../images/images/cart_2.png"></image>
-			<text class="button-txt">加入购物车</text> -->
-			<!-- </view> -->
 		<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
 			<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
 				<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template>

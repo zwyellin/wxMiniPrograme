@@ -359,9 +359,7 @@ Page(Object.assign({}, merchantShop,{
 		
 		let selectedFood = this.data.selectedFood;
 		let selectFoods = this.data.selectFoods;
-		console.log(selectFoods)
-		// let selects = this.data.selects;
-		
+
 		selectedFood.goodsAttributeList[parentindex].select = taste;
 		console.log(selectedFood.goodsAttributeList[parentindex])
 		this.setData({
@@ -550,11 +548,9 @@ Page(Object.assign({}, merchantShop,{
 	//选择商品大小价格
 	choicespec(e){
 		let { index, taste } = e.currentTarget.dataset;
-		console.log(index, taste)
 		this.setData({
 			price:taste.price,
 			specIndex:index,
-			
 		});
 	},
 	selectTab(e){
