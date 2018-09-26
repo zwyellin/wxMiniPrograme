@@ -131,7 +131,7 @@ const merchantShop = {
 							loading:true,
 						});
 					}
-					evaluate.concat(list);
+					evaluate = evaluate.concat(list);
 				} else {
 					evaluate = list;
 				}
@@ -144,7 +144,7 @@ const merchantShop = {
 	},
 	//加载更多评价
 	loadMore(e){  
-        this.data.evaluateStart +=5;
+        this.data.evaluateStart = this.data.evaluate.length + 5;
         this.getevaluate(true);
 	},
 	//遮罩层显示阻止滑动
