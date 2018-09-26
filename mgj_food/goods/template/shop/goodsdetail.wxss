@@ -83,6 +83,12 @@
 .old-price {
 	position: relative;
 	margin-left: 10rpx;
+	text-decoration: line-through;
+	font-size: 20rpx;
+	color: #999;
+}
+.now-min {
+	margin-left: 4rpx;
 	font-size: 20rpx;
 	color: #999;
 }
