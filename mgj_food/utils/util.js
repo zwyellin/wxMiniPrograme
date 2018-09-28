@@ -101,6 +101,34 @@ const getBMapLocation = function(obj){
     qqMap.reverseGeocoder(config);
   });
 };
+const getBMapCityList = function(){
+  return new Promise((resolve,reject)=>{
+    const defaultConfig = {
+      success:  (res)=> {
+        resolve(res);  
+      },
+      fail: (err)=> {
+        reject(err);
+      },
+    };
+    var config = Object.assign({}, defaultConfig);
+    qqMap.getCityList(config);
+  });
+};
+const getDistrictByCityId = function(obj){
+  return new Promise((resolve,reject)=>{
+    const defaultConfig = {
+      success:  (res)=> {
+        resolve(res);  
+      },
+      fail: (err)=> {
+        reject(err);
+      },
+    };
+    var config = Object.assign({}, defaultConfig, obj);
+    qqMap.getDistrictByCityId(config);
+  });
+};
 const wxGetLocation = function(obj){
   return new Promise((resolve,reject)=>{
     const defaultConfig = {
@@ -197,6 +225,8 @@ module.exports = {
   Promise,
   catchHandle,
   getBMapLocation,
+  getBMapCityList,
+  getDistrictByCityId,
   gcj02tobd09,
   qqMap,
   wxGetLocation,
