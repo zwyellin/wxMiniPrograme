@@ -94,13 +94,13 @@ const getBMapLocation = function(obj){
         resolve(res);  
       },
       fail: (err)=> {
-        reject(err)
+        reject(err);
       },
-    }
+    };
     var config = Object.assign({}, defaultConfig, obj);
     qqMap.reverseGeocoder(config);
-  })
-}
+  });
+};
 const wxGetLocation = function(obj){
   return new Promise((resolve,reject)=>{
     const defaultConfig = {
@@ -108,13 +108,13 @@ const wxGetLocation = function(obj){
         resolve(res);  
       },
       fail: (err)=> {
-        reject(err)
+        reject(err);
       },
-    }
+    };
     var config = Object.assign({}, defaultConfig, obj);
-    wx.getLocation(config)
-  })
-}
+    wx.getLocation(config);
+  });
+};
 
 const catchHandle = function (e) {
   let message;  

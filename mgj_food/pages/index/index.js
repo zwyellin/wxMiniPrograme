@@ -3,7 +3,6 @@ const app = getApp();
 const { Promise, wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
 const { initClassList, imgUrls, merchantFeature, merchantActive } = require('../../components/homeClass.js');
 const { merchantObj } = require('../../components/merchant/merchant.js');
-console.log(merchantObj);
 let interval;
 Page(Object.assign({}, merchantObj, {
   	data: {
@@ -73,6 +72,7 @@ Page(Object.assign({}, merchantObj, {
 			this.setData({
 				isAgentId:true
 			});
+			console.log(1)
 			this.appLocationMessage();
 		});	
 	},
@@ -289,6 +289,7 @@ Page(Object.assign({}, merchantObj, {
 					if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
 						let platformRedList = res.data.value.redBagList;
 						if (platformRedList.length != 0) {
+							this.maskShowAnimation();
 							this.platfromRedShowAnimation();
 							this.setData({
 								platformRedList: platformRedList,
@@ -296,6 +297,7 @@ Page(Object.assign({}, merchantObj, {
 							});
 						}
 					} else {
+						this.maskShowAnimation();
 						this.platformRegisterShowAnimation();
 						this.setData({
 							isRegisterGetRedBag:true,

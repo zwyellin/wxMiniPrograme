@@ -90,7 +90,7 @@
 .now-min {
 	margin-left: 4rpx;
 	font-size: 20rpx;
-	color: #999;
+	/*color: #999;*/
 }
 .del {
 	display: block;

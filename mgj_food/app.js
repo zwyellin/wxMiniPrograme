@@ -12,7 +12,7 @@ App({
     if (shoppingCart) {
       wx.removeStorageSync('shoppingCart');
     }
-    this.getUserInfo();
+    // this.getUserInfo();
     wx.getSystemInfo({
       success: (res)=> {
         this.globalData.windowHeight = res.windowHeight;
