@@ -18,7 +18,7 @@
 	background: #eaeaea;
 }
 .city-now {
-	width: 120rpx;
+	min-width: 120rpx;
 	margin-right: 20rpx;
 	align-items: center;
 	justify-content: center;
@@ -97,7 +97,7 @@
 	margin-right: 0;
 }
 .item-active {
-	border-bottom: 2rpx solid #ff9900;
+	border-bottom: 2px solid #ff9900;
 }
 .city-item {
 	padding:0 30rpx;

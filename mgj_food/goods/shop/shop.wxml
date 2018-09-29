@@ -110,8 +110,8 @@
 							<text>{{food.description}}</text>
 						</view>
 						<view class="detail-extra">
-							<text class="detail-count">月售{{food.monthSaled}}</text>
-							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
+							<text class="detail-count">月售{{food.monthSaled}}份</text>
+							<text wx:if="{{tage.praise(food.commentScore)}}">好评率{{tage.praise(food.commentScore)}}%</text>
 						</view>
 						<view class="detail-price flex">
 							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{food.goodsSpecList.length > 1}}"class="now-min">起</text><text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}</text>
@@ -193,7 +193,7 @@
 						</view>
 						<view class="detail-extra">
 							<text class="detail-count">月售{{food.monthSaled}}</text>
-							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
+							<text wx:if="{{tage.praise(food.commentScore)}}">好评率{{tage.praise(food.commentScore)}}%</text>
 						</view>
 						<view class="detail-price flex">
 							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}<text class="del"></text></text>

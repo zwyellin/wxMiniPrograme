@@ -24,6 +24,11 @@ let merchantObj = {
 	myCatchTouch(){
 		return false;
 	},
+	myCatchTouchCategory(){
+		console.log(1)
+		// wx.pageScrollTo({scrollTop:0});
+		return true;
+	},
 	quickPage(e){
 		let { id } = e.currentTarget.dataset;
 		if (!this.data.clickPage) {

@@ -35,33 +35,53 @@ Page(Object.assign({}, merchantObj, {
 	},
 	onLoad(options){
 		let tagId = null;
-		if (options.id != "null" && parseInt(options.id) > -1) {
+		let secondId = null;
+		if (options.id && options.id != "null" && parseInt(options.id) > -1) {
 			tagId = parseInt(options.id);
 		}
+		if (options.secondid && options.secondid != "null" && parseInt(options.secondid) > -1) {
+			secondId = parseInt(options.secondid);
+		}
 		let type1 = '分类';
-		this.setData({
-			tagId:tagId
-		})
+		if (secondId) {
+			this.setData({
+				tagId:secondId,
+				tagParentId:tagId
+			});
+		} else {
+			this.setData({
+				tagId:tagId
+			});
+		}
+		
 		this.findTagCategory().then(res=> {
         	if (res.data.code === 0) { 
         		let classList = res.data.value
-        		let timeIndex = 0
+        		let timeIndex = 0;
         		classList.map((item,index)=>{
         			if(item.id === tagId) {
-        				timeIndex = index
-						item.childTagCategoryList.map((childItem)=>{
-							if(childItem.id === tagId) {
-								type1 = childItem.name
-							}
-						})
+        				timeIndex = index;
+        				if (secondId) {
+							item.childTagCategoryList.map((childItem)=>{
+								if(childItem.id === secondId) {
+									type1 = childItem.name;
+								}
+							});
+        				} else {
+        					item.childTagCategoryList.map((childItem)=>{
+								if(childItem.id === tagId) {
+									type1 = childItem.name;
+								}
+							});
+        				}	
         			}
-        		})
+        		});
 				this.setData({
 					timeIndex:timeIndex,
 					childTagCategoryList:classList[timeIndex].childTagCategoryList,
 					type1:type1,
 					classList: classList
-				})
+				});
 				this.getDataList();
         	}
         });

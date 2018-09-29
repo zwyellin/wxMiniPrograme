@@ -2,7 +2,7 @@
 <view class="container page-address">
 	<view class="search-address flex font-14">
 		<view class="city-now flex">
-			<view><text>{{region}}</text></view>
+			<view bindtap="selectRegion"><text>{{region}}</text></view>
 			<image class="region-icon" src="../../../images/images/down_ye.png"></image>
 		</view>
 		<input class="flex-item" type="text" value="{{searchArea}}" placeholder-class="placeholder" placeholder="请输入地址" bindinput="address" />
@@ -28,7 +28,7 @@
 			<view class="pad-address">
 				<text>附近地址</text>
 			</view>
-			<view class="nearby-address font-12">
+			<view wx:if="{{!isShowCity}}" class="nearby-address font-12">
 				<view class="nearby-address-text"
 					wx:for="{{nearby}}" 
 			      	wx:for-index="idx" 
@@ -48,7 +48,7 @@
 			</view>
 		</view>	
 	</view>
-	<view class="city-wrapper">
+	<view wx:if="{{isShowCity}}" class="city-wrapper">
 		<view class="city-header font-14 flex">
 			<block
 				wx:for="{{selectCityList}}" 
@@ -56,7 +56,7 @@
 		      	wx:for-item="item" 
 		      	wx:key="idx">
 				<view
-					class="header-item" 
+					class="header-item {{index == idx ? 'item-active' : ''}}" 
 					style="color:{{item.fullname == '请选择' ? '#ff9900' : ''}}"
 					data-item="{{item}}"
 					data-index="{{idx}}"
@@ -65,8 +65,8 @@
 				</view>
 			</block>
 		</view>
-		<scroll-view scroll-y="true" style="height: 100%">
-			<view>
+		<scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height: 100%">
+			<view style="padding-bottom: 80rpx">
 				<view
 					class="city-item font-14"
 					wx:for="{{cityList}}" 

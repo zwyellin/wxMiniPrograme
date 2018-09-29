@@ -1,15 +1,19 @@
 const app = getApp();
 const { wxRequest, getBMapLocation, wxGetLocation, getBMapCityList, getDistrictByCityId, qqMap, gcj02tobd09 } = require('../../../utils/util.js');
+const { provinceList } = require('../../../components/homeClass.js');
 Page({
 	data:{
 		resetAddress:false,
 		region:'',
+		isShowCity:false,
 		istimeSearch:false,
 		searchArea:'',     //输入框地址
 		nearby:[],      //附近地址
 		nowAdress:'',
 		switch:'',
-		index:'请选择',
+		index:0,
+		indexDefault:'请选择',
+		scrollTop:0,
 		selectCityList:[{id:0,fullname:'请选择'}],
 		cityList:[],
 		repeatCityList:[]
@@ -65,6 +69,11 @@ Page({
 			}
 		});
 	},
+	selectRegion(e){
+		this.setData({
+			isShowCity:!this.data.isShowCity
+		});
+	},
 	address(e){
 		let address = e.detail.value;
 		let searchArea = '';
@@ -76,10 +85,13 @@ Page({
 		if (!this.data.istimeSearch) {
 			this.data.istimeSearch = true;
 			searchArea = searchArea + address;
-			this.getgeocoder(searchArea);
-		}	
+			this.getgeocoder(searchArea,true);
+		}
+		this.setData({
+			isShowCity:false
+		});	
 	},
-	getgeocoder(searchArea){
+	getgeocoder(searchArea,isCity){
 		var that = this;
 		qqMap.geocoder({
 		    address: searchArea,
@@ -94,13 +106,17 @@ Page({
 					},
 					get_poi:1,
 					poi_options:'policy=2'
-				}; 
+				};
 		        getBMapLocation(obj).then(res=>{
 		        	if (res.status === 0) {
 		        		let poi = res.result.pois;
-			        	that.setData({
-			        		nearby:poi
-			        	})
+		        		if (!isCity) {
+		        			that.data.region = res.result.address_component.city;
+		        		}
+		        		that.setData({
+			        		nearby:poi,
+			        		region:that.data.region
+			        	});
 			        	that.data.istimeSearch = false;
 		        	} else {
 						that.getSuggestion();
@@ -144,11 +160,11 @@ Page({
 	},
 	selectAdress(e){
 		let { item } = e.currentTarget.dataset;
-		console.log(item)
+		console.log(item);
 		let addressName = item.title;
 		let address = item.address+addressName;
-		let {lat, lng} = item.location
-		let { longitude, latitude } = gcj02tobd09(lng,lat)
+		let {lat, lng} = item.location;
+		let { longitude, latitude } = gcj02tobd09(lng,lat);
 		let pages = getCurrentPages();
 	    let prevPage = pages[pages.length - 2];
 	    if (this.data.switch === 'index') {
@@ -229,7 +245,9 @@ Page({
 		if (index == 0) {
 			this.setData({
 				cityList:this.data.repeatCityList,
-				index:index
+				index:index,
+				scrollTop:0,
+				indexDefault:index
 			})
 		}
 		if (index == 1) {
@@ -248,6 +266,8 @@ Page({
 			if (res.status === 0 && res.result[0].length != 0) {
 				this.setData({
 					cityList:res.result[0],
+					scrollTop:0,
+					index:this.data.index
 				});
 			} 
 		}).catch(err=>{
@@ -257,7 +277,7 @@ Page({
 	// 选择的城市
 	selectCity(e){
 		let { item, index } = e.currentTarget.dataset;
-		let selectCityList = this.data.selectCityList;
+		let selectCityList = JSON.parse(JSON.stringify(this.data.selectCityList));
 		let len = selectCityList.length
 		if (this.data.index == 0 ||this.data.index == '请选择') {
 			if (len == 1) {
@@ -266,22 +286,38 @@ Page({
 				selectCityList.unshift(item)
 			}
 			if (len == 2) {
-				if (this.data.index == '请选择') {
+				if (this.data.indexDefault == '请选择') {
 					selectCityList.splice(1,0,item)
 				} else {
-					if (item.id == 110000) {
-						selectCityList = []
-						selectCityList.push({id:0,fullname:'请选择'})
-						selectCityList.unshift(item)
-					} else {
+					let flag = false;
+					provinceList.map(province=>{
+						if (item.id == province.id) {
+							selectCityList = []
+							selectCityList.push({id:0,fullname:'请选择'})
+							selectCityList.unshift(item)
+							flag = true;
+						}
+					})
+					if (!flag) {
 						selectCityList.splice(1,0,item)
 					}	
 				}	
 			}
 			if (len == 3) {
-				selectCityList = []
-				selectCityList.push({id:0,fullname:'请选择'})
-				selectCityList.unshift(item)
+				let flag = false;
+				provinceList.map(province=>{
+					if (item.id == province.id) {
+						selectCityList = []
+						selectCityList.push({id:0,fullname:'请选择'})
+						selectCityList.unshift(item)
+						flag = true;
+					}
+				})
+				if (!flag) {
+					let value = item.fullname;
+					this.searchArea(value)
+					return false;
+				}
 			}	
 		}
 		if (this.data.index == 1) {
@@ -291,29 +327,42 @@ Page({
 				selectCityList.splice(1,0,item)
 			}
 		}
-		// if (true) {}
-		// if (len === 3) return
-		// if (selectCityList.length === 3) {}
+		if (this.data.index == 2) {
+			let value = item.fullname;
+			this.searchArea(value)
+			return false
+		}
 		getDistrictByCityId({id:item.id}).then(res=>{
 			if (res.status === 0 && res.result[0].length != 0) {
 				this.setData({
 					cityList:res.result[0],
-					selectCityList:selectCityList
+					selectCityList:selectCityList,
+					scrollTop:0,
+					index:selectCityList.length-1
 				});
-			} 
-		}).catch(err=>{
-			let searchArea = '';
-			let value = item.fullname;
-			this.setData({
-				searchArea:value
-			})
-			this.data.selectCityList.map(item=>{
-				if (item.id != 0) {
-					searchArea += item.fullname;
+			} else {
+				if (this.data.selectCityList.length == 2) {
+					let value = item.fullname;
+					this.searchArea(value)
 				}
-			});
-			searchArea = searchArea + value;
-			this.getgeocoder(searchArea);
+			}
+		}).catch(err=>{
+			let value = item.fullname;
+			this.searchArea(value)
+		})
+	},
+	searchArea(value){
+		let searchArea = '';
+		this.data.selectCityList.map(item=>{
+			if (item.id != 0) {
+				searchArea += item.fullname;
+			}
+		});
+		searchArea = searchArea + value;
+		this.getgeocoder(searchArea);
+		this.setData({
+			searchArea:value,
+			isShowCity:false
 		})
 	}
 });

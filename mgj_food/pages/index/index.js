@@ -322,10 +322,17 @@ Page(Object.assign({}, merchantObj, {
 	},
 	bannerMerchant(e){
 		let { item } = e.currentTarget.dataset;
-		if (item.merchantId) {
+		if (item.bannerType == 3) {
 			let merchantId = item.merchantId;
 			wx.navigateTo({
 				url:"/goods/shop/shop?merchantid=" + merchantId,
+			});
+		}
+		if (item.bannerType == 2) {
+			let tagCategoryId = item.firstCategoryId;
+			let secondCategoryId = item.secondCategoryId;
+			wx.navigateTo({
+				url:"/pages/classPage/classPage?id=" + tagCategoryId+"&secondid="+secondCategoryId
 			});
 		}
 	},
