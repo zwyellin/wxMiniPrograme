@@ -20,12 +20,12 @@ Page({
 	},
 	onLoad(options){
 		this.setData({
-			switch:options.switch
+			switch:options.switch,
+			region:options.region || ''
 		});
 	},
 	onShow(){
 		wxGetLocation({type:'gcj02'}).then(res=>{
-			console.log(res)
 			let latitude = res.latitude;
 			let longitude = res.longitude;
 			let obj = {
@@ -44,7 +44,6 @@ Page({
 						address = res.result.address;
 					}
 					let region = res.result.address_component.city;
-					console.log(address);
 					let pois = res.result.pois;
 					let nearby = [];
 					for (var i = 0; i < 4; i++) {

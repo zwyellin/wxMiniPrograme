@@ -25,6 +25,7 @@ Page(Object.assign({}, merchantObj, {
 	    },
 	    refreshData:false,
 	    size:24,
+	    region:'',                  //当前城市
 		city:{
 			cityName:'',
 		},
@@ -94,8 +95,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				// app.globalData.longitude = longitude;
-				// app.globalData.latitude = latitude;
+				app.globalData.longitude = longitude;
+				app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
@@ -121,13 +122,10 @@ Page(Object.assign({}, merchantObj, {
 					});
 		        });
 		        getBMapLocation(this.data.obj).then(res=>{
-					console.log(res);
 					let address;
 					if (res.status === 0) {
-						console.log(res)
 						address = res.result.address;
-						// address =res.result.address_component.street_number
-						console.log(address);
+						this.data.region = res.result.address_component.city;
 						this.setData({
 			      			city:Object.assign({},this.data.city,{cityName:address})
 			    		});
@@ -257,18 +255,24 @@ Page(Object.assign({}, merchantObj, {
 	        });
 		}
 	},
-	onPageScroll(e){ //监听商家筛选的高度
-		if (parseInt(e.scrollTop) > 399 && this.data.isPaiXunTop === false) {
-			this.setData({
-				isPaiXunTop:true
-			});
-		}
-		if(parseInt(e.scrollTop) < 399 && this.data.isPaiXunTop === true) {
-			this.setData({
-				isPaiXunTop:false
-			});
-		}
-  	},
+	// 跳转地址页
+	redirectToAddress(e){
+		wx.navigateTo({
+			url:"/pages/address/address/address?switch=index&region=" + this.data.region
+		});
+	},
+	// onPageScroll(e){ //监听商家筛选的高度
+	// 	if (parseInt(e.scrollTop) > 399 && this.data.isPaiXunTop === false) {
+	// 		this.setData({
+	// 			isPaiXunTop:true
+	// 		});
+	// 	}
+	// 	if(parseInt(e.scrollTop) < 399 && this.data.isPaiXunTop === true) {
+	// 		this.setData({
+	// 			isPaiXunTop:false
+	// 		});
+	// 	}
+ //  	},
 	// 领取平台红包
 	getPlatformRedBag(){
 		wxRequest({
@@ -339,10 +343,11 @@ Page(Object.assign({}, merchantObj, {
 	//根据地理位置初始化首页轮播图
 	initBanner(){
 		wxRequest({
-        	url:'/merchant/userClient?m=findTBanner',
+        	url:'/merchant/userClient?m=findTBanner&uuid=' + parseInt(Math.random()*1000000000000000),
         	method:'POST',
         	data:{
         		token: app.globalData.token,
+        		uuid:parseInt(Math.random()*1000000000000000),
         		params:{
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
@@ -589,6 +594,7 @@ Page(Object.assign({}, merchantObj, {
     		return false;
     	}
     	this.data.start = 0;
+    	this.initBanner();
       	this.initClass();
       	this.findTagCategory();
       	this.getDataList(false,true);

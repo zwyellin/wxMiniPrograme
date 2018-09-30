@@ -27,6 +27,7 @@ Page(Object.assign({}, merchantShop,{
 	    },
 	    evaluateSize:5,        //评价加载数量
         evaluateStart:0,      //评价开始位置
+        isEvaluate:false,
 	    tabIndex:0,
 	    merchantId:null,
 	    selectParentIndex:0,

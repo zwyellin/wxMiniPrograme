@@ -7,20 +7,17 @@
 	<view class="page">
 		<!-- 地点 开始 -->
 		<view class="search-view">
-		    <navigator class="adress-box" url="/pages/address/address/address?switch=index">
+		    <view class="adress-box" bindtap="redirectToAddress">
 		      	<view class="left-img">
 	              <image src="/images/images/map.png" class="icon-adress"></image>
 	            </view>
 	            <view class="adress-content" style="color:#fff;text-align: center">
-	              <!-- <view class="adress-move" style="{{orientation}}:{{marqueeDistance2}}px;font-size: 11px"> -->
-	                <text class="adress-text">{{city.cityName}}</text>
-	                <!-- <text wx:if="{{marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;font-size:11px">{{city.cityName}}</text> -->
-	              <!-- </view> -->
+	                <text class="adress-text">{{city.cityName}}</text> 
 	            </view>
 	            <view class="right-img">
 	              <image src="/images/images/down_fff.png" class="icon-adress-right"></image>
 	            </view>
-		    </navigator>
+		    </view>
 		    <view class="search-box">
 			    <view class="icon-search">
 			    	<image src="/images/images/search.png" class="icon-adress_search"></image>
