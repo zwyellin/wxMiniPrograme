@@ -99,7 +99,8 @@ let merchantObj = {
 				classShow:false,
 				start:0,
 				type1:value,
-				loading:false	
+				loading:false,
+				secondIndex:0	
 			});
 			this.getDataList(false,true);
 		} else {
@@ -108,12 +109,14 @@ let merchantObj = {
 				tagParentId:item.id,
 				start:0,
 				timeIndex:index,
+				secondIndex:0
 			});
 		}
 	},
 	//选择第二轮分类
 	selectText(e){
 		let { item, index } = e.currentTarget.dataset;
+		console.log(index)
 		let value = item.name;
 		this.maskHideAnimation()
 		if (index === 0) {
@@ -122,7 +125,8 @@ let merchantObj = {
 				tagId:null,
 				classShow:false,
 				type1:value,
-				loading:false
+				loading:false,
+				secondIndex:index
 			});
 			this.getDataList(false,true);
 		} else {
@@ -131,7 +135,8 @@ let merchantObj = {
 				tagId:item.id,
 				classShow:false,
 				type1:value,
-				loading:false
+				loading:false,
+				secondIndex:index
 			});
 			this.getDataList(false,true);
 		}	

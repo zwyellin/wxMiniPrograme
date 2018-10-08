@@ -152,7 +152,7 @@
         </view>
 	</view>
 	<view wx:if="{{classShow}}">
-		<template is="class-common" data="{{classList,childTagCategoryList,timeIndex:timeIndex}}"></template>
+		<template is="class-common" data="{{classList,childTagCategoryList,timeIndex,secondIndex}}"></template>
 	</view>
 	<view wx:if="{{sortShow}}">
 		<template is="sort-common" data="{{sortList,sortIndex:sortIndex}}"></template>

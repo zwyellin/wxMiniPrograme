@@ -303,7 +303,8 @@
     		</view>
 			<view class="shop-text" style="margin-top:16rpx">
     			<template is="star-add" data="{{size,item}}"></template>
-    			<text style="color:#666;margin-left:24rpx">月售{{itemList.monthSaled}}单</text>
+    			<text style="color:#ff9900;margin-left:10rpx">{{tage.shopFloat(itemList.averageScore,1)}}分</text>
+    			<text style="color:#666;margin-left:20rpx">月售{{itemList.monthSaled}}单</text>
     		</view>
     	</view>
     	<view class="user-center">
@@ -551,7 +552,7 @@
 			<text class="detail-old">月售{{selectedFood.monthSaled}}份</text>
 		</view>
 		<view class="selectdetail-desc" style="padding-bottom: 20rpx;">
-			<text class="detail-name" style="color:#ff8282">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
+			<text class="detail-name" style="color:#f01414">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
 			<text detail-old>￥{{selectedFood.now}}</text>
 		</view>
 		<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
@@ -626,7 +627,7 @@
 		</scroll-view>
 		<view class="shoprules-food">
 			<view  class="shoprules-left font-18">
-				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text>
+				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text><text wx:if="{{selectedFood.goodsSpecList[specIndex].originalPrice}}" class="old-price">￥{{selectedFood.goodsSpecList[specIndex].originalPrice}}</text>
 			</view>
 			<view class="button flex">
 				<!-- <image class="button-img" src="../../images/images/cart_2.png"></image> -->

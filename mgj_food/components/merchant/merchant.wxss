@@ -16,6 +16,7 @@
 	width: 20rpx;
 	height: 10rpx;
 	margin-left: 6rpx;
+	margin-top: 4rpx;
 }
 .goods-wrapper {
 	position: relative;
@@ -130,7 +131,7 @@
 	right:18rpx;
 	padding-top:16rpx;
 	top:158rpx;
-	width:40rpx;	
+	width:132rpx;	
 }
 .cartcontrol-content {
 	height: 34rpx;
@@ -151,7 +152,4 @@
 	width: 26rpx;
 	height: 26rpx;
 	margin-right: 6rpx;
-}
-.posi {
-	height: 100%;
 }					

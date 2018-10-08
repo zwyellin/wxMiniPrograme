@@ -45,7 +45,8 @@ Page(Object.assign({}, merchantObj, {
 		classShow:false,
 		shipShow:false,
 		timeIndex:0,
-		queryType:1,  //排序类型
+		secondIndex:0,        //选择第二轮分类
+		queryType:1,         //排序类型
 		sortList:["智能排序","距离最近","销量最高","起送价最低","配送速度最快","评分最高"],
 		merchantActive:merchantActive,
 		merchantFeature:merchantFeature,
@@ -95,8 +96,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				app.globalData.longitude = longitude;
-				app.globalData.latitude = latitude;
+				// app.globalData.longitude = longitude;
+				// app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
