@@ -197,7 +197,7 @@ Page(Object.assign({}, merchantObj, {
 	onShow(){
 		this.data.clickPage = false;
 		let loginMessage = wx.getStorageSync('loginMessage');
-		let loginStatus = wx.getStorageSync('loginstatus',true);
+		let loginStatus = wx.getStorageSync('loginstatus');
 		if (wx.getStorageSync('shoppingCart')) {
 			let shoppingCart = wx.getStorageSync('shoppingCart');
 			this.setData({

@@ -18,13 +18,19 @@
 				<text class="address-text">重新定位</text>
 			</view>
 		</view>
-		<view wx:if="{{false}}">
+		<view wx:if="{{true}}">
 			<view class="pad-address">
 				<text>我的收货地址</text>
 			</view>
-			<template is="add-address"></template>
+			<view class="address-top"
+				wx:for="{{receivingAddressList}}" 
+		    	wx:for-item="item" 
+		    	wx:for-index="index" 
+		    	wx:key="index">
+				<template is="add-address"  data="{{item,index}}"></template>	
+			</view>
 		</view>
-		<view>
+		<view wx:if="{{false}}">
 			<view class="pad-address">
 				<text>附近地址</text>
 			</view>

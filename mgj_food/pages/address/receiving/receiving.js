@@ -14,7 +14,6 @@ Page({
 		
 	},
 	onLoad(options){
-		
 		this.setData({
 			merchantId:options.merchantId,
 			windowHeight:app.globalData.windowHeight,

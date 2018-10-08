@@ -36,6 +36,11 @@
 	height: 74rpx;
 	line-height: 74rpx;
 }
+.address-top {
+	position: relative;
+	/*margin-top: 20rpx;*/
+	background: #fff;
+}
 .now-address-text {
 	display: inline-block;
 	width: 500rpx;

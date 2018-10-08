@@ -4,9 +4,10 @@ const { provinceList } = require('../../../components/homeClass.js');
 Page({
 	data:{
 		resetAddress:false,
+		receivingAddressList:[],
 		region:'',
 		isShowCity:false,
-		istimeSearch:false,
+		isTimeSearch:false,
 		searchArea:'',     //输入框地址
 		nearby:[],      //附近地址
 		nowAdress:'',
@@ -23,6 +24,11 @@ Page({
 			switch:options.switch,
 			region:options.region || ''
 		});
+		let loginMessage = wx.getStorageSync('loginMessage');
+		let loginStatus = wx.getStorageSync('loginstatus');
+		if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+  			this.findUserAddress();
+  		}
 	},
 	onShow(){
 		wxGetLocation({type:'gcj02'}).then(res=>{
@@ -68,6 +74,24 @@ Page({
 			}
 		});
 	},
+	findUserAddress(){
+		wxRequest({
+        	url:'/merchant/userClient?m=findUserAddress',
+        	method:'POST',
+        	data:{
+        		token:app.globalData.token	
+        	},
+        }).then(res=>{
+        	if (res.data.code === 0) {
+        		this.setData({
+        			receivingAddressList:res.data.value
+        		});
+        	}
+			console.log(res.data);
+        }).catch((err)=> {
+        	console.log(err)
+        });	
+	},
 	selectRegion(e){
 		this.setData({
 			isShowCity:!this.data.isShowCity
@@ -81,8 +105,8 @@ Page({
 				searchArea += item.fullname;
 			}
 		});
-		if (!this.data.istimeSearch) {
-			this.data.istimeSearch = true;
+		if (!this.data.isTimeSearch) {
+			this.data.isTimeSearch = true;
 			searchArea = searchArea + address;
 			this.getgeocoder(searchArea,true);
 		}
@@ -116,13 +140,13 @@ Page({
 			        		nearby:poi,
 			        		region:that.data.region
 			        	});
-			        	that.data.istimeSearch = false;
+			        	that.data.isTimeSearch = false;
 		        	} else {
 						that.getSuggestion();
 		        	}
 		        }).catch(err=>{
 		        	console.log(err);
-		        	that.data.istimeSearch = false;
+		        	that.data.isTimeSearch = false;
 		        });
 		    },
 		    fail: function(res) {
@@ -131,7 +155,7 @@ Page({
 		    },
 		    complete: function() {
 		    	setTimeout(()=>{
-		    		that.data.istimeSearch = false;
+		    		that.data.isTimeSearch = false;
 		    	},1000);	
 			}
 		});
@@ -153,10 +177,30 @@ Page({
 	        	}   
 		    },
 		    complete: function(res) {
-    			that.data.istimeSearch = false;
+    			that.data.isTimeSearch = false;
 			}
 		});
 	},
+	// 收货地址
+	selectAddress(e){
+		let { item, index } = e.currentTarget.dataset;
+		console.log(item);
+		let addressName = item.address;
+		let latitude = item.latitude;
+		let longitude = item.longitude;
+		let pages = getCurrentPages();
+		let prevPage = pages[pages.length - 2];
+		app.globalData.longitude = longitude;
+		app.globalData.latitude = latitude;
+    	prevPage.setData({
+    		city:Object.assign({}, prevPage.data.city,{cityName:addressName}),
+    		refreshData:true
+    	})
+    	wx.navigateBack({
+	  		delta: 1	
+		});
+	},
+	// 选择附件的地址
 	selectAdress(e){
 		let { item } = e.currentTarget.dataset;
 		console.log(item);
