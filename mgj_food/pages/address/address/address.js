@@ -26,7 +26,7 @@ Page({
 		});
 		let loginMessage = wx.getStorageSync('loginMessage');
 		let loginStatus = wx.getStorageSync('loginstatus');
-		if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+		if (options.switch === 'index') {
   			this.findUserAddress();
   		}
 	},
@@ -57,7 +57,6 @@ Page({
 					}
 					this.setData({
 			      		nowAdress:address,
-			      		nearby:nearby,
 			      		region:region
 			    	});
 				}
@@ -99,6 +98,7 @@ Page({
 	},
 	address(e){
 		let address = e.detail.value;
+		console.log(address)
 		let searchArea = '';
 		this.data.selectCityList.map(item=>{
 			if (item.id != 0) {
@@ -111,7 +111,8 @@ Page({
 			this.getgeocoder(searchArea,true);
 		}
 		this.setData({
-			isShowCity:false
+			isShowCity:false,
+			searchArea:address
 		});	
 	},
 	getgeocoder(searchArea,isCity){
@@ -184,7 +185,6 @@ Page({
 	// 收货地址
 	selectAddress(e){
 		let { item, index } = e.currentTarget.dataset;
-		console.log(item);
 		let addressName = item.address;
 		let latitude = item.latitude;
 		let longitude = item.longitude;
@@ -195,7 +195,7 @@ Page({
     	prevPage.setData({
     		city:Object.assign({}, prevPage.data.city,{cityName:addressName}),
     		refreshData:true
-    	})
+    	});
     	wx.navigateBack({
 	  		delta: 1	
 		});
@@ -203,7 +203,6 @@ Page({
 	// 选择附件的地址
 	selectAdress(e){
 		let { item } = e.currentTarget.dataset;
-		console.log(item);
 		let addressName = item.title;
 		let address = item.address+addressName;
 		let {lat, lng} = item.location;

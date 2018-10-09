@@ -18,7 +18,7 @@
 				<text class="address-text">重新定位</text>
 			</view>
 		</view>
-		<view wx:if="{{true}}">
+		<view wx:if="{{!isShowCity && receivingAddressList.length && !searchArea}}">
 			<view class="pad-address">
 				<text>我的收货地址</text>
 			</view>
@@ -30,29 +30,26 @@
 				<template is="add-address"  data="{{item,index}}"></template>	
 			</view>
 		</view>
-		<view wx:if="{{false}}">
-			<view class="pad-address">
-				<text>附近地址</text>
+	</view>
+	<view wx:if="{{!isShowCity && searchArea}}" class="search-top_address font-14">
+		<scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="nearby-address font-12">
+			<view class="nearby-address-text"
+				wx:for="{{nearby}}" 
+		      	wx:for-index="idx" 
+		      	wx:for-item="item" 
+		      	wx:key="idx"
+		      	data-item="{{item}}"
+		      	bindtap="selectAdress">
+		      	<view class="nearby-address-border">
+		      		<view class="font-14" style="color:#333">
+		      			<text>{{item.title}}</text>
+		      		</view>
+					<view style="color:#999;margin-top: 12rpx">
+		      			<text>{{item.address}}</text>
+		      		</view>
+		      	</view>
 			</view>
-			<view wx:if="{{!isShowCity}}" class="nearby-address font-12">
-				<view class="nearby-address-text"
-					wx:for="{{nearby}}" 
-			      	wx:for-index="idx" 
-			      	wx:for-item="item" 
-			      	wx:key="idx"
-			      	data-item="{{item}}"
-			      	bindtap="selectAdress">
-			      	<view class="nearby-address-border">
-			      		<view class="font-14" style="color:#333">
-			      			<text>{{item.title}}</text>
-			      		</view>
-						<view style="color:#999;margin-top: 12rpx">
-			      			<text>{{item.address}}</text>
-			      		</view>
-			      	</view>
-				</view>
-			</view>
-		</view>	
+		</scroll-view>
 	</view>
 	<view wx:if="{{isShowCity}}" class="city-wrapper">
 		<view class="city-header font-14 flex">

@@ -165,57 +165,66 @@ const formatNumber = function (n) {
 };
 
 const format = function (date,a) {
-  var year = new Date(date).getFullYear();
-  var month = new Date(date).getMonth() + 1;
-  var day = new Date(date).getDate();
+  let year = new Date(date).getFullYear();
+  let month = new Date(date).getMonth() + 1;
+  let day = new Date(date).getDate();
 
   return [year, month, day].map(formatNumber).join(a);
 };
 
 const formatTime = function (date) {//获取到当前时间
-  var year = new Date(date).getFullYear();
-  var month =new Date(date).getMonth() + 1;
-  var day = new Date(date).getDate();
+  let year = new Date(date).getFullYear();
+  let month =new Date(date).getMonth() + 1;
+  let day = new Date(date).getDate();
 
-  var hour = new Date(date).getHours();
-  var minute = new Date(date).getMinutes();
-  var second = new Date(date).getSeconds();
+  let hour = new Date(date).getHours();
+  let minute = new Date(date).getMinutes();
+  let second = new Date(date).getSeconds();
 
 
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':');
 };
 
 const trackTime = function(date){//得到当前时间
-  var {month, day, hour, minute } = getTime(date)
+  let {month, day, hour, minute } = getTime(date)
 
   return month + '月' + day +'日' + ' ' + hour + ':' + minute
 }
 const getTime = function (date) {
-  var month = formatNumber(new Date(date).getMonth() + 1);
-  var day = formatNumber(new Date(date).getDate());
+  let month = formatNumber(new Date(date).getMonth() + 1);
+  let day = formatNumber(new Date(date).getDate());
 
-  var hour = formatNumber(new Date(date).getHours());
-  var minute = formatNumber(new Date(date).getMinutes());
+  let hour = formatNumber(new Date(date).getHours());
+  let minute = formatNumber(new Date(date).getMinutes());
   return {month, day, hour, minute }
 }
 const refundTime = function(date){
-  var {month, day, hour, minute } = getTime(date)
+  let {month, day, hour, minute } = getTime(date)
 
   return month + '-' + day + ' ' + hour + ':' + minute
 }
 
 const gcj02tobd09 = function (lng, lat) {//经纬度坐标
-  var x_PI = 3.14159265358979324 * 3000.0 / 180.0;
-  var PI = 3.1415926535897932384626;
-  var a = 6378245.0;
-  var ee = 0.00669342162296594323;
-  var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_PI);
-  var theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * x_PI);
-  var longitude = z * Math.cos(theta) + 0.0065;
-  var latitude = z * Math.sin(theta) + 0.006;
+  let x_PI = 3.14159265358979324 * 3000.0 / 180.0;
+  let PI = 3.1415926535897932384626;
+  let a = 6378245.0;
+  let ee = 0.00669342162296594323;
+  let z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_PI);
+  let theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * x_PI);
+  let longitude = z * Math.cos(theta) + 0.0065;
+  let latitude = z * Math.sin(theta) + 0.006;
   return {longitude, latitude}
 }
-
+const bd09togcj02 = function (lng, lat){
+  let x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+  let x = lng - 0.0065;
+  let y = lat - 0.006;
+  let z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
+  let theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
+  let longitude = z * Math.cos(theta);
+  let latitude = z * Math.sin(theta);
+  return {longitude, latitude}
+}
 module.exports = {
   format,
   formatTime,
@@ -228,6 +237,7 @@ module.exports = {
   getBMapCityList,
   getDistrictByCityId,
   gcj02tobd09,
+  bd09togcj02,
   qqMap,
   wxGetLocation,
   trackTime,

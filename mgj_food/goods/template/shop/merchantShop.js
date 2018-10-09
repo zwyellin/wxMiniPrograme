@@ -157,6 +157,12 @@ const merchantShop = {
 	myCatchTouch(){
 		return false;
 	},
+	// 查看商家地理位置
+	merchantAddress(){
+		wx.navigateTo({
+			url: '/goods/mapview/mapview?latitude=' + this.data.itemList.latitude + '&longitude=' + this.data.itemList.longitude + '&name=' + this.data.itemList.name
+		});
+	},
 	//底部弹出活动详情
 	broadcast(e){
 		this.maskShowAnimation();

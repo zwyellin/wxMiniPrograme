@@ -8,9 +8,7 @@
 	overflow: hidden;
 }
 .receiving-addres-item{
-	background: #fff;
-	
-	
+	background: #fff;		
 }
 .receiving-headerimg {
 	position: absolute;

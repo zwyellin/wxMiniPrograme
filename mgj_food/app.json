@@ -59,6 +59,7 @@
       "root": "goods", 
       "pages": [
         "shop/shop",
+        "mapview/mapview",
         "queryOrder/queryOrder",
         "pay/pay",
         "video/video",

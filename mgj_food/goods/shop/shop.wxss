@@ -808,6 +808,19 @@
 	height: 166rpx;
 	border-radius: 10rpx;
 }
+/*   */
+.merchant-address {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.address_icon {
+	width: 66rpx;
+}
+.map_icon {
+	width: 44rpx;
+	height: 44rpx;
+}
  
 
 

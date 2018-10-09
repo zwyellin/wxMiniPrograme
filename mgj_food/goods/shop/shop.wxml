@@ -350,9 +350,14 @@
   			<view class="shop-message shop-message-letter" style="color:#666;padding-left: 10rpx">
   				<text>商家信息</text>
   			</view>
-			<view class="shop-message">
-  				<text class="shop-message-letter">商家地址:</text>
-  				<text class="shop-message-letter shop-left">{{itemList.address}}</text>
+			<view class="shop-message flex" bindtap="merchantAddress">
+				<view class="merchant-address flex-item">
+					<text class="shop-message-letter">商家地址:</text>
+  					<text class="shop-message-letter shop-left">{{itemList.address}}</text>
+				</view>
+  				<view class="address_icon flex">
+  					<image class="map_icon" src="/images/images/map_1.png"></image>
+  				</view>
   			</view>
   			<view class="shop-message">
   				<text class="shop-message-letter">营业时间:</text>

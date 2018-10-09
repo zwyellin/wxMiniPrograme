@@ -548,12 +548,24 @@ Page(Object.assign({}, merchantObj, {
 						}	
 					} else {
 						list = this.seatImg(list);
-						this.setData({
-							isAgentId:false,
-							dataList:list,
-							loading:false
-						});	
-					}	
+						if (list.length < 10) {
+							setTimeout(()=>{
+								this.setData({
+									loading:true
+								});
+							},1500);
+							this.setData({
+								isAgentId:false,
+								dataList:list,
+							});
+						} else {
+							this.setData({
+								isAgentId:false,
+								dataList:list,
+								loading:false
+							});
+						}	
+					}
 				}	
 			}else {
 				this.setData({
