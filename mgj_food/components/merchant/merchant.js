@@ -1,7 +1,9 @@
 const app = getApp();
 let merchantObj = {
 	moveDown(e){
+		console.log(12)
 		if (!this.data.moveDown) {
+
 			this.data.moveDown = true;
 			let { item, index } = e.currentTarget.dataset;
 			let dataList = this.data.dataList;

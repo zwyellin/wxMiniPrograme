@@ -138,7 +138,7 @@
 	line-height: 34rpx;	
 }
 .cartcontrol-content .name {
-	font-size: 24rpx;
+	font-size: 22rpx;
 	letter-spacing: 2rpx;
 	color:#999;
 	text-overflow: ellipsis;
