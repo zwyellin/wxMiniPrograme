@@ -82,8 +82,12 @@ Page({
         	},
         }).then(res=>{
         	if (res.data.code === 0) {
+        		let receivingAddressList = res.data.value
+        		receivingAddressList.map(item=>{
+        			item.overShipping = 10000    //改变值，控制编辑模式
+        		})
         		this.setData({
-        			receivingAddressList:res.data.value
+        			receivingAddressList:receivingAddressList
         		});
         	}
 			console.log(res.data);

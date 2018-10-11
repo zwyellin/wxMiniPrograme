@@ -1,23 +1,21 @@
 const app = getApp();
 let merchantObj = {
 	moveDown(e){
-		console.log(12)
+		let { item, index } = e.currentTarget.dataset;
+		if (item.promotionActivityList.length < 3) return;
 		if (!this.data.moveDown) {
-
 			this.data.moveDown = true;
-			let { item, index } = e.currentTarget.dataset;
+			let itemObject = {};
+			let itemkey = 'dataList['+index+'].isHeight';
 			let dataList = this.data.dataList;
-			if (item.promotionActivityList.length < 3) return;
-			if (dataList[index].isHeight == '68rpx') {
-				dataList[index].isHeight = 34*item.promotionActivityList.length+'rpx';
-				this.setData({
-					dataList:dataList
-				});
+			if (item.isHeight == '68rpx') {
+				// dataList[index].isHeight = 'auto';
+				itemObject[itemkey] = 'auto';
+				this.setData(itemObject);
 			} else {
-				dataList[index].isHeight = '68rpx';
-				this.setData({
-					dataList:dataList
-				});
+				// dataList[index].isHeight = '68rpx';
+				itemObject[itemkey] = '68rpx';
+				this.setData(itemObject);
 			}	
 			this.data.moveDown = false;	
 		}
@@ -211,7 +209,11 @@ let merchantObj = {
 			} else {
 				item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
 			}
-			item.isHeight = '68rpx';
+			if (item.promotionActivityList.length < 2) {
+				item.isHeight = 'aoto';
+			} else {
+				item.isHeight = '68rpx';
+			}	
 		});
 		return merchantList;
 	},
