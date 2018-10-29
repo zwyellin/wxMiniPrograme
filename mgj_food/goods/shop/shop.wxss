@@ -615,6 +615,9 @@
 	box-sizing: border-box;
 	border-radius: 10rpx;
 }
+.rules-discount-text {
+	padding: 4rpx 6rpx;
+}
 
 /* 红包 */
 

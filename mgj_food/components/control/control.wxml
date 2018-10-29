@@ -1,14 +1,13 @@
 <wxs module="cart" src="../../utils/star.wxs"></wxs>
 <template name="contorl-add">
 	<view class="control {{topStatus ? 'top-status' : ''}}">
-		<view wx:if="{{cart.getCount(selectFoods,food.id)>0}}" class="cart-decrease" data-food="{{food}}" catchtap="decrease">
+		<view wx:if="{{cart.getCount(selectFoods,food.id)>0}}" class="cart-decrease" data-food="{{food}}" data-parent-index="{{parentIndex}}" catchtap="decrease">
 			<image class="icon-add_circle" src="/images/images/decrease.png"></image>
 		</view>
-			
 		<view wx:if="{{cart.getCount(selectFoods,food.id)>0}}" class="cart-count">
 			<text>{{cart.getCount(selectFoods,food.id)}}</text>
 		</view>		
-		<view wx:if="{{(food.goodsSpecList.length === 1 && food.goodsAttributeList.length === 0) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount)}}" class="cart-add"  data-food="{{food}}" catchtap="addCart">
+		<view wx:if="{{(food.goodsSpecList.length === 1 && food.goodsAttributeList.length === 0) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount)}}" class="cart-add"  data-food="{{food}}" data-parent-index="{{parentIndex}}" catchtap="addCart">
 			<image class="icon-add_circle" src="/images/images/add.png"></image>
 		</view>
 	</view>

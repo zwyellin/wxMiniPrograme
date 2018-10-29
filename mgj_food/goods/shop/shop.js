@@ -280,6 +280,8 @@ Page(Object.assign({}, merchantShop,{
 		menu.map(item=>{
 			if (item.goodsList != null) {
 				item.goodsList.map((value,index)=>{
+					console.log(item)
+					value.parentRelationCategoryId = item.relationCategoryId
 					removalMenuList.push(value);
 					if (value.hasDiscount ===1) {
 						this.data.everyOrderBuyCount = value.everyOrderBuyCount;
@@ -308,13 +310,12 @@ Page(Object.assign({}, merchantShop,{
 					let attributesList = item.goodsAttributeList[0].name.split('|*|');
 					attributes = attributesList[0];
 				}
-				console.log(item);
 				item.goodsSpecList.forEach((spec)=>{
-					if (spec.price <= fullPrice.fullRange*2 && item.hasDiscount!=1) {
+					if (spec.price > 0 && spec.price <= fullPrice.fullRange*2 && item.hasDiscount!=1) {
 						if (attributes) {
-							listFoods.push({attributes:attributes, id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, name: item.name, priceObject: spec});
+							listFoods.push({attributes:attributes, id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
 						} else {
-							listFoods.push({id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, name: item.name, priceObject: spec});
+							listFoods.push({id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
 						}
 					}	
 				});
@@ -328,11 +329,11 @@ Page(Object.assign({}, merchantShop,{
 						attributes = attributesList[0];
 					}
 					item.goodsSpecList.map((spec)=>{
-						if (item.hasDiscount!=1) {
+						if (spec.price > 0 && item.hasDiscount!=1) {
 							if (attributes) {
-								listFoods.push({attributes:attributes, id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, name: item.name, priceObject: spec});
+								listFoods.push({attributes:attributes, id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
 							} else {
-								listFoods.push({id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, name: item.name, priceObject: spec});
+								listFoods.push({id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
 							}
 						}	
 					});
@@ -347,7 +348,6 @@ Page(Object.assign({}, merchantShop,{
 				isShowTogether:!this.data.isShowTogether,
 				fold:false
 			});
-			console.log(this.data.listFoods);
 		} else {
 			this.setData({
 				isShowTogether:false
@@ -388,23 +388,28 @@ Page(Object.assign({}, merchantShop,{
 		});
 		return goodsItem;
 	},
-	//判断是否有商品必选
+	//判断是否有商品必选   //判断所选商品的分类是否有关联分类
 	isMandatory(){
 		let isMandatoryGoods;
 		let menu = this.data.menu;
 		let selectFoods = this.data.selectFoods;
 		let index = null;
-		for (let i = 0; i <  menu.length; i++) {
-			if (menu[i].isMandatory) {
+		for (let i = 0; i < selectFoods.length; i++) {
+			if (selectFoods[i].relationCategoryId ) {
 				let isFound = false;
 				for (let j = 0; j < selectFoods.length; j++) {
-					if (menu[i].id === selectFoods[j].categoryId ) {
+					if (selectFoods[i].relationCategoryId === selectFoods[j].categoryId ) {
 						isFound = true;
 					}		
 				}
 				if (!isFound) {
-					isMandatoryGoods = menu[i];
-					index = i+1;
+					for (let k = 0; k < menu.length; k++) {
+						if (menu[k].id === selectFoods[i].relationCategoryId ) {
+							isMandatoryGoods = menu[k];
+							index = k+1;
+							break;
+						}
+					}
 					break;
 				}
 			}
@@ -572,14 +577,15 @@ Page(Object.assign({}, merchantShop,{
         	data:{
         		params:{
         			merchantId:this.data.merchantId
-        		}	
+        		},
+        		clientVersion: "3.2.2",    //此参数取值版本来自于与App版本
         	},
         });
 	},
 	choice(e){
 		this.maskShowAnimation();
 		this.choiceShowAnimation();
-		let { food } = e.currentTarget.dataset;
+		let { food, parentIndex } = e.currentTarget.dataset;
 		// let selectedFood = this.data.selectedFood;
 		
 		let arr = [];
@@ -587,22 +593,21 @@ Page(Object.assign({}, merchantShop,{
 			let arr = food.goodsAttributeList[i].name.split('|*|');
 			food.goodsAttributeList[i].select = arr[0];
 		}
-		console.log(food)
+		food.parentRelationCategoryId = parentIndex ? this.data.menu[parentIndex].relationCategoryId : food.parentRelationCategoryId
 		this.setData({
 			selectedFood:food,
 			choice:true,
 			detailShow:false,
 			specIndex:0
 		});
-		// console.log(selectedFood)
-		
 	},
 	//点击查看商品详情
 	selectefood(e){
 		this.maskShowAnimation();
 		this.choiceShowAnimation();
 		
-		let { food } = e.currentTarget.dataset;
+		let { food, parentIndex } = e.currentTarget.dataset;
+		food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId
 		this.setData({
 	        selectedFood:food,
 			detailShow:true,
@@ -747,17 +752,24 @@ Page(Object.assign({}, merchantShop,{
 	addCart(e) {
 		let specIndex = e.currentTarget.dataset.specindex || 0;
 		// console.log(specIndex)
-		let { food, rules, fullActivity} = e.currentTarget.dataset;
+		let { food, rules, fullActivity, parentIndex } = e.currentTarget.dataset;
 
 		// console.log(food, rules)
 		let attributes = '';
 		let id = food.id; //选择的产品id
 		let categoryId = food.categoryId;  //选择的产品分类id
+		console.log(parentIndex);
 		let priceObject = {}; //产品价格对象
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
 		} else {
 			priceObject = food.goodsSpecList[specIndex]; //产品价格	
+		}
+
+		if (parentIndex) {
+			food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId
+		} else {
+			food.parentRelationCategoryId = food.parentRelationCategoryId
 		}
 		let name = food.name; //产品名称
 		let tmpArr = [];
@@ -924,7 +936,8 @@ Page(Object.assign({}, merchantShop,{
 	      					surplusDiscountStock:food.surplusDiscountStock,
 	      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 		      				categoryId:categoryId, 
-		      				name: name, 
+		      				relationCategoryId:food.parentRelationCategoryId,
+		      				name: name,
 		      				priceObject:priceObject, 
 		      				count: 1
 		      			});
@@ -936,6 +949,7 @@ Page(Object.assign({}, merchantShop,{
 			      				hasDiscount:food.hasDiscount,
 		      					surplusDiscountStock:food.surplusDiscountStock,
 		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
+		      					relationCategoryId:food.parentRelationCategoryId,
 			      				categoryId:categoryId, 
 			      				name: name, 
 			      				priceObject:priceObject, 
@@ -950,6 +964,7 @@ Page(Object.assign({}, merchantShop,{
 		      					surplusDiscountStock:food.surplusDiscountStock,
 		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 			      				categoryId:categoryId, 
+			      				relationCategoryId:food.parentRelationCategoryId,
 			      				name: name, 
 			      				priceObject:priceObject, 
 			      				count: 1
@@ -964,6 +979,7 @@ Page(Object.assign({}, merchantShop,{
 	      					surplusDiscountStock:food.surplusDiscountStock,
 	      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 		      				categoryId:categoryId, 
+		      				relationCategoryId:food.parentRelationCategoryId,
 		      				name: name, 
 		      				priceObject:priceObject, 
 		      				count: 1
@@ -976,6 +992,7 @@ Page(Object.assign({}, merchantShop,{
 		      					surplusDiscountStock:food.surplusDiscountStock,
 		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 			      				categoryId:categoryId, 
+			      				relationCategoryId:food.parentRelationCategoryId,
 			      				name: name, 
 			      				priceObject:priceObject, 
 			      				count: 1*priceObject.minOrderNum
@@ -988,6 +1005,7 @@ Page(Object.assign({}, merchantShop,{
 		      					surplusDiscountStock:food.surplusDiscountStock,
 		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 			      				categoryId:categoryId, 
+			      				relationCategoryId:food.parentRelationCategoryId,
 			      				name: name, 
 			      				priceObject:priceObject, 
 			      				count: 1
