@@ -132,6 +132,10 @@ Page(Object.assign({}, merchantShop,{
         	if (type == 1) {
         		let itemCategoryList = menu[0].goodsList;
         		let categoryId = menu[0].id;
+        		let relationCategoryId = menu[0].relationCategoryId
+        		itemCategoryList.map(item=>{
+        			item.parentRelationCategoryId = relationCategoryId
+        		})
 				this.setData({
 	        		menu:menu,
 	        		itemCategoryList:itemCategoryList,
@@ -280,7 +284,6 @@ Page(Object.assign({}, merchantShop,{
 		menu.map(item=>{
 			if (item.goodsList != null) {
 				item.goodsList.map((value,index)=>{
-					console.log(item)
 					value.parentRelationCategoryId = item.relationCategoryId
 					removalMenuList.push(value);
 					if (value.hasDiscount ===1) {
@@ -301,9 +304,7 @@ Page(Object.assign({}, merchantShop,{
 		if(this.data.isTogether){
 			let fullPrice = this.data.fullPrice;       
 			let removalMenuList = this.data.removalMenuList;
-			let listFoods = [];
-			
-			console.log(removalMenuList);
+			let listFoods = [];			
 			removalMenuList.forEach(item=>{
 				let attributes = "";
 				if (item.goodsAttributeList[0] && item.goodsAttributeList[0].name) {
@@ -342,7 +343,6 @@ Page(Object.assign({}, merchantShop,{
 			listFoods.sort((a,b)=>{
 				return a.priceObject.price-b.priceObject.price;
 			});
-			console.log(listFoods);
 			this.setData({
 				listFoods:listFoods.slice(0,10),
 				isShowTogether:!this.data.isShowTogether,
@@ -1264,6 +1264,7 @@ Page(Object.assign({}, merchantShop,{
 		} else {
 			let categoryId = this.data.menu[index].id
 			let goodsList = this.data.menu[index].goodsList
+			let relationCategoryId = this.data.menu[index].relationCategoryId
 			if (goodsList === null) {
 				this.data.itemCategoryList = []
 				this.data.categoryId = categoryId
@@ -1273,6 +1274,9 @@ Page(Object.assign({}, merchantShop,{
 					scrollTop:0
 				})
 			} else {
+				goodsList.map(item=>{
+        			item.parentRelationCategoryId = relationCategoryId
+        		})
 				this.setData({
 					itemCategoryList:goodsList,
 					categoryId : categoryId,
@@ -1295,6 +1299,9 @@ Page(Object.assign({}, merchantShop,{
 						if (searchList.length != 0) {
 							this.data.menu.map((item,index)=>{
 								if (item.id == this.data.categoryId) {
+									searchList.map(loadItem=>{
+										loadItem.parentRelationCategoryId =item.relationCategoryId 
+									})
 									if (item.goodsList === null) {
 										item.goodsList = searchList
 									} else {
