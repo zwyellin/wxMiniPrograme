@@ -593,7 +593,15 @@ Page(Object.assign({}, merchantShop,{
 			let arr = food.goodsAttributeList[i].name.split('|*|');
 			food.goodsAttributeList[i].select = arr[0];
 		}
-		food.parentRelationCategoryId = parentIndex ? this.data.menu[parentIndex].relationCategoryId : food.parentRelationCategoryId
+		if (parentIndex == 0 || parentIndex) {
+			if (this.data.menu[parentIndex].id === null) {
+				food.parentRelationCategoryId = food.relationCategoryId;
+			} else {
+				food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId;
+			}
+		} else {
+			food.parentRelationCategoryId = food.parentRelationCategoryId;
+		}
 		this.setData({
 			selectedFood:food,
 			choice:true,
@@ -607,7 +615,11 @@ Page(Object.assign({}, merchantShop,{
 		this.choiceShowAnimation();
 		
 		let { food, parentIndex } = e.currentTarget.dataset;
-		food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId
+		if (this.data.menu[parentIndex].id === null) {
+			food.parentRelationCategoryId = food.relationCategoryId;
+		} else {
+			food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId;
+		}
 		this.setData({
 	        selectedFood:food,
 			detailShow:true,
@@ -766,8 +778,12 @@ Page(Object.assign({}, merchantShop,{
 			priceObject = food.goodsSpecList[specIndex]; //产品价格	
 		}
 
-		if (parentIndex) {
-			food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId
+		if (parentIndex == 0 || parentIndex) {
+			if (this.data.menu[parentIndex].id === null) {
+				food.parentRelationCategoryId = food.relationCategoryId
+			} else {
+				food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId
+			}
 		} else {
 			food.parentRelationCategoryId = food.parentRelationCategoryId
 		}

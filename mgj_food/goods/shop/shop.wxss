@@ -618,6 +618,10 @@
 .rules-discount-text {
 	padding: 4rpx 6rpx;
 }
+.discount-icon {
+	width: 18rpx;
+	height: 18rpx;
+}
 
 /* 红包 */
 
