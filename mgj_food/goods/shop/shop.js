@@ -578,7 +578,8 @@ Page(Object.assign({}, merchantShop,{
         		params:{
         			merchantId:this.data.merchantId
         		},
-        		clientVersion: "3.2.2",    //此参数取值版本来自于与App版本
+				client: app.globalData.client,
+        		clientVersion: "3.2.2"    //此参数取值版本来自于与App版本
         	},
         });
 	},
@@ -594,7 +595,7 @@ Page(Object.assign({}, merchantShop,{
 			food.goodsAttributeList[i].select = arr[0];
 		}
 		if (parentIndex == 0 || parentIndex) {
-			if (this.data.menu[parentIndex].id === null) {
+			if (this.data.menu[parentIndex].id === null || this.data.menu[parentIndex].id < 0) {
 				food.parentRelationCategoryId = food.relationCategoryId;
 			} else {
 				food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId;
@@ -615,7 +616,7 @@ Page(Object.assign({}, merchantShop,{
 		this.choiceShowAnimation();
 		
 		let { food, parentIndex } = e.currentTarget.dataset;
-		if (this.data.menu[parentIndex].id === null) {
+		if (this.data.menu[parentIndex].id === null || this.data.menu[parentIndex].id < 0) {
 			food.parentRelationCategoryId = food.relationCategoryId;
 		} else {
 			food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId;
@@ -779,7 +780,7 @@ Page(Object.assign({}, merchantShop,{
 		}
 
 		if (parentIndex == 0 || parentIndex) {
-			if (this.data.menu[parentIndex].id === null) {
+			if (this.data.menu[parentIndex].id === null || this.data.menu[parentIndex].id < 0) {
 				food.parentRelationCategoryId = food.relationCategoryId
 			} else {
 				food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId

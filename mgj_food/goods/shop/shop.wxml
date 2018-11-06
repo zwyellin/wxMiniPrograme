@@ -142,6 +142,10 @@
 							<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <10 && food.hasDiscount === 0&& food.goodsSpecList[0].stock >0}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
 							<text wx:if="{{food.goodsSpecList[0].minOrderNum >1 && food.hasDiscount === 0}}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
 						</view>
+						<view wx:else class="item-rules flex font-10">
+							<image wx:if="{{food.discountedGoods && food.discountedGoods.discountProportion}}" class="discount-icon" src="../../images/images/discount_icon.png"></image>
+							<text wx:if="{{food.discountedGoods && food.discountedGoods.discountProportion}}" class="rules-discount-text" style="color:#fc524d">{{food.discountedGoods.discountProportion/10}}折</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -224,6 +228,10 @@
 							<text wx:if="{{food.hasDiscount === 1 && food.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#fc524d">每单限购{{food.everyGoodsEveryOrderBuyCount}}份</text>
 							<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <10 && food.hasDiscount === 0&& food.goodsSpecList[0].stock >0}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
 							<text wx:if="{{food.goodsSpecList[0].minOrderNum >1 && food.hasDiscount === 0}}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
+						</view>
+						<view wx:else class="item-rules flex font-10">
+							<image wx:if="{{food.discountedGoods && food.discountedGoods.discountProportion}}" class="discount-icon" src="../../images/images/discount_icon.png"></image>
+							<text wx:if="{{food.discountedGoods && food.discountedGoods.discountProportion}}" class="rules-discount-text" style="color:#fc524d">{{food.discountedGoods.discountProportion/10}}折</text>
 						</view>
 					</view>
 				</view>

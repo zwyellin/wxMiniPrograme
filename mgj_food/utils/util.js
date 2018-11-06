@@ -143,7 +143,20 @@ const wxGetLocation = function(obj){
     wx.getLocation(config);
   });
 };
-
+const getNetworkType = function(){
+    return new Promise((resolve,reject)=>{
+    const defaultConfig = {
+      success:  (res)=> {
+        resolve(res);  
+      },
+      fail: (err)=> {
+        reject(err);
+      },
+    };
+    var config = Object.assign({}, defaultConfig);
+    wx.getNetworkType(config);
+  });
+};
 const catchHandle = function (e) {
   let message;  
   if (e.statusCode === 400 && e.data.code == 0) {
@@ -236,13 +249,11 @@ module.exports = {
   getBMapLocation,
   getBMapCityList,
   getDistrictByCityId,
+  getNetworkType,
   gcj02tobd09,
   bd09togcj02,
   qqMap,
   wxGetLocation,
   trackTime,
   refundTime,
-  wxShowModal: wxPromisify(wx.showModal),
-  wxShowToast: wxPromisify(wx.showToast),
-  wxLogin: wxPromisify(wx.login)
 };
