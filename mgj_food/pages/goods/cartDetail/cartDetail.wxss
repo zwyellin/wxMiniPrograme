@@ -1,5 +1,8 @@
 @import "../cartItem/cartItem.wxss"
 @import "../../../components/showToast/showToast.wxss";
+page {
+	height: 100%;
+}
 .cart-detail {
 	text-align:center;
 	background: #fff;

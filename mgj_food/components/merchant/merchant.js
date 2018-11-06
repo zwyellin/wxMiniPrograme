@@ -1,21 +1,21 @@
 const app = getApp();
 let merchantObj = {
 	moveDown(e){
+		let { item, index } = e.currentTarget.dataset;
+		if (item.promotionActivityList.length < 3) return;
 		if (!this.data.moveDown) {
 			this.data.moveDown = true;
-			let { item, index } = e.currentTarget.dataset;
+			let itemObject = {};
+			let itemkey = 'dataList['+index+'].isHeight';
 			let dataList = this.data.dataList;
-			if (item.promotionActivityList.length < 3) return;
-			if (dataList[index].isHeight == '68rpx') {
-				dataList[index].isHeight = 34*item.promotionActivityList.length+'rpx';
-				this.setData({
-					dataList:dataList
-				});
+			if (item.isHeight == '68rpx') {
+				// dataList[index].isHeight = 'auto';
+				itemObject[itemkey] = 'auto';
+				this.setData(itemObject);
 			} else {
-				dataList[index].isHeight = '68rpx';
-				this.setData({
-					dataList:dataList
-				});
+				// dataList[index].isHeight = '68rpx';
+				itemObject[itemkey] = '68rpx';
+				this.setData(itemObject);
 			}	
 			this.data.moveDown = false;	
 		}
@@ -23,6 +23,11 @@ let merchantObj = {
 	//阻止遮罩层
 	myCatchTouch(){
 		return false;
+	},
+	myCatchTouchCategory(){
+		console.log(1)
+		// wx.pageScrollTo({scrollTop:0});
+		return true;
 	},
 	quickPage(e){
 		let { id } = e.currentTarget.dataset;
@@ -94,7 +99,8 @@ let merchantObj = {
 				classShow:false,
 				start:0,
 				type1:value,
-				loading:false	
+				loading:false,
+				secondIndex:0	
 			});
 			this.getDataList(false,true);
 		} else {
@@ -103,12 +109,14 @@ let merchantObj = {
 				tagParentId:item.id,
 				start:0,
 				timeIndex:index,
+				secondIndex:0
 			});
 		}
 	},
 	//选择第二轮分类
 	selectText(e){
 		let { item, index } = e.currentTarget.dataset;
+		console.log(index)
 		let value = item.name;
 		this.maskHideAnimation()
 		if (index === 0) {
@@ -117,7 +125,8 @@ let merchantObj = {
 				tagId:null,
 				classShow:false,
 				type1:value,
-				loading:false
+				loading:false,
+				secondIndex:index
 			});
 			this.getDataList(false,true);
 		} else {
@@ -126,7 +135,8 @@ let merchantObj = {
 				tagId:item.id,
 				classShow:false,
 				type1:value,
-				loading:false
+				loading:false,
+				secondIndex:index
 			});
 			this.getDataList(false,true);
 		}	
@@ -199,7 +209,11 @@ let merchantObj = {
 			} else {
 				item.logo = item.logo+'?imageView2/0/w/170/h/130/q/100!';
 			}
-			item.isHeight = '68rpx';
+			if (item.promotionActivityList.length < 2) {
+				item.isHeight = 'aoto';
+			} else {
+				item.isHeight = '68rpx';
+			}	
 		});
 		return merchantList;
 	},

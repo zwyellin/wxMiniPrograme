@@ -1,6 +1,6 @@
 <wxs module="cart" src="../../../utils/star.wxs"></wxs>
 <import src="../../../components/showToast/showToast.wxml" />
-<view class="page-common container">
+<view class="page-common container {{maskShow ? 'posi' : ''}}">
 	<view class="cart-detail">
 		<view>
 			<image wx:if="{{orderDetail.merchant.logo}}" class="cart-detail-img" src="{{orderDetail.merchant.logo}}"></image>

@@ -68,7 +68,7 @@
 		    	wx:for="{{menu}}" 
 		    	wx:for-item="item" 
 		    	wx:for-index="index" 
-		    	wx:key="index" >
+		    	wx:key="index">
 		    	<view wx:if="{{item.goodsList != null}}" class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
 					<text class="menu-item-text">
 						<text wx:if="{{item.icon}}" class="text" style="background: url({{item.icon}});background-size: 24rpx 24rpx">
@@ -96,8 +96,9 @@
 				    wx:for-index="index" 
 				    wx:key="id"
 				    data-food="{{food}}"
+				    data-parent-index="{{parentIndex}}"
 				    bindtap="selectefood">
-					<view class="icon">
+					<view class="icon">  
 						<!-- <image style="display: none" class="icon_img" src="{{tage.removefh(food.imgs,114,114)}}" data-parentindex="{{parentIndex}}" data-index="{{index}}" bindload="_imgOnLoad" />
 						<image class="icon_img" src="{{food.isImgLoadComplete ? tage.removefh(food.imgs,114,114) : '/images/merchant/merchantLogo.png'}}" /> -->
 						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs,114,114)}}" />
@@ -110,15 +111,15 @@
 							<text>{{food.description}}</text>
 						</view>
 						<view class="detail-extra">
-							<text class="detail-count">月售{{food.monthSaled}}</text>
-							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
+							<text class="detail-count">月售{{food.monthSaled}}份</text>
+							<text wx:if="{{tage.praise(food.commentScore) && food.monthSaled}}">好评率{{tage.praise(food.commentScore)}}%</text>
 						</view>
 						<view class="detail-price flex">
-							<text class="now">¥{{food.goodsSpecList[0].price}}<text wx:if="{{food.goodsSpecList[0].originalPrice}}" class="old-price">￥{{food.goodsSpecList[0].originalPrice}}<text class="del"></text></text>
+							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{food.goodsSpecList.length > 1}}"class="now-min">起</text><text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}</text>
 							</text>
 							<view class="cartcontrol-wrapper">
 								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && food.status != 0}}">
-									<template is="contorl-add" data="{{food,selectFoods}}" ></template>
+									<template is="contorl-add" data="{{food,selectFoods,parentIndex}}" ></template>
 								</view>
 								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
 									<text>商家休息中</text>
@@ -127,17 +128,23 @@
 									<text>商品已售罄</text>
 								</view>
 								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
-									<view wx:if="{{(food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount) }}" class="choice font-10" data-food="{{food}}" catchtap="choice" >
+									<view wx:if="{{(food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount) }}" class="choice font-10" data-food="{{food}}" data-parent-index="{{parentIndex}}" catchtap="choice" >
 										<text>选规格</text>
 									</view>
 								</view>	
 							</view>
 						</view>
-						<view wx:if="{{food.goodsSpecList.length == 1 && (food.everyGoodsEveryOrderBuyCount || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum)}}" class="item-rules font-10">
+						<view wx:if="{{food.goodsSpecList.length == 1 && (food.everyGoodsEveryOrderBuyCount || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum)}}" class="item-rules flex font-10">
+							<image wx:if="{{food.discountedGoods}}" class="discount-icon" src="../../images/images/discount_icon.png"></image>
+							<text wx:if="{{food.discountedGoods}}" class="rules-discount-text" style="color:#fc524d">{{food.discountedGoods.discountProportion/10}}折</text>
 							<text wx:if="{{food.hasDiscount === 0 && food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text>
-							<text wx:if="{{food.hasDiscount === 1 && food.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.everyGoodsEveryOrderBuyCount}}份</text>
+							<text wx:if="{{food.hasDiscount === 1 && food.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#fc524d">每单限购{{food.everyGoodsEveryOrderBuyCount}}份</text>
 							<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <10 && food.hasDiscount === 0&& food.goodsSpecList[0].stock >0}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
 							<text wx:if="{{food.goodsSpecList[0].minOrderNum >1 && food.hasDiscount === 0}}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
+						</view>
+						<view wx:else class="item-rules flex font-10">
+							<image wx:if="{{food.discountedGoods && food.discountedGoods.discountProportion}}" class="discount-icon" src="../../images/images/discount_icon.png"></image>
+							<text wx:if="{{food.discountedGoods && food.discountedGoods.discountProportion}}" class="rules-discount-text" style="color:#fc524d">{{food.discountedGoods.discountProportion/10}}折</text>
 						</view>
 					</view>
 				</view>
@@ -193,10 +200,10 @@
 						</view>
 						<view class="detail-extra">
 							<text class="detail-count">月售{{food.monthSaled}}</text>
-							<text wx:if="{{tage.praise(food.goodCommentNum,food.commentNum)}}">好评率{{tage.praise(food.goodCommentNum,food.commentNum)}}%</text>
+							<text wx:if="{{tage.praise(food.commentScore) && food.monthSaled}}">好评率{{tage.praise(food.commentScore)}}%</text>
 						</view>
 						<view class="detail-price flex">
-							<text class="now">¥{{food.goodsSpecList[0].price}}<text wx:if="{{food.goodsSpecList[0].originalPrice}}" class="old-price">￥{{food.goodsSpecList[0].originalPrice}}<text class="del"></text></text>
+							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}<text class="del"></text></text>
 							</text>
 							<view class="cartcontrol-wrapper">
 								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && food.status != 0}}">
@@ -215,11 +222,16 @@
 								</view>	
 							</view>
 						</view>
-						<view wx:if="{{food.goodsSpecList.length == 1 && (food.everyGoodsEveryOrderBuyCount || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum)}}" class="item-rules font-10">
+						<view wx:if="{{food.goodsSpecList.length == 1 && (food.everyGoodsEveryOrderBuyCount || food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum)}}" class="item-rules flex font-10">
+							<text wx:if="{{food.discountedGoods}}"class="rules-discount-text" style="color:#fc524d">{{food.discountedGoods.discountProportion/10}}折</text>
 							<text wx:if="{{food.hasDiscount === 0 && food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text>
-							<text wx:if="{{food.hasDiscount === 1 && food.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.everyGoodsEveryOrderBuyCount}}份</text>
+							<text wx:if="{{food.hasDiscount === 1 && food.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#fc524d">每单限购{{food.everyGoodsEveryOrderBuyCount}}份</text>
 							<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <10 && food.hasDiscount === 0&& food.goodsSpecList[0].stock >0}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
 							<text wx:if="{{food.goodsSpecList[0].minOrderNum >1 && food.hasDiscount === 0}}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
+						</view>
+						<view wx:else class="item-rules flex font-10">
+							<image wx:if="{{food.discountedGoods && food.discountedGoods.discountProportion}}" class="discount-icon" src="../../images/images/discount_icon.png"></image>
+							<text wx:if="{{food.discountedGoods && food.discountedGoods.discountProportion}}" class="rules-discount-text" style="color:#fc524d">{{food.discountedGoods.discountProportion/10}}折</text>
 						</view>
 					</view>
 				</view>
@@ -303,7 +315,8 @@
     		</view>
 			<view class="shop-text" style="margin-top:16rpx">
     			<template is="star-add" data="{{size,item}}"></template>
-    			<text style="color:#666;margin-left:24rpx">月售{{itemList.monthSaled}}单</text>
+    			<text style="color:#ff9900;margin-left:10rpx">{{tage.shopFloat(itemList.averageScore,1)}}分</text>
+    			<text style="color:#666;margin-left:20rpx">月售{{itemList.monthSaled}}单</text>
     		</view>
     	</view>
     	<view class="user-center">
@@ -328,30 +341,37 @@
   			<view class="shop-message shop-message-letter" style="color:#666;padding-left: 10rpx;border: none">
   				<text>可视餐厅</text>
   			</view>
-  			<scroll-view scroll-x="true" class="flex" style="width: 1200rpx;height: 166rpx;padding-bottom: 20rpx">
-				<block
-					wx:for="{{itemList.visualRestaurantList}}"   
-			      	wx:for-item="item"
-			      	wx:for-index="index" 
-			      	wx:key="index">
-		      		<navigator class="video-content" url="/goods/video/video">
-			      		<image class="video-logo" src="{{tage.removefh(item.videoPic,248,166)}}"></image>
-			      		<image class="video-top" src="/images/merchant/video_top.png"></image>
-			      		<view class="video-bottom flex">
-			      			<image class="extra-video-img" src="/images/images/can_see.png"></image>
-			      			<text class="font-12" style="color:#fff;margin-left:10rpx">{{item.positionName}}</text>
-			      		</view>
-			      	</navigator>
-		      	</block>   	
+  			<scroll-view scroll-x="true" style="width: 100%;height: 166rpx;padding-bottom: 20rpx">
+  				<view class="flex">
+					<block
+						wx:for="{{itemList.visualRestaurantList}}"   
+				      	wx:for-item="item"
+				      	wx:for-index="index" 
+				      	wx:key="index">
+			      		<navigator class="video-content" url="/goods/video/video">
+				      		<image class="video-logo" src="{{tage.removefh(item.videoPic,248,166)}}"></image>
+				      		<image class="video-top" src="/images/merchant/video_top.png"></image>
+				      		<view class="video-bottom flex">
+				      			<image class="extra-video-img" src="/images/images/can_see.png"></image>
+				      			<text class="font-12" style="color:#fff;margin-left:10rpx">{{item.positionName}}</text>
+				      		</view>
+				      	</navigator>
+			      	</block>
+			    </view>   	
   			</scroll-view>
   		</view>
   		<view class="shop-content font-16">
   			<view class="shop-message shop-message-letter" style="color:#666;padding-left: 10rpx">
   				<text>商家信息</text>
   			</view>
-			<view class="shop-message">
-  				<text class="shop-message-letter">商家地址:</text>
-  				<text class="shop-message-letter shop-left">{{itemList.address}}</text>
+			<view class="shop-message flex" bindtap="merchantAddress">
+				<view class="merchant-address flex-item">
+					<text class="shop-message-letter">商家地址:</text>
+  					<text class="shop-message-letter shop-left">{{itemList.address}}</text>
+				</view>
+  				<view class="address_icon flex">
+  					<image class="map_icon" src="/images/images/map_1.png"></image>
+  				</view>
   			</view>
   			<view class="shop-message">
   				<text class="shop-message-letter">营业时间:</text>
@@ -457,7 +477,6 @@
 				<view catchtap="boosList">
 					<template is="full" data="{{totalcount,ruleDtoList,totalprice,fullPrice,isTogether}}"></template>
 				</view>
-				
 			</view>
 			<scroll-view
 				class="list-content"
@@ -551,13 +570,13 @@
 			<text class="detail-old">月售{{selectedFood.monthSaled}}份</text>
 		</view>
 		<view class="selectdetail-desc" style="padding-bottom: 20rpx;">
-			<text class="detail-name" style="color:#ff8282">￥{{selectedFood.goodsSpecList[0].price}}</text>
+			<text class="detail-name" style="color:#f01414">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
 			<text detail-old>￥{{selectedFood.now}}</text>
 		</view>
-		<!-- <view class="button"> -->
-			<!-- <image class="button-img" src="../../images/images/cart_2.png"></image>
-			<text class="button-txt">加入购物车</text> -->
-			<!-- </view> -->
+		<!-- <view class="selectdetail-desc">
+			<text wx:if="{{selectedFood.discountedGoods}}"class="rules-discount-text" style="color:#fc524d">{{selectedFood.discountedGoods.discountProportion/10}}折</text>
+			<text wx:if="{{selectedFood.hasDiscount === 1 && selectedFood.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#fc524d">每单限购{{selectedFood.everyGoodsEveryOrderBuyCount}}份</text>
+		</view> -->
 		<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
 			<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
 				<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template>
@@ -630,7 +649,7 @@
 		</scroll-view>
 		<view class="shoprules-food">
 			<view  class="shoprules-left font-18">
-				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text>
+				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text><text wx:if="{{selectedFood.goodsSpecList[specIndex].originalPrice}}" class="old-price">￥{{selectedFood.goodsSpecList[specIndex].originalPrice}}</text>
 			</view>
 			<view class="button flex">
 				<!-- <image class="button-img" src="../../images/images/cart_2.png"></image> -->

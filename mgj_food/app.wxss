@@ -8,7 +8,9 @@
 .page-common{
   background: #ededed;
 }
-
+.posi {
+  height: 100%;
+}
 .flex {
   display: -webkit-box;
   display: -webkit-flex;

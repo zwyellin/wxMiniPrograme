@@ -1,7 +1,7 @@
 <template name="class-common">
 	<view class="time">
-		<view class="flex font-14" >
-		    <scroll-view class="time-left" scroll-y="true" style="height:574rpx">
+		<view class="flex font-14">
+		    <scroll-view class="time-left" scroll-y="true" style="height:574rpx" >
 			    <view class="time-left-text {{timeIndex===index ? 'time-active' : ''}}"
 			    	wx:for="{{classList}}"   
 	  				wx:for-item="item"
@@ -16,7 +16,7 @@
 			    </view>   
 		    </scroll-view>
 		    <scroll-view class="time-right" scroll-y="true" style="height:574rpx" catchtouchmove="myCatchTouch">
-		     	<view class="time-right-text time-right-else"
+		     	<view class="time-right-text time-right-else {{secondIndex==index ? 'time-active' : ''}}"
 		     		wx:for="{{childTagCategoryList}}"   
 	  				wx:for-item="item"
 	 				wx:for-index="index" 

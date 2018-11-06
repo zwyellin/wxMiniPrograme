@@ -12,11 +12,16 @@ App({
     if (shoppingCart) {
       wx.removeStorageSync('shoppingCart');
     }
-    this.getUserInfo();
+    // this.getUserInfo();
     wx.getSystemInfo({
       success: (res)=> {
         this.globalData.windowHeight = res.windowHeight;
         this.globalData.windowWidth = res.windowWidth;
+        if (res.model.indexOf('iPhone') > -1) {
+          this.globalData.client = "iphone";
+        } else {
+          this.globalData.client = "android";
+        }
         console.log(res.model);
         console.log(res.pixelRatio);
         console.log(res.windowWidth);
@@ -104,6 +109,7 @@ App({
   },
   globalData: {
     token:'',
+    client:'',
     agentPhone:null,
     agentId:null,
     userId:null,
@@ -114,10 +120,10 @@ App({
     domain: 'https://prelaunch.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    latitude:'39.977261',
-    longitude:'116.336983'
-    // latitude:'',
-    // longitude:'',
+    // latitude:'39.977261',
+    // longitude:'116.336983'
+    latitude:'',
+    longitude:''
   }
 });
 // prelaunch

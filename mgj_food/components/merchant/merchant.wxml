@@ -33,12 +33,12 @@
 			<view class="extra">
 				<text class="count">起送价￥{{item.minPrice}}</text>
 				<text class="count">|</text>
-				<text>配送费￥{{item.shipFee}}</text>
+				<text>{{item.shipFee ? '配送费￥'+item.shipFee : '免配送费'}}</text>
 				<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
 			</view>
-			<view class="cartcontrol-wrapper" catchtap="moveDown" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height:{{item.promotionActivityList.length>2 ? item.isHeight :''}}">
+			<view class="cartcontrol-wrapper" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height: {{item.isHeight}}">
 				<view class="cartcontrol-content flex"
-					wx:for="{{dataList[index].promotionActivityList}}" 
+					wx:for="{{item.promotionActivityList}}" 
       				wx:for-index="idx" 
       				wx:for-item="promotion"
       				wx:key="idx" >
@@ -47,6 +47,7 @@
 				</view>
 			</view>
 			<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
+				<text class="font-12" style="margin-right: 10rpx;color:#666">{{item.promotionActivityList.length}}个活动</text>
 				<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
 			</view>
 		</view>

@@ -2,6 +2,9 @@
 @import "../../components/star/star.wxss";
 @import "../../components/common/common.wxss";
 @import "../../components/redbag/indexRedbag.wxss";
+page {
+  height: 100%;
+}
 .page {
   padding: 0 20rpx;
   background: #fff;

@@ -27,6 +27,7 @@ Page(Object.assign({}, merchantShop,{
 	    },
 	    evaluateSize:5,        //评价加载数量
         evaluateStart:0,      //评价开始位置
+        isEvaluate:false,
 	    tabIndex:0,
 	    merchantId:null,
 	    selectParentIndex:0,
@@ -131,6 +132,10 @@ Page(Object.assign({}, merchantShop,{
         	if (type == 1) {
         		let itemCategoryList = menu[0].goodsList;
         		let categoryId = menu[0].id;
+        		let relationCategoryId = menu[0].relationCategoryId
+        		itemCategoryList.map(item=>{
+        			item.parentRelationCategoryId = relationCategoryId
+        		})
 				this.setData({
 	        		menu:menu,
 	        		itemCategoryList:itemCategoryList,
@@ -220,7 +225,7 @@ Page(Object.assign({}, merchantShop,{
 	touchstartCallback: function(e) {
         // 单手指缩放开始，也不做任何处理 
         if(e.touches.length == 1) return;
-        // 注意touchstartCallback 真正代码的开始 // 一开始我并没有这个回调函数，会出现缩小的时候有瞬间被放大过程的bug // 当两根手指放上去的时候，就将distance 初始化。 
+        // 一开始我并没有这个回调函数，会出现缩小的时候有瞬间被放大过程的bug // 当两根手指放上去的时候，就将distance 初始化。 
         let xMove = e.touches[1].clientX - e.touches[0].clientX;
         let yMove = e.touches[1].clientY - e.touches[0].clientY;
         let distance = Math.sqrt(xMove * xMove + yMove * yMove);
@@ -279,6 +284,7 @@ Page(Object.assign({}, merchantShop,{
 		menu.map(item=>{
 			if (item.goodsList != null) {
 				item.goodsList.map((value,index)=>{
+					value.parentRelationCategoryId = item.relationCategoryId
 					removalMenuList.push(value);
 					if (value.hasDiscount ===1) {
 						this.data.everyOrderBuyCount = value.everyOrderBuyCount;
@@ -298,22 +304,19 @@ Page(Object.assign({}, merchantShop,{
 		if(this.data.isTogether){
 			let fullPrice = this.data.fullPrice;       
 			let removalMenuList = this.data.removalMenuList;
-			let listFoods = [];
-			
-			console.log(removalMenuList);
+			let listFoods = [];			
 			removalMenuList.forEach(item=>{
 				let attributes = "";
 				if (item.goodsAttributeList[0] && item.goodsAttributeList[0].name) {
 					let attributesList = item.goodsAttributeList[0].name.split('|*|');
 					attributes = attributesList[0];
 				}
-				console.log(item);
 				item.goodsSpecList.forEach((spec)=>{
-					if (spec.price <= fullPrice.fullRange*2 && item.hasDiscount!=1) {
+					if (spec.price > 0 && spec.price <= fullPrice.fullRange*2 && item.hasDiscount!=1) {
 						if (attributes) {
-							listFoods.push({attributes:attributes, id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, name: item.name, priceObject: spec});
+							listFoods.push({attributes:attributes, id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
 						} else {
-							listFoods.push({id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, name: item.name, priceObject: spec});
+							listFoods.push({id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
 						}
 					}	
 				});
@@ -327,11 +330,11 @@ Page(Object.assign({}, merchantShop,{
 						attributes = attributesList[0];
 					}
 					item.goodsSpecList.map((spec)=>{
-						if (item.hasDiscount!=1) {
+						if (spec.price > 0 && item.hasDiscount!=1) {
 							if (attributes) {
-								listFoods.push({attributes:attributes, id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, name: item.name, priceObject: spec});
+								listFoods.push({attributes:attributes, id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
 							} else {
-								listFoods.push({id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, name: item.name, priceObject: spec});
+								listFoods.push({id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
 							}
 						}	
 					});
@@ -340,13 +343,11 @@ Page(Object.assign({}, merchantShop,{
 			listFoods.sort((a,b)=>{
 				return a.priceObject.price-b.priceObject.price;
 			});
-			console.log(listFoods);
 			this.setData({
 				listFoods:listFoods.slice(0,10),
 				isShowTogether:!this.data.isShowTogether,
 				fold:false
 			});
-			console.log(this.data.listFoods);
 		} else {
 			this.setData({
 				isShowTogether:false
@@ -359,9 +360,7 @@ Page(Object.assign({}, merchantShop,{
 		
 		let selectedFood = this.data.selectedFood;
 		let selectFoods = this.data.selectFoods;
-		console.log(selectFoods)
-		// let selects = this.data.selects;
-		
+
 		selectedFood.goodsAttributeList[parentindex].select = taste;
 		console.log(selectedFood.goodsAttributeList[parentindex])
 		this.setData({
@@ -389,23 +388,28 @@ Page(Object.assign({}, merchantShop,{
 		});
 		return goodsItem;
 	},
-	//判断是否有商品必选
+	//判断是否有商品必选   //判断所选商品的分类是否有关联分类
 	isMandatory(){
 		let isMandatoryGoods;
 		let menu = this.data.menu;
 		let selectFoods = this.data.selectFoods;
 		let index = null;
-		for (let i = 0; i <  menu.length; i++) {
-			if (menu[i].isMandatory) {
+		for (let i = 0; i < selectFoods.length; i++) {
+			if (selectFoods[i].relationCategoryId ) {
 				let isFound = false;
 				for (let j = 0; j < selectFoods.length; j++) {
-					if (menu[i].id === selectFoods[j].categoryId ) {
+					if (selectFoods[i].relationCategoryId === selectFoods[j].categoryId ) {
 						isFound = true;
 					}		
 				}
 				if (!isFound) {
-					isMandatoryGoods = menu[i];
-					index = i+1;
+					for (let k = 0; k < menu.length; k++) {
+						if (menu[k].id === selectFoods[i].relationCategoryId ) {
+							isMandatoryGoods = menu[k];
+							index = k+1;
+							break;
+						}
+					}
 					break;
 				}
 			}
@@ -550,11 +554,9 @@ Page(Object.assign({}, merchantShop,{
 	//选择商品大小价格
 	choicespec(e){
 		let { index, taste } = e.currentTarget.dataset;
-		console.log(index, taste)
 		this.setData({
 			price:taste.price,
 			specIndex:index,
-			
 		});
 	},
 	selectTab(e){
@@ -575,14 +577,16 @@ Page(Object.assign({}, merchantShop,{
         	data:{
         		params:{
         			merchantId:this.data.merchantId
-        		}	
+        		},
+				client: app.globalData.client,
+        		clientVersion: "3.2.2"    //此参数取值版本来自于与App版本
         	},
         });
 	},
 	choice(e){
 		this.maskShowAnimation();
 		this.choiceShowAnimation();
-		let { food } = e.currentTarget.dataset;
+		let { food, parentIndex } = e.currentTarget.dataset;
 		// let selectedFood = this.data.selectedFood;
 		
 		let arr = [];
@@ -590,22 +594,33 @@ Page(Object.assign({}, merchantShop,{
 			let arr = food.goodsAttributeList[i].name.split('|*|');
 			food.goodsAttributeList[i].select = arr[0];
 		}
-		console.log(food)
+		if (parentIndex == 0 || parentIndex) {
+			if (this.data.menu[parentIndex].id === null || this.data.menu[parentIndex].id < 0) {
+				food.parentRelationCategoryId = food.relationCategoryId;
+			} else {
+				food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId;
+			}
+		} else {
+			food.parentRelationCategoryId = food.parentRelationCategoryId;
+		}
 		this.setData({
 			selectedFood:food,
 			choice:true,
 			detailShow:false,
 			specIndex:0
 		});
-		// console.log(selectedFood)
-		
 	},
 	//点击查看商品详情
 	selectefood(e){
 		this.maskShowAnimation();
 		this.choiceShowAnimation();
 		
-		let { food } = e.currentTarget.dataset;
+		let { food, parentIndex } = e.currentTarget.dataset;
+		if (this.data.menu[parentIndex].id === null || this.data.menu[parentIndex].id < 0) {
+			food.parentRelationCategoryId = food.relationCategoryId;
+		} else {
+			food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId;
+		}
 		this.setData({
 	        selectedFood:food,
 			detailShow:true,
@@ -750,17 +765,28 @@ Page(Object.assign({}, merchantShop,{
 	addCart(e) {
 		let specIndex = e.currentTarget.dataset.specindex || 0;
 		// console.log(specIndex)
-		let { food, rules, fullActivity} = e.currentTarget.dataset;
+		let { food, rules, fullActivity, parentIndex } = e.currentTarget.dataset;
 
 		// console.log(food, rules)
 		let attributes = '';
 		let id = food.id; //选择的产品id
 		let categoryId = food.categoryId;  //选择的产品分类id
+		console.log(parentIndex);
 		let priceObject = {}; //产品价格对象
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
 		} else {
 			priceObject = food.goodsSpecList[specIndex]; //产品价格	
+		}
+
+		if (parentIndex == 0 || parentIndex) {
+			if (this.data.menu[parentIndex].id === null || this.data.menu[parentIndex].id < 0) {
+				food.parentRelationCategoryId = food.relationCategoryId
+			} else {
+				food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId
+			}
+		} else {
+			food.parentRelationCategoryId = food.parentRelationCategoryId
 		}
 		let name = food.name; //产品名称
 		let tmpArr = [];
@@ -927,7 +953,8 @@ Page(Object.assign({}, merchantShop,{
 	      					surplusDiscountStock:food.surplusDiscountStock,
 	      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 		      				categoryId:categoryId, 
-		      				name: name, 
+		      				relationCategoryId:food.parentRelationCategoryId,
+		      				name: name,
 		      				priceObject:priceObject, 
 		      				count: 1
 		      			});
@@ -939,6 +966,7 @@ Page(Object.assign({}, merchantShop,{
 			      				hasDiscount:food.hasDiscount,
 		      					surplusDiscountStock:food.surplusDiscountStock,
 		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
+		      					relationCategoryId:food.parentRelationCategoryId,
 			      				categoryId:categoryId, 
 			      				name: name, 
 			      				priceObject:priceObject, 
@@ -953,6 +981,7 @@ Page(Object.assign({}, merchantShop,{
 		      					surplusDiscountStock:food.surplusDiscountStock,
 		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 			      				categoryId:categoryId, 
+			      				relationCategoryId:food.parentRelationCategoryId,
 			      				name: name, 
 			      				priceObject:priceObject, 
 			      				count: 1
@@ -967,6 +996,7 @@ Page(Object.assign({}, merchantShop,{
 	      					surplusDiscountStock:food.surplusDiscountStock,
 	      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 		      				categoryId:categoryId, 
+		      				relationCategoryId:food.parentRelationCategoryId,
 		      				name: name, 
 		      				priceObject:priceObject, 
 		      				count: 1
@@ -979,6 +1009,7 @@ Page(Object.assign({}, merchantShop,{
 		      					surplusDiscountStock:food.surplusDiscountStock,
 		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 			      				categoryId:categoryId, 
+			      				relationCategoryId:food.parentRelationCategoryId,
 			      				name: name, 
 			      				priceObject:priceObject, 
 			      				count: 1*priceObject.minOrderNum
@@ -991,6 +1022,7 @@ Page(Object.assign({}, merchantShop,{
 		      					surplusDiscountStock:food.surplusDiscountStock,
 		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
 			      				categoryId:categoryId, 
+			      				relationCategoryId:food.parentRelationCategoryId,
 			      				name: name, 
 			      				priceObject:priceObject, 
 			      				count: 1
@@ -1249,6 +1281,7 @@ Page(Object.assign({}, merchantShop,{
 		} else {
 			let categoryId = this.data.menu[index].id
 			let goodsList = this.data.menu[index].goodsList
+			let relationCategoryId = this.data.menu[index].relationCategoryId
 			if (goodsList === null) {
 				this.data.itemCategoryList = []
 				this.data.categoryId = categoryId
@@ -1258,6 +1291,9 @@ Page(Object.assign({}, merchantShop,{
 					scrollTop:0
 				})
 			} else {
+				goodsList.map(item=>{
+        			item.parentRelationCategoryId = relationCategoryId
+        		})
 				this.setData({
 					itemCategoryList:goodsList,
 					categoryId : categoryId,
@@ -1280,6 +1316,9 @@ Page(Object.assign({}, merchantShop,{
 						if (searchList.length != 0) {
 							this.data.menu.map((item,index)=>{
 								if (item.id == this.data.categoryId) {
+									searchList.map(loadItem=>{
+										loadItem.parentRelationCategoryId =item.relationCategoryId 
+									})
 									if (item.goodsList === null) {
 										item.goodsList = searchList
 									} else {

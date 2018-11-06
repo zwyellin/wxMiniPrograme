@@ -1,0 +1,3 @@
+<view class="container">
+	<map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="18" markers="{{markers}}" enable-3D="true" enable-overlooking="true" show-location style="width:100%;height:100vh"></map>
+</view>

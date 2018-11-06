@@ -14,7 +14,6 @@ Page({
 		
 	},
 	onLoad(options){
-		
 		this.setData({
 			merchantId:options.merchantId,
 			windowHeight:app.globalData.windowHeight,
@@ -164,7 +163,6 @@ Page({
 	},
 	selectAddress(e){
 		let { item } = e.currentTarget.dataset;
-		console.log(item)
 		if (parseInt(item.overShipping) === 1) {
 			wx.showModal({
                 title: '提示',
@@ -180,14 +178,18 @@ Page({
                 }
             });
 		} else {
-			let pages = getCurrentPages();
-	    	let prevPage = pages[pages.length - 2];
-	    	prevPage.setData({
-  				addressInfoId:item.id
-		 	});
-			wx.navigateBack({
-		  		delta: 1
-			});
+			if (this.data.merchantId != null) {
+				let pages = getCurrentPages();
+		    	let prevPage = pages[pages.length - 2];
+		    	prevPage.setData({
+	  				addressInfoId:item.id,
+	  				addressLongitude:item.longitude,
+	  				addressLatitude:item.latitude
+			 	});
+				wx.navigateBack({
+			  		delta: 1
+				});
+			}	
 		}	
 	}
 });

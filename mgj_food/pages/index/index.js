@@ -3,7 +3,6 @@ const app = getApp();
 const { Promise, wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
 const { initClassList, imgUrls, merchantFeature, merchantActive } = require('../../components/homeClass.js');
 const { merchantObj } = require('../../components/merchant/merchant.js');
-console.log(merchantObj);
 let interval;
 Page(Object.assign({}, merchantObj, {
   	data: {
@@ -26,6 +25,7 @@ Page(Object.assign({}, merchantObj, {
 	    },
 	    refreshData:false,
 	    size:24,
+	    region:'',                  //当前城市
 		city:{
 			cityName:'',
 		},
@@ -45,7 +45,8 @@ Page(Object.assign({}, merchantObj, {
 		classShow:false,
 		shipShow:false,
 		timeIndex:0,
-		queryType:1,  //排序类型
+		secondIndex:0,        //选择第二轮分类
+		queryType:1,         //排序类型
 		sortList:["智能排序","距离最近","销量最高","起送价最低","配送速度最快","评分最高"],
 		merchantActive:merchantActive,
 		merchantFeature:merchantFeature,
@@ -73,6 +74,7 @@ Page(Object.assign({}, merchantObj, {
 			this.setData({
 				isAgentId:true
 			});
+			console.log(1)
 			this.appLocationMessage();
 		});	
 	},
@@ -121,13 +123,10 @@ Page(Object.assign({}, merchantObj, {
 					});
 		        });
 		        getBMapLocation(this.data.obj).then(res=>{
-					console.log(res);
 					let address;
 					if (res.status === 0) {
-						console.log(res)
 						address = res.result.address;
-						// address =res.result.address_component.street_number
-						console.log(address);
+						this.data.region = res.result.address_component.city;
 						this.setData({
 			      			city:Object.assign({},this.data.city,{cityName:address})
 			    		});
@@ -198,7 +197,7 @@ Page(Object.assign({}, merchantObj, {
 	onShow(){
 		this.data.clickPage = false;
 		let loginMessage = wx.getStorageSync('loginMessage');
-		let loginStatus = wx.getStorageSync('loginstatus',true);
+		let loginStatus = wx.getStorageSync('loginstatus');
 		if (wx.getStorageSync('shoppingCart')) {
 			let shoppingCart = wx.getStorageSync('shoppingCart');
 			this.setData({
@@ -257,18 +256,24 @@ Page(Object.assign({}, merchantObj, {
 	        });
 		}
 	},
-	onPageScroll(e){ //监听商家筛选的高度
-		if (parseInt(e.scrollTop) > 399 && this.data.isPaiXunTop === false) {
-			this.setData({
-				isPaiXunTop:true
-			});
-		}
-		if(parseInt(e.scrollTop) < 399 && this.data.isPaiXunTop === true) {
-			this.setData({
-				isPaiXunTop:false
-			});
-		}
-  	},
+	// 跳转地址页
+	redirectToAddress(e){
+		wx.navigateTo({
+			url:"/pages/address/address/address?switch=index&region=" + this.data.region
+		});
+	},
+	// onPageScroll(e){ //监听商家筛选的高度
+	// 	if (parseInt(e.scrollTop) > 399 && this.data.isPaiXunTop === false) {
+	// 		this.setData({
+	// 			isPaiXunTop:true
+	// 		});
+	// 	}
+	// 	if(parseInt(e.scrollTop) < 399 && this.data.isPaiXunTop === true) {
+	// 		this.setData({
+	// 			isPaiXunTop:false
+	// 		});
+	// 	}
+ //  	},
 	// 领取平台红包
 	getPlatformRedBag(){
 		wxRequest({
@@ -289,6 +294,7 @@ Page(Object.assign({}, merchantObj, {
 					if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
 						let platformRedList = res.data.value.redBagList;
 						if (platformRedList.length != 0) {
+							this.maskShowAnimation();
 							this.platfromRedShowAnimation();
 							this.setData({
 								platformRedList: platformRedList,
@@ -296,6 +302,7 @@ Page(Object.assign({}, merchantObj, {
 							});
 						}
 					} else {
+						this.maskShowAnimation();
 						this.platformRegisterShowAnimation();
 						this.setData({
 							isRegisterGetRedBag:true,
@@ -320,20 +327,28 @@ Page(Object.assign({}, merchantObj, {
 	},
 	bannerMerchant(e){
 		let { item } = e.currentTarget.dataset;
-		if (item.merchantId) {
+		if (item.bannerType == 3) {
 			let merchantId = item.merchantId;
 			wx.navigateTo({
 				url:"/goods/shop/shop?merchantid=" + merchantId,
+			});
+		}
+		if (item.bannerType == 2) {
+			let tagCategoryId = item.firstCategoryId;
+			let secondCategoryId = item.secondCategoryId;
+			wx.navigateTo({
+				url:"/pages/classPage/classPage?id=" + tagCategoryId+"&secondid="+secondCategoryId
 			});
 		}
 	},
 	//根据地理位置初始化首页轮播图
 	initBanner(){
 		wxRequest({
-        	url:'/merchant/userClient?m=findTBanner',
+        	url:'/merchant/userClient?m=findTBanner&uuid=' + parseInt(Math.random()*1000000000000000),
         	method:'POST',
         	data:{
         		token: app.globalData.token,
+        		uuid:parseInt(Math.random()*1000000000000000),
         		params:{
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
@@ -533,12 +548,24 @@ Page(Object.assign({}, merchantObj, {
 						}	
 					} else {
 						list = this.seatImg(list);
-						this.setData({
-							isAgentId:false,
-							dataList:list,
-							loading:false
-						});	
-					}	
+						if (list.length < 10) {
+							setTimeout(()=>{
+								this.setData({
+									loading:true
+								});
+							},1500);
+							this.setData({
+								isAgentId:false,
+								dataList:list,
+							});
+						} else {
+							this.setData({
+								isAgentId:false,
+								dataList:list,
+								loading:false
+							});
+						}	
+					}
 				}	
 			}else {
 				this.setData({
@@ -580,6 +607,7 @@ Page(Object.assign({}, merchantObj, {
     		return false;
     	}
     	this.data.start = 0;
+    	this.initBanner();
       	this.initClass();
       	this.findTagCategory();
       	this.getDataList(false,true);

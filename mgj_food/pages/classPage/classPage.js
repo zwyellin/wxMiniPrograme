@@ -17,7 +17,8 @@ Page(Object.assign({}, merchantObj, {
 		childTagCategoryList:[],
 		classShow:false,
 		shipShow:false,
-		timeIndex:0,
+		timeIndex:0,     //一级分类选中状态
+		secondIndex:0,  //二级分类选中状态
 		queryType:1,  //排序类型
 		sortList:["智能排序","距离最近","销量最高","起送价最低","配送速度最快","评分最高"],
 		merchantFeature:merchantFeature,
@@ -35,33 +36,56 @@ Page(Object.assign({}, merchantObj, {
 	},
 	onLoad(options){
 		let tagId = null;
-		if (options.id != "null" && parseInt(options.id) > -1) {
+		let secondId = null;
+		if (options.id && options.id != "null" && parseInt(options.id) > -1) {
 			tagId = parseInt(options.id);
 		}
+		if (options.secondid && options.secondid != "null" && parseInt(options.secondid) > -1) {
+			secondId = parseInt(options.secondid);
+		}
 		let type1 = '分类';
-		this.setData({
-			tagId:tagId
-		})
+		if (secondId) {
+			this.setData({
+				tagId:secondId,
+				tagParentId:tagId
+			});
+		} else {
+			this.setData({
+				tagId:tagId
+			});
+		}
+		
 		this.findTagCategory().then(res=> {
         	if (res.data.code === 0) { 
-        		let classList = res.data.value
-        		let timeIndex = 0
+        		let classList = res.data.value;
+        		let timeIndex = 0;
+        		let secondIndex = 0;
         		classList.map((item,index)=>{
         			if(item.id === tagId) {
-        				timeIndex = index
-						item.childTagCategoryList.map((childItem)=>{
-							if(childItem.id === tagId) {
-								type1 = childItem.name
-							}
-						})
+        				timeIndex = index;
+        				if (secondId) {
+							item.childTagCategoryList.map((childItem,secondIndex)=>{
+								if(childItem.id === secondId) {
+									type1 = childItem.name;
+									secondIndex = secondIndex;
+								}
+							});
+        				} else {
+        					item.childTagCategoryList.map((childItem)=>{
+								if(childItem.id === tagId) {
+									type1 = childItem.name;
+								}
+							});
+        				}	
         			}
-        		})
+        		});
 				this.setData({
 					timeIndex:timeIndex,
+					secondIndex:secondIndex,
 					childTagCategoryList:classList[timeIndex].childTagCategoryList,
 					type1:type1,
 					classList: classList
-				})
+				});
 				this.getDataList();
         	}
         });

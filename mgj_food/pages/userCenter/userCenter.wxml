@@ -42,28 +42,28 @@
 				<view class="header-text">
 					<image class="header-img" src="/images/images/map_1.png" ></image>
 		  			<text class="header-txt">收货地址</text>
-		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../../images/images/down.png" ></image>
+		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>
 			</view>
 			<navigator class="order-header" url="/other/firends/service/service">
 				<view class="header-text">
 					<image class="header-img" src="/images/images/server.png" ></image>
 		  			<text class="header-txt">服务中心</text>
-		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../../images/images/down.png" ></image>
+		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>
 			</navigator>
 			<navigator class="order-header" url="/other/firends/shareFirend/shareFirend">
 				<view class="header-text">
 					<image class="header-img" src="/images/images/tabbar-pcenter.png" ></image>
 		  			<text class="header-txt">邀请好友</text>
-		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../../images/images/down.png" ></image>
+		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>
 			</navigator>
 			<navigator class="order-header" url="/other/firends/load/load">
 				<view class="header-text">
 					<image class="header-img" src="/images/images/load.png" ></image>
 		  			<text class="header-txt">下载app</text>
-		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../../images/images/down.png" ></image>
+		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>
 			</navigator>
 			

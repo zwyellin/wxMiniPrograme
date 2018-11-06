@@ -615,6 +615,13 @@
 	box-sizing: border-box;
 	border-radius: 10rpx;
 }
+.rules-discount-text {
+	padding: 4rpx 6rpx;
+}
+.discount-icon {
+	width: 18rpx;
+	height: 18rpx;
+}
 
 /* 红包 */
 
@@ -807,6 +814,19 @@
 	width: 248rpx;
 	height: 166rpx;
 	border-radius: 10rpx;
+}
+/*   */
+.merchant-address {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.address_icon {
+	width: 66rpx;
+}
+.map_icon {
+	width: 44rpx;
+	height: 44rpx;
 }
  
 

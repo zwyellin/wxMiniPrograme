@@ -16,6 +16,7 @@
 	width: 20rpx;
 	height: 10rpx;
 	margin-left: 6rpx;
+	margin-top: 4rpx;
 }
 .goods-wrapper {
 	position: relative;
@@ -130,14 +131,14 @@
 	right:18rpx;
 	padding-top:16rpx;
 	top:158rpx;
-	width:40rpx;	
+	width:132rpx;	
 }
 .cartcontrol-content {
 	height: 34rpx;
 	line-height: 34rpx;	
 }
 .cartcontrol-content .name {
-	font-size: 24rpx;
+	font-size: 22rpx;
 	letter-spacing: 2rpx;
 	color:#999;
 	text-overflow: ellipsis;
@@ -151,10 +152,4 @@
 	width: 26rpx;
 	height: 26rpx;
 	margin-right: 6rpx;
-}
-.posi {
-	position: absolute;
-	top: 0;
-	bottom:0;
-	/*overflow: hidden;*/
 }					

@@ -1,5 +1,5 @@
 const app = getApp();
-const { wxRequest } = require('../../utils/util.js');
+const { wxRequest, getNetworkType } = require('../../utils/util.js');
 const Pingpp = require('../../utils/pingpp.js');
 const feedbackApi=require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口
 Page({
@@ -82,32 +82,49 @@ Page({
       feedbackApi.showToast({title:'请选择支付方式'});
       return;
     }
-    // 微信支付
-    if (this.data.payWxColor && !this.data.isPayStatus) {
-      if (this.data.channelCost < this.data.price && this.data.payChannelColor) {
-        this.wxLogin(this.data.channelCost);
+    getNetworkType().then(res=>{
+      if (res.networkType != 'none') {
+        // 微信支付
+        if (this.data.payWxColor && !this.data.isPayStatus) {
+          if (this.data.channelCost < this.data.price && this.data.payChannelColor) {
+            this.wxLogin(this.data.channelCost);
+          } else {
+            this.wxLogin();
+          }
+          this.setData({
+            isPayStatus:true
+          });
+        }
+        // 余额支付
+        if (this.data.payChannelColor && !this.data.isPayStatus) {
+          if (this.data.channelCost < this.data.price) {
+            feedbackApi.showToast({title:'请选择支付方式'});
+            return;
+          }
+          this.maskShowAnimation();
+          this.setData({
+            maskShow:true,
+            isPayStatus:true
+          });
+          this.balancePay();
+        }    
       } else {
-        this.wxLogin();
+        wx.showToast({
+          title: '请检查你的网络',
+          icon: 'loading',
+          mask:true
+        });
+        setTimeout(()=>{
+          wx.hideToast();
+        },1000);
       }
-      this.setData({
-        isPayStatus:true
-      });
-    }
-    // 余额支付
-    if (this.data.payChannelColor && !this.data.isPayStatus) {
-      if (this.data.channelCost < this.data.price) {
-        feedbackApi.showToast({title:'请选择支付方式'});
-        return;
-      }
-      this.maskShowAnimation();
-      this.setData({
-        maskShow:true,
-        isPayStatus:true
-      });
-      this.balancePay();
-    }    
+    });
   },
   wxLogin(channel = 0){
+    wx.showLoading({
+        title: '正在支付',
+        mask: true
+    });
     let that = this;
     wx.login({
         success: function (res) {
@@ -127,7 +144,6 @@ Page({
                     if (res.data.code === 0) {
                         let value = JSON.parse(res.data.value);
                         let open_id = value.openid;
-                        console.log(open_id);
                         if (channel) {
                           that.payMoney(open_id,channel);
                         } else {
@@ -144,6 +160,7 @@ Page({
                         }
                         feedbackApi.showToast({title: msg});
                         that.data.isPayStatus = false;
+                        wx.hideLoading();
                     } 
                 }).catch(err=>{
                   that.data.isPayStatus = false;
@@ -178,10 +195,8 @@ Page({
     }).then(res=>{
       if (res.data.code === 0) {
           let charge = res.data.value;
+          wx.hideLoading();
           Pingpp.createPayment(charge, function (result, err) {
-              console.log(result);
-              console.log(err.msg);
-              console.log(err.extra);
               if (result == "success") {
                 let merchantId = that.data.merchantId
                 let isRedBag = true;
@@ -207,6 +222,7 @@ Page({
           let msg = res.data.value;
           feedbackApi.showToast({title:msg});
           that.data.isPayStatus = false;
+          wx.hideLoading();
         } 
     }).catch(err=>{
       that.data.isPayStatus = false;

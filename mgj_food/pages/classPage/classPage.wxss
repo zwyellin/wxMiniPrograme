@@ -1,6 +1,9 @@
 @import "../../components/merchant/merchant.wxss";
 @import "../../components/star/star.wxss";
 @import "../../components/common/common.wxss";
+page {
+	height: 100%;
+}
 .goods-top {
 	position: fixed;
 	top: 0;
@@ -12,7 +15,7 @@
 }
 .time {
   position: fixed;
-  top: 66rpx;
+  top: 64rpx;
   width: 100%;
   height: 574rpx;
   background: #fff;

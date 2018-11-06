@@ -111,36 +111,41 @@ const merchantShop = {
 	},
 	//获取商家评价信息
 	getevaluate(isLoadMore){
-		wxRequest({
-        	url:'/merchant/userClient?m=findMerchantComments',
-        	method:'POST',
-        	data:{
-        		params:{
-        			merchantId:this.data.merchantId,
-        			size: this.data.evaluateSize,   
-        			start:this.data.evaluateStart
-        		}	
-        	}
-        }).then(res=>{
-			if (res.data.code === 0) {
-				let list = res.data.value;
-				let evaluate = this.data.evaluate;
-				if (isLoadMore) {
-					if (list.length === 0) {
-						this.setData({
-							loading:true,
-						});
+		if (!this.data.isEvaluate) {
+			this.data.isEvaluate = true;
+			wxRequest({
+	        	url:'/merchant/userClient?m=findMerchantComments',
+	        	method:'POST',
+	        	data:{
+	        		params:{
+	        			merchantId:this.data.merchantId,
+	        			size: this.data.evaluateSize,   
+	        			start:this.data.evaluateStart
+	        		}	
+	        	}
+	        }).then(res=>{
+				if (res.data.code === 0) {
+					let list = res.data.value;
+					let evaluate = this.data.evaluate;
+					if (isLoadMore) {
+						if (list.length === 0) {
+							this.setData({
+								loading:true,
+							});
+						}
+						evaluate = evaluate.concat(list);
+					} else {
+						evaluate = list;
 					}
-					evaluate = evaluate.concat(list);
-				} else {
-					evaluate = list;
-				}
-    			this.setData({
-    				evaluate:evaluate,
-    			});
-    		}
-			console.log(res.data);
-        });
+	    			this.setData({
+	    				evaluate:evaluate,
+	    			});
+	    		}
+				this.data.isEvaluate = false;
+	        }).catch(err=>{
+	        	this.data.isEvaluate = false;
+	        });
+		}
 	},
 	//加载更多评价
 	loadMore(e){  
@@ -150,6 +155,12 @@ const merchantShop = {
 	//遮罩层显示阻止滑动
 	myCatchTouch(){
 		return false;
+	},
+	// 查看商家地理位置
+	merchantAddress(){
+		wx.navigateTo({
+			url: '/goods/mapview/mapview?latitude=' + this.data.itemList.latitude + '&longitude=' + this.data.itemList.longitude + '&name=' + this.data.itemList.name
+		});
 	},
 	//底部弹出活动详情
 	broadcast(e){

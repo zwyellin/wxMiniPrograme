@@ -49,14 +49,15 @@ Page({
     },
     timer(obj){  
       obj.paymentExpireTime = obj.paymentExpireTime.replace(/-/g,'/');
-      let leftTime =  new Date().getTime();
-      let dateTime =  new Date(obj.paymentExpireTime).getTime(); 
-      let time = dateTime  - leftTime;
+      obj.createTime = obj.createTime.replace(/-/g,'/');
+
+      let nowTime =  new Date().getTime();
+      let dateTime =  new Date(obj.paymentExpireTime).getTime()-3000; 
+      let time = dateTime  - nowTime;
       let minute = parseInt(time/1000/60,10);   
       let second = parseInt(time/1000%60,10);  
       let min = this.checkTime(minute);  
       let sec = this.checkTime(second);   
-      console.log(time)
       // return time;
       if(time < 1000) {  
           // clearInterval(timer);
@@ -67,14 +68,15 @@ Page({
     },
     changeTime(){
       //2018-05-02 14:56:32
-      var me = this;
+      let me = this;
       let orderList = this.data.orderList;
       let isCloseTimer = false;
       orderList.forEach(function(val,key){
         if(val.orderFlowStatus === 1){
           isCloseTimer = true;
           val.timestamp = me.timer({
-            paymentExpireTime:val.paymentExpireTime
+            paymentExpireTime: val.paymentExpireTime,
+            createTime: val.modifyTime    // 订单未支付时，此时间等于订单创建时间
           });
           if(val.timestamp === '' ){
             val.orderFlowStatus = -1;
@@ -126,13 +128,13 @@ Page({
               let orderList = this.data.orderList;
               console.log(orderList)
               valueArr.map((item)=>{
-                item = this.changeRefundButton(item)
+                item = this.changeRefundButton(item);
                 orderList.push(item);
               });
               this.data.orderList  = orderList;
               this.setData({
                 loading:false
-              })
+              });
             } else {
               this.setData({
                 loading:true
@@ -140,12 +142,12 @@ Page({
             } 
           } else {
             valueArr.map((item)=>{
-                item = this.changeRefundButton(item)
+                item = this.changeRefundButton(item);
             });
             this.data.orderList  = valueArr;
             this.setData({
               loading:false
-            })
+            });
           }
           clearInterval(timer);
           timer = setInterval(this.changeTime,1000);

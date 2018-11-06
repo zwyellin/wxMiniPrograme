@@ -11,6 +11,8 @@ Page({
 		orderMessage: {},    //订单信息
 		addressInfo:null,    //用户订单地址信息
 		addressInfoId:null,
+		addressLongitude:null,
+		addressLatitude:null,
 		deliveryTimes:[],    //配送时间信息
 		expectedArrivalTime:1,
 
@@ -56,6 +58,8 @@ Page({
 			discountGoodsDiscountAmt:prevPage.data.value.discountGoodsDiscountAmt,
 			addressInfo:prevPage.data.value.addressInfo,
 			addressInfoId:prevPage.data.value.addressInfo ? prevPage.data.value.addressInfo.id : null,
+			addressLongitude:prevPage.data.value.addressInfo ? prevPage.data.value.addressInfo.longitude : app.globalData.longitude,
+			addressLatitude:prevPage.data.value.addressInfo ? prevPage.data.value.addressInfo.latitude : app.globalData.latitude,
 			agentId:prevPage.data.value.agentId,
 			promoInfoJson:prevPage.data.value.promoList,
 			redBagUsableCount:prevPage.data.value.redBagUsableCount,
@@ -83,9 +87,6 @@ Page({
 				initTime:initTime,
 				expectedArrivalTime:expectedArrivalTime
 			});
-		}
-		if (app.globalData.agentId == this.data.agentId) {
-			
 		}
 		this.filterUsableRedBagList();
 		this.queryPlatformRedBagList();
@@ -237,6 +238,17 @@ Page({
 				timePageShow:false
 			});
 		}
+		this.orderPreview().then(res=>{
+			if (res.data.code === 0) {
+				let orderMessage = res.data.value;
+				let addressInfo = res.data.value.addressInfo;
+				this.setData({
+					orderMessage:orderMessage,
+				});
+			}
+        }).finally(()=>{
+        	wx.hideLoading();
+        });
 	},
 	close(){
 		this.setData({
@@ -451,7 +463,12 @@ Page({
 			})
 		}
 		let orderItems = [];
-		let data = {loginToken:app.globalData.token,userId:app.globalData.userId,merchantId:this.data.merchantId};
+		let data = {
+			loginToken:app.globalData.token,
+			userId:app.globalData.userId,
+			merchantId:this.data.merchantId,
+			expectedArrivalTime:this.data.expectedArrivalTime
+		};
 		data.orderItems = this.data.orderMessage.orderItems;
 		data.redBags = orderUseRedBagList.length === 0 ? null : orderUseRedBagList;
 		data.orderPayType = this.data.payIndex+1;
@@ -462,8 +479,8 @@ Page({
         	data:{
         		params:{
         			data:JSON.stringify(data),
-        			longitude:app.globalData.longitude,
-        			latitude:app.globalData.latitude
+        			longitude:this.data.addressLongitude,
+        			latitude:this.data.addressLatitude
         		},
         		token:app.globalData.token	
         	},

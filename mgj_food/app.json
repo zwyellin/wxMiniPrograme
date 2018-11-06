@@ -3,8 +3,8 @@
     "pages/index/index",
     "pages/classPage/classPage",
     "pages/address/add/add",
-    "pages/address/receiving/receiving",
     "pages/address/address/address",
+    "pages/address/receiving/receiving",
     "pages/login/login",
     "pages/userCenter/userCenter",
     "pages/goods/cartItem/cartItem",
@@ -59,6 +59,7 @@
       "root": "goods", 
       "pages": [
         "shop/shop",
+        "mapview/mapview",
         "queryOrder/queryOrder",
         "pay/pay",
         "video/video",
