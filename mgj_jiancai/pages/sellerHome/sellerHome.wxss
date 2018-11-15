@@ -106,11 +106,12 @@ view{
   padding-right: 20rpx;
 }
 
-.headerTopR button{
+.headerTopR .more-qrcode{
   width: 46rpx;
   height: 46rpx;
   background-color: none;
-  background: url('http://7xu5hi.com1.z0.glb.clouddn.com/201809141605288274197.png') no-repeat;
+  /*background: url('http://7xu5hi.com1.z0.glb.clouddn.com/201809141605288274197.png') no-repeat;*/
+  background: url('http://7xu5hi.com1.z0.glb.clouddn.com/1811151111192792900.png') no-repeat;
   background-size: 100%; 
   display: block;
   padding: 0;
@@ -120,7 +121,46 @@ view{
   border: 0 none;
   border-radius: 46rpx;
 }
-
+.more-qrcode-content {
+  position: absolute;
+  top: 124rpx;
+  right: 13rpx;
+  width: 216rpx;
+  height: 184rpx;
+  background: url('http://7xu5hi.com1.z0.glb.clouddn.com/1811151137295971007.png') no-repeat;
+  background-size: 100%; 
+}
+.more-qrcode-pad {
+  padding:0 8rpx 0 20rpx;
+}
+.more-item {
+  height: 74rpx;
+  line-height: 74rpx;
+  align-items: center;
+  font-size: 26rpx;
+  font-weight:700;
+  color:#333
+}
+.qrcode {
+  margin-top: 13rpx;
+}
+.more-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 20rpx;
+}
+.hide-share {
+  width: 100%;
+  height: 74rpx;
+  background-color: none;
+  display: block;
+  padding: 0;
+  position: absolute;
+  top: 84rpx;
+  right: -5rpx;
+  border: none;
+  opacity: 0;
+}
 .collection{
   height:45rpx;
   border-radius: 20rpx;

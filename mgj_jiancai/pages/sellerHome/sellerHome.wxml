@@ -17,7 +17,8 @@
             {{info.isCollection === 0 ? "收藏" : "取消收藏"}}
             <view class='text' wx:if="{{sellerInfo}}">{{info.collectionNum}}人收藏</view>
           </view>
-          <button open-type="share" wx:if="{{!sellerInfo}}"></button>
+          <!-- <button open-type="share" wx:if="{{!sellerInfo}}"></button> -->
+          <view class="more-qrcode" bindtap="isShowMore"></view>
         </view>
         <view class='introduce'>
           <view class='p'>商品数量：{{info.goodsNum}}件</view>
@@ -32,16 +33,30 @@
           </view>
         </view>
       </view>
-        <!-- 导航 -->
-        <view class='menu'>
+       <!-- 二维码 分享 -->
+      <view wx:if="{{isMoreMessage}}" class="more-qrcode-content">
+        <view class="more-qrcode-pad">
+          <view class="flex more-item qrcode" bindtap="loadQrCode">
+            <image class="more-icon" src="../../lib/images/icon_qrcode.png"></image>
+            <view>店铺二维码</view>
+          </view>
+          <view class="flex more-item merchant-share">
+            <image class="more-icon" src="../../lib/images/icon_share.png"></image>
+            <view>分享</view>
+          </view>
+          <button class="hide-share" open-type="share" wx:if="{{!sellerInfo}}"></button>
+        </view>
+      </view>
+      <!-- 导航 -->
+      <view class='menu'>
           <view class='menuList {{queryType==10 ? "menuCur" : ""}}' bindtap='queryTypeList' data-type='10' hover-class='none'>首页</view>
           <view class='menuList {{queryType==0 ? "menuCur" : ""}}' bindtap='queryTypeList' data-type='0'>全部商品</view>
           <view class='menuList {{queryType==1 ? "menuCur" : ""}}' bindtap='queryTypeList' data-type='1'>促销</view>
           <view class='menuList {{queryType==2 ? "menuCur" : ""}}' bindtap='queryTypeList' data-type='2'>上新</view>
-        </view>
       </view>
-      <!-- 优惠卷 -->
-      <view wx:if="{{isIndex && info.couponsList.length>0}}" class='discountBox'>
+    </view>
+    <!-- 优惠卷 -->
+    <view wx:if="{{isIndex && info.couponsList.length>0}}" class='discountBox'>
         <scroll-view class='discount' scroll-x>
           <view class='yhList' wx:for="{{info.couponsList}}" data-id='{{item.id}}' wx:key="id" bindtap='receive'>
             <view class='yhListUp'>
@@ -52,40 +67,40 @@
             </view>
           </view>   
         </scroll-view>
+    </view>
+  </view>
+  <view class='main' wx:if="{{!isIndex}}">
+    <view class='nav'>
+      <view class='navList {{sortType==0 || sortType==1 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='{{sortType1}}'>
+        <text>综合</text>
+      </view>
+      <view class='navList {{sortType==2 || sortType==3 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='{{sortType2}}'>
+        <text>销量</text>
+      </view>
+      <view class='navList {{sortType==4 || sortType==5 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='{{sortType3}}'>
+        <text>价格</text>
       </view>
     </view>
-    <view class='main' wx:if="{{!isIndex}}">
-      <view class='nav'>
-        <view class='navList {{sortType==0 || sortType==1 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='{{sortType1}}'>
-          <text>综合</text>
-        </view>
-        <view class='navList {{sortType==2 || sortType==3 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='{{sortType2}}'>
-          <text>销量</text>
-        </view>
-        <view class='navList {{sortType==4 || sortType==5 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='{{sortType3}}'>
-          <text>价格</text>
-        </view>
-      </view>
-      <view class='conBox'>
-        <view class='con'>
-          <navigator url='/pages/commodityDetails/commodityDetails?id={{item.id}}' class='item' hover-class='none' wx:for="{{list}}" wx:key="{{index}}">
-            <view class='imgBox'>
-              <image src='{{item.imgs}}'></image>
-            </view> 
-            <view class='itemTitle'>{{item.goodsName}}</view>
-            <view class='commodityInfo'>
-              <view class='price'>￥<text>{{item.goodsPrice || item.originalPrice}}</text></view>
-              <view class='price2' wx:if="{{item.originalPrice}}">{{item.originalPrice}}</view>
-              <view class='subsidy' wx:if="{{item.platformSubsidiesPrice}}">平台补贴</view>
-            </view>
-            <view class='evaluate'>
-              <text>{{item.totalCommentsCount}}人评价</text>
-              <text>好评{{item.goodCommentsRate}}%</text>
-            </view>
-          </navigator>
-        </view>
+    <view class='conBox'>
+      <view class='con'>
+        <navigator url='/pages/commodityDetails/commodityDetails?id={{item.id}}' class='item' hover-class='none' wx:for="{{list}}" wx:key="{{index}}">
+          <view class='imgBox'>
+            <image src='{{item.imgs}}'></image>
+          </view> 
+          <view class='itemTitle'>{{item.goodsName}}</view>
+          <view class='commodityInfo'>
+            <view class='price'>￥<text>{{item.goodsPrice || item.originalPrice}}</text></view>
+            <view class='price2' wx:if="{{item.originalPrice}}">{{item.originalPrice}}</view>
+            <view class='subsidy' wx:if="{{item.platformSubsidiesPrice}}">平台补贴</view>
+          </view>
+          <view class='evaluate'>
+            <text>{{item.totalCommentsCount}}人评价</text>
+            <text>好评{{item.goodCommentsRate}}%</text>
+          </view>
+        </navigator>
       </view>
     </view>
+  </view>
 
 
   
