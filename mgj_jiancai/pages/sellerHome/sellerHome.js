@@ -1,5 +1,6 @@
 // pages/sellerCommodity/sellerCommodity.js
 let { globalData, isLogin } = getApp();
+const { base64src } = require('../../utils/util.js')
 Page({
   data: {
     id: null,
@@ -159,17 +160,16 @@ Page({
     this.setData({ sellerInfo: !this.data.sellerInfo });
   },
   isShowMore(){
-    
     this.setData({ isMoreMessage: !this.data.isMoreMessage });
   },
   loadQrCode(){
-    // var base64 = wx.arrayBufferToBase64()
-    // this.setData({qrCodeUrl:"data:image/PNG;base64,"})
+    
   },
-  postReq(merchantId){
-    wx.http.postReq('/wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage', { id:merchantId }, (data) => {
+  getQrCode(merchantId){
+    wx.http.postReq('wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage', { id:merchantId }, (data) => {
       if (data.success) {
-       
+        let base64 = wx.arrayBufferToBase64()
+        this.setData({qrCodeUrl:"data:image/PNG;base64,"})
       }
     })
   },
@@ -181,25 +181,6 @@ Page({
           title: '领取成功',
           icon: 'none'
         })
-      }
-    })
-  },
-  posAccess_token(merchantId){
-    // wx.http.postReq( 
-    //   { page:'pages/sellerHome/sellerHome',scene:merchantId }, (data) => {
-    //   if (data.success) {
-    //     wx.showToast({
-    //       title: '领取成功',
-    //       icon: 'none'
-    //     })
-    //   }
-    // })
-    wx.request({
-      method:'post',
-      url:'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=15_mPZfS6YWgRyemOVTqoYnaBtxlmgM8HCPyeGYO8frudyjFttJlabFoVU_iLRR_4zJPfbMUlfvB6JSsBdT6OHQw1ItzWQrK3hkyhPDKYbc3YQfHk72LbkVq0MCisVBkK1H8IEk5MPhTmwI1BhfDAWjAEAGDZ',
-      data:{ page:'pages/sellerHome/sellerHome',scene:merchantId },
-      success:function(){
-
       }
     })
   },
@@ -222,8 +203,7 @@ Page({
     isLogin(options.id, '/pages/sellerHome/sellerHome?id=',()=>{
       this.getInit(options.id)
       this.getList(options.id, 10, 0)
-      this.posAccess_token(options.id)
-      this.postReq(options.id)
+      this.getQrCode(options.id)
     })
   },
   /**
