@@ -1,0 +1,18 @@
+<view class="container">
+  <view class='cartNull' wx:if="{{list.length === 0}}">
+    <image src='/lib/images/Collection_03.png'></image>
+    您还没有收藏任何东西
+  </view>
+  <view class='collection'>
+    <navigator url='/pages/sellerHome/sellerHome?id={{item.merchantId}}' class='collectionItem' hover-class='none' wx:for="{{list}}" wx:key="{{index}}">
+      <image src='{{item.merchantInfo.logo}}'></image>
+      {{item.merchantInfo.name}}
+      <view class='itemBottom'>
+        <view class='score'>
+          <view style='width:{{item.merchantInfo.commentsAverageScore === 0 ? 100 : item.merchantInfo.commentsAverageScore * 20}}%'></view>
+        </view>
+        综合评分： <text>{{item.merchantInfo.commentsAverageScore === 0 ? 5 : item.merchantInfo.commentsAverageScore}}</text>
+      </view>
+    </navigator>
+  </view>
+</view>

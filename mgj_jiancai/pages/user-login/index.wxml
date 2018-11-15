@@ -1,0 +1,17 @@
+<view class="container">
+  <button open-type="getUserInfo" bindgetuserinfo="login">
+    <view class='login'>
+        <image src='/lib/images/logo.png'></image>
+        登录
+    </view>
+  </button>
+  <view class='telephone'>
+    <image src='/lib/images/telephone.png'></image>
+    <view class='b'>
+      客服电话：400-000-0000
+      <view>
+        (服务时间：9:00-23:00)
+      </view>
+    </view>
+  </view>
+</view>

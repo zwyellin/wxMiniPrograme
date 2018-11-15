@@ -1,0 +1,39 @@
+<!--pages/classify/classify.wxml-->
+<view class='box'>
+    <navigator class='searchBox' url='/pages/searchResult/searchResult' hover-class='none'>
+      <image class='searchIcon' src='../../lib/images/searchIcon.png' mode="widthFix"></image>
+      <input id='search' disabled='disabled' placeholder='搜索品牌分类'></input>
+    </navigator>
+  <view class='main'>
+    <view class='left'>
+      <view class='leftList {{id == item.id ? "leftCur" : ""}}' wx:for="{{leftData}}" wx:key="{{id}}" data-id='{{item.id}}' bindtap='changeClassify'>{{item.name}}</view>
+    </view>
+    <view class='right'>
+      <view class='hot' wx:if="{{rightData.length>0}}">
+        <view class='h2'>
+          <view class='title'>热门品牌</view>
+        </view>
+        <view class='hotCon'>
+          <navigator url='/pages/sellerHome/sellerHome?id={{item.id}}' class='hotList' wx:for="{{rightData}}" wx:key="{{id}}" hover-class="none">
+            <image mode="widthFix" src='{{item.logo}}'></image>
+          </navigator>
+        </view>
+      </view>
+
+      <view class='classify'>
+        <view class='h2'>
+          <view class='title'>分类</view>
+        </view>
+        <view class='classifyCon'>
+          <navigator url="/pages/classifyDetail/classifyDetail?id={{item.id}}" class='classifyList' wx:for="{{classify}}" wx:key="{{id}}" hover-class="none">
+            <view class='classifyImg'>
+              <image mode="widthFix" src='{{item.icon||"../../lib/images/commodityDefault.png"}}'></image>
+            </view>
+            <view class='classifyName'>{{item.name}}</view>
+          </navigator>
+        </view>
+
+      </view>
+    </view>
+  </view>
+</view>

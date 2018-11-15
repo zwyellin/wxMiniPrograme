@@ -1,0 +1,28 @@
+<view class="container">
+  <view class='moneyPop'>
+    <view class="moneyBox">
+      <view class='cartNull' wx:if="{{list.length === 0}}">
+        <image src='/lib/images/null2.png'></image>
+        你还没有优惠券哦
+      </view>
+      <view class='moneyItem' wx:for="{{list}}" wx:key="{{item.id}}">
+        <view class="itemLeft">
+          <image src='{{item.merchantLogo}}'></image>
+          <view class="b">{{item.merchantName}}</view>
+          <view>满{{item.restrictAmt}}元可用</view>
+        </view>
+        <view class="itemRight">
+          <view>
+            ￥<view class="b">{{item.couponsAmt}}</view>
+          </view>
+          <image src='/lib/images/red-type_03.png' wx:if="{{item.status === 0}}"></image>
+          <image src='/lib/images/red-type_06.png' wx:if="{{item.status === 1}}"></image>
+        </view>
+        <view class="moneyWhy p">
+          有效期至 {{item.date}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

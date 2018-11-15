@@ -1,0 +1,496 @@
+.container{
+  font-size: 24rpx;
+  padding-bottom: 120rpx;
+}
+
+.orderSubmitTit{
+  height: 50rpx;
+  padding-top: 20rpx;
+  background: #fff;
+  text-align: center;
+  font-size: 30rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.orderSubmitTit view{
+  display: inline-block;
+  height: 46rpx;
+  margin: 0 125rpx;
+  font-weight: 600;
+  color: #999;
+}
+
+.orderSubmitTit view.active{
+  border-bottom: 4rpx solid #eb4245;
+  color: #eb4245;
+  font-weight: bold;
+}
+
+.h2{
+  line-height: 70rpx;
+  color: #666;
+  padding: 0 30rpx;
+}
+
+
+.evaluateBox{
+  font-size: 28rpx;
+  padding: 0 30rpx;
+  background: #fff;
+}
+
+.orderTitle{
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+}
+
+.orderTitle image{
+  width: 52rpx;
+  height: 22rpx;
+  margin: 0 20rpx 0 0;
+}
+
+.orderTitle .span{
+  position: relative;
+}
+
+
+.adress{
+  background: #fff;
+  padding: 35rpx 20rpx 35rpx 70rpx;
+  position: relative;
+  font-size: 28rpx;
+}
+
+.adress image{
+  width: 23rpx;
+  height: 30rpx;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 28rpx;
+  margin: auto 0;
+}
+
+.adress view:nth-child(3){
+  color: #888;
+  padding-top: 14rpx;
+  line-height: 30rpx;
+  font-size: 28rpx;
+}
+
+.cartItemImg{
+  padding-right: 120rpx;
+  position: relative;
+}
+
+.cartItemImg image{
+  width: 110rpx;
+  height: 110rpx;
+  margin: 0 20rpx 10rpx 0;
+}
+
+.cartItemImg view{
+  font-size: 24rpx;
+  color: #666;
+  position: absolute;
+  right: 0;
+  top: 30%;
+  padding-right: 30rpx;
+}
+
+.cartItemImg view:after{
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 12rpx;
+  display: block;
+  width: 12rpx;
+  height: 12rpx;
+  border-top: 2rpx solid #ccc;
+  border-right: 2rpx solid #ccc;
+  transform: rotate(45deg);
+}
+
+.evaluateBox .div{
+  text-align: right;
+  padding: 30rpx 0 25rpx;
+  border-bottom: 1rpx solid #efefef;
+}
+
+.evaluateBox .div view{
+  display: inline;
+  color: #ff293c;
+  margin-left: -8rpx;
+}
+
+.evaluateBox .div view .b{
+  font-size: 34rpx;
+}
+
+.remarks{
+  height: 85rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remarks view{
+  width: 120rpx;
+}
+
+.remarks input{
+  flex: 1;
+  text-align: right;
+}
+
+.discount{
+  margin-top: 20rpx;
+  background: #fff;
+  font-size: 26rpx;
+  color: #666;
+  padding: 0 30rpx;
+}
+
+.discount view{
+  height: 70rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.discount view:nth-child(2){
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.discount view view{
+  color: #ff5959;
+}
+
+.discount view:nth-child(1) viev{
+  color: #666
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.cartTotal{
+  height: 96rpx;
+  background: #fff;
+  border-top: 1px solid #e4e4e4;
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+  color: #333;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+}
+
+.cartTotal view{
+  display: inline-block;
+}
+
+.cartTotal .span{
+  color: #eb4245;
+  margin-left: -8rpx;
+}
+
+.cartTotal .span .b{
+  font-size: 34rpx;
+  margin-left: -8rpx;
+}
+
+.payment{
+  border:2rpx solid #eb4245;
+  position: absolute;
+  right: 30rpx;
+  top: 14rpx;
+  padding: 0 47rpx;
+  border-radius: 47rpx;
+  height: 66rpx;
+  line-height: 66rpx;
+  color: #fff;
+  background: #eb4245;
+  font-size: 26rpx;
+}
+
+
+
+
+
+
+
+
+
+
+.moneyPop{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 30rpx;
+  background: #ededed;
+  z-index: 999;
+}
+
+.moneyNone{
+  padding-top: 15rpx;
+  height: 100rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 50rpx;
+  background: #fff;
+  border-bottom: 6rpx solid #f5f5f5;
+}
+
+.moneyPop .active:before{
+  content: '';
+  display: block;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 44rpx;
+  background: #18c66d;
+  position: absolute;
+  right: 30rpx;
+  top: 45rpx;
+}
+
+.moneyPop .active:after{
+    content: '\00a0';
+    display: inline-block;
+    border: 5rpx solid #fff;
+    border-top-width: 0;
+    border-right-width: 0; 
+    width: 20rpx;
+    height: 10rpx;
+    transform: rotate(-50deg);
+    position: absolute;
+    top:56rpx;
+    right:40rpx;
+}
+.moneyPop .moneyBox .active:before{
+  right: 10rpx;
+  top: 5rpx;
+}
+
+.moneyPop .moneyBox .active:after{
+    top:16rpx;
+    right:20rpx;
+}
+
+
+.moneyBox{
+  background: #ededed;
+  margin: 0 6rpx;
+  padding: 0 20rpx;
+  overflow: auto;
+  overflow-x: hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 120rpx;
+  bottom: 0;
+}
+
+.moneyBox .h2{
+  height: 70rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #666;
+}
+
+.moneyBox .h2:before{
+  content:'';
+  position: absolute;
+  top: 35rpx;
+  height:1px;
+  width:100%;
+  background: #666;
+}
+
+.moneyBox .h2 view{
+  position: relative;
+  padding: 0 37rpx;
+  background: #ededed;
+}
+
+.moneyItem{
+  position: relative;
+  background: #fff;
+  padding: 30rpx 0 30rpx;
+  border-radius: 10rpx;
+  color: #333;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  box-shadow: 0 5rpx 10rpx #ddd;
+  margin-bottom: 20rpx;
+}
+
+.moneyItem2{
+  padding-bottom: 0;
+}
+
+.itemLeft{
+  line-height: 36rpx;
+  font-size: 24rpx;
+  width: 330rpx;
+  color: #999;
+  padding-left: 30rpx;
+}
+
+.itemLeft image{
+  width: 92rpx;
+  height: 44rpx;
+}
+
+.itemLeft .b{
+  font-size: 36rpx;
+  font-weight: 600;
+  display: block;
+  padding-bottom: 10rpx;
+  color: #333;
+}
+
+.itemRight{
+  flex: 1;
+  padding: 0 30rpx 0 0rpx;
+  font-size: 24rpx;
+  text-align: right;
+}
+
+.itemRight view{
+  font-size: 36rpx;
+  color: #ff2a3b;
+}
+
+.itemRight view view{
+  font-size: 70rpx;
+}
+
+.moneyWhy{
+  background: #f8f8f8;
+  width: 100%;
+  padding: 0 30rpx 0rpx;
+  border-radius: 0 0 10rpx 10rpx;
+  border-top: 1rpx dashed #ccc;
+  margin-top: 30rpx;
+  font-size: 24rpx;
+  position: relative;
+}
+
+.moneyWhy:after,.moneyWhy:before{
+  content: '';
+  width: 26rpx;
+  height: 26rpx;
+  border-radius: 26rpx;
+  background: #ededed;
+  position: absolute;
+  left: -13rpx;
+  top: -13rpx;
+}
+.moneyWhy:after{
+  left: auto;
+  right: -12rpx;
+}
+
+.moneyWhy .span{
+  height: 50rpx;
+  display: flex;
+  align-items: center;
+  color: #ff2a3b;
+}
+
+.moneyWhy .span:after{
+  content: '';
+  display: inline-block;
+  width: 8rpx;
+  height: 8rpx;
+  border-top: 2rpx solid #777;
+  border-right: 2rpx solid #777;
+  transform: rotate(135deg);
+  margin-left: 10rpx;
+}
+
+.moneyWhy .div {
+  padding: 10rpx 0 30rpx;
+}
+
+.moneyWhyActive .div{
+  display: block;
+}
+
+.moneyWhyActive .span:after{
+  transform: rotate(-45deg);
+  margin-top: 10rpx;
+}
+
+.moneyWhy .div view{
+  position: relative;
+  padding-left: 15rpx;
+  color: #666;
+  line-height: 36rpx;
+}
+
+.moneyWhy .div view:before{
+  content: '';
+  display: block;
+  width: 4rpx;
+  height: 4rpx;
+  border-radius: 4rpx;
+  background: #666;
+  position: absolute;
+  left: 0;
+  top: 16rpx;
+}
+
+
+
+.moneyBox2 .itemRight, .moneyBox2 .itemRight view{
+  color: #777;
+}
+
+.moneyBox2 .moneyItem{
+  padding-bottom: 0;
+}
+
+
+
+
+.moneyPop2 .itemLeft .b{
+  margin:12rpx 0;
+}
+
+.moneyPop2 .moneyItem{
+  padding-bottom: 0;
+}
+
+.moneyWhy.p{
+  background: #fff;
+  line-height: 55rpx;
+  padding: 0 30rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+
+
+
+
+

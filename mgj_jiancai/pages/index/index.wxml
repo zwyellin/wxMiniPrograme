@@ -1,0 +1,173 @@
+<view class="container">
+  <view class="home_ban">
+    <swiper indicator-dots="{{indicatorDots}}" class='banner'
+    autoplay="{{autoplay}}" interval="{{interval}}" current='{{current}}' duration="{{duration}}">
+      <block wx:for="{{banner}}" wx:key="{{item.index}}" wx:if="{{banner.length>0}}">
+        <swiper-item>
+          <navigator wx:if="{{item.type === 2}}" url="/pages/commodityDetails/commodityDetails?id={{item.goods.id}}" class='home_picT' hover-class="none">
+            <image src='{{item.image}}'></image>
+          </navigator>
+          <navigator wx:if="{{item.type === 1}}" url="/pages/sellerHome/sellerHome?id={{item.merchant.id}}" class='home_picT' hover-class="none">
+            <image src='{{item.image}}'></image>
+          </navigator>
+          <navigator wx:if="{{item.type === 3}}" url="/pages/discount/discount?id={{item.activity.id}}" class='home_picT' hover-class="none">
+            <image src='{{item.image}}'></image>
+          </navigator>
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class='home_addr' bindtap='getMap'>
+      <image src='/lib/images/home-adress.png' class="home_addr_img1"></image>
+      <text>{{mapXY}}</text>
+       <image src='/lib/images/home-right.png' class="home_addr_img2"></image>
+    </view>
+    <navigator class='home_seach' url='/pages/searchResult/searchResult' hover-class='none'>
+       <image src='/lib/images/searchIcon.png'></image>
+       瓷砖
+    </navigator>
+  </view>
+  <view class='home_iconlist'>
+    <view><image src='/lib/images/home_icon1.png'></image>品牌授权</view>
+    <view><image src='/lib/images/home_icon2.png'></image>假一罚十</view>
+    <view><image src='/lib/images/home_icon3.png'></image>7天退换货</view>
+    <view><image src='/lib/images/home_icon4.png'></image>保价一年</view>
+  </view>
+  <view class='home_main'>
+    <view class='home_nav'>
+      <navigator url='/pages/returnList/returnList' hover-class='none'>
+        <image src='/lib/images/home_icon5.jpg'></image>全场返现
+      </navigator>
+      <navigator url='/pages/count/discount' hover-class='none'>
+        <image src='/lib/images/home_icon6.jpg'></image>优惠券
+      </navigator>
+      <navigator url='/pages/couplet/couplet' hover-class='none'>
+        <image src='/lib/images/home_icon7.jpg'></image>联单奖励
+      </navigator>
+      <navigator url='/pages/shopProcess/shopProcess' hover-class='none'>
+        <image src='/lib/images/home_icon8.jpg'></image>优质服务
+      </navigator>
+    </view>
+    <view class='home_gg'>
+      <navigator wx:if="{{promotion.type === 2}}" url="/pages/commodityDetails/commodityDetails?id={{promotion.goods.id}}" class='home_picT' hover-class="none">
+        <image src='{{promotion.image}}'></image>
+      </navigator>
+      <navigator wx:if="{{promotion.type === 1}}" url="/pages/sellerHome/sellerHome?id={{promotion.merchant.id}}" class='home_picT' hover-class="none">
+        <image src='{{promotion.image}}'></image>
+      </navigator>
+      <navigator wx:if="{{promotion.type === 3}}" url="/pages/discount/discount?id={{promotion.activity.id}}" class='home_picT' hover-class="none">
+        <image src='{{promotion.image}}'></image>
+      </navigator>
+    </view>
+  </view>
+  <!--家具-->
+  <view class='home_show' wx:for="{{list}}" wx:key="item.id">
+    <view class='home_show_tit  color{{item.nameType}}'>
+      <view wx:if="{{item.nameType === 1}}"><text>家装 · </text>馆</view>
+      <view wx:if="{{item.nameType === 2}}"><text>软装 · </text>馆</view>
+      <view wx:if="{{item.nameType === 3}}"><text>家具 · </text>馆</view>
+      <view wx:if="{{item.nameType === 4}}"><text>家电 · </text>馆</view>
+      <view wx:if="{{item.nameType === 5}}"><text>建材 · </text>馆</view>
+      <text class='home_showAB' wx:if="{{item.nameType === 1}}">Home decoration</text>
+      <text class='home_showAB' wx:if="{{item.nameType === 2}}">Soft Decoration</text>
+      <text class='home_showAB' wx:if="{{item.nameType === 3}}">Living Furniture</text>
+      <text class='home_showAB' wx:if="{{item.nameType === 4}}">Electric Appliance</text>
+      <text class='home_showAB' wx:if="{{item.nameType === 5}}">Building material</text>
+    </view>
+    <view class='home_Hotpic'>
+      <navigator wx:if="{{item.type === 2}}" url="/pages/commodityDetails/commodityDetails?id={{item.goods.id}}" class='home_picT' hover-class="none">
+        <image src='{{item.image}}'></image>
+      </navigator>
+      <navigator wx:if="{{item.type === 1}}" url="/pages/sellerHome/sellerHome?id={{item.merchant.id}}" class='home_picT' hover-class="none">
+        <image src='{{item.image}}'></image>
+      </navigator>
+      <navigator wx:if="{{item.type === 3}}" url="/pages/discount/discount?id={{item.activity.id}}" class='home_picT' hover-class="none">
+        <image src='{{item.image}}'></image>
+      </navigator>
+    </view>
+    <view class='home_show_list clearfix'>
+      <navigator url='/pages/commodityDetails/commodityDetails?id={{i.goods.id}}' class='home_picT' hover-class="none" wx:for="{{item.locationList}}" wx:for-item="i" wx:key="{{i.index}}">
+        <image src='{{i.goods.imgs}}'></image>
+        <view class='home_picTtext'>
+          <text class='home_picTtit'>{{i.goods.goodsName}}</text>
+          <view class='home_picTbot'>
+            <text class='home_picT20'>¥</text><text class='home_picT30'>{{i.goods.modelList[0].discountPrice || i.goods.modelList[0].originalPrice}}</text><text class="home_picTbotY">市场价:{{i.marketPrice}}</text>
+          </view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+   <!--热销榜单-->
+  <view class='home_hot'>
+    <image src='/lib/images/home_pic6.jpg' mode="widthFix" class='home_hotbg'></image>
+    <view class='home_hottit'>
+      <image src='/lib/images/home_icon9.png' mode="widthFix"></image>热销榜单
+    </view>
+    <view class='home_hotlistBox clearfix'>
+      <navigator url='/pages/commodityDetails/commodityDetails?id={{item.id}}' class='home_hotlist' hover-class="none" wx:for="{{hotList}}" wx:key="{{index}}">
+        <image src='{{item.imgs}}' class='home_listPic'></image>
+        <view class='home_hotlistF'>
+          <image src='{{ index === 0 ? "/lib/images/home_icon10.png" : index ===1 ? "/lib/images/home_icon11.png" : "/lib/images/home_icon12.png"}}' class='home_hotlistF_icon1' wx:if="{{index<3}}"></image>
+          <text class='home_hotlistF_tit'>{{item.goodsName}}</text>
+          <view><text class='home_hotlistjq'>已售{{item.totalSaled}}</text><text>¥</text>{{item.goodsPrice}}</view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+  <!--推荐榜单-->
+  <view class='home_Recom'>
+    <view class='home_Recom_tit home_Recom_tit2'>
+      推荐榜单
+    </view>
+      <scroll-view scroll-x  style="width: 100%">
+        <view class='scroll-view_H'>
+          <block>
+            <navigator wx:for="{{major}}" wx:key="{{item.id}}" url="/pages/sellerHome/sellerHome?id={{item.merchantId}}" class='home_picT' hover-class="none">
+              <image src='{{item.merchantImage}}'></image>
+            </navigator>
+          </block>
+        </view>
+      </scroll-view>
+  </view>
+  <!--好货推荐-->
+  <view class='home_goodRecom'>
+    <view class='home_Recom_tit'>
+      好货推荐
+    </view>
+    <!--list-->
+    <view class='home_goodR_list' wx:for="{{good}}" wx:key="item.index">
+      <view class='home_goodR_pic'>
+         <navigator url='/pages/commodityDetails/commodityDetails?id={{item.buildingMaterialsGoods.id}}'><image src='{{item.goodsImage}}'></image></navigator>
+         <navigator url='/pages/sellerHome/sellerHome?id={{item.buildingMaterialsMerchant.id}}' class='home_goodR_brand'>
+            <image src='{{item.buildingMaterialsMerchant.logo}}'></image>
+            {{item.buildingMaterialsMerchant.name}}
+         </navigator>
+      </view>
+      <view class='home_goodR_price'>
+        <text class='price1'><text>¥</text>{{item.buildingMaterialsGoods.modelList[0].originalPrice}}</text>  <text class='price2' wx:if="{{item.buildingMaterialsGoods.modelList[0].platformSubsidiesPrice}}">马管家补贴<text>{{item.buildingMaterialsGoods.modelList[0].platformSubsidiesPrice}}元</text></text>
+      </view>
+      <view class='home_goodR_tit'>
+          <text wx:if="{{item.buildingMaterialsGoods.modelList[0].platformSubsidiesPrice}}">补贴</text> {{item.buildingMaterialsGoods.goodsName}}
+      </view>
+      <view class='home_goodR_text'>{{item.recommendReason}}</view>
+    </view>
+  </view>
+  <view class='redBagCount {{isLogin ? "active" : ""}}' wx:if="{{redType}}">
+    <view class='redBagCountBox'>
+      <view class='money'>
+        <text>{{redInfo[0].amt}}元</text>
+        <view wx:if="{{redInfo[0].restrictAmt}}">
+          满{{redInfo[0].restrictAmt}}元减{{redInfo[0].amt}}元红包
+        </view>
+        <view wx:if="{{!redInfo[0].restrictAmt}}">
+          无门槛红包
+        </view>
+      </view>
+      <navigator url="/pages/bindPhone/bindPhone" class='span' wx:if="{{!isLogin}}" hover-class="none">立即绑定，领取红包</navigator>
+      <view class='span' wx:if="{{isLogin}}" bindtap='closeRed'>立即使用</view>
+      <view class='p'>
+        可在“我的钱包”中查看详情
+      </view>
+      <view class='close' bindtap="closeRed"></view>
+    </view>
+  </view>
+</view>

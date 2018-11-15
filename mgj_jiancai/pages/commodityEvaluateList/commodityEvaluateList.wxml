@@ -1,0 +1,40 @@
+<!--pages/commodityEvaluateList/commodityEvaluateList.wxml--> 
+<view class='title'>
+  <text>满意度 </text>
+  <view class='score'>
+    <view style='width:{{goodsScore*20}}%'></view>
+  </view>
+</view>
+<view class='navTab'>
+  <text class='{{isTypes === 1 ? " active":""}}' data-type='1' bindtap='types'>全部</text>
+  <text class='{{isTypes === 2 ? " active":""}}' data-type='2' bindtap='types'>晒图</text>
+</view>
+<view class="con4" wx:for="{{list}}" wx:key="index">
+  <view class='userInfo'>
+    <image class='userImg' src='{{item.user.headerImg}}'></image>
+    <view class='userInfoR'>
+      <text class='userName'>{{item.user.name}}</text>
+      <view class='brandRightDown'>
+        <view class='score'>
+          <view style='width:{{item.goodsScore*20}}%'></view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='evaluateDetail'>
+    <view class='evaluateImg'>
+      <view wx:for="{{item.imagesObj}}" wx:key="index" wx:for-item="i"><image src='{{i}}' mode='widthFix'></image></view>
+    </view>
+    <view class='evaluateTxt'>
+      {{item.content}}
+    </view>
+    <view class='evaluateDate'>
+      {{item.createTime}}   型号:{{item.goodsModel}}
+    </view>
+  </view>
+</view>
+<view class='cartNull' wx:if="{{list.length == 0 && isTypes === 2}}">
+  <image src='/lib/images/order-null.png'></image>
+  暂无评价
+</view>
+

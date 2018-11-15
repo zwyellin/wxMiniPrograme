@@ -1,0 +1,27 @@
+.return_ban{position: relative;}
+.return_ban image{width:100%;display: block;}
+.return_ban view{position: absolute;left:0;top:335rpx;text-align: center;width: 100%;}
+.return_ban view text{background:#8e48d4;min-width:510rpx;padding:0 35rpx;height: 70rpx;line-height: 70rpx;border-radius: 8rpx;display: inline-block;color:#fff;font-size:40rpx;}
+
+.return_msg{
+  height: 497rpx;padding:0 0 0 5rpx;background: url(http://7xu5hi.com1.z0.glb.clouddn.com/201809251423080306414.jpg) no-repeat;
+  background-size: 100%;
+}
+.return_msgL{width:283rpx;height: 477rpx;float:left;}
+.return_msgL image{width:100%;}
+.return_msgR{float:left;padding:0 24rpx;width:415rpx;color:#fff;line-height:44rpx;font-size:30rpx;padding-top:100rpx;}
+.return_msgR view{display: block;padding:8rpx 0}
+.color_red{color:#ef3a3a;font-weight: bold;}
+
+.return_rule{
+  height: 512rpx;
+  padding:0 35rpx;
+  color:#fff;
+  background:url(http://7xu5hi.com1.z0.glb.clouddn.com/201809141601564367567.jpg) no-repeat;
+  background-size:100%;
+}
+.return_rule text{display: block;color:#fff;}
+.couplet_tit{line-height: 60rpx;font-size:36rpx;font-weight: bold;text-align: center;padding-bottom:15rpx;}
+.couplet_ft{line-height: 35rpx;font-size:26rpx;padding-left:40rpx;position: relative;padding:11rpx 0 11rpx 40rpx;}
+
+.return_num{position: absolute;left:0;top:11rpx;}

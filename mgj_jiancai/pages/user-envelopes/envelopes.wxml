@@ -1,0 +1,27 @@
+<view class="container">
+  <view class='moneyPop'>
+    <view class="moneyBox">
+    <view class='cartNull' wx:if="{{!list.length}}">
+      <image src='/lib/images/null4.png'></image>
+      你还没有红包哦
+    </view>
+      <view class='moneyItem' wx:for="{{list}}" wx:key="{{item.id}}">
+        <view class="itemLeft">
+          <view class="b">专享红包</view>
+          <view>有效期至 {{item.date}} </view>
+          <view>限收货人手机号{{item.mobile}}</view>
+        </view>
+        <view class="itemRight">
+          <view>
+            ￥<view class="b">{{item.amt}}</view>
+          </view>
+          <text>无门槛红包</text>
+        </view>
+      </view>
+      <navigator url='/pages/user-envelopesHistory/history' hover-class='none' wx:if="{{list.length}}">
+        查看历史红包>>
+      </navigator>
+    </view>
+  </view>
+
+</view>

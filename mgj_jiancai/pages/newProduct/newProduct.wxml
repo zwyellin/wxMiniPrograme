@@ -1,0 +1,103 @@
+<!--pages/newProduct/newProduct.wxml-->
+<view class='box {{sellerInfo?" boxHidden":""}}'>
+    
+  <view class='header' style='background-image:url("../../lib/images/sellerBg.png");'>
+    <view class='headerBg'>
+      <view class='headerTop {{sellerInfo?" headerDetail":""}}'>
+        <view class='headerTopL'>
+          <image class='logo' src='../../lib/images/logo1.png'></image>
+          <view class='headerTopLR'>
+            <view class='sellerName {{sellerInfo?" sellerInfo":""}}' bindtap='seeSellerInfo' >宝润瓷砖旗舰店</view>
+            <view class='text'>5234人收藏</view>
+          </view>
+        </view>
+        <view class='headerTopR'>
+          <view class='collection'>
+            <image src='../../lib/images/starWhite.png'></image>
+            收藏
+          </view>
+          <image class='shareIcon' src='../../lib/images/shareIcon.png'></image>
+        </view>
+        <view class='introduce'>
+          <view class='p'>商品数量：2008件</view>
+          <view class='p'>营业时间：早8:00-晚8:00</view>
+          <view class='p'>门店地址：海淀区五道口</view>
+          <view class='p'>门店电话：010-85461254</view>
+          <view class='h2'>
+            <view class='title'>热门品牌</view>
+            <view class='introduceCon'>
+              宝润瓷砖（Born）创始于2005年5月，总部位于中国著名建陶基地——广东佛山。宝润专注瓷砖出口贸易，产品远销东南亚、拉丁美洲等地，年销量过亿，2013年底正式增添国内销售渠道，全国各地开始招商，通过对资本、知识、人才、技术和信息资源的整合运营，并通过国家强制性CCC产品认证和产品质检，获得了广泛的认可。宝润深蕴全球家装潮流走势，融入民族文化的设计，在传承经典的同时加入创新的力量带领着行业的发展。
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 导航 -->
+      <view class='menu'>
+        <view class='menuList'>首页</view>
+        <view class='menuList'>全部商品</view>
+        <view class='menuList'>促销</view>
+        <view class='menuList menuCur'>上新</view>
+      </view>
+    </view>
+  </view>
+  <view class='main'>
+    <view class='nav'>
+      <view class='navList navCur'>综合</view>
+      <view class='navList'>销量</view>
+      <view class='navList'>价格</view>
+    </view>
+    <view class='con'>
+      <view class='item'>
+        <view class='imgBox'>
+          <image src='../../lib/images/commodityDefault.png'></image>
+        </view> 
+        <view class='itemTitle'>
+          德国进口高清花色强化复化地合板德国进口高清花色强化复化地合板
+        </view>
+        <view class='commodityInfo'>
+          <view class='price'>￥500</view>
+          <view class='subsidy'>平台补贴</view>
+        </view>
+        <view class='evaluate'>
+          <text>743人评价</text>
+          <text>好评99%</text>
+        </view>
+      </view>
+
+      <view class='item'>
+        <view class='imgBox'>
+          <image src='../../lib/images/commodityDefault.png'></image>
+        </view> 
+        <view class='itemTitle'>
+          德国进口高清花色强化复化地合板德国进口高清花色强化复化地合板
+        </view>
+        <view class='commodityInfo'>
+          <view class='price'>￥500</view>
+          <view class='subsidy'>平台补贴</view>
+        </view>
+        <view class='evaluate'>
+          <text>743人评价</text>
+          <text>好评99%</text>
+        </view>
+      </view>
+      
+      <view class='item'>
+        <view class='imgBox'>
+          <image src='../../lib/images/commodityDefault.png'></image>
+        </view> 
+        <view class='itemTitle'>
+          德国进口高清花色强化复化地合板德国进口高清花色强化复化地合板
+        </view>
+        <view class='commodityInfo'>
+          <view class='price'>￥500</view>
+          <view class='subsidy'>平台补贴</view>
+        </view>
+        <view class='evaluate'>
+          <text>743人评价</text>
+          <text>好评99%</text>
+        </view>
+      </view>
+
+    </view>
+  </view>
+</view>

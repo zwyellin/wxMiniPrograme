@@ -1,0 +1,9 @@
+<!--pages/accredit/accredit.wxml-->
+<view class='box' wx:if="{{isShow}}">
+  <view>
+    <image src='/lib/images/yd.png'></image>
+    <button open-type="getUserInfo" bindgetuserinfo="login">
+      立即进入
+    </button>
+  </view>
+</view>

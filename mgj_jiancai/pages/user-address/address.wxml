@@ -1,0 +1,25 @@
+<view class="container">
+  <view class='cartNull' wx:if="{{dataList.length === 0}}">
+    <image src='/lib/images/address_03.png'></image>
+    暂无收获地址
+  </view>
+  <view class='addressList' wx:key="id" wx:for="{{dataList}}">
+    <view class='addressItem'>
+      <view class='span' data-item='{{item}}' bindtap='backOrder'>
+        {{item.name}} {{item.gender}} {{item.mobile}}
+      </view>
+      <view class='span' data-item='{{item}}' bindtap='backOrder'>
+        {{item.address + item.houseNumber}}
+      </view>
+      <view class='overShipping' wx:if="{{item.overShipping}}">
+        {{item.overShippingTxt}}
+      </view>
+      <image wx:if="{{!item.overShipping}}" src='/lib/images/adress_06.png' data-item='{{item}}' bindtap='addAddress'></image>
+    </view>
+  </view>
+  <view bindtap='addAddress' class='addressAdd'>
+    <image src='/lib/images/add.png'></image>
+    新增地址
+  </view>
+
+</view>

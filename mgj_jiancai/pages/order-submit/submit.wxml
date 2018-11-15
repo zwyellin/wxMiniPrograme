@@ -1,0 +1,185 @@
+<view class="container">
+  <view class='orderSubmitTit'>
+    <view wx:if="{{isShow!=3}}" class='{{shipmentType == 1 ? "active" : "" }}' data-id='1' bindtap='changeType'>送货上门</view>
+    <view wx:if="{{isShow!=1}}" class='{{shipmentType == 3 ? "active" : "" }}' data-id='3' bindtap='changeType'>到店自取</view>
+  </view>
+  <view class='adress' bindtap='changeAddress'>
+    <image src='/lib/images/adress.png'></image>
+    <view class='b'>收货人：{{addressData.name}} {{addressData.mobile}}</view>
+    <view>{{addressData.detailedAddress || addressData.address}}</view>
+  </view>
+  <view class='adress' wx:if="{{shipmentType == 4}}">
+    <image src='/lib/images/adress.png'></image>
+    <view>{{orderItems.buildingMaterialsMerchant.address}}</view>
+    <view class='b'>{{orderItems.buildingMaterialsMerchant.name}} {{orderItems.buildingMaterialsMerchant.contacts}}</view>
+  </view>
+  <view wx:if="{{shipmentType == 3}}">
+    <map
+      wx:if="{{isMap}}"
+      id="myMap"
+      style="width: 100%; height: 200rpx;"
+      latitude="{{latitude}}"
+      longitude="{{longitude}}"
+      markers="{{markers}}"
+    ></map>
+    </view>
+  <view class='h2'>
+    商品信息
+  </view>
+  <view class='evaluateBox' wx:if="{{orderItems}}">
+    <view class='orderTitle'>
+      <image src='{{orderItems.merchantLogo}}'></image>
+      {{orderItems.merchantName}}
+    </view>
+    <view class='cartItemImg'>
+      <view bindtap='getAll'>
+        共{{orderItems.buildingMaterialsOrderItemList.length}}种
+      </view>
+      <image wx:for="{{orderItems.buildingMaterialsOrderItemList}}" wx:for-item="son" wx:for-index="sonItem" wx:key="{{sonItem}}" src='{{son.img[0]}}'></image>
+    </view>
+    <view class='div'>
+      总价：
+      <view>
+        ￥
+        <view class='b'>
+          {{orderItems.totalP}}
+        </view>
+      </view>
+    </view>
+    <view class='remarks'>
+      <view>
+        订单备注
+      </view>
+      <input bindinput="remarks" placeholder='如有问题请填写备注' maxlength='18'></input>
+    </view>
+  </view>
+  <view class='discount'>
+    <view>
+      配送费
+      <view style='color:#666'>￥{{shipmentType == 3 ? 0 : orderItems.practicalShippingFee}}</view>
+    </view>
+    <view>
+      平台补贴
+      <view>-￥{{orderItems.totalPlatformSubsidiesPrice}}</view>
+    </view>
+    <view bindtap='seeRedPacket'>
+      平台红包
+      <view>-￥{{!redBagJson.amt?0:redBagJson.amt}}</view>
+    </view>
+    <view bindtap='seeCashCoupon'>
+      商家代金券
+      <view>-￥{{!promotionCouponsData.couponsAmt?0:promotionCouponsData.couponsAmt}}</view>
+    </view>
+  </view>
+  <view class='cartTotal'>
+    <view>
+      合计金额：
+      <view class='span'>
+        ￥
+        <view class='b'>{{orderItems.totalPrice}}</view>
+      </view>
+    </view>
+    <view class='payment' bindtap='orderSubmit'>提交订单</view>
+  </view>
+  
+  <view class='moneyPop' wx:if="{{isRedPacket}}">
+    <view class='moneyNone {{!redBagJson ? "active" : ""}}' bindtap='noRedPacket'>
+      不使用红包
+    </view>
+    <view class="moneyBox">
+      <view class='h2' wx:if="{{redPacketData.platformRedBagList.length > 0}}">
+        <view>可使用红包（{{redPacketData.platformRedBagList.length}}个）</view>
+      </view>
+      <view class='moneyItem {{item.id==redBagJson.id ? "active" : ""}}' data-record='{{item}}' bindtap='getRedPacket' wx:for="{{redPacketData.platformRedBagList}}" wx:key="id" wx:for-index="index">
+        <view class="itemLeft">
+          <view class="b">专享红包</view>
+          <view>有效期至{{item.expirationTime}}</view>
+          <view>限收货人手机号{{item.mobile}}</view>
+        </view>
+        <view class="itemRight">
+          <view>
+            ￥<view class="b">{{item.amt}}</view>
+          </view>
+          {{!item.restrictAmt?"无门槛红包":"满"+item.restrictAmt+"元可使用"}}
+        </view>
+      </view>
+      <view class='h2' wx:if="{{redPacketData.platformRedBagAvailableList.length > 0}}">
+        <view>不可使用红包（{{redPacketData.platformRedBagAvailableList.length}}个）</view>
+      </view>
+      <view class='moneyItem moneyItem2' data-record='item' wx:for="{{redPacketData.platformRedBagAvailableList}}" wx:key="id" wx:for-index="index">
+        <view class="itemLeft">
+          <view class="b">专享红包</view>
+          <view>有效期至{{item.expirationTime}}</view>
+          <view>限收货人手机号{{item.mobile}}</view>
+        </view>
+        <view class="itemRight">
+          <view>
+            ￥<view class="b">{{item.amt}}</view>
+          </view>
+          {{!item.restrictAmt?"无门槛红包":"满"+item.restrictAmt+"元可使用"}}
+        </view>
+        <view class="moneyWhy">
+          <view class="span" bindtap='why2' data-why="{{index}}">
+            不可用原因
+          </view>
+          <view class="div" wx:if="{{item.isWhy}}">
+            <view wx:for="{{item.disableList}}" wx:key="id" wx:for-item="record">{{record}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='moneyPop moneyPop2' wx:if="{{isCashCoupon}}">
+    <view class='moneyNone  {{!promotionCouponsData ? "active" : ""}}' bindtap='noCashCoupon'>
+      不使用优惠券
+    </view>
+    <view class="moneyBox">
+      <view class='h2' wx:if="{{cashCouponData.usableCouponsList.length > 0}}">
+        <view>可使用优惠券（{{cashCouponData.usableCouponsList.length}}个）</view>
+      </view>
+      <view class='moneyItem {{item.id==promotionCouponsData.id ? "active" : ""}}' wx:for="{{cashCouponData.usableCouponsList}}" bindtap='getCashCoupon' data-record='{{item}}' wx:key="id">
+        <view class="itemLeft">
+          <image src='{{item.merchantLogo}}'></image>
+          <view class="b">{{item.name}}</view>
+          <view>满{{item.restrictAmt}}元可用</view>
+        </view>
+        <view class="itemRight">
+          <view>
+            ￥<view class="b">{{item.couponsAmt}}</view>
+          </view>
+        </view>
+        <view class="moneyWhy p">
+          有效期：{{item.expirationTime}}
+        </view>
+      </view>
+      <view class='h2' wx:if="{{cashCouponData.noUsableCouponsList.length > 0}}">
+        <view>不可使用优惠券（{{cashCouponData.noUsableCouponsList.length}}个）</view>
+      </view>
+      <view class='moneyItem' wx:for="{{cashCouponData.noUsableCouponsList}}" wx:key="id" wx:for-index="index">
+        <view class="itemLeft">
+          <image src='{{item.merchantLogo}}'></image>
+          <view class="b">{{item.name}}</view>
+          <view>满{{item.restrictAmt}}元可用</view>
+        </view>
+        <view class="itemRight">
+          <view>
+            ￥<view class="b">{{item.couponsAmt}}</view>
+          </view>
+        </view>
+        <view class="moneyWhy">
+          <view class="span" bindtap='why' data-why="{{index}}">
+            不可用原因
+          </view>
+          <view class="div" wx:if="{{item.isWhy}}">
+            <view wx:for="{{item.noUsableWhy}}" wx:key="id" wx:for-item="record">{{record}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+
+
+</view>

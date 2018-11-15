@@ -1,0 +1,13 @@
+<!--pages/evaluateList/evaluateList.wxml--> 
+<view class="container">
+	<view class='evaluateBox'>
+    <view class='evaluateItem' wx:for="{{dataList}}" wx:key="index">
+      <image src='{{item.img}}'></image>
+      <view class='evaluateTxt'>
+        <text>{{item.goodsName}}</text>
+        <view>{{item.goodsModel}}</view>
+      </view>
+      <view bindtap='evaluates' data-img="{{item.img}}" data-id="{{item.id}}" class='evaluates'>评价</view>
+    </view>
+  </view>
+</view>

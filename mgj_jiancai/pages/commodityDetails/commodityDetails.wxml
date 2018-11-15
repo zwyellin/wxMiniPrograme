@@ -1,0 +1,167 @@
+<!--pages/commodityDetails/commodityDetails.wxml-->
+<import src="../../wxParse/wxParse.wxml" />
+<view class='navbox' id='navbox'>
+  <view class='nav'>
+    <view class='navList{{ isCommodity ?" navCur":""}}' data-opt='commodity' bindtap='jumpTo'>商品</view>
+    <view class='navList{{isEvaluate ?" navCur":""}}' data-opt='evaluate' bindtap='jumpTo'>评价</view>
+    <view class='navList{{isDetail ?" navCur":""}}' data-opt='detail' bindtap='jumpTo'>详情</view>
+  </view>
+</view>
+<view class='scroollTop{{isDetail ? " scroollTopS" : ""}}' bindtap='scroollTop'></view>
+<scroll-view scroll-into-view="{{toView}}" scroll-y="true" scroll-with-animation="true" class="scr" bindscroll="scroll" scroll-top='{{ topNum }}'>
+  <swiper indicator-dots="{{indicatorDots}}" class='commodityImg' id="commodity" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{imgUrls}}" wx:key="{{index}}">
+      <swiper-item>
+        <image src="{{item}}" style="width: {{imgUrlsW[index].width}}rpx; height: {{imgUrlsW[index].height}}rpx;" data-index="{{index}}" class="slide-image" bindload="imageLoad" />
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class='con1' id='con1'>
+    <view>
+      <text class='price'><text>￥</text>{{selectCommodity.discountPrice || selectCommodity.originalPrice}}</text>
+      <text class='oldPrice'>原价:￥<text>{{selectCommodity.originalPrice}}</text></text>
+      <text class='salesVolume'>销量：{{selectCommodity.totalSaled}}</text>
+    </view>
+    <view class="h2">{{data.goodsName}}</view>
+    <view class='h2pp'>
+      <view class='h2p' wx:for="{{goodsDescribe}}" wx:key="{{index}}">{{item}}</view>
+    </view>
+  </view>
+  <view id='con2'>
+    <view class='con2' wx:if="{{!!data.modelList[0].platformSubsidiesPrice || data.couponsList.length>0}}">
+      <view class='con2_1' wx:if="{{!!data.modelList[0].platformSubsidiesPrice}}">
+        <text class='text1'>补贴</text>
+        <text class='text2'>平台补贴{{!data.modelList[0]?0:data.modelList[0].platformSubsidiesPrice}}元</text>
+      </view>
+      <view wx:if="{{data.couponsList.length>0}}">
+        <text class='text1 text1bg'>促销</text>
+        <text class='text2 text2_2'>
+          <text wx:for="{{data.couponsList}}" wx:key="id">满{{item.restrictAmt}}元减{{item.couponsAmt}}元</text>
+        </text>
+        <navigator class='text3' url='/pages/sellerHome/sellerHome?id={{data.merchantId}}' hover-class='none'>
+          立即领取
+        </navigator>
+      </view>
+    </view>
+  </view>
+  <!-- 选择规格 -->
+  <view class='con3' id='con3'>
+    <view class='con3_row'>
+      <text class='con3_rowL'>选择型号</text>
+      <text class='con3_rowR con3_rowR_1' bindtap='handleSpecifications'>{{isSelectCommodity ? selectCommodity.goodsModel + ',' + selectCommodity.quantity : '型号规格，购买数量'}}</text>
+    </view>
+    <view class='con3_row' wx:if="{{data.buildingMaterialsMerchant.merchantServices}}">
+      <text class='con3_rowL'>服务说明</text>
+      <text class='con3_rowR'>{{data.buildingMaterialsMerchant.merchantServicesStr}}</text>
+    </view>
+  </view>
+  <!-- 用户评价 -->
+  <view class='con4' id='evaluate'>
+    <view wx:if="{{!data.comments}}">暂无评价</view>
+    <view wx:if="{{!!data.comments}}">
+      <view class="h3">
+        <text class='h3Left'>用户评价</text>
+        <text class='h3Right' bindtap='goEvaluateList'><text style='color:#f06062'>{{data.goodCommentsRate}}%</text>好评率</text>
+      </view>
+      <view class='userInfo'>
+        <image class='userImg' src='{{data.comments.user.headerImg}}'></image>
+        <text class='userName'>{{data.comments.user.name}}</text>
+      </view>
+      <view class='evaluateDetail'>
+        <!-- <view class='evaluateImg'>
+          <image src='../../lib/images/brandDefault.png'></image>
+          <image src='../../lib/images/brandDefault.png'></image>
+          <image src='../../lib/images/brandDefault.png'></image>
+        </view> -->
+        <view class='evaluateImg'>
+          <view wx:for="{{data.comments.imagesObj}}" wx:key="index" wx:for-item="i"><image src='{{i}}' mode='widthFix'></image></view>
+        </view>
+        <view class='evaluateTxt'>
+          {{data.comments.content}}
+        </view>
+        <view class='evaluateDate'>
+          {{data.comments.createTime.substr(0,10)}} 型号: {{data.comments.goodsModel}}
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 商家信息 -->
+  <view class='con4 con5' id='con5'>
+    <view class="h3">
+      <text class='h3Left'>商家信息</text>
+    </view>
+    <navigator class='con5_main' url='/pages/sellerHome/sellerHome?id={{data.merchantId}}' hover-class='none'>
+      <view class='con5_mainL'>
+        <image src='{{!data.buildingMaterialsMerchant?"":data.buildingMaterialsMerchant.logo}}'></image>
+        <view class='con5_mainL_L'>
+          <view class='con5_mainL_L_T'>{{!data.buildingMaterialsMerchant?"":data.buildingMaterialsMerchant.name}}</view>
+          <view class='con5_mainL_L_B'>综合评分:
+            <text>{{data.buildingMaterialsMerchant.commentsAverageScore === 0 ?5:data.buildingMaterialsMerchant.commentsAverageScore}}</text> </view>
+        </view>
+      </view>
+      <view class='con5_mainR'>
+        {{!data.buildingMaterialsMerchant.goodsNum?"0":data.buildingMaterialsMerchant.goodsNum}}件商品
+      </view>
+    </navigator>
+  </view>
+  <view id='detail' class='con4'>
+    <view class="h3">
+      <text class='h3Left'>商品详情</text>
+    </view>
+    <template is="wxParse" data="{{wxParseData:goodsInfo.nodes}}" />
+  </view>
+
+
+</scroll-view>
+
+<!-- 选择规格 -->
+<view class='specificationsBg' wx:if="{{specifications}}">
+  <view class='specifications'>
+    <view class='closeBox'>
+      <view class='close' bindtap='handleSpecifications'></view>
+    </view>
+    <view class='commodityImg2'>
+      <image src='{{selectCommodity.img}}' mode="widthFix"></image>
+      <text class='specificationsPrice'>￥{{selectCommodity.discountPrice || selectCommodity.originalPrice}}</text>
+    </view>
+    <view class='modelTitle'>选择型号</view>
+    <view class='modelTitle2'>型号</view>
+    <view class='modelBox'>
+      <view class='modelItem{{!!isSelectCommodity &&item.id==selectCommodity.id?" modelItemCur":""}}' wx:for="{{data.modelList}}" wx:key="id" data-itemData="{{item}}" bindtap='changeSpecifications'>{{item.goodsModel}}</view>
+    </view>
+    <view class='purchaseQuantity'>
+      <view>购买数量</view>
+      <view class='countBox'>
+        <view class='countAdd' bindtap='cartNum' data-type='1'></view>
+        <view class='count'>{{quantity}}</view>
+        <view class='countDel' bindtap='cartNum' data-type='2'></view>
+      </view>
+    </view>
+    <view class='downBtn'>
+      <view class='downBtnL' bindtap='pushCart'>加入购物车</view>
+      <view class='downBtnR' bindtap='purchase'>立即购买</view>
+    </view>
+  </view>
+</view>
+<!-- 底部菜单 -->
+<view class='downNav'>
+  <navigator class='downNav2' url='/pages/sellerHome/sellerHome?id={{data.merchantId}}' hover-class='none'>
+    <image src='../../lib/images/shopIcon.png'></image>
+    <view>店铺</view>
+  </navigator>
+  <view class='downNav2' bindtap='tel' data-tel="{{data.buildingMaterialsMerchant.contacts}}">
+    <image src='../../lib/images/telIcon.png'></image>
+    <view>热线</view>
+  </view>
+  <navigator open-type="switchTab" class='downNav2' url='/pages/cart/index' hover-class='none'>
+    <image src='../../lib/images/shoppingCartIcon.png'></image>
+    <view>购物车</view>
+    <text class='count'>{{cartLength}}</text>
+  </navigator>
+  <view class='downNav3 join' bindtap='pushCartShow'>
+    <text>加入购物车</text>
+  </view>
+  <view class='downNav3 purchase' bindtap='pushCartShow'>
+    <text>立即购买</text>
+  </view>
+</view>

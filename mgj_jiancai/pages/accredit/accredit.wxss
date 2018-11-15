@@ -1,0 +1,32 @@
+.box{
+  height: 100%;
+  position: relative;
+  background: #fff;
+}
+
+view{
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 1050rpx;
+}
+
+view image{
+  width: 604rpx;
+  height: 924rpx;
+}
+
+button{
+  background: #9b7853;
+  width: 604rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  margin: 0 auto;
+  color: #fff;
+  border: 0 none;
+  font-size: 30rpx;
+}

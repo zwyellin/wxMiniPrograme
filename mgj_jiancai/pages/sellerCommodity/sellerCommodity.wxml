@@ -1,0 +1,96 @@
+<!--pages/sellerCommodity/sellerCommodity.wxml-->
+<view class='box {{sellerInfo?" boxHidden":""}}'>
+    
+  <view class='header' style='background-image:url("../../lib/images/sellerBg.png") no-repeat;'>
+    <view class='headerBg'>
+      <view class='headerTop {{sellerInfo?" headerDetail":""}}'>
+        <view class='headerTopL'>
+          <image class='logo' src='{{info.logo}}'></image>
+          <view class='headerTopLR'>
+            <view class='sellerName {{sellerInfo?" sellerInfo":""}}' bindtap='seeSellerInfo'>{{info.name}}</view>
+            <view class='text'>{{info.collectionNum}}人收藏</view>
+          </view>
+        </view>
+        <view class='headerTopR'>
+          <view class='collection' bindtap='collection' data-type="{{info.isCollection}}">
+            <image src='../../lib/images/starWhite.png'></image>
+            {{info.isCollection === 0 ? "收藏" : "已收藏"}}
+          </view>
+          <image class='shareIcon' src='../../lib/images/shareIcon.png'></image>
+        </view>
+        <view class='introduce'>
+          <view class='p'>商品数量：{{info.goodsNum}}件</view>
+          <view class='p'>营业时间：{{info.workingTime}}</view>
+          <view class='p'>门店地址：{{info.address}}</view>
+          <view class='p'>门店电话：{{info.contacts}}</view>
+          <view class='h2'>
+            <view class='title'>热门品牌</view>
+            <view class='introduceCon'>
+              {{info.description}}
+            </view>
+          </view>
+        </view>
+      </view>
+        <!-- 导航 -->
+        <view class='menu'>
+          <view class='menuList {{queryType==10 ? "menuCur" : ""}}' bindtap='queryTypeList' data-type='10' hover-class='none'>首页</view>
+          <view class='menuList {{queryType==0 ? "menuCur" : ""}}' bindtap='queryTypeList' data-type='0'>全部商品</view>
+          <view class='menuList {{queryType==1 ? "menuCur" : ""}}' bindtap='queryTypeList' data-type='1'>促销</view>
+          <view class='menuList {{queryType==2 ? "menuCur" : ""}}' bindtap='queryTypeList' data-type='2'>上新</view>
+        </view>
+      </view>
+      <!-- 优惠卷 -->
+      <scroll-view wx:if="{{isIndex}}" class='discount' scroll-x>
+        <view class='yhList' wx:for="{{info.couponsList}}" data-id='{{item.id}}' wx:key="id" bindtap='receive'>
+          <view class='yhListUp'>
+            ￥<text>{{item.couponsAmt}}</text>
+          </view>
+          <view class='yhListDown'>
+            满{{item.restrictAmt}}元可用
+          </view>
+        </view>   
+      </scroll-view>
+    </view>
+    <view class='main'wx:if="{{!isIndex}}">
+      <view class='nav'>
+        <view class='navList {{sortType==0 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='0'>综合</view>
+        <view class='navList {{sortType==2 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='2'>销量</view>
+        <view class='navList {{sortType==4 ? "navCur" : ""}}' bindtap='sortTypeList' data-type='4'>价格</view>
+      </view>
+      <view class='con'>
+
+        <navigator url='/pages/commodityDetails/commodityDetails?id={{item.id}}' class='item' hover-class='none' wx:for="{{list}}" wx:key="{{index}}">
+          <view class='imgBox'>
+            <image src='{{item.imgs}}'></image>
+          </view> 
+          <view class='itemTitle'>
+            {{item.goodsName}}
+          </view>
+          <view class='commodityInfo'>
+            <view class='price'>￥{{item.goodsPrice}}</view>
+            <view class='subsidy' wx:if="{{item.isPromotionGoods===1}}">平台补贴</view>
+          </view>
+          <view class='evaluate'>
+            <text>{{item.totalCommentsCount}}人评价</text>
+            <text>好评{{item.goodCommentsRate}}%</text>
+          </view>
+        </navigator>
+
+      </view>
+    </view>
+
+
+  
+  <!-- 内容 -->
+  <view class='main' wx:if="{{isIndex}}">
+      <view wx:for="{{info.homeRecommendedList}}" wx:key="index">
+          <navigator wx:if="{{item.type === 2}}" url="/pages/commodityDetails/commodityDetails?id={{item.goodsId}}" class='home_picT' hover-class="none">
+            <image src='{{item.recommendedImg}}'></image>
+          </navigator>
+          <navigator wx:if="{{item.type === 1}}" url="/pages/discount/discount?id={{item.activityId}}" class='home_picT' hover-class="none">
+            <image src='{{item.recommendedImg}}'></image>
+          </navigator>
+      </view>
+      <navigator url='/pages/sellerCommodity/sellerCommodity?queryType=0' class='more' hover-class='none'>查看更多商品>></navigator>
+  </view>
+</view>

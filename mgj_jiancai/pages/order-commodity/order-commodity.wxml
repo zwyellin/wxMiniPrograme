@@ -1,0 +1,19 @@
+<!--pages/order-commodity/order-commodity.wxml-->
+<view class="container">
+  <view class='evaluateItem' wx:for="{{cartList}}" wx:for-item="obj" wx:for-index="objIndex" wx:key="{{obj.index}}" >
+    <image src='{{obj.img}}'></image>
+    <view class='evaluateTxt'>
+      <text>{{obj.goodsName}}</text>
+      <view>{{obj.goodsModel}}</view>
+      <view class='orderNumber'>
+        <view>
+          ￥
+          <view class='b'>
+            {{obj.discountPrice || obj.originPrice}}
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='count'><text>X</text>{{obj.quantity}}</view>
+  </view>
+</view>

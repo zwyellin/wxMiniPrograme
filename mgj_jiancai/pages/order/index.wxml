@@ -1,0 +1,55 @@
+<view class="container">
+  <view class='cartNull' wx:if="{{info.length === 0 && isLoading}}">
+    <image src='/lib/images/order-null.png'></image>
+    您还没有订单
+  </view>
+	<view class='evaluateBox' wx:if="{{info.length !== 0}}" wx:for="{{info}}" wx:key="{{item.index}}">
+    <view class='orderTitle'>
+      <navigator url='/pages/sellerHome/sellerHome?id={{item.buildingMaterialsMerchant.id}}' class='span' hover-class='none'>
+        <image src='{{item.buildingMaterialsMerchant.logo}}'></image>
+        {{item.buildingMaterialsMerchant.name}}
+      </navigator>
+      <view class='span'>
+        {{status[item.status]}}
+        <!-- <view wx:if="item.status == 7">{{item.orderItemCount - item.orderItemCommentsCount}}</view> -->
+      </view>
+    </view>
+    <view class='evaluateItem' 
+      wx:for="{{item.buildingMaterialsOrderItemList}}" 
+      wx:for-item='order' 
+      wx:key="order.index"
+      data-orderId='{{item.id}}'
+      bindtap='orderDetail'>
+      <image src='{{order.img}}'></image>
+      <view class='evaluateTxt'>
+        <text>{{order.goodsName}}</text>
+        <view>{{order.goodsModel}}</view>
+      </view>
+      <view class='orderNumber'>
+        <view>
+          ￥<view class='b'>{{order.discountPrice || order.originPrice}}</view>
+        </view>
+        <view> 
+          *{{order.quantity}}
+        </view>
+      </view>
+    </view>
+    <view class='orderStatus'>
+      <view class='div'>
+        共计{{item.buildingMaterialsOrderItemList.length}}件商品 实付款：
+        <view>
+           ￥
+          <view class='b'>
+            {{item.totalPrice}}
+          </view>
+        </view>
+      </view>
+      <view class='span' data-record='{{item}}' wx:if="{{item.status == 1}}" bindtap='goPay'>
+        去支付
+      </view>
+      <view class='span' data-record='{{item}}' wx:if="{{item.status == 7 && item.orderItemCommentsCount < item.orderItemCount}}" bindtap='goEvaluate'>
+        去评价
+      </view>
+    </view>
+  </view>
+</view>

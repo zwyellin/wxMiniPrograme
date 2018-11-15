@@ -1,0 +1,38 @@
+<view class="container">
+  <view class='searchBox'>
+    <image class='searchIcon' src='../../lib/images/searchIcon.png' mode="widthFix"></image>
+    <input id='search' placeholder='请输入地址' value="{{searchValue}}" bindinput="searchValueInput"></input>
+  </view>
+  <view class='h2'>
+    当前地址
+  </view>
+  <view class='addressLis'>
+    <view bindtap='getAds' data-item="{{items}}">
+      {{itemAddress}}
+    </view>
+    <text bindtap='getItemAddress'>重新定位</text>
+  </view>
+  <view class='h2'>
+    附近地址
+  </view>
+  <view class='addressLis' wx:for="{{list}}" wx:key="{{index}}" bindtap='getAds' data-item="{{item}}">
+    <view>{{item.title}}</view>
+    {{item.address}}
+  </view>
+  <view class='addressLis addressLis2' wx:if="{{list.length === 0}}">
+    当前范围没有地址
+  </view>
+  <view class='h2' wx:if="{{dataList.length !== 0}}">
+    我的地址
+  </view>
+  <view class='addressList' wx:key="id" wx:for="{{dataList}}"bindtap='getAds' data-item="{{item}}">
+    <view class='addressItem'>
+      <view class='span'>
+        {{item.name}} {{item.gender}} {{item.mobile}}
+      </view>
+      <view class='span'>
+        {{item.address}}
+      </view>
+    </view>
+  </view>
+</view>

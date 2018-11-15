@@ -1,0 +1,55 @@
+.collection{
+  background: #fff;
+  font-size: 32rpx;
+  padding: 0 30rpx;
+}
+
+.collectionItem{
+  position: relative;
+  padding: 40rpx 20rpx 40rpx 120rpx;
+  border-bottom: 1rpx solid #eaeaea;
+}
+
+.collectionItem:after{
+  content: '';
+  position: absolute;
+  right: 10rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  display: block;
+  width: 14rpx;
+  height: 14rpx;
+  border-top: 2rpx solid #ccc;
+  border-right: 2rpx solid #ccc;
+  transform: rotate(45deg);
+}
+
+.collectionItem image{
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width: 90rpx;
+  height: 30rpx;
+}
+
+.itemBottom{
+  padding-top: 25rpx;
+  font-size: 22rpx;
+}
+
+.itemBottom text{
+  color: red;
+}
+
+
+
+
+
+
+
+
+
+

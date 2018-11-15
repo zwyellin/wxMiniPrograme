@@ -1,0 +1,16 @@
+.container{background:#f64c57}
+.container image{
+  display: block;
+}
+.couplet_ban image{width:100%}
+.couplet_msg{text-align: center;color:#fff;padding:28rpx 30rpx 0;font-size:30rpx;line-height: 40rpx;text-shadow: 5rpx 5rpx 5rpx #da434d}
+.couplet_list{min-height:543rpx;margin-top:-5rpx;padding:170rpx 30rpx 0;}
+.couplet_Lp{width:171rpx;float:left;padding:0 30rpx 10rpx;text-align: center;}
+.couplet_Lp image{width:100%;height:184rpx;display: block}
+.couplet_Lp text{font-size:20rpx;color:#fff;line-height: 45rpx;}
+
+.couplet_rule{height: 385rpx;padding:70rpx 30rpx 0;}
+.couplet_rule text{display: block;color:#fff;}
+.couplet_tit{line-height: 80rpx;font-size:36rpx;font-weight: bold;}
+.couplet_ft{line-height: 35rpx;font-size:26rpx;padding-left:40rpx;position: relative;padding:11rpx 0 11rpx 40rpx;}
+.return_num{position: absolute;left:0;top:11rpx;}

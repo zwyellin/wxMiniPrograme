@@ -1,0 +1,21 @@
+<view class="container">
+  <view class="return_ban">
+    <image src='/lib/images/returnpic1.jpg'  mode="widthFix"></image>
+    <view><text>马管家平台补贴任你挑</text></view>
+  </view>
+  <view class="return_msg">
+    <view class='return_msgL'><image src='http://7xu5hi.com1.z0.glb.clouddn.com/201809141602120058357.png'  mode="widthFix"></image></view>
+    <view class='return_msgR'>
+      <view> 购买商城中标有“<text class='color_red'>补贴</text>”字样的商品，即可参加返现活动。</view>
+      <view> 下单时自动抵扣补贴金额。</view>
+    </view>
+  </view>
+  <view class="return_rule">
+     <text class='couplet_tit'>活动规则</text>
+    <text class='couplet_ft'><text class='return_num'>1、</text>用户购买商品时可享受平台补贴返现，补贴金额在下单时直接抵扣。</text>
+    <text class='couplet_ft'><text class='return_num'>2、</text>补贴返现金额不可提现</text>
+    <text class='couplet_ft'><text class='return_num'>3、</text>订单取消后补贴金额作废 </text>
+    <text class='couplet_ft'><text class='return_num'>4、</text>补贴返现活动仅提供给正当、合法使用马管家建材购物的客户</text>
+    <text class='couplet_ft'><text class='return_num'>5、</text>活动区域仅限当地参与，马管家享有法律范围内的解释权 </text>
+  </view>
+</view>

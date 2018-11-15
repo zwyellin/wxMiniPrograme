@@ -1,0 +1,84 @@
+<view class="container">
+  <view class='cartNull' wx:if="{{cartList.length === 0}}">
+    <image src='/lib/images/cart-null.png'></image>
+    购物车竟然是空的
+  </view>
+  <view class='orderTitle cartTitle' wx:if="{{cartList.length > 0}}">
+    <view>
+      共{{carNum}}件宝贝
+    </view>
+    <view bindtap='editFun'>
+      <view wx:if="{{edit}}">
+        管理
+      </view>
+      <view wx:if='{{!edit}}'>
+        完成
+      </view>
+    </view>
+  </view>
+	<view class='evaluateBox' wx:for="{{cartList}}"  wx:for-index="itemIndex" wx:key="item.index">
+    <view class='orderTitle'>
+      <view class='span'>
+        <view class='checkbox {{item.check ? "active" : ""}}' bindtap='checkMerchant' data-itemIndex='{{itemIndex}}'></view>
+        <navigator url='/pages/sellerHome/sellerHome?id={{item.merchant.id}}' hover-class="none">
+          <image src='{{item.merchant.logo}}'></image>
+          {{item.merchant.name}}
+        </navigator>
+      </view>
+    </view>
+    <view class='evaluateItem' wx:for="{{item.list}}" wx:for-item="obj" wx:for-index="objIndex" wx:key="{{obj.index}}" >
+      <view class='checkbox {{obj.check ? " active" : ""}}' bindtap='checkItem' data-objIndex='{{objIndex}}' data-itemIndex='{{itemIndex}}'></view>
+      <image src='{{obj.img}}'></image>
+      <view class='evaluateTxt'>
+        <text>{{obj.goodsName}}</text>
+        <view>{{obj.goodsModel}}</view>
+        <view class='orderNumber'>
+          <view>
+            ￥
+            <view class='b'>
+              {{obj.prices}}
+            </view>
+          </view>
+          <view class='countBox'>
+          <view class='countAdd' bindtap='cartNum' data-objIndex='{{objIndex}}' data-itemIndex='{{itemIndex}}' data-type='1'></view>
+          <view class='count'>{{obj.quantity}}</view>
+          <view class='countDel' bindtap='cartNum' data-objIndex='{{objIndex}}' data-itemIndex='{{itemIndex}}'  data-type='2'></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='cartTotal' wx:if="{{cartList.length !== 0}}">
+    <view class='checkbox {{checkAll ? "active" : ""}}' bindtap='checkChangeAll'></view>
+    <view class='selection' bindtap='checkChangeAll'>全选</view>
+    <view wx:if="{{edit}}">
+      合计：
+      <view class='span'>
+        ￥
+        <view class='b'>{{carMoney}}</view>
+      </view>
+    </view>
+    <view class='payment' wx:if="{{edit}}" bindtap='zhifu'>在线支付</view>
+    <view class='payment payment2' wx:if="{{!edit}}" bindtap='delAll'>删除</view>
+  </view>
+
+  <view class='cartBg' wx:if="{{cartPop}}">
+    <view class='cartPop'>
+      <view class='h2'>所选商品需要分开结算</view>
+      <view class='cartItem' wx:for="{{isCartList}}" wx:key="{{index}}">
+        <view class='cartItemTit'>请结算以下{{item.list.length}}件商品</view>
+        <view class='cartItemImg'>
+          <image wx:for="{{item.list}}" wx:for-item="son" wx:key="son.id" src='{{son.img}}'></image>
+        </view>
+        <view class='cartItemSet'>
+          小计 ￥{{item.numPrice}}
+          <view class='cartSettlement' bindtap='zhifuOne' data-id="{{item.merchant.id}}">
+            去结算
+          </view>
+        </view>
+      </view>
+      <view class='close' bindtap='closePop'>关闭</view>
+    </view>
+  </view>
+</view>

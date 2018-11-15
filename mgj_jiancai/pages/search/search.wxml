@@ -1,0 +1,16 @@
+<!--pages/search/search.wxml-->
+<view class='box'>
+    <view class='searchBox' bindtap="sou">
+      <image class='searchIcon' src='../../lib/images/searchIcon.png' mode="widthFix"></image>
+      <input id='search' disabled='disabled' placeholder='搜索品牌分类'></input>
+    </view>
+    <view class='history'>
+      <view class='h2'>历史记录</view>
+      <view class='con'>
+        <view class='list'>热水器</view>
+        <view class='list'>地板</view>
+        <view class='list'>热水器</view>
+        <view class='list'>地板</view>
+      </view>
+    </view>
+</view>

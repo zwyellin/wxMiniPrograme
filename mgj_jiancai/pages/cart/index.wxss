@@ -1,0 +1,287 @@
+.container{
+  padding-bottom: 95rpx;
+}
+
+.cartNull{
+  padding-top: 195rpx;
+  text-align: center;
+  color: #888;
+}
+
+.cartNull image{
+  width: 243rpx;
+  height: 212rpx;
+  display: block;
+  margin: 0 auto 60rpx;
+}
+
+.evaluateBox{
+  font-size: 28rpx;
+  padding: 0 30rpx;
+  background: #fff;
+  margin-top: 20rpx;
+}
+
+.orderTitle{
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cartTitle{
+  background: #fff;
+  padding: 0 30rpx;
+  border-bottom: 0 none;
+}
+
+.cartTitle view:nth-child(1){
+  color: #888
+}
+
+.cartTitle view:nth-child(2) view{
+  color: #333
+}
+
+.orderTitle image{
+  width: 52rpx;
+  height: 22rpx;
+  margin: 0 20rpx;
+}
+
+.orderTitle .span{
+  position: relative;
+}
+
+.orderTitle .span:nth-child(1){
+  display: flex;
+  align-items: center
+}
+.orderTitle .span:nth-child(1) navigator{
+  padding-right: 45rpx;
+  position: relative
+}
+
+.orderTitle .span:nth-child(1) navigator:after{
+  content: '';
+  position: absolute;
+  right: 10rpx;
+  top: 14rpx;
+  display: block;
+  width: 12rpx;
+  height: 12rpx;
+  border-top: 2rpx solid #ccc;
+  border-right: 2rpx solid #ccc;
+  transform: rotate(45deg);
+}
+
+.evaluateItem{
+  padding: 0rpx 0 40rpx 0rpx;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative
+}
+
+.evaluateItem image{
+  width: 160rpx;
+  height: 160rpx;
+  margin: 0 20rpx;
+}
+.evaluateItem .evaluateTxt{
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: bold;
+  min-height: 160rpx;
+}
+.evaluateItem .evaluateTxt view{
+  font-size: 24rpx;
+  font-weight: 100;
+  padding-top: 12rpx;
+}
+.evaluateItem .evaluates{
+  width: 150rpx;
+  height: 52rpx;
+  line-height: 52rpx;
+  border-radius: 52rpx;
+  border:1px solid #eb4245;
+  color: #eb4245;
+  text-align: center;
+}
+
+.evaluateItem .evaluateTxt .orderNumber{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 24rpx;
+  position: absolute;
+  bottom: 30rpx;
+  left: 240rpx;
+  right: 0;
+  font-weight: bold;
+}
+
+.evaluateItem .evaluateTxt .orderNumber view{
+  color: #eb4245;
+}
+
+.evaluateItem .evaluateTxt .orderNumber .b{
+  font-size: 34rpx;
+  font-weight: bold;
+  margin-left: -8rpx;
+}
+
+.evaluateItem .evaluateTxt .orderNumber .countBox,.evaluateItem .evaluateTxt .orderNumber .countBox view{
+  padding-top: 0;
+  margin-top: 10rpx;
+}
+
+.evaluateItem .evaluateTxt .orderNumber .countBox .count{
+  color: #888;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.cartTotal{
+  height: 96rpx;
+  background: #fff;
+  border-top: 1px solid #e4e4e4;
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+  color: #888;
+  font-size: 22rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.cartTotal view{
+  display: inline-block;
+}
+
+.cartTotal .selection{
+  font-weight: bold;
+  font-size: 32rpx;
+  padding: 0 20rpx;
+  color: #333;
+}
+
+.cartTotal .span{
+  color: #eb4245;
+}
+
+.cartTotal .span .b{
+  font-size: 34rpx;
+  margin-left: -8rpx;
+}
+
+.payment{
+  border:2rpx solid #eb4245;
+  position: absolute;
+  right: 30rpx;
+  top: 14rpx;
+  padding: 0 47rpx;
+  border-radius: 47rpx;
+  height: 66rpx;
+  line-height: 66rpx;
+  color: #fff;
+  background: #eb4245;
+  font-size: 26rpx;
+}
+
+.payment2{
+  background: #fff;
+  border-color: #eb4245;
+  color: #eb4245;
+}
+
+.cartBg{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.cartBg:before{
+  content: '';
+  background:rgba(0,0,0,0.5);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.cartPop{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 10rpx 10rpx 0 0;
+}
+
+.cartPop .h2{
+  height: 120rpx;
+  line-height: 120rpx;
+  font-size: 30rpx;
+  color: #1d1d1d;
+  text-align: center;
+  font-weight: bold;
+}
+
+.cartItem{
+  border-top: 1rpx solid #e5e5e5;
+  padding: 10rpx 30rpx;
+  color: #666;
+  font-size: 26rpx;
+}
+
+.cartItemTit{
+  line-height: 60rpx;
+}
+
+.cartItemImg image{
+  width: 110rpx;
+  height: 110rpx;
+  margin-right: 30rpx;
+}
+
+.cartItemSet{
+  color: #da504c;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  position: relative;
+}
+
+.cartItemSet .cartSettlement{
+  position: absolute;
+  padding: 0 14rpx;
+  height: 46rpx;
+  line-height: 46rpx;
+  border-radius: 5rpx;
+  border:2rpx solid #eb4245;
+  color: #eb4245;
+  background: #fff;
+  right: 0;
+  top: 0;
+}
+
+.close{
+  background: #f5f5f5;
+  line-height: 98rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #151515;
+  font-weight: bold;
+}
+
+
+
+
+
+
+

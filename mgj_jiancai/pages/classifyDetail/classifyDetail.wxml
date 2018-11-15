@@ -1,0 +1,39 @@
+<!--pages/classifyDetaile/classifyDetaile.wxml-->
+<view class='box' wx:if="{{!!commodityData.length}}">
+  <view class='list' wx:for='{{commodityData}}' wx:key="{{item.id}}">
+    <navigator url='/pages/sellerHome/sellerHome?id={{item.id}}' class='brand' hover-class="none">
+      <view class='brandL'>
+        <image src='{{item.logo}}'></image>
+      </view>
+      <view class='brandRight'>
+        <view class='brandRightUp'>{{item.name}}</view>
+        <view class='brandRightDown'>
+          <view class='score'>
+            <view style='width:{{item.commentsAverageScore*20}}%'></view>
+          </view>
+        </view>
+      </view>
+    </navigator>
+    <view class='itemBox'>
+      <navigator url='/pages/commodityDetails/commodityDetails?id={{i.id}}' class='item' hover-class="none" wx:for='{{item.goodsList}}' wx:for-item="i" wx:key="{{i.id}}">
+        <view class='imgBox'>
+          <view class='leftTop'>
+            <image wx:if="{{i.platformSubsidiesPrice}}" class='leftTopBg' src='/lib/images/leftTopBg.png'  mode="widthFix"></image>
+            <text wx:if="{{i.platformSubsidiesPrice}}">补</text>
+          </view>
+          <image class='commodityImg' src='{{i.imgs}}'></image>
+        </view> 
+        <view class='title'>
+          {{i.goodsName}}
+        </view>
+        <view class='commodityInfo'>
+          <view class='price'>￥{{i.goodsPrice}}</view>
+          <view class='salesVolume'>已售{{i.totalSaled}}</view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+</view>
+<view wx:if="{{commodityData.length===0}}" class='nothingCommodity'>
+  <image src='../../lib/images/nothingCommodity.png'></image>
+</view>

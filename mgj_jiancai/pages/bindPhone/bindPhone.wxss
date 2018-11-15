@@ -1,0 +1,45 @@
+.container{
+  background: #fff;
+  margin-top: 20rpx;
+  padding:0 30rpx;
+  font-size: 26rpx;
+}
+
+input{
+  width: 300rpx;
+}
+
+.container view{
+  position: relative;
+  height: 90rpx;
+  display: flex;
+  align-items: center;
+  color: #333;
+  border-bottom: 1rpx solid #ccc;
+}
+
+.container view button{
+  width: 160rpx;
+  height: 66rpx;
+  background: #eb4245;
+  color: #fff;
+  font-size: 26rpx;
+  padding: 0;
+  position: absolute;
+  right: 20rpx;
+  top: 10rpx;
+}
+
+.container view .disabled{
+  background: #c4c4c4
+}
+
+.container view:last-child{
+  border:0 none;
+}
+
+.submit{
+  margin:30rpx;
+  background: #eb4245;
+  color: #fff;
+}

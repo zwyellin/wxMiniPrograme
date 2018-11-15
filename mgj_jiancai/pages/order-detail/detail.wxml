@@ -1,0 +1,119 @@
+<view class="container">
+  <view class='orderType'>
+    <image src='/lib/images/order-over.png'></image>
+    {{status[orderData.status]}}
+  </view>
+
+	<view class='evaluateBox'>
+    <view class='orderTitle'>
+      <navigator class='span' url='/pages/sellerHome/sellerHome?id={{orderData.buildingMaterialsMerchant.id}}' hover-class='none'>
+        <image src='{{orderData.buildingMaterialsMerchant.logo}}'></image>
+        {{orderData.buildingMaterialsMerchant.name}}
+      </navigator>
+      <view class='span'>
+        {{status[orderData.status]}}
+      </view>
+    </view>
+    <view class='evaluateItem' wx:for="{{orderData.buildingMaterialsOrderItemList}}" wx:key="index">
+      <image src='{{item.img}}'></image>
+      <view class='evaluateTxt'>
+        <text>{{item.goodsName}}</text>
+        <view>{{item.goodsModel}}</view>
+      </view>
+      <view class='orderNumber'>
+        <view>
+          ￥<view class='b'>{{item.discountPrice || item.originPrice}}</view>
+        </view>
+        <view>
+          *{{item.quantity}}
+        </view>
+      </view>
+    </view>
+    <view class='orderStatus'>
+      <view class='li'>
+        <view>商品总额</view>
+        <view>
+          <view class='span'>
+            <view class='b'></view> ￥
+            <view class='b'>
+              {{orderData.totalGoodsPrice + orderData.totalPlatformSubsidiesPrice}}
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='li' wx:if="{{orderData.shipmentType == 1}}">
+        <view>运费</view>
+        <view>
+          ￥{{orderData.practicalShippingFee}}({{orderData.shipmentType===1?"商家配送":"到店自取"}})
+        </view>
+      </view>
+      <view class='li'>
+        <view>商家优惠</view>
+        <view>
+          <view class='span'>
+            <view class='b'>-</view> ￥
+            <view class='b'>
+              {{orderData.promotionCouponsDiscountTotalAmt}}
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='li'>
+        <view>平台补贴</view>
+        <view>
+          <view class='span'>
+            <view class='b'>-</view> ￥
+            <view class='b'>
+              {{orderData.buildingMaterialsOrderItemList[0].platformSubsidiesPrice}}
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='li'>
+        <view>红包</view>
+        <view>
+          <view class='span'>
+            <view class='b'>-</view> ￥
+            <view class='b'>
+              {{orderData.redBagDiscountTotalAmt}}
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='div'>
+        实付款：
+        <view>
+           ￥
+          <view class='b'>
+            {{orderData.totalPrice}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='adress' wx:if="{{orderData.shipmentType == 3}}">
+    <image src='/lib/images/adress.png'></image>
+    <view class='strong'>取货信息：{{orderData.buildingMaterialsMerchant.name}} {{orderData.buildingMaterialsMerchant.contacts}}</view>
+    <view>{{orderData.buildingMaterialsMerchant.address}}</view>
+  </view>  
+  <view class='adress' wx:if="{{orderData.shipmentType == 1}}">
+    <image src='/lib/images/adress.png'></image>
+    <view class='strong'>收件人：{{orderData.userName}}({{orderData.userGender}}) {{orderData.userMobile}}</view>
+    <view>{{orderData.userAddress}}</view>
+  </view>  
+  <view class='number'>
+    <view>订单编号：{{orderData.id}}</view>
+    <view>创建时间：{{orderData.createTime}}</view>
+    <view wx:if="{{orderData.paymentFinishTime}}">付款时间：{{orderData.paymentFinishTime}}</view>
+  </view>
+  <view class='contact'>
+    <view bindtap='tel' data-tel="{{orderData.buildingMaterialsMerchant.contacts}}">联系商户</view>
+    <view class='eval' wx:if="{{orderData.status == 1}}" bindtap='goPay'>
+        去支付
+      </view>
+      <view class='eval' wx:if="{{orderData.status == 7 && orderData.orderItemCommentsCount < orderData.orderItemCount}}" data-record='{{orderData}}' bindtap='goEvaluate'>
+        去评价
+      </view>
+  </view>
+</view>

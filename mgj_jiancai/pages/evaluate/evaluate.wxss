@@ -1,0 +1,139 @@
+/* pages/evaluate/evaluate.wxss */
+Page {
+  background: white;
+}
+.scoreBox{
+  font-size: 28rpx;
+}
+
+.scoreTop,.scoreBottom{
+  padding: 0 25rpx;
+}
+
+.scoreBottom{
+  border-top: 20rpx solid #f4f4f4;
+}
+
+.scoreTopTit{
+  border-bottom: 1px solid #eaeaea;
+  height: 110rpx;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+.scoreTopTit image{
+  width: 70rpx;
+  height: 70rpx;
+  margin-right: 10rpx;
+}
+.scoreTopTit2{
+  height: 85rpx;
+}
+.scoreTopTit2 image{
+  width: 45rpx;
+  margin-right:20rpx;
+}
+.score{
+  position: relative;
+  width: 380rpx;
+  height: 40rpx;
+  background: url(http://7xu5hi.com1.z0.glb.clouddn.com/201809141602343627848.png) repeat-x;
+  background-size: 80rpx 40rpx;
+  margin: 0 20rpx;
+  display: flex;
+}
+.score text{
+  flex:1;
+  position: relative;
+  z-index: 3;
+}
+.score view{
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 40rpx;
+  background: url(http://7xu5hi.com1.z0.glb.clouddn.com/201809141602234012880.png) repeat-x;
+  background-size: auto 100%;
+}
+.scoreTextarea{
+  line-height: 150%;
+  border: 0 none;
+  height: 100rpx;
+  margin: 20rpx 0;
+}
+.scoreTxt{
+  padding: 20rpx 0;
+  display: flex;
+  align-items: center;
+}
+.btnSubmit{
+  position: fixed;
+  left: 25rpx;
+  right: 25rpx;
+  bottom: 0;
+  height: 98rpx;
+  border-radius:10rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ed655f;
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.imgList{
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  padding: 0 15rpx 15px;
+}
+
+.imgList view{
+  padding: 10rpx;
+  width: 140rpx;
+  height: 140rpx;
+  margin: 10rpx;
+  border:1px solid #ccc;
+  border-radius: 4rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.imgList view image{
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.imgList view text{
+  position: absolute;
+  border-radius: 30rpx;
+  width: 30rpx;
+  height: 30rpx;
+  background: #ed655f;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 0;
+  right: -10rpx;
+  top: -15rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.imgList text{
+  display: block;
+  color: #999;
+  width: 100%;
+  padding: 10px 10px 0;
+}
+
+.jia_img{
+  width: 160rpx;
+  height: 160rpx;
+  background: url(http://7xu5hi.com1.z0.glb.clouddn.com//201810121229475542956.0);
+  background-size: 100%;
+  border:0 none;
+  margin: 10rpx;
+}

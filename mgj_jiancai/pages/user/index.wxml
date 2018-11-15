@@ -1,0 +1,67 @@
+<view class="container">
+  <view class='login userInfo'>
+    <image src='{{userInfo.avatarUrl}}'></image>
+    <view class='b'>
+      {{
+        userInfo.nickName
+      }}
+      <view>
+      {{
+        userInfo.mobile
+      }}</view>
+    </view>
+  </view>
+  <view class='userMoney'>
+    <view class='userMoneyRow'>
+      <view class='b'>
+        {{
+          info.balance || 0
+        }}
+        <view>元</view>
+      </view>
+      我的余额
+    </view>
+    <navigator class='userMoneyRow' url="/pages/user-envelopes/envelopes" hover-class="none">
+      <view class='b'>
+        {{
+          info.redBagCount
+        }}
+        <view>个</view>
+      </view>
+      我的红包
+    </navigator>
+    <navigator class='userMoneyRow' url="/pages/user-coupon/coupon" hover-class="none">
+      <view class='b'>
+        {{
+          info.couponsCount
+        }}
+        <view>个</view>
+      </view>
+      优惠券
+    </navigator>
+  </view>
+  <view class='userMenu'>
+    <navigator url="/pages/order/index" hover-class="none">
+      <image src='/lib/images/user-icon1.png'></image>  
+      我的订单
+    </navigator>
+    <navigator url="/pages/user-address/address" hover-class="none">
+      <image src='/lib/images/user-icon2.png'></image>  
+      收货地址
+    </navigator>
+    <navigator url="/pages/user-collection/collection" hover-class="none">
+      <image src='/lib/images/user-icon3.png'></image>  
+      我的收藏
+    </navigator>
+  </view>
+  <view class='telephone' bindtap='tel' data-phone="{{phone}}">
+      客服电话：{{phone}}
+  </view>
+  <navigator class='logout' url='/pages/bindPhone/bindPhone' hover-class='none' wx:if="{{!userInfo.mobile}}">绑定手机号</navigator>
+  <button wx:if="{{false}}" class='logout' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"> 
+    绑定手机号
+  </button> 
+  <button wx:if="{{false}}" class='logout' bindtap='getPhoneNumber'> 
+    直接绑定手机
+  </button> 
+</view>

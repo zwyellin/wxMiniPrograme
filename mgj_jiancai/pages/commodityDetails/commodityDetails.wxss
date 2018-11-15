@@ -1,0 +1,518 @@
+/* pages/commodityDetails/commodityDetails.wxss */
+@import "../../wxParse/wxParse.wxss";
+.navbox{
+  background: white;
+}
+.nav{
+  width:390rpx;
+  margin:0 auto;
+  display: flex;
+}
+.navList{
+  line-height: 86rpx;
+  color: #333;
+  text-align: center;
+  flex: 1;
+}
+.navCur{
+  color:#ff5959;
+}
+.commodityImg{
+  width:100%;
+  height: 750rpx;
+}
+
+.commodityImg swiper-item {
+  position: relative
+}
+
+.commodityImg image{
+  
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+
+.con1{
+  padding:40rpx 38rpx;
+  margin-top:-12rpx;
+  background: white;
+  border-radius: 12rpx 12rpx 0 0;
+  position: relative;
+  text-align: left;
+}
+.price{
+  color:#eb4245;
+  font-size:48rpx;
+  font-weight: bold;
+  margin-right:30rpx;
+}
+.price text{
+  font-size: 32rpx;
+}
+.oldPrice, .salesVolume{
+  color:#999;
+  font-size:24rpx;
+}
+.oldPrice text{
+  text-decoration: line-through;
+}
+.salesVolume{
+  float: right;
+  margin-top:25rpx;
+}
+.con1 .h2{
+  color:#333;
+  font-size:32rpx;
+  font-weight: bold;
+  padding-top:38rpx;
+  padding-bottom:18rpx;
+}
+
+.h2pp{
+  line-height: 45rpx;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+}
+
+.con1 .h2p{
+  color:#888;
+  font-size:26rpx;
+  min-width: 50%;
+}
+
+.con2{
+  padding:40rpx 38rpx;
+  background: white;
+  margin-top:22rpx;
+  font-size:22rpx;
+}
+
+.con2 view{
+  overflow: hidden;
+}
+.con2_1{
+  padding-bottom:32rpx;
+}
+.con2 .text1{
+  display: block;
+  color:#f40c0c;
+  width: 70rpx;
+  height:30rpx;
+  background: #fee6e6;
+  text-align: center;
+  border-radius: 15rpx;
+  margin-right:20rpx;
+  float: left;
+}
+.con2 .text1bg{
+  background: #fff0e7;
+  color: #fd6910;
+}
+.con2 .text2{
+  color:#f40c0c;
+  float: left
+}
+.con2 .text2_2{
+  color:#333;
+  display: inline-block;
+  width:400rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.con2 .text2_2 text{
+  padding-right: 5rpx;
+  margin-right: 5rpx;
+}
+.con2 .text3{
+  color:#333;
+  float: right;
+  position: relative;
+  padding-right:25rpx;
+}
+.con2 .text3::after{
+  width:15rpx;
+  height:15rpx;
+  content: "";
+  position: absolute;
+  top:8rpx;
+  right:5rpx;
+  transform: rotate(45deg);
+  border-top:1rpx solid #888;
+  border-right: 1rpx solid #888;
+}
+
+/* 用户评价 */
+.con4{
+  padding:40rpx 38rpx;
+  background: white;
+  margin-top:22rpx;
+}
+.con4 image{
+  max-width: 100%!important;
+  display: block
+}
+.con4 .h3{
+  display: flex;
+  border-bottom:1rpx solid #eaeaea;
+  padding-bottom:30rpx;
+  margin-bottom:30rpx;
+}
+.con4 .h3Left{
+  font-size:32rpx;
+  color:#333;
+  flex: 3;
+  font-weight: bold;
+}
+.con4 .h3Right{
+  flex:2;
+  text-align: right;
+  font-size:24rpx;
+  color:#888;
+  position: relative;
+  padding-right: 25rpx;
+}
+.userInfo{
+  padding-bottom:20rpx;
+}
+.userImg{
+  width:80rpx;
+  height:80rpx;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right:10rpx;
+  background: #eee;
+}
+.evaluateImg{
+  display: flex;
+  flex-wrap: wrap;
+}
+.evaluateImg view{
+  width: 215rpx;
+  height: 215rpx;
+  margin: 0 10rpx 10rpx 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.evaluateImg image{  
+  max-width:215rpx;
+  max-height:215rpx;
+  border-radius: 5rpx;
+}
+.evaluateTxt{
+  font-size: 26rpx;
+  color:#888;
+  line-height: 40rpx;
+  padding:15rpx 0;
+}
+.evaluateDate{
+  color:#b2b2b2;
+  font-size:22rpx;
+}
+
+.con3{
+  padding:40rpx 38rpx;
+  background: white;
+  margin-top:22rpx;
+}
+.con3_row{
+  display: flex;
+  justify-content: space-between;
+}
+.con3_row_2{
+  font-size:24rpx;
+  color:#888;
+}
+.con3_row:nth-child(2){
+  margin-top:58rpx;
+}
+.con3_rowL{
+  color:#888;
+  font-size:26rpx;
+  width: 150rpx;
+}
+.con3_rowR{
+  color:#333;
+  font-size:26rpx;
+  position: relative;
+  padding-right:25rpx;
+  text-align: right;
+}
+.con3_row:nth-child(2) .con3_rowR{
+  padding-right: 0;
+}
+.con3_rowR_1::after,.con4 .h3Right::after{
+  content: "";
+  position: absolute;
+  right:5rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width:15rpx;
+  height:15rpx;
+  border-top:1rpx solid #888;
+  border-right:1rpx solid #888;
+  transform: rotate(45deg);
+}
+.con4 .h3Right::after{
+  top: 8rpx;
+  bottom: auto;
+  margin:0;
+}
+.con5{
+  padding:40rpx 38rpx;
+  background: white;
+  margin-top:22rpx;
+}
+.con5_main{
+  display: flex;
+  justify-content: space-between;
+}
+.con5_mainL{
+  display: flex;
+}
+.con5_mainL image{
+  width:105rpx;
+  height: 105rpx;
+  margin-right:20rpx;
+}
+.con5_mainL_L_T{
+  color:#333;
+  font-size:32rpx;
+  margin-bottom:30rpx;
+}
+.con5_mainL_L_B{
+  color:#888;
+  font-size:22rpx;
+}
+.con5_mainL_L_B text{
+  color:#eb4245;
+}
+.con5_mainR{
+  color:#597dab;
+  font-size:26rpx;
+  display: flex;
+  padding-right: 25rpx;
+  align-items: center;
+  position: relative;
+}
+
+.con5_mainR::after{
+  content: "";
+  position: absolute;
+  right:5rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width:15rpx;
+  height:15rpx;
+  border-top:1rpx solid #597dab;
+  border-right:1rpx solid #597dab;
+  transform: rotate(45deg);}
+
+.downNav{
+  position: fixed;
+  bottom:0;
+  left:0;
+  display: flex;
+  background: #fff;
+  width: 100%;
+  border-top:1px solid #f8f8f8;
+  height:98rpx;
+}
+.downNav2{
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color:#888;
+  font-size:20rpx;
+  position: relative;
+}
+.downNav2 .count{
+  background: #eb4245;
+  border-radius: 50%;
+  position: absolute;
+  top:5rpx;
+  right: 25rpx;
+  color:white;
+  width: 26rpx;
+  height: 26rpx;
+  text-align: center;
+  line-height: 26rpx;
+  font-size:16rpx;
+}
+.downNav2 image{
+  width:40rpx;
+  height:40rpx;
+}
+.downNav3{
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  font-size:26rpx;
+}
+.join{
+  background: #fca641;
+}
+.purchase{
+  background: #eb4245;
+}
+.specificationsBg{
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background: rgba(0,0,0,.5);
+  z-index: 1;
+}
+.specifications{
+  background: white;
+  border-radius: 10rpx 10rpx 0 0;
+  position: fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  overflow-y: auto;
+}
+.closeBox{
+  position: absolute;
+  top:0;
+  right:35rpx;
+  background: white;
+  width: 100%;
+  text-align: right;
+}
+.close{
+  width:50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  background: url(http://7xu5hi.com1.z0.glb.clouddn.com/201809221928277166159.png) no-repeat;
+  background-size: 100%;
+  float:right;
+  margin-top:18rpx;
+}
+.commodityImg2{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:78rpx 0 0 0;
+  flex-direction: column;
+}
+.commodityImg2 image{
+  width:400rpx;
+}
+.specificationsPrice{
+  color:#ff002f;
+  font-size:30rpx;
+  line-height: 58rpx;
+}
+.modelTitle{
+  color:#333;
+  font-size:24rpx;
+  text-align: center; 
+  border-bottom:1px solid #f5f5f5;
+  padding-bottom:20rpx; 
+}
+.modelTitle2{
+  font-size:30rpx;
+  color:#333;
+  padding:30rpx 0 25rpx 20rpx ;
+}
+.modelBox{
+  display: flex;
+  padding:0 0 0 20rpx;
+   flex-wrap:wrap;
+   border-bottom:1rpx solid #f5f5f5;
+}
+.modelItem{
+  min-width:196rpx;
+  height:56rpx;
+  font-size:20rpx;
+  color:#333;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 10rpx;
+  background: #f5f5f5;
+  margin:0 20rpx 20rpx 0;
+  border:1px solid #f5f5f5;
+  padding:0 10rpx;
+}
+.modelItemCur{
+  border-color:#ff2a3b;
+  color: #ff2a3b;
+  background: #fff;
+}
+.purchaseQuantity{
+  display: flex;
+  justify-content: space-between;
+  padding:30rpx 20rpx 120rpx 20rpx;
+}
+
+.downBtn{
+  position: absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height: 98rpx;
+  display: flex;
+}
+.downBtn view{
+  flex: 1;
+  color:#fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size:26rpx;
+}
+.downBtnL{
+  background: #ffa318;
+}
+.downBtnR{
+  background: #ff2a3b;
+}
+
+page{
+    height: 100%;
+}
+.scr{
+    position: fixed;
+    width: 100%;
+    top: 86rpx;
+    bottom: 100rpx;
+}
+#detail{
+  margin:20rpx 0 0;
+}
+
+.scroollTop{
+  width: 74rpx;
+  height: 74rpx;
+  position: fixed;
+  right: 10rpx;
+  bottom: 108rpx;
+  opacity: 0;
+  color: #333;
+  background: #fff;
+  z-index: 1;
+  transition: .3s all;
+  background: url(http://7xu5hi.com1.z0.glb.clouddn.com//201810151542116355199.png) no-repeat;
+  background-size: 100%;
+}
+
+.scroollTopS{
+  opacity: .8
+}

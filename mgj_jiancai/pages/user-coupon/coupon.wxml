@@ -1,0 +1,29 @@
+<view class="container">
+  <view class='moneyPop'>
+    <view class="moneyBox">
+      <view class='cartNull' wx:if="{{isList && !list.length}}">
+        <image src='/lib/images/null3.png'></image>
+        你还没有优惠券哦
+      </view>
+      <navigator url='/pages/sellerHome/sellerHome?id={{item.merchantId}}' hover-class='none' class='moneyItem' wx:for="{{list}}" wx:key="{{item.id}}">
+        <view class="itemLeft">
+          <image src='{{item.merchantLogo}}'></image>
+          <view class="b">{{item.merchantName}}</view>
+          <view>满{{item.restrictAmt}}元可用</view>
+        </view>
+        <view class="itemRight">
+          <view>
+            ￥<view class="b">{{item.couponsAmt}}</view>
+          </view>
+        </view>
+        <view class="moneyWhy p">
+          有效期至 {{item.date}}
+        </view>
+      </navigator>
+      <navigator class='navigator' url='/pages/user-couponHistory/history' hover-class='none' wx:if="{{list.length}}">
+        查看历史优惠券>>
+      </navigator>
+    </view>
+  </view>
+
+</view>

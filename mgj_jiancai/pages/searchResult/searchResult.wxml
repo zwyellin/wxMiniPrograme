@@ -1,0 +1,52 @@
+<view wx:if="{{!list.length || list.length===0}}" class='nothingCommodity'>
+  搜索结果为空
+</view>
+<view class='box'>
+  <view class='searchBox'>
+    <image class='searchIcon' src='../../lib/images/searchIcon.png' mode="widthFix"></image>
+    <input id='search' placeholder='搜索品牌分类' value="{{searchValue}}" bindinput="searchValueInput"></input>
+  </view>
+  <view class='history' wx:if="{{isFirst && historyList.length!==0}}">
+    <view class='h2'>历史记录</view>
+    <view class='con'>
+      <view class='list' bindtap='searchValueInput' data-values="{{item}}" wx:for="{{historyList}}" wx:key="{{index}}">{{item}}</view>
+    </view>
+  </view>
+  <view class='list' wx:for="{{list}}" wx:key="{{item.id}}">
+    <navigator url='/pages/sellerHome/sellerHome?id={{item.id}}' hover-class='none' class='brand'>
+      <view class='brandL'>
+        <image src='{{item.logo}}'></image>
+      </view>
+      <view class='brandRight'>
+        <view class='brandRightUp'>{{item.name}}</view>
+        <view class='brandRightDown'>
+          <view class='score'>
+            <view style='width:{{item.commentsAverageScore*20}}%'></view>
+          </view>
+        </view>
+      </view>
+    </navigator>
+    <view class='itemBox' wx:if="{{item.goodsList && item.goodsList.length>0}}">
+
+      <navigator url='/pages/commodityDetails/commodityDetails?id={{obj.id}}' hover-class='none' class='item' wx:for="{{item.goodsList}}" wx:for-item="obj" wx:key="{{obj.id}}">
+        <view class='imgBox'>
+          <view class='leftTop'>
+            <image wx:if="{{obj.platformSubsidiesPrice}}" class='leftTopBg' src='../../lib/images/leftTopBg.png'  mode="widthFix"></image>
+            <text wx:if="{{obj.platformSubsidiesPrice}}">补</text>
+          </view>
+          <image class='commodityImg' src='{{obj.imgs}}'></image>
+        </view> 
+        <view class='title'>
+          {{obj.goodsName}}
+        </view>
+        <view class='commodityInfo'>
+          <view class='price'>￥{{obj.goodsPrice}}</view>
+          <view class='salesVolume'>已售{{obj.totalSaled}}</view>
+        </view>
+      </navigator>
+
+
+    </view>
+
+  </view>
+</view>

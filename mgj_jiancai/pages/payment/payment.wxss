@@ -1,0 +1,55 @@
+.container{
+  font-size: 30rpx;
+}
+
+.orderTit,.order{
+  height: 100rpx;
+  display: flex;
+  padding: 0 30rpx;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  position: relative;
+}
+
+.orderTit:nth-child(1) view{
+  color: #eb6226;
+}
+
+.order{
+  background: #fff;
+  margin: 20rpx 0;
+  justify-content: flex-start;
+  position: relative
+}
+
+.order .checkbox,.orderPay .checkbox{
+  position: absolute;
+  right: 20rpx;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  margin: auto 0;
+}
+
+.order view{
+  font-size: 24rpx;
+  color: #999;
+  padding: 0 10rpx;
+}
+
+.orderPay{
+  background: #fff;
+  padding: 30rpx 30rpx 50rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.orderPay image{
+  width: 49rpx;
+  height: 49rpx;
+  margin-right: 8rpx;
+}
+
+
+

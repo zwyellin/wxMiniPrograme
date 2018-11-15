@@ -1,0 +1,77 @@
+{
+  "pages":[
+    "pages/accredit/accredit",
+    "pages/evaluate/evaluate",
+    "pages/order-commodity/order-commodity",
+    "pages/bindPhone/bindPhone",
+    "pages/shopProcess/shopProcess",
+    "pages/index/index",
+    "pages/count/discount",
+    "pages/searchAddress/address",
+    "pages/user/index",
+    "pages/user-collection/collection",
+    "pages/user-login/index",
+    "pages/user-add-list/list",
+    "pages/user-address/address",
+    "pages/user-envelopes/envelopes",
+    "pages/user-envelopesHistory/history",
+    "pages/user-coupon/coupon",
+    "pages/user-couponHistory/history",
+    "pages/returnList/returnList",
+    "pages/couplet/couplet",
+    "pages/discount/discount",
+    "pages/sellerCommodity/sellerCommodity",
+    "pages/sellerHome/sellerHome",
+    "pages/searchResult/searchResult",
+    "pages/search/search",
+    "pages/order/index",
+    "pages/classify/classify",
+    "pages/commodityDetails/commodityDetails",
+    "pages/classifyDetail/classifyDetail",
+    "pages/order-submit/submit",
+    "pages/payment/payment",
+    "pages/newProduct/newProduct",
+    "pages/promotion/promotion",
+    "pages/order-detail/detail",
+    "pages/cart/index",
+    "pages/evaluateList/evaluateList",
+    "pages/commodityEvaluateList/commodityEvaluateList"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "马管家建材",
+    "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ed655f",
+    "borderStyle": "white",
+    "list": [
+      {
+        "selectedIconPath": "/lib/images/home_nav1h.png",
+        "iconPath": "/lib/images/home_nav1.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "selectedIconPath": "/lib/images/home_nav2h.png",
+        "iconPath": "/lib/images/home_nav2.png",
+        "pagePath": "pages/classify/classify",
+        "text": "分类"
+      },
+      {
+        "selectedIconPath": "/lib/images/home_nav3h.png",
+        "iconPath": "/lib/images/home_nav3.png",
+        "pagePath": "pages/cart/index",
+        "text": "购物车"
+      },
+      {
+        "selectedIconPath": "/lib/images/home_nav4h.png",
+        "iconPath": "/lib/images/home_nav4.png",
+        "pagePath": "pages/user/index",
+        "text": "我的"
+      }
+    ]
+  }
+}

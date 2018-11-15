@@ -1,0 +1,35 @@
+<view class="container" style="background:url(/lib/images/discountpic3.jpg) repeat-y;background-size:100%;">
+   <view class='discount_ban'>
+       <image src='/lib/images/discountpic1.jpg' mode="widthFix"></image>
+   </view>
+   <view class="discount_cent">
+      <view class='discount_list' wx:for="{{list}}" wx:for-index="itemIndex" wx:key="{{itemIndex}}">
+         <view class='discount_listT'>
+            <image src='{{item.logo}}' mode="widthFix"></image>{{item.name}}
+         </view>
+         <view class='discount_listC' wx:for="{{item.couponsList}}" wx:key="sonIndex" wx:for-item="son" data-index='{{itemIndex}}' data-id='{{son.id}}' data-receive='{{son.isReceive}}' bindtap='receive'>
+          <view class='discount_lq' wx:if="{{!son.isReceive}}">
+            立即领取
+          </view>
+          <view class='discount_lq discount_lqH' wx:if="{{son.isReceive}}">
+            已领取
+          </view>
+          <text class='discount_price'>¥<text class='home_picT86'>{{son.couponsAmt}}</text></text>
+          <text class='discount_name'>
+            <text>{{son.name}}</text>
+            满{{son.restrictAmt}}元可用
+          </text>
+         </view>
+         <view class='discount_listB'>
+             <navigator class='discountHot' url="/pages/commodityDetails/commodityDetails?id={{goods.id}}" hover-class="none" wx:for="{{item.goodsList}}" wx:for-item='goods' wx:key="goodsId">
+              <image src='{{goods.imgs}}' class='discountHot_listPic'></image>
+              <view class='disHotlist'>
+                <text class='disHotlist_tit'>{{goods.goodsName}}</text>
+                <view><text>¥</text>{{goods.goodsPrice}}</view>
+              </view>
+            </navigator>
+         </view>
+      </view>
+
+   </view>
+</view>

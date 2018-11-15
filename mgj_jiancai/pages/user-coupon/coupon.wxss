@@ -1,0 +1,220 @@
+.container{
+  font-size: 24rpx;
+}
+
+
+
+.moneyPop{
+  font-size: 30rpx;
+  z-index: 1;
+}
+
+
+.moneyPop .active:before{
+  content: '';
+  display: block;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 44rpx;
+  background: #18c66d;
+  position: absolute;
+  right: 30rpx;
+  top: 45rpx;
+}
+
+.moneyPop .active:after{
+    content: '\00a0';
+    display: inline-block;
+    border: 5rpx solid #fff;
+    border-top-width: 0;
+    border-right-width: 0; 
+    width: 20rpx;
+    height: 10rpx;
+    transform: rotate(-50deg);
+    position: absolute;
+    top:56rpx;
+    right:40rpx;
+}
+
+
+.moneyBox{
+  margin: 0 6rpx;
+  padding: 0 20rpx;
+}
+
+.moneyBox .h2{
+  height: 70rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #666;
+}
+
+.moneyBox .h2:before{
+  content:'';
+  position: absolute;
+  top: 35rpx;
+  height:1px;
+  width:100%;
+  background: #666;
+}
+
+.moneyBox .h2 view{
+  position: relative;
+  padding: 0 37rpx;
+  background: #ededed;
+}
+
+.moneyItem{
+  position: relative;
+  background: #fff;
+  padding: 30rpx 0 0rpx;
+  border-radius: 10rpx;
+  color: #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  box-shadow: 0 5rpx 10rpx #ddd;
+  margin-top: 20rpx;
+}
+
+.itemLeft{
+  line-height: 36rpx;
+  font-size: 24rpx;
+  width: 350rpx;
+  color: #999;
+  padding-left: 30rpx;
+}
+
+.itemLeft image{
+  width: 92rpx;
+  height: 44rpx;
+}
+
+.itemLeft .b{
+  font-size: 36rpx;
+  font-weight: 600;
+  display: block;
+  padding: 10rpx 0;
+  color: #151515;
+}
+
+.itemRight{
+  flex: 1;
+  padding: 0 30rpx 0 0;
+  text-align: right;
+  font-size: 24rpx;
+  position: relative
+}
+
+.itemRight image{
+  width: 153rpx;
+  height: 125rpx;
+  position: absolute;
+  left: 140rpx;
+  top: 0;
+}
+
+.itemRight view{
+  font-size: 36rpx;
+  color: red;
+}
+
+.itemRight view view{
+  font-size: 65rpx;
+}
+
+.moneyWhy{
+  background: #f8f8f8;
+  width: 100%;
+  padding: 0 30rpx 0rpx;
+  border-radius: 0 0 10rpx 10rpx;
+  border-top: 1rpx dashed #ccc;
+  margin-top: 30rpx;
+  font-size: 24rpx;
+  position: relative;
+}
+
+.moneyWhy:after,.moneyWhy:before{
+  content: '';
+  width: 26rpx;
+  height: 26rpx;
+  border-radius: 26rpx;
+  background: #ededed;
+  position: absolute;
+  left: -13rpx;
+  top: -13rpx;
+}
+.moneyWhy:after{
+  left: auto;
+  right: -12rpx;
+}
+
+.moneyWhy .span{
+  height: 50rpx;
+  display: flex;
+  align-items: center;
+  color: #ff2a3b;
+}
+
+.moneyWhy .span:after{
+  content: '';
+  display: inline-block;
+  width: 8rpx;
+  height: 8rpx;
+  border-top: 2rpx solid #777;
+  border-right: 2rpx solid #777;
+  transform: rotate(135deg);
+  margin-left: 10rpx;
+}
+
+.moneyWhy .div {
+  padding: 10rpx 0 30rpx;
+  display: none;
+}
+
+.moneyWhyActive .div{
+  display: block;
+}
+
+.moneyWhyActive .span:after{
+  transform: rotate(-45deg);
+  margin-top: 10rpx;
+}
+
+.moneyWhy .div view{
+  position: relative;
+  padding-left: 15rpx;
+  color: #666;
+  line-height: 36rpx;
+}
+
+.moneyWhy .div view:before{
+  content: '';
+  display: block;
+  width: 4rpx;
+  height: 4rpx;
+  border-radius: 4rpx;
+  background: #666;
+  position: absolute;
+  left: 0;
+  top: 16rpx;
+}
+
+
+.moneyWhy.p{
+  background: #fff;
+  line-height: 55rpx;
+  padding: 0 30rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+
+.navigator{
+  text-align: center;
+  color: #999;
+  display: block;
+  padding: 20rpx 0;
+}

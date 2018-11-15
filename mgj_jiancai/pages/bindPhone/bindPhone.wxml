@@ -1,0 +1,12 @@
+<view class="container">
+  <view>
+    手机号：<input type='number' maxlength='11' placeholder='请输入手机号' bindinput="getPhone" disabled="{{disabled}}" ></input>
+    <button class='{{disabled ? "disabled" : ""}}' bindtap='getYZM'>
+      {{time===60 ? '获取验证码' : time}}
+    </button>
+  </view>
+  <view>
+    <input maxlength='6' type='number' placeholder='请输入收到的验证码' bindinput="getCode"></input>
+  </view>
+</view>
+<button class='submit' bindtap='getPhoneNumber' disabled="{{!phone || !code}}">提交</button>

@@ -1,0 +1,142 @@
+.evaluateBox{
+  font-size: 28rpx;
+  padding: 0 30rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.orderTitle{
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eaeaea
+}
+
+.orderTitle image{
+  width: 52rpx;
+  height: 22rpx;
+  margin-right: 20rpx;
+}
+
+.orderTitle .span{
+  position: relative;
+}
+
+.orderTitle .span:nth-child(1){
+  padding-right: 35rpx;
+}
+
+.orderTitle .span:nth-child(1):after{
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 14rpx;
+  display: block;
+  width: 12rpx;
+  height: 12rpx;
+  border-top: 2rpx solid #ccc;
+  border-right: 2rpx solid #ccc;
+  transform: rotate(45deg);
+}
+
+.orderTitle .span view{
+  position: absolute;
+  right: -20rpx;
+  top: -8px;
+  display: flex;
+  width: 26rpx;
+  height: 26rpx;
+  border-radius: 26rpx;
+  font-size: 22rpx;
+  align-items: center;
+  justify-content: center;
+  background: #eb4245;
+  color: #fff;
+}
+
+
+.evaluateItem{
+  border-bottom: 1px solid #eaeaea;
+  padding: 30rpx 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.evaluateItem image{
+  width: 118rpx;
+  height: 118rpx;
+}
+.evaluateItem .evaluateTxt{
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding-left: 20rpx;
+}
+.evaluateItem .evaluateTxt view{
+  font-size: 24rpx;
+  font-weight: 100;
+  padding-top: 28rpx;
+}
+.evaluateItem .evaluates{
+  width: 150rpx;
+  height: 52rpx;
+  line-height: 52rpx;
+  border-radius: 52rpx;
+  border:1px solid #eb4245;
+  color: #eb4245;
+  text-align: center;
+}
+
+.orderStatus{
+  text-align: right;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #888;
+}
+
+.orderStatus .div view{
+  display: inline;
+  color: #333;
+  margin-left: -6rpx;
+  font-size: 24rpx;
+}
+
+.orderStatus .div view .b{
+  font-size: 34rpx;
+}
+
+.orderStatus .span{
+  display: inline-block;
+  padding: 0 38rpx;
+  height: 52rpx;
+  line-height: 52rpx;
+  border-radius: 52rpx;
+  border: 1px solid #eb4245;
+  color: #eb4245;
+  font-size: 24rpx;
+  margin-top: 25rpx;
+}
+
+
+.orderNumber{
+  text-align: right;
+}
+
+.orderNumber view{
+  color: #333;
+  font-size: 24rpx;
+}
+
+.orderNumber view .b{
+  font-size: 28rpx;
+}
+
+.orderNumber view:nth-child(2){
+  font-weight: bold;
+  color: #888;
+  padding-top: 28rpx;
+}
+
+
+

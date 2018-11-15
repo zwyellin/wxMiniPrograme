@@ -1,0 +1,20 @@
+/* pages/shopProcess/shopProcess.wxss */
+.mb20{margin-bottom:20rpx;}
+.shopP_box{background:#fff;padding:5rpx 30rpx;}
+.shopP_tit{
+  font-size:28rpx;
+  color:#eb4245;text-align: center;height: 90rpx;width:100%;font-weight: bold;line-height: 90rpx;
+  background: url('http://7xu5hi.com1.z0.glb.clouddn.com/201809261516420407691.jpg') no-repeat center;
+  background-size: 488rpx auto;
+}
+.shopP_txt{font-size:26rpx;color:#333;line-height: 40rpx;padding:20rpx 0}
+.shopP_txt text{display: block;padding:5rpx 0}
+
+.shopP_img {text-align: center;padding-bottom:35rpx}
+.shopP_img image{width:520rpx}
+
+.shopP_list{padding:8rpx 0;}
+.shopP_list view{padding:14rpx 40rpx;position: relative}
+.shopP_list view image{width:24rpx;height: 24rpx;position: absolute;left:0;top:24rpx;}
+.shopP_t1{display: block;font-size:26rpx;color:#333;line-height: 44rpx}
+.shopP_t2{display: block;font-size:24rpx;color:#666;line-height: 40rpx}

@@ -1,0 +1,50 @@
+<!--pages/evaluate/evaluate.wxml-->
+<view class="container">
+	<view class='scoreBox'>
+    <view class='scoreTop'>
+      <view class='scoreTopTit'>
+        <image src='{{img}}'></image>
+        商品评分
+        <view class='score'>
+          <text data-width='1' bindtap='changeWidthC'></text>
+          <text data-width='2' bindtap='changeWidthC'></text>
+          <text data-width='3' bindtap='changeWidthC'></text>
+          <text data-width='4' bindtap='changeWidthC'></text>
+          <text data-width='5' bindtap='changeWidthC'></text>
+          <view style='width:{{widthC*20}}%'></view>
+        </view>
+      </view>
+      <textarea class='scoreTextarea'
+        placeholder='品质如何？合不合你心意？说出来告诉大家吧～'
+        bindinput="changeEvaluateContent" maxlength='200'></textarea>
+    </view>
+    <view class='imgList'>
+      <view wx:for="{{imgList}}" wx:key="{{index}}">
+        <image mode='widthFix' src='{{item}}'></image>
+        <text data-index="{{index}}" bindtap='delImg'>✖</text>
+      </view>
+      <button bindtap="imgUpload" class='jia_img' wx:if="{{imgList.length<6}}"></button>
+      <text>最多上传6张</text>
+    </view>
+    <view class='scoreBottom'>
+      <view class='scoreTopTit scoreTopTit2'>
+        <image src='../../lib/images/shopIcon.png' mode='widthFix'></image>
+        商家评分
+      </view>
+      <view class='scoreTxt'>
+        服务态度
+        <view class='score'>
+          <text data-width='1' bindtap='changeWidthS'></text>
+          <text data-width='2' bindtap='changeWidthS'></text>
+          <text data-width='3' bindtap='changeWidthS'></text>
+          <text data-width='4' bindtap='changeWidthS'></text>
+          <text data-width='5' bindtap='changeWidthS'></text>
+          <view style='width:{{widthS*20}}%'></view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='btnSubmit' bindtap='submit'>
+    发表
+  </view>  
+</view>

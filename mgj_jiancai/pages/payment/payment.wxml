@@ -1,0 +1,31 @@
+<view class="container">
+  <view class='orderTit'>
+    订单总价
+    <view>
+      ￥{{price}}
+    </view>
+  </view>
+  <view class='order' bindtap='selectBalancePay'>
+    余额支付
+    <view class='font'>
+      (账户余额：￥{{balance}})
+    </view>
+    <view class='checkbox {{isBalance ? "active" : ""}}'></view>
+  </view>
+ <view wx:if="{{balance<price}}">
+  <view class='orderTit'>
+    使用第三方平台支付
+    <view>
+      ￥{{otherPrice}}
+    </view>
+  </view>
+  <view class='orderPay' bindtap='selectOtherPay'>
+    <image src='/lib/images/wx.png'></image>
+    微信支付
+    <view class='checkbox {{isOtherPrice ? "active" : ""}}'></view>
+  </view>
+ </view>
+  <view class='btnPay' bindtap='submit'>
+    确认支付
+  </view>
+</view>

@@ -1,0 +1,40 @@
+<!--pages/shopProcess/shopProcess.wxml-->
+<view class="container">
+  <view class='shopP_box mb20' >
+      <view class='shopP_tit'>平台承诺</view>
+      <view class='shopP_txt'>
+        <text>1、平台所售商品，顾客均可到当地商家下线门店体验。</text>
+        <text>2、顾客在门店体验过程中不收任何费用，以期给予客户最好的服务</text>
+      </view>
+  </view>
+  <view class='shopP_box mb20' >
+      <view class='shopP_tit'>收货方式</view>
+      <view class='shopP_img'>
+        <image src='/lib/images/shopP_pic.jpg'  mode="widthFix"></image>
+      </view>
+  </view>
+  <view class='shopP_box' >
+      <view class='shopP_list'>
+        <view>
+          <image src='/lib/images/shopP_icon1.jpg'  mode="widthFix"></image>
+          <text class='shopP_t1'>品牌质保</text>
+          <text class='shopP_t2'>马管家联合大牌厂商直供,确保商品质量 </text>
+        </view>
+        <view>
+          <image src='/lib/images/shopP_icon2.jpg'  mode="widthFix"></image>
+          <text class='shopP_t1'>线下体验</text>
+          <text class='shopP_t2'>先体验,后购买.平台所售商品,均可到当地门店免费体验.  </text>
+        </view>
+        <view>
+          <image src='/lib/images/shopP_icon3.jpg'  mode="widthFix"></image>
+          <text class='shopP_t1'>高效配送</text>
+          <text class='shopP_t2'>专业配送,一站式送货到家 </text>
+        </view>
+        <view>
+          <image src='/lib/images/shopP_icon4.jpg'  mode="widthFix"></image>
+          <text class='shopP_t1'>售后保障</text>
+          <text class='shopP_t2'>售后服务均由合作门店线下提供,让您售后无忧 </text>
+        </view>
+      </view>
+  </view>
+</view>

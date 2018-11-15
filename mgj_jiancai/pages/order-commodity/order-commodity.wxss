@@ -1,0 +1,74 @@
+.container{
+  margin-top: 20rpx;
+  background: #fff;
+}
+.evaluateItem{
+  padding: 16rpx 0 14rpx 30rpx;
+  border-bottom: 1rpx solid #efefef;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative
+}
+
+.evaluateItem image{
+  width: 160rpx;
+  height: 160rpx;
+  margin: 0 20rpx;
+}
+.evaluateItem .evaluateTxt{
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: bold;
+  min-height: 160rpx;
+  padding-right: 20rpx;
+  line-height:34rpx;
+}
+.evaluateItem .evaluateTxt view{
+  font-size: 24rpx;
+  font-weight: 100;
+  padding-top: 10rpx;
+}
+.evaluateItem .evaluates{
+  width: 150rpx;
+  height: 52rpx;
+  line-height: 52rpx;
+  border-radius: 52rpx;
+  border:1px solid #eb4245;
+  color: #eb4245;
+  text-align: center;
+}
+
+.evaluateItem .evaluateTxt .orderNumber{
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 12rpx;
+  left: 220rpx;
+  right: 0;
+  font-weight: bold;
+}
+
+.evaluateItem .evaluateTxt .orderNumber view{
+  color: #eb4245;
+}
+
+.evaluateItem .evaluateTxt .orderNumber .b{
+  font-size: 34rpx;
+  font-weight: bold;
+  margin-left: -8rpx;
+}
+
+.count{
+  font-family: '黑体';
+  color: #666;
+  font-size: 30rpx;
+  font-weight: bold;
+  position: absolute;
+  top: 80rpx;
+  right: 36rpx;
+}
+
+.count text{
+  font-size: 18rpx;
+}

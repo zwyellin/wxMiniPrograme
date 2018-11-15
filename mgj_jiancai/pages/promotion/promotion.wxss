@@ -1,0 +1,284 @@
+/* pages/promotion/promotion.wxss */
+view{
+  box-sizing: border-box;
+}
+.boxHidden{
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width:100%;
+}
+.header{
+  background-size:100%;
+}
+.headerBg{
+  background: rgba(0,0,0,.5);
+  height:240rpx;
+}
+.headerTop{
+  display: flex;
+  position: absolute;
+  width:100%;
+  top:0rpx;
+  left:0rpx;
+  z-index: 2;
+  overflow: hidden;
+}
+.headerDetail{
+  position: fixed;
+  bottom:0;
+  background: rgba(0,0,0,.5);
+}
+.headerTopL{
+  flex:4;
+  display: flex;
+  margin-top:56rpx;
+}
+.logo{
+  width:90rpx;
+  height:90rpx;
+  margin:0 18rpx;
+}
+.headerTopLR{
+  flex:1;
+  color:#fff;
+}
+.sellerName{
+  font-size:30rpx;
+  position: relative;
+  display: inline-block;
+}
+.sellerName::after{
+  content:"";
+  position: absolute;
+  width:16rpx;
+  height:16rpx;
+  border-right:2px solid #fff;
+  border-bottom:2px solid #fff;
+  transform: rotate(45deg);
+  left:105%;
+  top:8rpx;
+}
+.sellerInfo::after{
+  transform: rotate(-135deg);
+  top:18rpx;
+}
+.headerTopLR .text{
+  font-size:20rpx;
+  padding-top:15rpx;
+}
+
+.headerTopR{
+  flex:2;
+  margin-top:78rpx;
+  text-align: right;
+}
+.collection{
+  height:45rpx;
+  border-radius: 20rpx;
+  background: #ff5959;
+  padding:0 20rpx;
+  display: inline-block;
+  font-size:24rpx;
+  color:white;
+  line-height: 45rpx;
+  margin-right:40rpx;
+}
+.collection image{
+  width:25rpx;
+  height:25rpx;
+}
+.shareIcon{
+  width:46rpx;
+  height:46rpx;
+  margin-right:20rpx;
+  float:right;
+}
+.introduce{
+  position: absolute;
+  top:180rpx;
+  bottom:0;
+  color:white;
+  width:100%;
+  z-index: 2;
+  padding:0 26rpx 0 26rpx;
+}
+.introduce .p{
+  height: 85rpx;
+  font-size:26rpx;
+}
+
+.h2{
+  width:100%;
+  height:104rpx;
+  line-height: 104rpx;
+  position: relative;
+  margin:0 auto;
+}
+.h2::after{
+  content:'';
+  position: absolute;
+  top:50rpx;
+  right:0;
+  height:1px;
+  width:280rpx;
+  background: white;
+  z-index: 4;
+}
+.h2::before{
+  content:'';
+  position: absolute;
+  top:50rpx;
+  height:1px;
+  width:280rpx;
+  background: white;
+  z-index: 4;
+}
+.title{
+  width:148rpx;
+  text-align: center;
+  font-size:26rpx;
+  margin:0 auto;
+  position: relative;
+  color:white;
+}
+.introduceCon{
+  line-height: 38rpx;
+}
+
+
+.menu{
+  line-height: 40rpx;
+  display: flex;
+  padding-top:170rpx;
+}
+.menuList{
+  flex: 1;
+  font-size:26rpx;
+  color:white;
+  text-align: center;
+  margin:0 40rpx;
+  line-height: 50rpx;
+}
+.menuCur{
+  border-bottom:4rpx solid #fff;
+}
+.discount{
+  height:100rpx;
+  white-space: nowrap;
+  padding-left:14rpx;
+  padding-top:10rpx;
+}
+.discount image{
+  width:223rpx;
+  height:100rpx;
+  margin-right:14rpx;
+}
+
+.main{
+  padding:0 18rpx;
+}
+/* 筛选条件部分 */
+.nav{
+  display: flex;
+  background: whtie;
+}
+.navList{
+  flex:1;
+  font-size:26rpx;
+  text-align: center;
+  line-height: 50rpx;
+  color:#333;
+  margin:0 40rpx;
+}
+.navCur{
+  color:#ff5959;
+  border-bottom:#ce2a3f solid 3rpx;
+}
+
+.con{
+  padding-top:18rpx;
+  overflow: hidden;
+  width:110%;
+}
+.item{
+  width:348rpx;
+  float:left;
+  padding-bottom:40rpx;
+  margin-right:20rpx;
+}
+.imgBox{
+  width:348rpx;
+  height: 348rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+  position: relative;
+}
+.imgBox .commodityImg{
+  width:100%;
+  height:100%;
+}
+.imgBox .leftTop{
+  position: absolute;
+  left:0;
+  top:0;
+  width:54rpx;
+  height:54rpx;
+}
+.leftTopBg{
+  width:100%;
+  height:100%;
+}
+.leftTop text{
+  color:#fff;
+  font-size:24rpx;
+  position: absolute;
+  left:3px;
+}
+
+.itemTitle{
+  font-size:24rpx;
+  color:#191919;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden; 
+  height:75rpx;
+  padding-top:12rpx;
+}
+.commodityInfo{
+  overflow: hidden;
+  padding:10rpx 0;
+}
+.price{
+  font-size:22rpx;
+  color:#e51f1f;
+  float:left;
+  font-weight: bold;
+  height: 30rpx;
+  line-height: 30rpx;
+  margin-right:10rpx;
+}
+.subsidy{
+  float:left;
+  color:#de3857;
+  font-size:18rpx;
+  padding:3rpx 8rpx;
+  border:1rpx solid #de3857;
+  border-radius: 5rpx;
+}
+.evaluate text{
+  font-size:24rpx;
+  color:#a3a3a3;
+  margin-right:15rpx;
+}
+
+
+.nothingCommodity{
+  text-align: center;
+}
+.nothingCommodity image{
+  margin-top:400rpx;
+  width:243rpx;
+  height:195rpx;
+}

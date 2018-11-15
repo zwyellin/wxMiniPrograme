@@ -1,0 +1,28 @@
+<view class="container">
+<form bindsubmit="formSubmit">
+  <view class='addPop'>
+    <view class='li'>
+      <view>联系人：</view>
+      <input name="name" placeholder='姓名' type='text' value='{{editAddress.name}}'></input>
+    </view> 
+    <view class='li'>
+      <view></view>
+      <view class='checkbox{{gender==="先生"?" active":""}}' data-gender='先生' bindtap='changeGender'></view>先生
+      <view class='checkbox{{gender==="女士"?" active":""}}' data-gender='女士' bindtap='changeGender'></view>女士
+    </view>
+    <view class='li'>
+      <view>电话：</view>
+      <input name="mobile" placeholder='请填写收货手机号码' type='text' value='{{editAddress.mobile}}'></input>
+    </view>
+    <view class='li' bindtap='getMap'>
+      <view>地址：</view>
+      <view>{{detailedAddress||"小区/写字楼/学校等"}}</view>
+    </view>
+    <view class='li'>
+      <view></view>
+      <input name="houseNumber" placeholder='详细地址（如门牌号等）' value="{{editAddress.houseNumber}}" type='text'></input>
+    </view>
+    <button class='btnPay' formType="submit">确定</button>
+  </view>
+  </form>
+</view>

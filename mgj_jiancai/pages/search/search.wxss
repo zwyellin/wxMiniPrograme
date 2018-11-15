@@ -1,0 +1,45 @@
+/* pages/search/search.wxss */
+
+.searchBox{
+  padding: 0 40rpx;
+  padding-bottom:20rpx;
+  position: relative;
+  background: #fff;
+}
+#search{
+  height:60rpx;
+  line-height: 60rpx;
+  background: #ececec;
+  border-radius: 30rpx;
+  padding-left:84rpx;
+  color:#888;
+}
+.searchIcon{
+  width:20rpx;
+  position: absolute;
+  left:75rpx;
+  top:20rpx;
+}
+
+.history{
+  padding:30rpx;
+}
+
+.h2{
+  font-size:26rpx;
+  color:#666;
+  line-height: 50rpx;
+}
+.con{
+  padding-top:20rpx;
+}
+.list{
+  color:#333;
+  font-size:24rpx;
+  border:1rpx solid #ccc;
+  border-radius: 5rpx;
+  display: inline-block;
+  padding:0 30rpx;
+  line-height: 48rpx;
+  margin-right:20rpx;
+}
