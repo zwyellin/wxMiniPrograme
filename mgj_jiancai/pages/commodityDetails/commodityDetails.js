@@ -3,12 +3,8 @@ let { globalData, isMobile, isLogin } = getApp();
 let WxParse = require('../../wxParse/wxParse.js');
 let imageUtil = require("../../utils/images.js");
 const { base64src } = require('../../utils/util.js');
-
-Page({
-
-  /**
-   * 页面的初始数据
-   */
+const { commonAnimations } = require('../../components/commonAnimation.js');
+Page(Object.assign({}, commonAnimations, {
   data: {
     topNum: 0,
     isScroll: false,
@@ -40,6 +36,8 @@ Page({
       destHeight:500,
       destWidth:500,
     },
+    maskAnimation:null,
+    qrCodeAnimation:null,
     qrCodeUrl:null,
     maskimgShow:false,   
     qrcodeShow:false      //二维吗
@@ -366,6 +364,8 @@ Page({
     }
   },
   loadQrCode(){
+    this.maskShowAnimation();
+    this.qrCodeShowAnimation()
     this.setData({
       qrcodeShow:true,
       maskimgShow:true
@@ -424,9 +424,7 @@ Page({
     return false;
   },
   close(){
-    this.setData({
-      qrcodeShow:false,
-      maskimgShow:false
-    })
+    this.maskHideAnimation()
+    this.qrCodeHideAnimation()
   }
-})
+}));

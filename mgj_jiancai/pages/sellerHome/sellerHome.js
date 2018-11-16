@@ -1,7 +1,8 @@
 // pages/sellerCommodity/sellerCommodity.js
 let { globalData, isLogin } = getApp();
 const { base64src } = require('../../utils/util.js');
-Page({
+const { commonAnimations } = require('../../components/commonAnimation.js');
+Page(Object.assign({}, commonAnimations, {
   data: {
     id: null,
     isIndex: true,
@@ -17,6 +18,8 @@ Page({
       destHeight:500,
       destWidth:500,
     },
+    maskAnimation:null,
+    qrCodeAnimation:null,
     maskimgShow:false,
     qrcodeShow:false,
     isMoreMessage:false, //更多
@@ -170,6 +173,8 @@ Page({
     this.setData({ isMoreMessage: !this.data.isMoreMessage });
   },
   loadQrCode(){
+    this.maskShowAnimation();
+    this.qrCodeShowAnimation()
     this.setData({
       qrcodeShow:true,
       maskimgShow:true,
@@ -285,9 +290,7 @@ Page({
     return false;
   },
   close(){
-    this.setData({
-      qrcodeShow:false,
-      maskimgShow:false
-    })
-  }
-})
+    this.maskHideAnimation()
+    this.qrCodeHideAnimation()
+  },
+}));

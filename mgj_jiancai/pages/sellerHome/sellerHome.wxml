@@ -108,7 +108,7 @@
   <!-- <image src="{{qrCodeUrl}}"></image> -->
   
   <!-- 商家 二维码 -->
-  <view wx:if="{{qrcodeShow}}" class="qr-code-content">
+  <view wx:if="{{qrcodeShow}}" animation="{{qrCodeAnimation}}" class="qr-code-content">
     <view>
       <!-- <image class="qr-code" src="https://prelaunch.horsegj.com/test.jpg"></image> -->
       <canvas style="width: 200px; height: 200px" canvas-id="qrcode"></canvas>
@@ -118,7 +118,7 @@
       <view class="qr-code-button" bindtap="saveQRCode">保存二维码</view>
     </view>
   </view>
-  <view wx:if="{{maskimgShow}}" class="mask-black" catchtap="close" catchtouchmove="myCatchTouch"></view>
+  <view wx:if="{{maskimgShow}}" animation="{{maskAnimation}}" class="mask-black" catchtap="close" catchtouchmove="myCatchTouch"></view>
   <!-- 内容 -->
   <view class='main main2' wx:if="{{isIndex}}">
       <view wx:for="{{info.homeRecommendedList}}" wx:key="index">
