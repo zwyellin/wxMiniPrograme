@@ -369,15 +369,16 @@ Page({
     this.setData({
       qrcodeShow:true,
       maskimgShow:true
-    })
-    let filepath = base64src(this.data.qrCodeUrl)
-    wx.getImageInfo({
-      src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
-      success (res) {
-        let ctx = wx.createCanvasContext('qrcode')
-        ctx.drawImage(res.path, 0, 0, 200, 200)
-        ctx.draw()
-      }
+    },()=>{
+      let filepath = base64src(this.data.qrCodeUrl)
+      wx.getImageInfo({
+        src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
+        success (res) {
+          let ctx = wx.createCanvasContext('qrcode')
+          ctx.drawImage(res.path, 0, 0, 200, 200)
+          ctx.draw()
+        }
+      })
     })
   },
   saveQRCode(){
@@ -385,10 +386,10 @@ Page({
       canvasId: 'qrcode',
       destWidth:this.data.canvasqrCode.destWidth,
       destHeight:this.data.canvasqrCode.destHeight,
-      success: function (res) {
+      success: (res)=> {
         wx.saveImageToPhotosAlbum({
           filePath: res.tempFilePath,
-          success(result) {
+          success:(result)=> {
             wx.showToast({
               title: '图片保存成功',
               icon: 'success',

@@ -174,16 +174,17 @@ Page({
       qrcodeShow:true,
       maskimgShow:true,
       isMoreMessage:false
-    })
-    let filepath = base64src(this.data.qrCodeUrl)
-    wx.getImageInfo({
-      src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
-      success (res) {
-        let ctx = wx.createCanvasContext('qrcode')
-        ctx.drawImage(res.path, 0, 0, 200, 200)
-        ctx.draw()
-      }
-    })
+    },()=>{
+      let filepath = base64src(this.data.qrCodeUrl)
+      wx.getImageInfo({
+        src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
+        success (res) {
+          let ctx = wx.createCanvasContext('qrcode')
+          ctx.drawImage(res.path, 0, 0, 200, 200)
+          ctx.draw()
+        }
+      })
+    }) 
   },
   saveQRCode(){
     wx.canvasToTempFilePath({
