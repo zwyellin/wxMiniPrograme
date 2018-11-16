@@ -2,6 +2,7 @@
 let { globalData, isMobile, isLogin } = getApp();
 let WxParse = require('../../wxParse/wxParse.js');
 let imageUtil = require("../../utils/images.js");
+const { base64src } = require('../../utils/util.js');
 
 Page({
 
@@ -34,27 +35,38 @@ Page({
       '3': '品质保障',
       '4': '送货到家',
       '5': '七天无理由退换',
-    }
+    },
+    canvasqrCode:{
+      destHeight:500,
+      destWidth:500,
+    },
+    qrCodeUrl:null,
+    maskimgShow:false,   
+    qrcodeShow:false      //二维吗
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (options.scene) {
+      options.id = options.scene;
+    }
     isLogin(options.id, '/pages/commodityDetails/commodityDetails?id=', () => {
       this.setData({
         id: options.id
-      })
-      this.getData({ goodsId: options.id || 150 })
+      });
+      this.getData({ goodsId: options.id || 150 });
       if (wx.getStorageSync('cart').length > 0) {
         this.getCarNum();
       }
-    })
+      this.getQrCode(options.id);
+    });
   },
   // 返回顶部
   scroollTop() {
     this.setData({
       topNum: 0,
-    })
+    });
   },
   imageLoad(e) {
     let imageSize = imageUtil.imageUtil(e)
@@ -352,5 +364,68 @@ Page({
       title: '马管家建材',
       path: '/pages/commodityDetails/commodityDetails?id=' + this.data.id
     }
+  },
+  loadQrCode(){
+    this.setData({
+      qrcodeShow:true,
+      maskimgShow:true
+    })
+    let filepath = base64src(this.data.qrCodeUrl)
+    wx.getImageInfo({
+      src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
+      success (res) {
+        let ctx = wx.createCanvasContext('qrcode')
+        ctx.drawImage(res.path, 0, 0, 200, 200)
+        ctx.draw()
+      }
+    })
+  },
+  saveQRCode(){
+    wx.canvasToTempFilePath({
+      canvasId: 'qrcode',
+      destWidth:this.data.canvasqrCode.destWidth,
+      destHeight:this.data.canvasqrCode.destHeight,
+      success: function (res) {
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success(result) {
+            wx.showToast({
+              title: '图片保存成功',
+              icon: 'success',
+              duration: 2000
+            })
+          }
+        })
+      }
+    })
+  },
+  getQrCode(merchantId){
+    // wx.http.postReq('wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',{id:parseInt(merchantId)}, (data) => {
+    //   if (data.success) {
+    //     let base64 = wx.arrayBufferToBase64()
+    //     this.setData({qrCodeUrl:"data:image/PNG;base64,"})
+    //   }
+    // })
+    wx.request({
+      responseType:'arraybuffer',
+      method:'post',
+      url:'https://prelaunch.horsegj.com/merchant/wxBuildingMaterials/buildingMaterialsGoods/getGoodsWXQRImage',
+      data:{id:parseInt(merchantId)},
+      success:(res)=>{
+        let base64 = wx.arrayBufferToBase64(res.data)
+        this.data.qrCodeUrl = "data:image/png;base64," + base64
+        // this.setData({qrCodeUrl:"data:image/png;base64,"+base64})
+      }
+    })
+  },
+  //阻止遮罩层
+  myCatchTouch(){
+    return false;
+  },
+  close(){
+    this.setData({
+      qrcodeShow:false,
+      maskimgShow:false
+    })
   }
 })

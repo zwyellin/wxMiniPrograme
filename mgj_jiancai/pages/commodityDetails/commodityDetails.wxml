@@ -22,7 +22,15 @@
       <text class='oldPrice'>原价:￥<text>{{selectCommodity.originalPrice}}</text></text>
       <text class='salesVolume'>销量：{{selectCommodity.totalSaled}}</text>
     </view>
-    <view class="h2">{{data.goodsName}}</view>
+    <view class="flex shop-title-ma">
+      <view class="h2">{{data.goodsName}}</view>
+      <view class="shop-ma-content" bindtap="loadQrCode">
+        <image class="shop-ma" src="/lib/images/er_ma.png"></image>
+        <view class="shop-text">
+          <text>二维码</text>
+        </view>
+      </view>
+    </view>
     <view class='h2pp'>
       <view class='h2p' wx:for="{{goodsDescribe}}" wx:key="{{index}}">{{item}}</view>
     </view>
@@ -164,4 +172,16 @@
   <view class='downNav3 purchase' bindtap='pushCartShow'>
     <text>立即购买</text>
   </view>
+  <!-- 商家 二维码 -->
+  <view wx:if="{{qrcodeShow}}" class="qr-code-content">
+    <view>
+      <!-- <image class="qr-code" src="https://prelaunch.horsegj.com/test.jpg"></image> -->
+      <canvas style="width: 200px; height: 200px" canvas-id="qrcode"></canvas>
+    </view>
+    <view class="qr-code-text font-12" style="text-align: center">
+      <text>保存后可分享至朋友圈</text>
+      <view class="qr-code-button" bindtap="saveQRCode">保存二维码</view>
+    </view>
+  </view>
+  <view wx:if="{{maskimgShow}}" class="mask-black" catchtap="close" catchtouchmove="myCatchTouch"></view>
 </view>

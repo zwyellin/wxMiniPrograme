@@ -3,6 +3,7 @@ view{
   box-sizing: border-box;
 }
 .box{
+  position: relative;
   width: 100%;
   overflow-x: hidden;
 }
@@ -106,19 +107,18 @@ view{
   padding-right: 20rpx;
 }
 
-.headerTopR .more-qrcode{
+.more-qrcode{
   width: 46rpx;
   height: 46rpx;
-  background-color: none;
-  /*background: url('http://7xu5hi.com1.z0.glb.clouddn.com/201809141605288274197.png') no-repeat;*/
-  background: url('http://7xu5hi.com1.z0.glb.clouddn.com/1811151111192792900.png') no-repeat;
-  background-size: 100%; 
-  display: block;
-  padding: 0;
   position: absolute;
   top: 0rpx;
   right: 30rpx;
-  border: 0 none;
+  border-radius: 46rpx;
+  overflow: hidden;
+}
+.more-img{
+  width: 46rpx;
+  height: 46rpx;
   border-radius: 46rpx;
 }
 .more-qrcode-content {
@@ -127,11 +127,17 @@ view{
   right: 13rpx;
   width: 216rpx;
   height: 184rpx;
-  background: url('http://7xu5hi.com1.z0.glb.clouddn.com/1811151137295971007.png') no-repeat;
-  background-size: 100%; 
+}
+.more-background {
+  position: absolute;
+  top: 0;
+  width: 216rpx;
+  height: 184rpx;
 }
 .more-qrcode-pad {
   padding:0 8rpx 0 20rpx;
+  position: absolute;
+  z-index: 100;
 }
 .more-item {
   height: 74rpx;
@@ -160,6 +166,31 @@ view{
   right: -5rpx;
   border: none;
   opacity: 0;
+}
+.qr-code-content {
+  padding: 38rpx 46rpx 46rpx 46rpx;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color:#999;
+  z-index:1100;
+  background:#fff;
+}
+.qr-code {
+  height: 400rpx;
+  width: 400rpx;
+}
+.qr-code-button {
+  margin:20rpx auto 0 auto;
+  width: 346rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 60rpx;
+  text-align: center;
+  background: #ff9400;
+  font-size: 28rpx;
+  color:#fff;
 }
 .collection{
   height:45rpx;
@@ -445,8 +476,6 @@ view{
   text-align: center;
   line-height: 90rpx;
 }
-
-
 .boxHidden .main,.boxHidden .discountBox, .boxHidden .menu{
   filter: blur(5rpx)
 }

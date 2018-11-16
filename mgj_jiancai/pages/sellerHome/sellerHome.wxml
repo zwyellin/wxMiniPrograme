@@ -18,7 +18,9 @@
             <view class='text' wx:if="{{sellerInfo}}">{{info.collectionNum}}人收藏</view>
           </view>
           <!-- <button open-type="share" wx:if="{{!sellerInfo}}"></button> -->
-          <view class="more-qrcode" bindtap="isShowMore"></view>
+          <view class="more-qrcode" bindtap="isShowMore">
+            <image class="more-img" src='../../lib/images/icon_more.png'></image>
+          </view>
         </view>
         <view class='introduce'>
           <view class='p'>商品数量：{{info.goodsNum}}件</view>
@@ -46,6 +48,7 @@
           </view>
           <button class="hide-share" open-type="share" wx:if="{{!sellerInfo}}"></button>
         </view>
+        <image class="more-background" src='../../lib/images/frame.png'></image>
       </view>
       <!-- 导航 -->
       <view class='menu'>
@@ -103,7 +106,19 @@
   </view>
 
   <!-- <image src="{{qrCodeUrl}}"></image> -->
-  <canvas style="width: 200px; height: 200px" canvas-id="qrcode"></canvas>
+  
+  <!-- 商家 二维码 -->
+  <view wx:if="{{qrcodeShow}}" class="qr-code-content">
+    <view>
+      <!-- <image class="qr-code" src="https://prelaunch.horsegj.com/test.jpg"></image> -->
+      <canvas style="width: 200px; height: 200px" canvas-id="qrcode"></canvas>
+    </view>
+    <view class="qr-code-text font-12" style="text-align: center">
+      <text>保存后可分享至朋友圈</text>
+      <view class="qr-code-button" bindtap="saveQRCode">保存二维码</view>
+    </view>
+  </view>
+  <view wx:if="{{maskimgShow}}" class="mask-black" catchtap="close" catchtouchmove="myCatchTouch"></view>
   <!-- 内容 -->
   <view class='main main2' wx:if="{{isIndex}}">
       <view wx:for="{{info.homeRecommendedList}}" wx:key="index">

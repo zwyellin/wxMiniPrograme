@@ -1,6 +1,6 @@
 // pages/sellerCommodity/sellerCommodity.js
 let { globalData, isLogin } = getApp();
-const { base64src } = require('../../utils/util.js')
+const { base64src } = require('../../utils/util.js');
 Page({
   data: {
     id: null,
@@ -17,6 +17,8 @@ Page({
       destHeight:500,
       destWidth:500,
     },
+    maskimgShow:false,
+    qrcodeShow:false,
     isMoreMessage:false, //更多
     qrCodeUrl:'',   // 下载二维码路径
     base64:null,
@@ -168,36 +170,37 @@ Page({
     this.setData({ isMoreMessage: !this.data.isMoreMessage });
   },
   loadQrCode(){
+    this.setData({
+      qrcodeShow:true,
+      maskimgShow:true,
+      isMoreMessage:false
+    })
     let filepath = base64src(this.data.qrCodeUrl)
     wx.getImageInfo({
       src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
       success (res) {
-        console.log(res.width)
-        console.log(res.height)
-        console.log(res.path)
         let ctx = wx.createCanvasContext('qrcode')
         ctx.drawImage(res.path, 0, 0, 200, 200)
         ctx.draw()
-        setTimeout(()=>{
-          wx.canvasToTempFilePath({
-            canvasId: 'qrcode',
-            destWidth:500,
-            destHeight:500,
-            success: function (res) {
-              console.log(res);
-              wx.saveImageToPhotosAlbum({
-                filePath: res.tempFilePath,
-                success(result) {
-                  wx.showToast({
-                    title: '图片保存成功',
-                    icon: 'success',
-                    duration: 2000
-                  })
-                }
-              })
-            }
-          })
-        }, 1000);  
+      }
+    })
+  },
+  saveQRCode(){
+    wx.canvasToTempFilePath({
+      canvasId: 'qrcode',
+      destWidth:500,
+      destHeight:500,
+      success: function (res) {
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success(result) {
+            wx.showToast({
+              title: '图片保存成功',
+              icon: 'success',
+              duration: 2000
+            })
+          }
+        })
       }
     })
   },
@@ -215,20 +218,10 @@ Page({
       data:{id:parseInt(merchantId)},
       success:(res)=>{
         let base64 = wx.arrayBufferToBase64(res.data)
-        this.data.base64 = base64
-        this.setData({qrCodeUrl:"data:image/png;base64,"+base64})
+        this.data.qrCodeUrl = "data:image/png;base64," + base64
+        // this.setData({qrCodeUrl:"data:image/png;base64,"+base64})
       }
     })
-    // wx.request({
-    //   method:'post',
-    //   responseType:'arraybuffer',
-    //   url:'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=15_2-_RMjzu1XL9Fg5Z1XqQUkcHvTRhgZO5oywiUrnCANP7i4fF90FzsIJvKME_L5vyid-gh3HQeMniqM2rqnAo6BCOYacXHs_A5kfGuq1huxYM5SwMekadqVPQANjTZXiIRoi7aS7xihX6TkZkCVSdAGAJCZ',
-    //   data:{page:'pages/sellerHome/sellerHome',scene:parseInt(merchantId)},
-    //   success:(res)=>{
-    //     let base64 = wx.arrayBufferToBase64(res.data)
-    //     this.setData({qrCodeUrl:"data:image/PNG;base64,"+base64})
-    //   }
-    // })
   },
   
   receive(e) {
@@ -256,8 +249,11 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function () {
-    let options = {id:842}
+  onLoad: function (options) {
+    if (options.scene) {
+      options.id = options.scene
+    }
+    // let options = {id:842}
     isLogin(options.id, '/pages/sellerHome/sellerHome?id=',()=>{
       this.getInit(options.id)
       this.getList(options.id, 10, 0)
@@ -282,5 +278,15 @@ Page({
       title: '马管家建材',
       path: '/pages/sellerHome/sellerHome?id=' + this.data.id
     }
+  },
+  //阻止遮罩层
+  myCatchTouch(){
+    return false;
+  },
+  close(){
+    this.setData({
+      qrcodeShow:false,
+      maskimgShow:false
+    })
   }
 })

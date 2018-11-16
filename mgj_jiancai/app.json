@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/sellerHome/sellerHome",
     "pages/accredit/accredit",
+    "pages/sellerHome/sellerHome",
     "pages/evaluate/evaluate",
     "pages/order-commodity/order-commodity",
     "pages/bindPhone/bindPhone",

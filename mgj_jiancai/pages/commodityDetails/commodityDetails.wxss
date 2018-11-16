@@ -65,12 +65,17 @@
   float: right;
   margin-top:25rpx;
 }
+.shop-title-ma{
+  padding-top:38rpx;
+  padding-bottom:18rpx;
+  align-items: center;
+}
 .con1 .h2{
+  flex: 1;
+  padding-right: 12rpx;
   color:#333;
   font-size:32rpx;
   font-weight: bold;
-  padding-top:38rpx;
-  padding-bottom:18rpx;
 }
 
 .h2pp{
@@ -78,7 +83,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-
 }
 
 .con1 .h2p{
@@ -515,4 +519,43 @@ page{
 
 .scroollTopS{
   opacity: .8
+}
+.shop-ma-content {
+  width:106rpx;
+  flex:0 0 106rpx;
+  padding-left: 12rpx;
+  text-align:center;
+  border-left: 1px dashed #999;
+  font-weight:700;
+  font-size:24rpx;
+  color:#999;
+}
+.shop-ma {
+  width: 46rpx;
+  height: 46rpx;
+}
+.qr-code-content {
+  padding: 38rpx 46rpx 46rpx 46rpx;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color:#999;
+  z-index:1100;
+  background:#fff;
+}
+.qr-code {
+  height: 400rpx;
+  width: 400rpx;
+}
+.qr-code-button {
+  margin:20rpx auto 0 auto;
+  width: 346rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 60rpx;
+  text-align: center;
+  background: #ff9400;
+  font-size: 28rpx;
+  color:#fff;
 }
