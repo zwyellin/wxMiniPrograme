@@ -102,8 +102,8 @@
     </view>
   </view>
 
-
-  
+  <!-- <image src="{{qrCodeUrl}}"></image> -->
+  <canvas style="width: 200px; height: 200px" canvas-id="qrcode"></canvas>
   <!-- 内容 -->
   <view class='main main2' wx:if="{{isIndex}}">
       <view wx:for="{{info.homeRecommendedList}}" wx:key="index">

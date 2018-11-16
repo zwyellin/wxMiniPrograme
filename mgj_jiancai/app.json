@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/sellerHome/sellerHome",
     "pages/accredit/accredit",
     "pages/evaluate/evaluate",
     "pages/order-commodity/order-commodity",
@@ -21,7 +22,6 @@
     "pages/couplet/couplet",
     "pages/discount/discount",
     "pages/sellerCommodity/sellerCommodity",
-    "pages/sellerHome/sellerHome",
     "pages/searchResult/searchResult",
     "pages/search/search",
     "pages/order/index",

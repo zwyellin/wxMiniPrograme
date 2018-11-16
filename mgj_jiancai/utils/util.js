@@ -9,6 +9,7 @@ const deepClone = function (src) {
 const base64src = function(base64data) {
     return new Promise((resolve, reject) => {
         const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
+        console.log(format);
         if (!format) {
             reject(new Error('ERROR_BASE64SRC_PARSE'));
         }

@@ -13,8 +13,13 @@ Page({
       start: 0,
       isMore: true
     },
+    canvasqrCode:{
+      destHeight:500,
+      destWidth:500,
+    },
     isMoreMessage:false, //更多
     qrCodeUrl:'',   // 下载二维码路径
+    base64:null,
     queryType: 10, //0：全部商品，1：促销商品，2：上新商品, 10 首页
     sortType: 0, // 0, "默认升" ，1, "默认降" ，2, "销量升" ，3, "销量降"，4, "价格升"，5, "价格降"
     sortType1: 0,
@@ -163,16 +168,69 @@ Page({
     this.setData({ isMoreMessage: !this.data.isMoreMessage });
   },
   loadQrCode(){
-    
-  },
-  getQrCode(merchantId){
-    wx.http.postReq('wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage', { id:merchantId }, (data) => {
-      if (data.success) {
-        let base64 = wx.arrayBufferToBase64()
-        this.setData({qrCodeUrl:"data:image/PNG;base64,"})
+    let filepath = base64src(this.data.qrCodeUrl)
+    wx.getImageInfo({
+      src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
+      success (res) {
+        console.log(res.width)
+        console.log(res.height)
+        console.log(res.path)
+        let ctx = wx.createCanvasContext('qrcode')
+        ctx.drawImage(res.path, 0, 0, 200, 200)
+        ctx.draw()
+        setTimeout(()=>{
+          wx.canvasToTempFilePath({
+            canvasId: 'qrcode',
+            destWidth:500,
+            destHeight:500,
+            success: function (res) {
+              console.log(res);
+              wx.saveImageToPhotosAlbum({
+                filePath: res.tempFilePath,
+                success(result) {
+                  wx.showToast({
+                    title: '图片保存成功',
+                    icon: 'success',
+                    duration: 2000
+                  })
+                }
+              })
+            }
+          })
+        }, 1000);  
       }
     })
   },
+  getQrCode(merchantId){
+    // wx.http.postReq('wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',{id:parseInt(merchantId)}, (data) => {
+    //   if (data.success) {
+    //     let base64 = wx.arrayBufferToBase64()
+    //     this.setData({qrCodeUrl:"data:image/PNG;base64,"})
+    //   }
+    // })
+    wx.request({
+      responseType:'arraybuffer',
+      method:'post',
+      url:'https://prelaunch.horsegj.com/merchant/wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',
+      data:{id:parseInt(merchantId)},
+      success:(res)=>{
+        let base64 = wx.arrayBufferToBase64(res.data)
+        this.data.base64 = base64
+        this.setData({qrCodeUrl:"data:image/png;base64,"+base64})
+      }
+    })
+    // wx.request({
+    //   method:'post',
+    //   responseType:'arraybuffer',
+    //   url:'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=15_2-_RMjzu1XL9Fg5Z1XqQUkcHvTRhgZO5oywiUrnCANP7i4fF90FzsIJvKME_L5vyid-gh3HQeMniqM2rqnAo6BCOYacXHs_A5kfGuq1huxYM5SwMekadqVPQANjTZXiIRoi7aS7xihX6TkZkCVSdAGAJCZ',
+    //   data:{page:'pages/sellerHome/sellerHome',scene:parseInt(merchantId)},
+    //   success:(res)=>{
+    //     let base64 = wx.arrayBufferToBase64(res.data)
+    //     this.setData({qrCodeUrl:"data:image/PNG;base64,"+base64})
+    //   }
+    // })
+  },
+  
   receive(e) {
     let couponsRulesId = e.currentTarget.dataset.id;
     wx.http.postReq('/appletClient?m=getCouponsGetRecord', { couponsRulesId }, (data) => {
@@ -198,8 +256,8 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
+  onLoad: function () {
+    let options = {id:842}
     isLogin(options.id, '/pages/sellerHome/sellerHome?id=',()=>{
       this.getInit(options.id)
       this.getList(options.id, 10, 0)
