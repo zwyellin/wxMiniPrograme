@@ -173,12 +173,12 @@
     <text>立即购买</text>
   </view>
   <!-- 商家 二维码 -->
-  <view wx:if="{{qrcodeShow}}" animation="{{qrCodeAnimation}}" class="qr-code-content">
+  <view wx:if="{{qrcodeShow}}" class="qr-code-content">
     <view>
       <!-- <image class="qr-code" src="https://prelaunch.horsegj.com/test.jpg"></image> -->
       <canvas style="width: 200px; height: 200px" canvas-id="qrcode"></canvas>
     </view>
-    <view class="qr-code-text font-12" style="text-align: center">
+    <view class="qr-code-text font-12">
       <text>保存后可分享至朋友圈</text>
       <view class="qr-code-button" bindtap="saveQRCode">保存二维码</view>
     </view>

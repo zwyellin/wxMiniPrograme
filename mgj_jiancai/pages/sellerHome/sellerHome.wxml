@@ -36,7 +36,7 @@
         </view>
       </view>
        <!-- 二维码 分享 -->
-      <view wx:if="{{isMoreMessage}}" class="more-qrcode-content">
+      <view wx:if="{{isMoreMessage}}" animation="{{heightAnimation}}" class="more-qrcode-content">
         <view class="more-qrcode-pad">
           <view class="flex more-item qrcode" bindtap="loadQrCode">
             <image class="more-icon" src="../../lib/images/icon_qrcode.png"></image>
@@ -108,12 +108,12 @@
   <!-- <image src="{{qrCodeUrl}}"></image> -->
   
   <!-- 商家 二维码 -->
-  <view wx:if="{{qrcodeShow}}" animation="{{qrCodeAnimation}}" class="qr-code-content">
+  <view wx:if="{{qrcodeShow}}" class="qr-code-content">
     <view>
       <!-- <image class="qr-code" src="https://prelaunch.horsegj.com/test.jpg"></image> -->
       <canvas style="width: 200px; height: 200px" canvas-id="qrcode"></canvas>
     </view>
-    <view class="qr-code-text font-12" style="text-align: center">
+    <view class="qr-code-text font-12">
       <text>保存后可分享至朋友圈</text>
       <view class="qr-code-button" bindtap="saveQRCode">保存二维码</view>
     </view>

@@ -20,10 +20,11 @@ Page(Object.assign({}, commonAnimations, {
     },
     maskAnimation:null,
     qrCodeAnimation:null,
+    heightAnimation:null,
     maskimgShow:false,
     qrcodeShow:false,
     isMoreMessage:false, //更多
-    qrCodeUrl:'',   // 下载二维码路径
+    qrCodeUrl:null,   // 下载二维码路径
     base64:null,
     queryType: 10, //0：全部商品，1：促销商品，2：上新商品, 10 首页
     sortType: 0, // 0, "默认升" ，1, "默认降" ，2, "销量升" ，3, "销量降"，4, "价格升"，5, "价格降"
@@ -170,25 +171,40 @@ Page(Object.assign({}, commonAnimations, {
     this.setData({ sellerInfo: !this.data.sellerInfo });
   },
   isShowMore(){
-    this.setData({ isMoreMessage: !this.data.isMoreMessage });
+    if (!this.data.isMoreMessage) {
+      this.getQrCode(this.data.id)
+      this.heightShowAnimation(368)
+      this.setData({ isMoreMessage: true });
+    } else {
+      this.setData({ isMoreMessage: false});
+    }
   },
   loadQrCode(){
     this.maskShowAnimation();
-    this.qrCodeShowAnimation()
     this.setData({
       qrcodeShow:true,
       maskimgShow:true,
       isMoreMessage:false
     },()=>{
-      let filepath = base64src(this.data.qrCodeUrl)
-      wx.getImageInfo({
-        src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
-        success (res) {
-          let ctx = wx.createCanvasContext('qrcode')
-          ctx.drawImage(res.path, 0, 0, 200, 200)
-          ctx.draw()
-        }
-      })
+      base64src(this.data.qrCodeUrl).then(filepath=>{
+        wx.getImageInfo({
+          src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
+          success (res) {
+            let ctx = wx.createCanvasContext('qrcode')
+            ctx.drawImage(res.path, 0, 0, 200, 200)
+            ctx.draw()
+          }
+        })
+      }).catch(err=>{
+          wx.showToast({
+            title: '二维码生成失败',
+            icon: 'loading',
+            duration: 1000
+          })
+          setTimeout(()=>{
+            wx.hideToast()
+          },1000);
+      }) 
     }) 
   },
   saveQRCode(){
@@ -205,6 +221,9 @@ Page(Object.assign({}, commonAnimations, {
               icon: 'success',
               duration: 2000
             })
+            setTimeout(()=>{
+              wx.hideToast()
+            },1000);
           }
         })
       }
@@ -220,12 +239,10 @@ Page(Object.assign({}, commonAnimations, {
     wx.request({
       responseType:'arraybuffer',
       method:'post',
-      url:'https://prelaunch.horsegj.com/merchant/wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',
+      url:wx.http.domain + 'wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',
       data:{id:parseInt(merchantId)},
       success:(res)=>{
-        let base64 = wx.arrayBufferToBase64(res.data)
-        this.data.qrCodeUrl = "data:image/png;base64," + base64
-        // this.setData({qrCodeUrl:"data:image/png;base64,"+base64})
+        this.data.qrCodeUrl = res.data
       }
     })
   },
@@ -263,7 +280,6 @@ Page(Object.assign({}, commonAnimations, {
     isLogin(options.id, '/pages/sellerHome/sellerHome?id=',()=>{
       this.getInit(options.id)
       this.getList(options.id, 10, 0)
-      this.getQrCode(options.id)
     })
   },
   /**
@@ -291,6 +307,8 @@ Page(Object.assign({}, commonAnimations, {
   },
   close(){
     this.maskHideAnimation()
-    this.qrCodeHideAnimation()
+    this.setData({
+      qrcodeShow:false,
+    })
   },
 }));

@@ -544,6 +544,10 @@ page{
   z-index:1100;
   background:#fff;
 }
+.qr-code-text {
+  margin-top: 24rpx;
+  text-align: center;
+}
 .qr-code {
   height: 400rpx;
   width: 400rpx;

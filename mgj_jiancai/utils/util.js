@@ -6,24 +6,24 @@ const deepClone = function (src) {
         JSON.stringify(src)
     );
 };
-const base64src = function(base64data) {
+const base64src = function(arraybuffer) {
     return new Promise((resolve, reject) => {
-        const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
-        console.log(format);
-        if (!format) {
-            reject(new Error('ERROR_BASE64SRC_PARSE'));
-        }
-        const filePath = `${wx.env.USER_DATA_PATH}/${FILE_BASE_NAME}.${format}`;
-        const buffer = wx.base64ToArrayBuffer(bodyData);
+        // const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
+        // console.log(format);
+        // if (!format) {
+        //     reject(new Error('ERROR_BASE64SRC_PARSE'));
+        // }
+        const filePath = `${wx.env.USER_DATA_PATH}/${FILE_BASE_NAME}.png`;
+        // const buffer = wx.base64ToArrayBuffer(bodyData);
         wx.getFileSystemManager().writeFile({
             filePath,
-            data: buffer,
+            data: arraybuffer,
             encoding: 'binary',
             success() {
                 resolve(filePath);
             },
-            fail() {
-                reject(new Error('ERROR_BASE64SRC_WRITE'));
+            fail(err) {
+                reject(err);
             },
         });
     });

@@ -59,8 +59,8 @@ Page({
             }
           })
         }
-      })
-    })
+      });
+    });
   },
   login(ee) {
     if (ee.detail.errMsg === "getUserInfo:ok") {

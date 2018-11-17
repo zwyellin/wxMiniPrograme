@@ -365,20 +365,29 @@ Page(Object.assign({}, commonAnimations, {
   },
   loadQrCode(){
     this.maskShowAnimation();
-    this.qrCodeShowAnimation()
     this.setData({
       qrcodeShow:true,
       maskimgShow:true
     },()=>{
-      let filepath = base64src(this.data.qrCodeUrl)
-      wx.getImageInfo({
-        src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
-        success (res) {
-          let ctx = wx.createCanvasContext('qrcode')
-          ctx.drawImage(res.path, 0, 0, 200, 200)
-          ctx.draw()
-        }
-      })
+      base64src(this.data.qrCodeUrl).then(filepath=>{
+        wx.getImageInfo({
+          src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
+          success (res) {
+            let ctx = wx.createCanvasContext('qrcode')
+            ctx.drawImage(res.path, 0, 0, 200, 200)
+            ctx.draw()
+          }
+        })
+      }).catch(err=>{
+          wx.showToast({
+            title: '二维码生成失败',
+            icon: 'loading',
+            duration: 1000
+          })
+          setTimeout(()=>{
+            wx.hideToast()
+          },1000);
+      }) 
     })
   },
   saveQRCode(){
@@ -393,14 +402,17 @@ Page(Object.assign({}, commonAnimations, {
             wx.showToast({
               title: '图片保存成功',
               icon: 'success',
-              duration: 2000
+              duration: 1000
             })
+            setTimeout(()=>{
+              wx.hideToast()
+            },1000);
           }
         })
       }
     })
   },
-  getQrCode(merchantId){
+  getQrCode(goodsId){
     // wx.http.postReq('wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',{id:parseInt(merchantId)}, (data) => {
     //   if (data.success) {
     //     let base64 = wx.arrayBufferToBase64()
@@ -410,12 +422,10 @@ Page(Object.assign({}, commonAnimations, {
     wx.request({
       responseType:'arraybuffer',
       method:'post',
-      url:'https://prelaunch.horsegj.com/merchant/wxBuildingMaterials/buildingMaterialsGoods/getGoodsWXQRImage',
-      data:{id:parseInt(merchantId)},
+      url:wx.http.domain + 'wxBuildingMaterials/buildingMaterialsGoods/getGoodsWXQRImage',
+      data:{id:parseInt(goodsId)},
       success:(res)=>{
-        let base64 = wx.arrayBufferToBase64(res.data)
-        this.data.qrCodeUrl = "data:image/png;base64," + base64
-        // this.setData({qrCodeUrl:"data:image/png;base64,"+base64})
+        this.data.qrCodeUrl = res.data
       }
     })
   },
@@ -425,6 +435,8 @@ Page(Object.assign({}, commonAnimations, {
   },
   close(){
     this.maskHideAnimation()
-    this.qrCodeHideAnimation()
+    this.setData({
+      qrcodeShow:false,
+    })
   }
 }));

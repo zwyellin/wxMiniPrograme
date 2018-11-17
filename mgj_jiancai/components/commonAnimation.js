@@ -44,12 +44,12 @@ const commonAnimations = {
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
-	      	animation.scale(1).translate('-50%','-50%').step();
+	      	animation.opacity(1).step();
 	      	this.setData({
 	        	qrCodeAnimation: animation.export(),
 	      	});
 	    }, 200);
-		animation.scale(0).step();
+		animation.opacity(0).step();
 		this.setData({  
 			qrCodeAnimation: animation.export()  
 		}); 
@@ -62,7 +62,7 @@ const commonAnimations = {
 			timingFunction: "ease",
 		});
 		setTimeout(()=> {
-	      	animation.scale(0).translate('-50%','-50%').step();
+	      	animation.opacity(0).translate('-50%','-50%').step();
 	      	setTimeout(()=>{
 	      		this.setData({
 	        		qrcodeShow:false
@@ -72,12 +72,30 @@ const commonAnimations = {
 	        	qrCodeAnimation: animation.export(),
 	      	});
 	    }, 200);
-		animation.scale(1).translate('-50%','-50%').step(); 
+		animation.opacity(1).translate('-50%','-50%').step(); 
 		this.setData({  
 		   qrCodeAnimation: animation.export()  
 		}); 
-	}
-}
+	},
+	// sellerHome page  height动画
+	heightShowAnimation(height){
+		let animation = wx.createAnimation({ 
+			transformOrigin: "50% 50%", 
+			duration: 500,
+			timingFunction: "ease",
+		});
+		setTimeout(()=> {
+	      	animation.opacity(1).height(height+'rpx').step();
+	      	this.setData({
+	        	heightAnimation: animation.export(),
+	      	});
+	    }, 200);
+		animation.opacity(0).height(0).step();
+		this.setData({  
+		   heightAnimation: animation.export()  
+		});
+	},
+};
 
 module.exports = {
     commonAnimations
