@@ -463,7 +463,7 @@
 .purchaseQuantity{
   display: flex;
   justify-content: space-between;
-  padding:30rpx 20rpx 120rpx 20rpx;
+  padding:30rpx 60rpx 120rpx 20rpx;
 }
 
 .downBtn{

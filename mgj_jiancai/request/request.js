@@ -1,5 +1,5 @@
-// var rootDocment = 'https://prelaunch.horsegj.com/merchant/';
-var rootDocment = 'https://wxapi.horsegj.com/merchant/'; //生产
+var rootDocment = 'https://prelaunch.horsegj.com/merchant/';
+// var rootDocment = 'https://wxapi.horsegj.com/merchant/'; //生产
 var header = {
   'Accept': 'application/json',
   'content-type': 'application/json'
@@ -34,60 +34,57 @@ function postReq(url, data, cb, alert) {
     "imei": wx.getStorageSync('codeWX'),
     "params": data,
     "token": wx.getStorageSync('token') || null
-  }
+  };
   wx.showLoading({
     title: '加载中',
-  })
-    //console.log("header=="),
-    //console.log(header),
-    //console.log(url, data)
-    wx.request({
-      url: rootDocment + url,
-      header: header,
-      data: params,
-      method: 'post',
-      success: function (res) {
-        if (res.data.code === 100010) {
-          wx.showToast({
-            title: '没有绑定手机号，去绑定！',
-            icon: 'none'
-          })
-          wx.navigateTo({
-            url: '../bindPhone/bindPhone'
-          });
-          return false;
-        }
-        if (res.data.code === 100000 && res.data.value === 'token错误或已失效') {
-          wx.showToast({
-            title: '抱歉您没有登录，去登录！',
-            icon: 'none'
-          })
-          wx.navigateTo({
-            url: '../accredit/accredit'
-          });
-        }
-        //console.log(res)
-        wx.hideLoading();
-        if (!alert){
-          if (!res.data.success){
-            wx.showToast({
-              title: res.data.value || '出错了，请联系客服',
-              icon: 'none'
-            })
-          }
-        }
-        return typeof cb == "function" && cb(res.data)
-      },
-      fail: function () {
-        wx.hideLoading();
+  });
+  var requestBody = {
+    url: rootDocment + url,
+    header: header,
+    data: params,
+    method: 'post',
+    success: function (res) {
+      if (res.data.code === 100010) {
         wx.showToast({
-          title: '网络出错，请刷新重试',
+          title: '没有绑定手机号，去绑定！',
           icon: 'none'
         })
-        return typeof cb == "function" && cb(false)
+        wx.navigateTo({
+          url: '../bindPhone/bindPhone'
+        });
+        return false;
       }
-    })
-
+      if (res.data.code === 100000 && res.data.value === 'token错误或已失效') {
+        wx.showToast({
+          title: '抱歉您没有登录，去登录！',
+          icon: 'none'
+        })
+        wx.navigateTo({
+          url: '../accredit/accredit'
+        });
+      }
+      //console.log(res)
+      wx.hideLoading();
+      if (!alert){
+        if (!res.data.success){
+          wx.showToast({
+            title: res.data.value || '出错了，请联系客服',
+            icon: 'none'
+          })
+        }
+      }
+      return typeof cb == "function" && cb(res.data)
+    },
+    fail: function () {
+      wx.hideLoading();
+      wx.showToast({
+        title: '网络出错，请刷新重试',
+        icon: 'none'
+      });
+      return typeof cb == "function" && cb(false);
+    }
+  };
+  wx.request(requestBody);
 }
 module.exports = {
   getReq: getReq,

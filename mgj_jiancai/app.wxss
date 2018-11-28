@@ -223,7 +223,8 @@ Page{
 
 .countBox{
   position: relative;
-  width: 180rpx;
+  padding: 0 20rpx;
+  width: 72rpx;
   height: 40rpx;
   line-height: 40rpx;
   text-align: center;
@@ -243,7 +244,7 @@ Page{
 }
 
 .countBox .countAdd{
-  left: 0;
+  left: -40rpx;
   top: 0;
 }
 
@@ -262,7 +263,7 @@ Page{
 }
 
 .countBox .countDel{
-  right: 0;
+  right: -40rpx;
   top: 0;
   background: url(http://7xu5hi.com1.z0.glb.clouddn.com/201809141542402054277.png) no-repeat;
   background-size: 100%;
@@ -297,9 +298,11 @@ Page{
 }
 
 .countBox .count{
+  margin-top: -5rpx;
   font-size: 28rpx;
   font-weight: bold;
   color: #888;
+  background: #f5f5f5;
 }
 
 

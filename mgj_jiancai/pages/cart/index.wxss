@@ -17,7 +17,7 @@
 
 .evaluateBox{
   font-size: 28rpx;
-  padding: 0 30rpx;
+  padding: 0 70rpx 0 30rpx;
   background: #fff;
   margin-top: 20rpx;
 }

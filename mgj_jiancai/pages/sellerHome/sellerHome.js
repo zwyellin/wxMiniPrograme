@@ -229,24 +229,23 @@ Page(Object.assign({}, commonAnimations, {
       }
     })
   },
+  // 获取二维码不采用之前的请求配置，返回参数结构不一样
   getQrCode(merchantId){
-    // wx.http.postReq('wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',{id:parseInt(merchantId)}, (data) => {
-    //   if (data.success) {
-    //     let base64 = wx.arrayBufferToBase64()
-    //     this.setData({qrCodeUrl:"data:image/PNG;base64,"})
-    //   }
-    // })
     wx.request({
       responseType:'arraybuffer',
       method:'post',
-      url:wx.http.domain + 'wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',
-      data:{id:parseInt(merchantId)},
+      url:wx.http.domain + 'appletClient?m=getBuildingMaterialsMerchantWXQRImage',
+      data:{
+        "app": 'horsegjUserBuilding',
+        "imei": wx.getStorageSync('codeWX'),
+        "params": {id:parseInt(merchantId)},
+        "token": wx.getStorageSync('token') || null
+      },
       success:(res)=>{
         this.data.qrCodeUrl = res.data
       }
     })
   },
-  
   receive(e) {
     let couponsRulesId = e.currentTarget.dataset.id;
     wx.http.postReq('/appletClient?m=getCouponsGetRecord', { couponsRulesId }, (data) => {

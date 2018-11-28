@@ -141,7 +141,7 @@
       <view>购买数量</view>
       <view class='countBox'>
         <view class='countAdd' bindtap='cartNum' data-type='1'></view>
-        <view class='count'>{{quantity}}</view>
+        <input bindblur="blurAddQuantity" type="number" class='count' value="{{quantity}}" />
         <view class='countDel' bindtap='cartNum' data-type='2'></view>
       </view>
     </view>

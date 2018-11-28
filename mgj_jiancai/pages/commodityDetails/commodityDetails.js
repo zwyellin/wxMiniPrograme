@@ -412,21 +412,29 @@ Page(Object.assign({}, commonAnimations, {
       }
     })
   },
+  // 获取二维码不采用之前的请求配置，返回参数结构不一样
   getQrCode(goodsId){
-    // wx.http.postReq('wxBuildingMaterials/buildingMaterialsMerchant/getMerchantWXQRImage',{id:parseInt(merchantId)}, (data) => {
-    //   if (data.success) {
-    //     let base64 = wx.arrayBufferToBase64()
-    //     this.setData({qrCodeUrl:"data:image/PNG;base64,"})
-    //   }
-    // })
     wx.request({
       responseType:'arraybuffer',
       method:'post',
-      url:wx.http.domain + 'wxBuildingMaterials/buildingMaterialsGoods/getGoodsWXQRImage',
-      data:{id:parseInt(goodsId)},
+      url:wx.http.domain + 'appletClient?m=getBuildingMaterialsGoodsWXQRImage',
+      data:{
+        "app": 'horsegjUserBuilding',
+        "imei": wx.getStorageSync('codeWX'),
+        "params": {id:parseInt(goodsId)},
+        "token": wx.getStorageSync('token') || null
+      },
       success:(res)=>{
         this.data.qrCodeUrl = res.data
       }
+    })
+  },
+  //添加商品数量失焦
+  blurAddQuantity(e){
+    let value = e.detail.value
+    if (value == 0 ) value = 1
+    this.setData({
+      quantity:value
     })
   },
   //阻止遮罩层

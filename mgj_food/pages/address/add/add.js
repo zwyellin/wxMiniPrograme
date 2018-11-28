@@ -114,7 +114,7 @@ Page({
 			feedbackApi.showToast({title: '手机号不能为空'});
 			return;
 		}
-		if (!(/^1(3|4|5|7|8)\d{9}$/.test(this.data.mobile))) {
+		if (!(/^1[3456789]\d{9}$/.test(this.data.mobile))) {
 			feedbackApi.showToast({title: '请输入正确的手机号'});
 			return;
 		}
