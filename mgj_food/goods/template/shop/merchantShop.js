@@ -18,7 +18,7 @@ const merchantShop = {
         		}	
         	},
         }).then(res=>{
-        	console.log(res);
+        	console.log("商家详情",res);
 			if (res.data.code === 0) {
 				let value = res.data.value;
 				let name = value.merchant.name;
@@ -111,32 +111,37 @@ const merchantShop = {
 	},
 	//获取商家评价信息
 	getevaluate(isLoadMore){
-		if (!this.data.isEvaluate) {
+		console.log("加载评论：是否还有",!this.data.loading)
+		if (!this.data.isEvaluate&&!this.data.loading) {//正在加载或者没有更多评论了，则不发送请求
 			this.data.isEvaluate = true;
 			wxRequest({
-	        	url:'/merchant/userClient?m=findMerchantComments',
+	        	url:'/merchant/userClient?m=queryMerchantComments',
 	        	method:'POST',
 	        	data:{
 	        		params:{
 	        			merchantId:this.data.merchantId,
-	        			size: this.data.evaluateSize,   
+						isHaveContent:this.data.isHaveContent,  //
+						queryType: this.data.evaluateType,
+						size: this.data.evaluateSize,
 	        			start:this.data.evaluateStart
 	        		}	
 	        	}
 	        }).then(res=>{
 				if (res.data.code === 0) {
-					let list = res.data.value;
+					console.log("评论：",res);
+					let resValue = res.data.value;
 					let evaluate = this.data.evaluate;
-					if (isLoadMore) {
-						if (list.length === 0) {
+					if (isLoadMore) {//下拉加载
+						if (resValue.list.length === 0) {//无返回值了
 							this.setData({
 								loading:true,
 							});
 						}
-						evaluate = evaluate.concat(list);
-					} else {
-						evaluate = list;
+						evaluate.list= evaluate.list.concat(resValue.list);
+					} else {//第一次加载
+						evaluate = resValue;
 					}
+					console.log(evaluate);
 	    			this.setData({
 	    				evaluate:evaluate,
 	    			});
@@ -147,9 +152,48 @@ const merchantShop = {
 	        });
 		}
 	},
+	//评论区，点击不同按钮加载不同数据，全部0，好评1，差评2，有图3
+	evaluateBtnSwitch(e){
+		  var btnNum=parseInt(e.target.dataset.id);
+		  var evaluate=this.data.evaluate;
+		  if(btnNum!=this.data.selestEvaluateStatus){	//如果是一样，则不重复加载
+			evaluate.list=[];//清空评论列表
+			//因为更换查询条件，所以先重置
+			var that=this;
+			this.setData({
+				selestEvaluateStatus:btnNum,//改变状态
+				evaluate:evaluate,
+				evaluateStart:0,//清空
+				evaluateType:btnNum,//改变请求类型
+				isEvaluate:false,
+				loading:false
+			},function(){
+				that.getevaluate(false);//加载
+			})	
+		  }		
+	},
+	//评论是否为空过滤
+	merchantComIsFilterEmptySwitch(e){
+		var isHaveContent=this.data.isHaveContent;
+		var evaluate=this.data.evaluate;
+		evaluate.list=[];//清空评论列表
+		console.log("是否为空过滤",isHaveContent)
+		isHaveContent=isHaveContent==0?1:0;
+		//因为更换查询条件，所以先重置
+		var that=this;
+		this.setData({
+			isHaveContent:isHaveContent,//改变状态及请求类型
+			evaluate:evaluate,
+			evaluateStart:0,//清空
+			isEvaluate:false,//是否正在加载
+			loading:false//是否加载到底
+		},function(){
+			that.getevaluate(false);//加载,过滤下有可能返回的数据，过滤之后没有一条
+		})
+	},
 	//加载更多评价
 	loadMore(e){  
-        this.data.evaluateStart = this.data.evaluate.length + 5;
+        this.data.evaluateStart = this.data.evaluate.list.length;
         this.getevaluate(true);
 	},
 	//遮罩层显示阻止滑动

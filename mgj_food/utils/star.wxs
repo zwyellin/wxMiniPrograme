@@ -1,4 +1,3 @@
-
 var cart = {
 	itemClasses: function(num) {
 		var arr = [];
@@ -16,13 +15,33 @@ var cart = {
 		}
 		return arr;
 	},
-	fomatFloat: function(src,pos){
+	fomatFloat: function(src,pos){//弃用
 		if (src.toString().length == 1) return src + '.0';
        	return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);   
-    },
-    shopFloat: function(src,pos) {
+	},
+	formatFloat:function(src,pos){
+		src=Math.round(src*Math.pow(10,pos));
+		src=src/Math.pow(10,pos);
+		if (src.toString().length == 1) src+='.0';
+		if(isNaN(src)) src="";
+		return src;
+	},
+    shopFloat: function(src, pos) {
     	return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);  
-    },
+	},
+	filterEvaluateScore:function(arr){
+		var goodsScorelt3=[];//大于等于3的评分
+		var goodsScoregt3=[];
+		var newArr=arr.filter(function(val,index,ar){
+				if(val.goodsScore>=3) goodsScorelt3.push(val);
+				else goodsScoregt3.push(val);
+				return val.goodsScore>=3;
+		})
+	   return{
+		   goodScores:goodsScorelt3,
+		   badScores:goodsScoregt3
+	   }
+	},
 	praise:function(commentScore) {
 		var praise = commentScore*100/5;
 			praise = parseInt(praise);
@@ -45,10 +64,29 @@ var cart = {
 	},
 	strReplace:function(str){
 		//要替换为*号的内容
-		var tmp=str.substring(1,str.length-1);
-		//将其替换
-		var content=str.replace(tmp,'****');
-		return content;
+         var repText="***";
+		if(str.length==2){
+            str=str.charAt(0)+repText+str.charAt(1);
+		}else{
+		  var tmp=str.substring(1,str.length-1);
+		  //将其替换
+		  str=str.replace(tmp,repText);
+		}
+		return str;
+	},
+	numberToText:function(number){
+		  console.log("转文字",number)
+		  number=Math.round(number);
+		  var resText="";
+		  switch(number){
+			  case 1:resText="极差";break;
+			  case 2:resText="失望";break;
+			  case 3:resText="一般";break;
+			  case 4:resText="满意";break;
+			  case 5:resText="超赞";break;
+			  default : resText="超赞";
+		  }
+		  return resText;
 	},
 	round:function(num){
 		var str = parseFloat(num/1000);
@@ -186,10 +224,16 @@ var cart = {
 		return Math.round(totalPrice*Math.pow(10, 2))/Math.pow(10, 2);
 	}
 };
+console.log("star程序测试");
+
+console.log(cart.itemClasses(3.6))
+
+
 
 module.exports = {
   itemClasses: cart.itemClasses,
-  fomatFloat: cart.fomatFloat,
+  formatFloat: cart.formatFloat,
+  fomatFloat:cart.fomatFloat,
   shopFloat:cart.shopFloat,
   praise: cart.praise,
   splitStr:cart.splitStr,
@@ -204,5 +248,7 @@ module.exports = {
   removefh:cart.removefh,
   fullItemNum:cart.fullItemNum,
   sortGoodsSpecList:cart.sortGoodsSpecList,
-  price:cart.price
+  price:cart.price,
+  numberToText:cart.numberToText,
+  filterEvaluateScore:cart.filterEvaluateScore
 };

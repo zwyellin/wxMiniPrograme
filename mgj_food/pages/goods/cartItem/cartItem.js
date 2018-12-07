@@ -238,7 +238,7 @@ Page({
       let { food } = e.currentTarget.dataset;
       this.data.orderDetail = food;
       wx.navigateTo({
-        url: '/goods/evaluate/evaluate'
+        url: '/goods/createComments/createComments?orderid=' + food.id
       });
     },
     refundDetail(e){

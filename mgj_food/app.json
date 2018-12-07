@@ -1,5 +1,5 @@
 {
-  "pages": [  
+  "pages": [
     "pages/index/index",
     "pages/classPage/classPage",
     "pages/address/add/add",
@@ -8,7 +8,7 @@
     "pages/login/login",
     "pages/userCenter/userCenter",
     "pages/goods/cartItem/cartItem",
-    "pages/goods/cartDetail/cartDetail", 
+    "pages/goods/cartDetail/cartDetail",
     "pages/goods/refundDetail/refundDetail",
     "pages/searchGoods/searchGoods"
   ],
@@ -44,7 +44,8 @@
       }
     ]
   },
-  "subPackages": [{
+  "subPackages": [
+    {
       "root": "other",
       "pages": [
         "firends/person/person",
@@ -55,8 +56,9 @@
         "firends/load/load",
         "register/register"
       ]
-    },{
-      "root": "goods", 
+    },
+    {
+      "root": "goods",
       "pages": [
         "shop/shop",
         "mapview/mapview",
@@ -67,7 +69,8 @@
         "redbag/merchantRedbag/merchantRedbag",
         "redbag/platformRedbag/platformRedbag",
         "remarks/remarks",
-        "evaluate/evaluate"
+        "evaluate/evaluate",
+        "createComments/createComments"
       ]
     }
   ]

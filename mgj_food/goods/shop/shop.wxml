@@ -243,7 +243,7 @@
     <!-- 商品 结束 -->
 
     <!-- 评价 开始 -->
-    <scroll-view 
+    <!-- <scroll-view 
     	wx:if="{{tab.cur==='评价'}}" 
     	class="evaluate"
     	scroll-y="true"
@@ -304,9 +304,110 @@
 	    <view class="bottom-info" wx:if="{{!evaluate.length && loading}}">
      		<view class="bottom-text">暂无更多评价</view>
     	</view>
-    </scroll-view>
+    </scroll-view> -->
     <!-- 评价 结束 -->
-
+    <!--新版评价页面-->
+   <scroll-view 
+    	wx:if="{{tab.cur==='评价'}}" 
+    	class="new-evaluate"
+    	scroll-y="true"
+    	style="height:{{windowScrollHeight}}px"
+    	bindscrolltolower="loadMore">
+    	<view class="new-evaluate-header">
+		   <view class="new-evaluate-userinfo">
+		       <view>
+			      <text class="new-evaluate-userinfo-number">{{tage.formatFloat(item.merchantScore,1)}}</text>
+			   </view>
+			   <view class="new-evaluate-userinfo-star">
+				   <text class="new-evaluate-userinfo-star-text">商家评分</text>
+				   <template is="star-ship" data="{{size:36,item}}"></template>
+			   </view>
+		   </view>
+		   <view class="new-evaluate-right">
+			   <view class="new-evaluate-right-item">
+				   <text class="new-evaluate-right-text">味道</text>
+				   <text class="new-evaluate-right-number">{{tage.formatFloat(item.tasteScore,1)}}</text>
+			   </view>
+			   <view class="new-evaluate-right-item">
+				   <text class="new-evaluate-right-text">包装</text>
+				   <text class="new-evaluate-right-number">{{tage.formatFloat(item.packagingScore,1)}}</text>
+			   </view>
+			    <view class="new-evaluate-right-item" style="padding-left:50rpx;border-left:1px solid #e9e9e9">
+				   <text class="new-evaluate-right-text">配送</text>
+				   <text class="new-evaluate-right-number">{{tage.formatFloat(item.shipScore,1)}}</text>
+			   </view>
+			</view>
+	    </view>
+		<view class="new-valuate-content">
+          <view class="new-valuate-content-header">
+			  <view class="new-valuate-content-btns">
+			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 0 ? 'new-valuate-btn-hover1':''}}"  data-id='0'  catch:tap="evaluateBtnSwitch">全部<text>{{evaluate.allCount}}</text></button>
+			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 1 ? 'new-valuate-btn-hover1':''}}"  data-id='1'  catch:tap="evaluateBtnSwitch">好评<text>{{evaluate.goodCount}}</text></button>
+			    <button class="new-valuate-btn2 {{selestEvaluateStatus == 2 ? 'new-valuate-btn-hover2':''}}"  data-id="2"  catch:tap="evaluateBtnSwitch">差评<text>{{evaluate.poorCount}}</text></button>
+			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 3 ? 'new-valuate-btn-hover1':''}}"  data-id="3"  catch:tap="evaluateBtnSwitch">有图<text>{{evaluate.imgCount}}</text></button>
+			  </view>
+			  <view class="new-valuate-checkbox" catch:tap="merchantComIsFilterEmptySwitch">
+				<icon type="success" color="{{isHaveContent==1 ? 'green':'grey'}}" size="11" style="margin-right:10rpx;vertical-align:middle"></icon><text>只看有内容的评价</text>
+			  </view>
+		  </view>
+		  <view class="new-valuate-content-main">
+                <block wx:for="{{evaluate.list}}" wx:key="{{item.id}}">
+					<view class="new-valuate-item" >
+						<view class="new-valuate-item-userinfo">
+							<view class="new-evaluate-userinfo">				
+								<image class="new-evaluate-userinfo-image" src="{{item.appUser.headerImg!='' ? item.appUser.headerImg:'../image/headerImage.png'}}"></image>
+								<view class="new-evaluate-userinfo-star" style="margin-left:10rpx;">
+									<text class="new-evaluate-userinfo-star-text">{{item.isAnonymous==1? '匿名用户' : tage.strReplace(item.appUser.name)}}</text>
+									<template is="star-valuate" data="{{size:36,item}}" ></template>
+									<text style="vertical-align:text-bottom;color:#ff9900;font-size:22rpx;">{{tage.numberToText(item.merchantScore)}}</text>
+								</view>
+							</view>
+							<view class="new-evaluate-userinfo-time">
+								<text>{{item.modifyTime}}</text>
+							</view>
+						</view><!--评论的头像，名字，时间。部分结束-->
+						<view class="new-valuate-item-main"><!--评论内容开始-->
+							<text class="new-valuate-item-mainText">{{item.merchantComments || '客户未及时做出评价，系统默认好评'}}</text>
+							<view class="new-valuate-item-main-images flex" wx:if="{{item.isImg==1}}">
+								<image src="{{item.imgUrl}}" class="new-valuate-item-main-image"></image>
+							</view>
+							<view  wx:if="{{item.goodsCommentsList.length!=0}}">
+								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0}}" class="new-valuate-item-icon flex">
+									<image src="../image/zan.png"></image><!-- 赞-->
+									<view class="new-valuate-item-iconText">
+										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores}}"
+											wx:for-index="goodsIndex"
+											wx:for-item="goodsItem"
+											wx:key="orderId">
+											<text>{{goodsItem.goodsName}}</text>
+										</block>
+									</view>
+								</view>
+								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex">
+									<image src="../image/cai.png"></image><!--踩-->
+									<view class="new-valuate-item-iconText">
+										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores}}"
+											wx:for-index="goodsIndex"
+											wx:for-item="goodsItem"
+											wx:key="id">
+											<text>{{goodsItem.goodsName}}</text>
+										</block>
+								    </view>
+								</view>
+							</view>
+					   </view>
+					</view>
+			    </block>
+		    </view><!--content-main结束：即评论部分-->
+		 </view>
+		 	<view class="loading-info" wx:if="{{!loading && evaluate.list.length > 4}}">
+	        <image src="../../images/merchant/loading.png" class="img-loading"></image>
+	        <view class="loading-text">正在加载，请稍候</view>
+	    </view>
+	    <view class="bottom-info" wx:if="{{loading}}">
+     		<view class="bottom-text">暂无更多评价</view>
+    	</view>
+	</scroll-view>
     <!-- 商家 开始 -->
     <view wx:if="{{tab.cur==='商家'}}" class="shop">
     	<view class="shop-header font-12">

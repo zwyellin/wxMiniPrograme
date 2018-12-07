@@ -9,7 +9,7 @@
 .star-48 .star-item{
 	width:38rpx;
 	height: 38rpx;
-	margin-right: 10rpx;
+	padding-right: 10rpx;
 }
 .star-item:last-child{
 	margin-right: 0;
@@ -60,4 +60,9 @@
 .star-24 .off{
 	width:20rpx;
 	height: 20rpx;
+}
+.star-60 .star-item{
+	width: 60rpx;
+	height: 60rpx;
+	padding-right: 28rpx;
 }

@@ -26,10 +26,13 @@ Page(Object.assign({}, merchantShop,{
 	      afterChange: "afterTabChange"
 	    },
 	    evaluateSize:5,        //评价加载数量
-        evaluateStart:0,      //评价开始位置
-        isEvaluate:false,
+		evaluateStart:0,      //评价开始位置
+		evaluateType:0,        //0所有，1好评，2差评，3有图
+		isEvaluate:false,
+		isHaveContent:0,//0表示所有，1表示要有内容的
 	    tabIndex:0,
-	    merchantId:null,
+		merchantId:null,
+		merchantComIsFilterEmpty:false,
 	    selectParentIndex:0,
 	    selectIndex:0,
 	    choice:false,
@@ -57,7 +60,9 @@ Page(Object.assign({}, merchantShop,{
 	    itemList:{},     //商家信息
 	    item:{},
 	    shipScore:0,
-	    evaluate:[],
+		evaluate:{},
+		selestEvaluateStatus:0,
+		evaluateList:[],
 		value:{},       //确认订单后台返回信息
 		pickertag:false,
 		selects:false,
