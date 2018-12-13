@@ -69,7 +69,6 @@
         "redbag/merchantRedbag/merchantRedbag",
         "redbag/platformRedbag/platformRedbag",
         "remarks/remarks",
-        "evaluate/evaluate",
         "createComments/createComments"
       ]
     }
