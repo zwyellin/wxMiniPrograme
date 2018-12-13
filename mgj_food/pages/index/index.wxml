@@ -64,7 +64,7 @@
 	<view wx:if="{{!isAgentId}}" >
 		<!-- 外卖分类 开始 -->
 		<view class="class-block flex">
-			<navigator class="class-content" url="/pages/classPage/classPage?id={{item.tagCategoryId}}&name={{item.name}}"
+			<view class="class-content" bindtap="goToPageType" data-item="{{item}}"
 				wx:for="{{initClassList}}" 
 			    wx:for-index="index" 
 			    wx:for-item="item" 
@@ -74,7 +74,7 @@
 				<view class="class-text">
 					<text>{{item.name}}</text>
 				</view>	
-			</navigator>
+			</view>
 		</view>
 		<!-- 外卖分类 结束 -->
 		<view class="black"></view>

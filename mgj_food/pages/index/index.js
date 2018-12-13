@@ -402,6 +402,8 @@ Page(Object.assign({}, merchantObj, {
         	method:'POST',
         	data:{
         		token: app.globalData.token,
+        		client: app.globalData.client,
+        		clientVersion:app.globalData.clientVersion,
         		params:{
         			agentId:app.globalData.agentId,
         			longitude:app.globalData.longitude,
@@ -622,7 +624,7 @@ Page(Object.assign({}, merchantObj, {
 	},
 	onShareAppMessage(res) {
     	return {
-      		title: '马管家外卖',
+      		title: '马管家',
       		path: "/pages/index/index",
       		success: function(res) {
         		// 转发成功

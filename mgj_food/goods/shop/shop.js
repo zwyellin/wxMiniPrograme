@@ -287,7 +287,7 @@ Page(Object.assign({}, merchantShop,{
 					value.parentRelationCategoryId = item.relationCategoryId
 					removalMenuList.push(value);
 					if (value.hasDiscount ===1) {
-						this.data.everyOrderBuyCount = value.everyOrderBuyCount;
+						this.data.everyOrderBuyCount = value.discountedGoods.goodsRestrictedPurchaseRule.everyOrderBuyCount;
 					}	
 				});
 			}
@@ -771,7 +771,6 @@ Page(Object.assign({}, merchantShop,{
 		let attributes = '';
 		let id = food.id; //选择的产品id
 		let categoryId = food.categoryId;  //选择的产品分类id
-		console.log(parentIndex);
 		let priceObject = {}; //产品价格对象
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
@@ -1382,7 +1381,7 @@ Page(Object.assign({}, merchantShop,{
 	},
 	onShareAppMessage(res) {
     	return {
-      		title: '马管家外卖',
+      		title: '马管家',
       		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude,
       		success: function(res) {
         		// 转发成功

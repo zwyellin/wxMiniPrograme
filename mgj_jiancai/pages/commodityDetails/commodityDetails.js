@@ -289,7 +289,7 @@ Page(Object.assign({}, commonAnimations, {
           if (isYes) {
             var cartItem = globalData.cart[index].list.filter(item => {
               if (item.id === this.data.selectCommodity.id) {
-                item.quantity = item.quantity + this.data.quantity
+                item.quantity = item.quantity + parseInt(this.data.quantity)
               }
               return item
             })
@@ -434,7 +434,7 @@ Page(Object.assign({}, commonAnimations, {
     let value = e.detail.value
     if (value == 0 ) value = 1
     this.setData({
-      quantity:value
+      quantity:parseInt(value)
     })
   },
   //阻止遮罩层
