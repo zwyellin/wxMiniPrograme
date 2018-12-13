@@ -22,6 +22,7 @@ App({
         } else {
           this.globalData.client = "android";
         }
+        this.globalData.pixelRatio = res.pixelRatio;
         console.log(res.model);
         console.log(res.pixelRatio);
         console.log(res.windowWidth);
@@ -111,6 +112,7 @@ App({
     token:'',
     client:'',
     agentPhone:null,
+    pixelRatio:null,
     agentId:null,
     userId:null,
     addressInfo:null,

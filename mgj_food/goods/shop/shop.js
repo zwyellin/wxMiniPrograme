@@ -29,7 +29,7 @@ Page(Object.assign({}, merchantShop,{
 		evaluateStart:0,      //评价开始位置
 		evaluateType:0,        //0所有，1好评，2差评，3有图
 		isEvaluate:false,
-		isHaveContent:0,//0表示所有，1表示要有内容的
+		isHaveContent:1,//0表示所有，1表示要有内容的
 	    tabIndex:0,
 		merchantId:null,
 		merchantComIsFilterEmpty:false,
@@ -84,9 +84,15 @@ Page(Object.assign({}, merchantShop,{
             baseHeight: 1126,
             scaleWidth: 680,
             scaleHeight: 1126
-        }
+		},
+		windowWidth:750
 	},
 	onLoad(options) {
+		//设置windowWidth
+		let windowWidth=app.globalData.windowWidth*2
+	    this.setData({
+			windowWidth:windowWidth
+		})
 		let { merchantid,longitude,latitude} = options;
 		this.data.merchantId = merchantid;
 		// this.data.merchantId = 221;
@@ -159,9 +165,13 @@ Page(Object.assign({}, merchantShop,{
 		//获取系统信息 主要是为了计算产品scroll的高度
 	    wx.getSystemInfo({
 		    success: res => {
+				//根据app.globalData.pixelRatio转化为像素 格式为:px/pixelRatio=px
+				let heightPx=280/app.globalData.pixelRatio;
+				console.log("heightPx",280*res.windowWidth/750)
 		        this.setData({
-		          windowScrollHeight: res.windowHeight - 140
-		        });
+		          windowScrollHeight: res.windowHeight - 280*res.windowWidth/750
+				});
+				console.log("onload中，高度为",res.windowHeight,app.globalData.pixelRatio)
 		    }
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   

@@ -1,47 +1,8 @@
 <wxs module="star" src="../../utils/star.wxs"></wxs>
-<template name="star-add">
+<template name="star-AttrScore"><!--hcl 添加 -->
 	<view class="star star-{{size}}" >
 		<block
-			wx:for="{{star.itemClasses(item.averageScore)}}" 
-	      	wx:for-index="idx" 
-	      	wx:for-item="item" 
-	      	wx:key="idx">
-			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="../../images/star/star36_on@2x.png"></image>
-			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="../../images/star/star36_off@2x.png"></image>
-			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="../../images/star/star36_half@2x.png"></image>
-		</block>
-	</view>
-</template>
-<template name="star-userevaluate">
-	<view class="star star-{{size}}" >
-		<block
-			wx:for="{{star.itemClasses(item.merchantScore)}}" 
-	      	wx:for-index="idx" 
-	      	wx:for-item="item" 
-	      	wx:key="idx">
-			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="../../images/star/star36_on@2x.png"></image>
-			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="../../images/star/star36_off@2x.png"></image>
-			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="../../images/star/star36_half@2x.png"></image>
-		</block>
-	</view>
-</template>
-<template name="star-ship">
-	<view class="star star-{{size}}" >
-		<block
-			wx:for="{{star.itemClasses(item.shipScore)}}" 
-	      	wx:for-index="idx" 
-	      	wx:for-item="item" 
-	      	wx:key="idx">
-			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="../../images/star/star36_on@2x.png"></image>
-			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="../../images/star/star36_off@2x.png"></image>
-			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="../../images/star/star36_half@2x.png"></image>
-		</block>
-	</view>
-</template>
-<template name="star-valuate">
-	<view class="star star-{{size}}" >
-		<block
-			wx:for="{{star.itemClasses(item.merchantScore)}}" 
+			wx:for="{{star.itemClasses(item[AttrName])}}" 
 	      	wx:for-index="idx" 
 	      	wx:for-item="item" 
 	      	wx:key="idx">
@@ -61,19 +22,6 @@
 			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="../../images/star/star36_on@2x.png" data-evaluate="{{evaluate}}" data-index="{{idx}}" catchtap="starNum" ></image>
 			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="../../images/star/star36_off@2x.png" data-index="{{idx}}" data-evaluate="{{evaluate}}" catchtap="starNum" ></image>
 			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="../../images/star/star36_half@2x.png" data-index="{{idx}}" dtat-evaluate="{{evaluate}}" catchtap="starNum" ></image>
-		</block>
-	</view>
-</template>
-<template name="star60-click">
-	<view class="star star-{{size}}" >
-		<block
-			wx:for="{{star.itemClasses(item.merchantScore)}}" 
-	      	wx:for-index="idx" 
-	      	wx:for-item="item" 
-	      	wx:key="idx">
-			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="../../images/star/star60_on@2x.png" data-evaluate="{{evaluate}}" data-index="{{idx}}" catchtap="starNum" ></image>
-			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="../../images/star/star60_off@2x.png" data-index="{{idx}}" data-evaluate="{{evaluate}}" catchtap="starNum" ></image>
-			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="../../images/star/star60_half@2x.png" data-index="{{idx}}" dtat-evaluate="{{evaluate}}" catchtap="starNum" ></image>
 		</block>
 	</view>
 </template>

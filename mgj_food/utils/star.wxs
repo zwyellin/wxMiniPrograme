@@ -96,6 +96,17 @@ var cart = {
 	splitStr: function(str){
 		return str.split('|*|');
 	},
+	splitStrToArr:function(str,separator,IsImg,w){
+		//如果是图片，则高清处理
+		if(IsImg&&w){//传这个参数，则会对图片高清处理	
+			var Imgstr="?imageView2/0/w/"+w+"/h/"+w+"/q/100!"
+			return str.split(separator).map(function(ele){
+				return ele+Imgstr;
+			});
+		}else{
+			return str.split(separator);
+		} 
+	},
 	//计算购物车中当前产品的数量
 	getCount: function (cartlist, id) {
 	    var count = 0;
@@ -237,6 +248,7 @@ module.exports = {
   shopFloat:cart.shopFloat,
   praise: cart.praise,
   splitStr:cart.splitStr,
+  splitStrToArr:cart.splitStrToArr,
   getCount:cart.getCount,
   getCartCount:cart.getCartCount,
   getItemCount:cart.getItemCount,

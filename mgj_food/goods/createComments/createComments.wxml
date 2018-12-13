@@ -5,7 +5,7 @@
 	<view id="deliveryImages"><!--骑手部分 -->
          <view class="delivery flex flexbetween paddingl-r15"><!--骑手评价头部-->
              <view class="delivery-l flex">
-                <image src="{{initInfo.deliveryTask.deliveryman.headerImg}}"></image>
+                <image src="{{initInfo.deliveryTask.deliveryman.headerImg!='' ? initInfo.deliveryTask.deliveryman.headerImg : '../image/headerImage.png'}}"></image>
                 <view class="delivery-l-text flex">
                     <text style="color:#333333;font-size:30rpx">{{initInfo.deliveryTask.deliveryman.name}}</text>
                     <text style="color:#666666;font-size:24rpx;margin-top:16rpx">{{initInfo.deliveryTask.arrivalMerchantTime}}送达</text>
@@ -41,7 +41,7 @@
     <view ><!--对商家评价-->
          <view class="merchant-header flex flexbetween paddingl-r15">
              <view class="merchant-header-l flex">
-                 <image src="{{initInfo.merchant.logo}}"></image>
+                 <image src="{{initInfo.merchant.logo!=null ? initInfo.merchant.logo : '/images/merchant/merchantLogo.png'}}"></image>
                  <text>{{initInfo.merchant.name}}</text>
              </view>
              <view class="merchant-header-r">
@@ -53,7 +53,7 @@
          <view class="merchant-main paddingl-r15 bgColorfff">
              <view class="merchantScore flex" id="merchantScore">
                  <view>
-				    <template is="star60-click" data="{{size:60,item:{merchantScore:merchantScore},evaluate:'merchantScore'}}"></template>
+				    <template is="star-click" data="{{size:60,item:{merchantScore:merchantScore},evaluate:'merchantScore'}}"></template>
                  </view>
                  <text wx:if="{{merchantScore!=0}}">{{tage.numberToText(merchantScore)}}</text>
              </view>
@@ -74,17 +74,19 @@
             <view wx:if="{{pickageScore!=0 && tasteScore !=0}}" id="textareaView">
                 <view class="textareaView" >
                     <textarea class="rich-textarea-text" wx:if="{{!chooseImage}}" value="{{textareaValue}}" placeholder="请告诉我们你在订餐中的感受" placeholder-style="color:#cccccc;" maxlength="{{textareaInfo.maxLength}}" bindinput="merchantTextareaInput"/>
-                    <view class='rich-textarea-text' wx:else>
+                    <!-- <view class='rich-textarea-text' wx:else>
                         <rich-text nodes="{{textareaInfo.value}}"></rich-text>
-                    </view>
-                    <text style="font-size:22rpx;color:#ccc">{{textareaInfo.currentLength}}/{{textareaInfo.maxLength}}字</text>
+                    </view> -->
+                    <text class='rich-textarea-text' style="overflow-y:scroll;" wx:else>{{textareaInfo.value}}</text>
+                    <text style="position:absolute;bottom: 18rpx;right:20rpx;font-size:22rpx;color:#ccc">{{textareaInfo.currentLength}}/{{textareaInfo.maxLength}}字</text>
                 </view>
-                <scroll-view class="addImage" scroll-x >
-                    <block wx:for="{{imageList}}" wx:key="index">
-                       <image src="{{item}}" catch:tap="" style="margin-right:20rpx"></image> 
-                    </block>
-                    <image src="../../images/images/addImage.png" catch:tap="addImageTap"></image>
-                </scroll-view>
+                <view class="addImage flex">
+                    <view wx:for="{{imageList}}" wx:key="index" style="position: relative;margin-right:{{(index+1)%4===0 ? '' : '28rpx'}};margin-top:{{index>=4? '20rpx' : ''}}">
+                       <image  mode="aspectFit" src="{{item}}"  style="border:1px solid grey;box-sizing:border-box;padding:5rpx;" catch:tap="imageTap" data-imgs="{{imageList}}" data-current="{{item}}"></image> 
+                       <text  catch:tap="deleteImage" data-index="{{index}}">X</text>
+                    </view>
+                    <image src="../../images/images/addImage.png" catch:tap="addImageTap" style="margin-top:{{imageList.length>=4 ? '20rpx' : ''}}"></image>
+                </view>
             </view>
          </view><!--商家评价主体部分结束-->
     </view>

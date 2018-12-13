@@ -240,72 +240,8 @@
 			    </view>
 		</scroll-view>
     </view>
-    <!-- 商品 结束 -->
-
-    <!-- 评价 开始 -->
-    <!-- <scroll-view 
-    	wx:if="{{tab.cur==='评价'}}" 
-    	class="evaluate"
-    	scroll-y="true"
-    	style="height:{{windowScrollHeight}}px"
-    	bindscrolltolower="loadMore">
-    	<view class="evaluate-wrapper">
-    		<view class="evaluate-left">
-    			<view class="evaluate-text">
-    				<text style="color:#e6a243">{{tage.shopFloat(itemList.averageScore,1)}}</text>
-    			</view>
-    			<view class="evaluate-text font-12">
-    				<text>综合评分</text>
-    			</view>
-    		</view>
-    		<view class="evaluate-right">
-				<view class="evaluate-right-text font-12">
-					<label class="text-right">配送服务</label>
-					<template is="star-ship" data="{{size,item}}"></template>
-					<text class="text-left">{{tage.shopFloat(itemList.shipScore,1)}}分</text>
-				</view>
-				<view class="evaluate-right-text font-12" style="margin-top: 12rpx">
-					<label class="text-right">商家服务</label>
-					<template is="star-add" data="{{size,item}}"></template>
-					<text class="text-left">{{tage.shopFloat(itemList.merchantScore,1)}}分</text>
-				</view>
-    		</view>
-    	</view>
-    	<view class="evaluate-content">
-    		<view class="evaluate-border"
-    			wx:for="{{evaluate}}" 
-		    	wx:for-item="item" 
-		    	wx:for-index="index" 
-		    	wx:key="index">
-    			<view class="flex font-12">
-	    			<template is="star-userevaluate" data="{{size,item}}"></template>
-					<text class="text-left font-16" style="margin-top: -6rpx">{{item.merchantScore}}分</text>
-					<image class="message-img" src="../../images/images/time.png"></image>
-					<text style="margin-top: 4rpx">{{item.deliveryCost || 0}}分钟送达</text>
-	    		</view>
-	    		<view class="evaluate-message font-14">
-	    			<text>{{item.merchantComments || '该用户没有做具体评价哦！'}}</text>
-	    		</view>
-	    		<view class="evaluate-message font-12" style="margin-top: 16rpx">
-	    			<text>{{item.modifyTime}}</text>
-	    		</view>
-	    		<view class="evaluate_right font-12">
-	    			<text class="evaluate_text">{{tage.strReplace(item.appUser.name)}}</text>
-	    			<image wx:if="{{item.appUser.headerImg}}" class="evaluate_img" src="{{item.appUser.headerImg}}" ></image>
-	    			<image wx:if="{{!item.appUser.headerImg}}" class="evaluate_img" src="/images/images/login_no.png" ></image>
-	    		</view>
-	    		<view wx:if="{{item.replyContent}}" class="reply">商家回复: {{item.replyContent}}</view>
-    		</view>	
-    	</view>
-    	<view class="loading-info" wx:if="{{!loading && evaluate.length > 4}}">
-	        <image src="/images/merchant/loading.png" class="img-loading"></image>
-	        <view class="loading-text">正在加载，请稍候</view>
-	    </view>
-	    <view class="bottom-info" wx:if="{{!evaluate.length && loading}}">
-     		<view class="bottom-text">暂无更多评价</view>
-    	</view>
-    </scroll-view> -->
-    <!-- 评价 结束 -->
+	<!-- 商品 结束 -->
+	
     <!--新版评价页面-->
    <scroll-view 
     	wx:if="{{tab.cur==='评价'}}" 
@@ -316,11 +252,11 @@
     	<view class="new-evaluate-header">
 		   <view class="new-evaluate-userinfo">
 		       <view>
-			      <text class="new-evaluate-userinfo-number">{{tage.formatFloat(item.merchantScore,1)}}</text>
+			      <text class="new-evaluate-userinfo-number">{{tage.formatFloat(item.averageScore,1)}}</text>
 			   </view>
 			   <view class="new-evaluate-userinfo-star">
 				   <text class="new-evaluate-userinfo-star-text">商家评分</text>
-				   <template is="star-ship" data="{{size:36,item}}"></template>
+				   <template is="star-AttrScore" data="{{size:36,item,AttrName:'averageScore'}}"></template>
 			   </view>
 		   </view>
 		   <view class="new-evaluate-right">
@@ -358,20 +294,29 @@
 								<image class="new-evaluate-userinfo-image" src="{{item.appUser.headerImg!='' ? item.appUser.headerImg:'../image/headerImage.png'}}"></image>
 								<view class="new-evaluate-userinfo-star" style="margin-left:10rpx;">
 									<text class="new-evaluate-userinfo-star-text">{{item.isAnonymous==1? '匿名用户' : tage.strReplace(item.appUser.name)}}</text>
-									<template is="star-valuate" data="{{size:36,item}}" ></template>
+									<template is="star-AttrScore" data="{{size:36,item,AttrName:'merchantScore'}}" ></template>
 									<text style="vertical-align:text-bottom;color:#ff9900;font-size:22rpx;">{{tage.numberToText(item.merchantScore)}}</text>
 								</view>
 							</view>
 							<view class="new-evaluate-userinfo-time">
-								<text>{{item.modifyTime}}</text>
+								<text>{{item.createTime}}</text>
 							</view>
 						</view><!--评论的头像，名字，时间。部分结束-->
-						<view class="new-valuate-item-main"><!--评论内容开始-->
-							<text class="new-valuate-item-mainText">{{item.merchantComments || '客户未及时做出评价，系统默认好评'}}</text>
+						<view class="new-valuate-item-main"><!--评论内容开始 主内容 -->
+							<text class="new-valuate-item-mainText" wx:if="{{!item.merchantComments}}" style="color:#9a9a9a">该用户没有做具体评价哦！</text><!--顾客评价-->
+							<text class="new-valuate-item-mainText" wx:else>{{item.merchantComments}}</text><!--顾客评价-->
 							<view class="new-valuate-item-main-images flex" wx:if="{{item.isImg==1}}">
-								<image src="{{item.imgUrl}}" class="new-valuate-item-main-image"></image>
+							    <block wx:for="{{tage.splitStrToArr(item.imgUrl,';','true','198')}}"
+								       wx:key="imgIndex"
+								       wx:for-item="imgItem"
+									   wx:for-index="imgIndex"><!--tage.splitStrToArr 参数为：要解析的字符串，分隔符，是否图片加高清，高清图片的宽度-->
+									<image src="{{imgItem ? imgItem : '../images/merchant/merchantLogo.png'}}" class="new-valuate-item-main-image"
+									 catch:tap="valuateItemImageTap" data-current="{{imgIndex}}" data-imgs="{{tage.splitStrToArr(item.imgUrl,';','true',windowWidth)}}"
+									 style="margin-right:{{(imgIndex+1)%3==0 ? '':'16rpx'}};margin-top:16rpx"></image>
+								</block>		
 							</view>
-							<view  wx:if="{{item.goodsCommentsList.length!=0}}">
+							<text class="new-valuate-item-mainText mt20" wx-if="{{item.replyContent!==null}}"><text>商家回复:</text>{{item.replyContent}}</text><!--商家回复-->
+							<view  wx:if="{{item.goodsCommentsList.length!=0}}"><!--赞，踩列表-->
 								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0}}" class="new-valuate-item-icon flex">
 									<image src="../image/zan.png"></image><!-- 赞-->
 									<view class="new-valuate-item-iconText">
@@ -383,7 +328,7 @@
 										</block>
 									</view>
 								</view>
-								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex">
+								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex" style="margin-top:0;">
 									<image src="../image/cai.png"></image><!--踩-->
 									<view class="new-valuate-item-iconText">
 										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores}}"
@@ -415,7 +360,7 @@
     			<text>{{itemList.name}}</text>
     		</view>
 			<view class="shop-text" style="margin-top:16rpx">
-    			<template is="star-add" data="{{size,item}}"></template>
+    			<template is="star-AttrScore" data="{{size,item,AttrName:'averageScore'}}"></template>
     			<text style="color:#ff9900;margin-left:10rpx">{{tage.shopFloat(itemList.averageScore,1)}}分</text>
     			<text style="color:#666;margin-left:20rpx">月售{{itemList.monthSaled}}单</text>
     		</view>

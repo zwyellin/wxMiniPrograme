@@ -137,21 +137,26 @@
     border-radius: 5rpx;
     font-size: 26rpx;
     line-height: 1.4;
-}
-.textareaView text{
-    position: absolute;
-    bottom: 18rpx;
-    right:20rpx;
+    word-break: break-all;
+    word-wrap: break-word;
+    display: block;
 }
 .addImage{
     margin-top: 30rpx;
-    width: 100%;
-    height: 150rpx;
-    white-space: nowrap;/*元素不换行，否则会在下一行显示，不会出现滚动条*/
+    width: 100%;/*white-space: nowrap;元素不换行，否则会在下一行显示，不会出现滚动条*/
+    flex-wrap: wrap;
 }
 .addImage image{
     width: 150rpx;
     height: 150rpx;
+}
+.addImage text{
+    position:absolute;
+    top:0;
+    right:0;
+    display:inline-block;
+    padding:0 15rpx;
+    background-color:grey;
 }
 /*菜单列表 赞 踩*/
 .goodsComments{

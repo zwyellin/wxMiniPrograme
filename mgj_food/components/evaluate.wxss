@@ -132,20 +132,21 @@
 	color:#333333;
 	font-size: 24rpx;
 	line-height: 1.5;
+	word-break:break-all;
 }
 .new-valuate-item-mainText{
 	display: block;
 	font-size:24rpx;
 	color:#333333;
-	font-weight: bold;
 	line-height:1.5;
 }
 .new-valuate-item-main-images{
-	margin-top: 30rpx;
+	flex-wrap: wrap;
 }
 .new-valuate-item-main-image{
-	width: 300rpx;
-	height: 300rpx;
+	width:200rpx;
+	height:200rpx;
+	border-radius:10rpx;
 }
 .new-valuate-item-icon{
 	margin-top: 20rpx;
@@ -154,6 +155,7 @@
 	width: 30rpx;
 	height:30rpx;
 	margin-top:5rpx;
+	flex:0 0 auto;
 }
 .new-valuate-item-iconText{
 	display: flex;
@@ -166,7 +168,6 @@
 	background: #fcefdb;
 	color:#b97f27;
 	font-size: 22rpx;
-	line-height: 22rpx;
 	padding:9rpx 20rpx;
 	border-radius:5rpx;	
 	margin-bottom: 10rpx;

@@ -191,6 +191,15 @@ const merchantShop = {
 			that.getevaluate(false);//加载,过滤下有可能返回的数据，过滤之后没有一条
 		})
 	},
+	valuateItemImageTap(e){//评论区图片点击事件，进入预览
+		var imgs=e.target.dataset.imgs;
+		var current=imgs[e.target.dataset.current];//index
+		console.log("图片预览",imgs)
+		wx.previewImage({
+			current: current, // 当前显示图片的http链接
+			urls:imgs // 需要预览的图片http链接列表
+		  })
+	},
 	//加载更多评价
 	loadMore(e){  
         this.data.evaluateStart = this.data.evaluate.list.length;
