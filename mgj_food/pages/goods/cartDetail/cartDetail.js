@@ -1,7 +1,6 @@
 const { wxRequest, formatTime, trackTime } = require('../../../utils/util.js');
 const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const app = getApp();
-
 Page({
 	data:{
 		orderRedAnimation:null,
@@ -231,8 +230,8 @@ Page({
 	},
 	evaluateOrder(){
 		wx.navigateTo({
-			url: '/goods/evaluate/evaluate'
-		});
+			url: '/goods/createComments/createComments?orderid=' + this.data.orderid
+		  });
 	},
 	refundDetail(e){
       	let { food } = e.currentTarget.dataset;

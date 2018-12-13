@@ -86,7 +86,6 @@ Page(Object.assign({}, merchantObj, {
 			wxGetLocation({
 				type:'gcj02'
 			}).then(res=>{
-				console.log(res);
 				let lat = res.latitude;
 				let lng = res.longitude;
 				this.data.obj = {
@@ -96,8 +95,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				app.globalData.longitude = longitude;
-				app.globalData.latitude = latitude;
+				// app.globalData.longitude =longitude;
+				// app.globalData.latitude =latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;
@@ -158,7 +157,6 @@ Page(Object.assign({}, merchantObj, {
 		return new Promise((resolve,reject)=>{
 			wx.getSetting({
 			    success: (res) => {
-			        console.log(res);
 			        if (res.authSetting["scope.userLocation"] !=true) {
 			        	this.setData({
 							isAgentId:true

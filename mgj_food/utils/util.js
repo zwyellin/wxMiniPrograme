@@ -240,6 +240,7 @@ const bd09togcj02 = function (lng, lat){
 }
 module.exports = {
   format,
+  formatNumber,
   formatTime,
   deepClone,
   wxRequest,

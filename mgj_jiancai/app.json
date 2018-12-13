@@ -1,8 +1,8 @@
 {
   "pages":[
+    "pages/evaluate/evaluate",
     "pages/accredit/accredit",
     "pages/sellerHome/sellerHome",
-    "pages/evaluate/evaluate",
     "pages/order-commodity/order-commodity",
     "pages/bindPhone/bindPhone",
     "pages/shopProcess/shopProcess",

@@ -24,6 +24,7 @@ App({
           this.globalData.client = "android";
           this.globalData.clientVersion = "3.2.3";
         }
+        this.globalData.pixelRatio = res.pixelRatio;
         console.log(res.model);
         console.log(res.pixelRatio);
         console.log(res.windowWidth);
@@ -114,19 +115,20 @@ App({
     client:'',
     clientVersion:'3.2.3',
     agentPhone:null,
+    pixelRatio:null,
     agentId:null,
     userId:null,
     addressInfo:null,
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain: 'https://wxapi.horsegj.com',
+    domain: 'https://prelaunch.horsegj.com',
     windowHeight: 0,
     windowWidth:0,
-    // latitude:'39.977261',
-    // longitude:'116.336983'
-    latitude:'',
-    longitude:''
+    latitude:'39.966128',
+    longitude:"116.304782"
+    // latitude:'',
+    // longitude:''
   }
 });
 // prelaunch

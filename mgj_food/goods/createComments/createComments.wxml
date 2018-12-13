@@ -1,0 +1,121 @@
+<import src="../../components/star/star.wxml" />
+<import src="../../components/showToast/showToast.wxml" />
+<wxs module="tage" src="../../utils/star.wxs"></wxs>
+<view class="container page-common font-16">
+	<view id="deliveryImages"><!--骑手部分 -->
+         <view class="delivery flex flexbetween paddingl-r15"><!--骑手评价头部-->
+             <view class="delivery-l flex">
+                <image src="{{initInfo.deliveryTask.deliveryman.headerImg!='' ? initInfo.deliveryTask.deliveryman.headerImg : '../image/headerImage.png'}}"></image>
+                <view class="delivery-l-text flex">
+                    <text style="color:#333333;font-size:30rpx">{{initInfo.deliveryTask.deliveryman.name}}</text>
+                    <text style="color:#666666;font-size:24rpx;margin-top:16rpx">{{initInfo.deliveryTask.arrivalMerchantTime}}送达</text>
+                </view>
+             </view>
+             <view class="deliery-r flex"> 
+                <text>评价对骑手匿名</text>
+             </view>
+         </view>
+         <view class="bgColorfff"><!--骑手评价评论区-->
+           <view class="deliveryImages flex" >
+                <view class="deliveryImagesItem flex" style="margin-right:78rpx" catch:tap="deliveryImageTap" data-id='0'>
+                    <image src="../../images/images/bad-face{{deliveryImageActiveNum===0 ? '-active':''}}.png" ></image>
+                    <text style="color:{{deliveryImageActiveNum===0 ? '#ff9900':''}}">非常差</text>
+                </view>
+                <view class="deliveryImagesItem flex" style="margin-right:78rpx" catch:tap="deliveryImageTap" data-id='1'>
+                    <image src="../../images/images/soso-face{{deliveryImageActiveNum===1 ? '-active':''}}.png" ></image>
+                    <text style="color:{{deliveryImageActiveNum===1 ? '#ff9900':''}}">一般</text>
+                </view>
+                <view class="deliveryImagesItem flex" catch:tap="deliveryImageTap" data-id='2'>
+                    <image src="../../images/images/good-face{{deliveryImageActiveNum===2 ? '-active':''}}.png" ></image>
+                    <text style="color:{{deliveryImageActiveNum===2 ? '#ff9900':''}}">超赞</text>
+                </view>
+            </view>
+            <view class="deliveryComments flex" id="deliveryComments">
+                 <block wx:for="{{deliveryCommentsArr[deliveryImageActiveNum]}}"
+                        wx:key='index'>
+                        <button class="{{deliveryBtn[index] ? 'deliveryCommentsBtnActive':'deliveryCommentsBtn'}}" hover-class="none" style="margin-right:{{(index)%3!=2? '20rpx' :''}}" catch:tap="deliveryBtnTap" data-id="{{index}}">{{item}}</button>
+                 </block>
+            </view>
+         </view>       
+    </view>
+    <view ><!--对商家评价-->
+         <view class="merchant-header flex flexbetween paddingl-r15">
+             <view class="merchant-header-l flex">
+                 <image src="{{initInfo.merchant.logo!=null ? initInfo.merchant.logo : '/images/merchant/merchantLogo.png'}}"></image>
+                 <text>{{initInfo.merchant.name}}</text>
+             </view>
+             <view class="merchant-header-r">
+                 <label class="flex" style="align-items:center;" catch:tap="isAnonymousSwitch">
+                     <checkbox color="#ff9900" />匿名评价
+                 </label>
+             </view>
+         </view>
+         <view class="merchant-main paddingl-r15 bgColorfff">
+             <view class="merchantScore flex" id="merchantScore">
+                 <view>
+				    <template is="star-click" data="{{size:60,item:{merchantScore:merchantScore},evaluate:'merchantScore'}}"></template>
+                 </view>
+                 <text wx:if="{{merchantScore!=0}}">{{tage.numberToText(merchantScore)}}</text>
+             </view>
+             <view wx:if="{{merchantScore!=0}}" id="pickageScore">
+                <view class="pickageScore flex">
+                    <text>包装</text>
+                    <view>
+                        <template is="star-click" data="{{size:48,item:{merchantScore:pickageScore},evaluate:'pickageScore'}}"></template>
+                    </view>
+                </view>
+                <view class="pickageScore flex" style="margin-top:10rpx;">
+                    <text>口味</text>
+                    <view>
+                        <template is="star-click" data="{{size:48,item:{merchantScore:tasteScore},evaluate:'tasteScore'}}"></template>
+                    </view>
+                </view>
+            </view>
+            <view wx:if="{{pickageScore!=0 && tasteScore !=0}}" id="textareaView">
+                <view class="textareaView" >
+                    <textarea class="rich-textarea-text" wx:if="{{!chooseImage}}" value="{{textareaValue}}" placeholder="请告诉我们你在订餐中的感受" placeholder-style="color:#cccccc;" maxlength="{{textareaInfo.maxLength}}" bindinput="merchantTextareaInput"/>
+                    <!-- <view class='rich-textarea-text' wx:else>
+                        <rich-text nodes="{{textareaInfo.value}}"></rich-text>
+                    </view> -->
+                    <text class='rich-textarea-text' style="overflow-y:scroll;" wx:else>{{textareaInfo.value}}</text>
+                    <text style="position:absolute;bottom: 18rpx;right:20rpx;font-size:22rpx;color:#ccc">{{textareaInfo.currentLength}}/{{textareaInfo.maxLength}}字</text>
+                </view>
+                <view class="addImage flex">
+                    <view wx:for="{{imageList}}" wx:key="index" style="position: relative;margin-right:{{(index+1)%4===0 ? '' : '28rpx'}};margin-top:{{index>=4? '20rpx' : ''}}">
+                       <image  mode="aspectFit" src="{{item}}"  style="border:1px solid grey;box-sizing:border-box;padding:5rpx;" catch:tap="imageTap" data-imgs="{{imageList}}" data-current="{{item}}"></image> 
+                       <text  catch:tap="deleteImage" data-index="{{index}}">X</text>
+                    </view>
+                    <image src="../../images/images/addImage.png" catch:tap="addImageTap" style="margin-top:{{imageList.length>=4 ? '20rpx' : ''}}"></image>
+                </view>
+            </view>
+         </view><!--商家评价主体部分结束-->
+    </view>
+    <view class="goodsComments mt20 bgColorfff paddingl-r15" wx:if="{{pickageScore!=0 && tasteScore !=0}}" id="goodsComments"><!--购物清单评价，赞，踩部分-->
+        <text style="color:#333;font-size:30rpx;display:block;text-align:center">有没有不错或者较差的食物？</text>
+        <view class="goodsCommentsList">
+            <view wx:for="{{goodsComments}}" wx:key="index" class="goodsCommentsListItem flex flexbetween">
+                <text>{{item.goodsName}}</text>
+                <view class="flex" style="align-item:center">
+                    <image src="../../images/images/zan{{item.goodsScore==5 ? '-active':''}}.png" style="padding-left:50rpx;padding-right:50rpx;" data-id="{{index}}" data-type="5" catch:tap="goodsCommentsTap"></image>
+                    <image src="../../images/images/cai{{item.goodsScore==1 ? '-active':''}}.png" style="padding-left:50rpx;"data-id="{{index}}" data-type="1" catch:tap="goodsCommentsTap"></image>
+                </view>
+            </view>
+        </view>  
+    </view>
+    <view class="footer">
+         <text catch:tap="submitForm">发表评价</text>
+    </view>
+    <view class="bgCover"  wx:if="{{chooseImage}}"><!--选择相册或照相悬浮窗 灰色背景罩-->
+        <view class="chooseImageFixed" catch:tap="chooseImage">
+            <view class="flex chooseImageFixed-top chooseImageItem">
+                <text style="color:#9a9a9a;font-size:25rpx;border-bottom:1px solid #9a9a9a" >请选择文件来源</text>
+                <text style="color:#0368fe;font-size:40rpx;border-bottom:1px solid #9a9a9a"  data-id='camera'>照相机</text>
+                <text  style="color:#0368fe;font-size:40rpx"  data-id='album'>本地相册</text>
+            </view>
+            <view class="chooseImageFixed-bottom chooseImageItem">
+                <text  style="color:#0368fe;font-size:40rpx" data-id="cancel">取消</text>
+            </view>
+        </view>
+    </view>  
+   <template is="showToast" data="{{showToast: showToast}}" />
+</view>

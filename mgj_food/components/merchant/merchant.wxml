@@ -22,7 +22,7 @@
 			</view>
 			<view class="desc clearfix">
 				<view class="fl desc-content">
-					<template is="star-add" data="{{size,item}}"></template>
+					<template is="star-AttrScore" data="{{size,item,AttrName:'averageScore'}}"></template>
 					<text class="desc-count">{{fixed.fomatFloat(item.averageScore,1)}}分</text>
 					<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
 				</view>

@@ -1,0 +1,230 @@
+/* pages/createComments/createComments.wxss */
+@import "../../components/star/star.wxss";
+@import "../../components/showToast/showToast.wxss";
+.delivery{
+    height: 118rpx;
+}
+.paddingl-r15{
+  padding-left: 30rpx;
+  padding-right: 30rpx
+}
+.flexbetween{
+    justify-content: space-between;
+}
+.bgColorfff{
+    background-color: #fff;
+}
+.delivery-l{
+    align-items:center;
+}
+.delivery-l image{
+    width: 56rpx;
+    height: 56rpx;
+    border-radius: 50%;
+}
+.delivery-l-text{
+    margin-left: 20rpx;
+    flex-direction: column;
+}
+.deliery-r{
+    align-items:center;
+}
+.deliery-r text{
+    color:#999999;
+    font-size: 24rpx;
+}
+/* 骑手评价主区 笑脸*/
+.deliveryImages{
+    padding-top: 40rpx;
+    justify-content: center;
+}
+.deliveryImagesItem{
+  flex-direction: column;
+}
+.deliveryImagesItem image{
+    width: 70rpx;
+    height: 70rpx;
+}
+.deliveryImagesItem text{
+  margin-top: 20rpx;
+  font-size:26rpx;
+  color:#333333;
+  text-align:center;
+}
+/*骑手评价text*/
+.deliveryComments{
+    margin-top: 30rpx;
+    padding: 0 130rpx 40rpx;
+    flex-wrap: wrap;
+}
+.deliveryComments button{/*button common样式 */
+    width: 150rpx;
+    height: 56rpx;
+    font-size:24rpx;
+    padding: 0px;
+    line-height: 54rpx;
+    background-color:transparent;
+    margin-bottom: 20rpx;
+}
+.deliveryComments button::after{
+    border:none;/*去掉button的外边框*/
+}
+.deliveryCommentsBtn{
+    color:#666666;
+    border:1px solid #e0e0e0;
+}
+.deliveryCommentsBtnActive{
+    color:#ff9900;
+    border:1px solid#ff9900;
+}
+/*商家评价*/
+.merchant-header{
+    height: 118rpx;
+    align-items:center;
+}
+.merchant-header-l{
+    align-items: center; 
+}
+.merchant-header-l image{
+    width: 56rpx;
+    height: 56rpx;
+    border-radius: 50%;
+}
+.merchant-header-l text{
+    margin-left: 20rpx;
+    color:#333333;
+    font-size: 30rpx;
+}
+.merchant-header-r label{
+  font-size: 24rpx;
+  color:#999999;
+
+}
+.merchant-header-r checkbox{
+    transform: scale(0.8,0.8);
+}
+.merchant-main{
+    padding-bottom: 30rpx;
+}
+.merchantScore{
+    padding-top: 40rpx;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+.merchantScore text{
+    padding-top: 20rpx;
+    font-size:26rpx;
+    color:#ff9900;
+}
+.pickageScore{
+    margin-top: 60rpx;
+}
+.pickageScore text{
+    margin-right: 30rpx;
+}
+.textareaView{
+    margin-top: 60rpx;
+    position: relative;
+}
+.rich-textarea-text{
+    box-sizing: border-box;
+    padding: 16rpx 20rpx;
+    width: 100%;
+    height: 198rpx;
+    background-color: #f3f3f3;
+    border:1px solid #f8f8f8;
+    border-radius: 5rpx;
+    font-size: 26rpx;
+    line-height: 1.4;
+    word-break: break-all;
+    word-wrap: break-word;
+    display: block;
+}
+.addImage{
+    margin-top: 30rpx;
+    width: 100%;/*white-space: nowrap;元素不换行，否则会在下一行显示，不会出现滚动条*/
+    flex-wrap: wrap;
+}
+.addImage image{
+    width: 150rpx;
+    height: 150rpx;
+}
+.addImage text{
+    position:absolute;
+    top:0;
+    right:0;
+    display:inline-block;
+    padding:0 15rpx;
+    background-color:grey;
+}
+/*菜单列表 赞 踩*/
+.goodsComments{
+    padding-top: 40rpx;
+    padding-bottom: 40rpx;
+    margin-bottom: 118rpx;/*因为footer是fixed，所以，要显示20的margin-bottom，则要额外加footer-height*/
+}
+.goodsCommentsList{
+    margin-top: 10rpx;
+}
+.goodsCommentsListItem{
+    margin-top: 50rpx;
+    align-items: center;
+}
+.goodsCommentsListItem text{
+
+}
+.goodsCommentsListItem image{
+    width: 40rpx;
+    height:40rpx;
+}
+/*发表评价*/
+.footer{
+   position: fixed;
+   bottom: 0;
+   background-color: #ff9900;
+   height: 98rpx;
+   width: 100%;
+   z-index:1000;
+}
+.footer text{
+    display: block;
+    line-height: 98rpx;
+    text-align: center;
+    font-size: 34rpx;
+    color:#ffffff;
+}
+/*选择相册，fixed窗口*/
+.bgCover{
+    position:fixed;
+    top:0;
+    bottom: 0;
+    width: 100%;
+    background-color:rgba(50, 50,50, 0.5);
+    z-index:5000;
+}
+.chooseImageFixed{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index:99999;
+}
+.chooseImageFixed view text{
+  display: block;
+  text-align: center;
+  line-height: 2
+}
+.chooseImageItem{
+    background-color: #fff;
+    border-radius: 15rpx;
+    margin: 0 15rpx;
+}
+.chooseImageFixed-top{
+   flex-direction: column;
+ 
+ 
+}
+.chooseImageFixed-bottom{
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+}
