@@ -75,7 +75,7 @@
                 <view class="textareaView" >
                     <!--最开始展示的是这个，如果textarea没有输入，有遮罩时，显示的也是这个。相当于替代品。目的是避免原生组件textarea比提交评论层级还高,而显示在外面-->
                     <text class='rich-textarea-text' wx:if="{{!isTextAreaShow || (textareaInfo.value=='' && chooseImage)}}" style="overflow-y:scroll;color:#ccc;padding-top:14rpx" catch:tap="textAreaTap">请告诉我们你在订餐中的感受</text>
-                    <textarea id="textAreaId" class="rich-textarea-text" wx:if="{{isTextAreaShow && !chooseImage}}" focus="{{isTextAreaShow}}" value="{{textareaValue}}" placeholder="请告诉我们你在订餐中的感受" placeholder-style="color:#cccccc;" maxlength="{{textareaInfo.maxLength}}" bindinput="merchantTextareaInput"/>
+                    <textarea id="textAreaId" class="rich-textarea-text" wx:if="{{isTextAreaShow && !chooseImage}}" focus="{{textareaFocus}}" value="{{textareaValue}}" placeholder="请告诉我们你在订餐中的感受" placeholder-style="color:#cccccc;" maxlength="{{textareaInfo.maxLength}}" bindinput="merchantTextareaInput"/>
                     <!--这个text是当textarea有输入内容时，有遮罩时的替代品。因为和第一个text有诸多不一样。而创建的标签-->
                     <text class='rich-textarea-text' wx:if="{{isTextAreaShow && chooseImage && textareaInfo.value!=''}}" style="overflow-y:scroll;" catch:tap="textAreaTap">{{textareaInfo.value}}</text>
                     <text style="position:absolute;bottom: 18rpx;right:20rpx;font-size:22rpx;color:#ccc">{{textareaInfo.currentLength}}/{{textareaInfo.maxLength}}字</text>

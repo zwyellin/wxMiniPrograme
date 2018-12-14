@@ -31,6 +31,7 @@ Page({
         tasteScore:0,
         textareaInfo:{maxLength:300,currentLength:0,value:''},//没有评价，则为null.评价显示也，则对应显示，该用户没有做具体哦！
         textareaValue:'',
+        textareaFocus:true,
         imageList:[],
         imgUrl:[],//请求返回来的src
         goodsComments:[],
@@ -42,7 +43,6 @@ Page({
     onLoad:function(options){
         let {orderid}=options;
         this.data.orderId=orderid;
-        console.log(orderid)
        //加载数据
        wxRequest({
         url:'/merchant/userClient?m=findTOrderById',
@@ -55,9 +55,7 @@ Page({
         },
         }).then(res=>{
             if(res.statusCode==200){
-                console.log("加载数据成功")
                 var resValue=res.data.value;
-                console.log(resValue);
                 //对送达时间的显示的处理
                 // 兼容ios  IOS只识别2017/01/01这种格式
                  var date1 =resValue.deliveryTask.arrivalMerchantTime+"";
@@ -106,7 +104,6 @@ Page({
     isAnonymousSwitch:function(e){
         let isAnonymous=this.data.isAnonymous;
         isAnonymous= isAnonymous==0?1:0;
-        console.log(isAnonymous)
         this.setData({
             isAnonymous:isAnonymous
         })
@@ -158,11 +155,9 @@ Page({
     chooseImage:function(e){
         var dataType=e.target.dataset.id;
         var sourceType='';
-        console.log(dataType);
         //这个悬浮窗弹起，则textarea会被textrich替换。关闭弹窗又会被替换回来，但原来输入的值没有了
         //重新赋值
         var textareaValue=this.data.textareaInfo.value;
-        console.log(textareaValue);
         this.setData({
             textareaValue:textareaValue
         })
@@ -175,12 +170,11 @@ Page({
             case "camera" : case "album":sourceType=dataType;break;
             default :return;
         }
-        console.log(sourceType);
         var that=this;
         var remainImageLength=this.data.remainImageLength;
-        console.log("还可以选择",remainImageLength);
         that.setData({
-            chooseImage:false
+            chooseImage:false,
+            textareaFocus:false             
         });
         wx.chooseImage({
             count:remainImageLength,
@@ -195,7 +189,6 @@ Page({
               });
             },
             fail(res){
-                console.log(res);
                 if(res.errMsg.includes('cancel')){//用户选择的取消
                     console.log("取消选择图片/照片")
                 }else{//打开失败
@@ -230,15 +223,6 @@ Page({
          this.setData({
             isTextAreaShow:true
          },()=>{
-           var xx= wx.createSelectorQuery().select('#textAreaId').fields({
-            dataset: true,
-            size: true,
-            scrollOffset: true,
-            properties: ['focus', 'scrollY'],
-            computedStyle: ['padding', 'color']
-         },function(res){
-             console.log(res);
-         }).exec();
          this.setData({
             isTextAreaShow:true
          })
@@ -326,7 +310,6 @@ Page({
                         qiniuUploader.upload(val, (data) => {
                             console.log("上传",data.imageURL);//获取返回来的imgUrl
                             this.data.imgUrl.push(data.imageURL);
-                            console.log(this.data.imgUrl.length,this.data.imageList.length);
                             if(this.data.imgUrl.length==this.data.imageList.length){
                                 if(this.data.imgUrl.length>=2){
                                     this.data.imgUrl=this.data.imgUrl.join(';')
@@ -365,7 +348,6 @@ Page({
                isAnonymous:this.data.isAnonymous,	//是否匿名：0不是，1是
                goodsComments:this.data.goodsComments,//1踩，5赞 列表 
             }           
-            console.log(params);
             wxRequest({
                 url:'/merchant/userClient?m=createOrderComments',
                 method:'POST',
