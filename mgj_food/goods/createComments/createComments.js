@@ -35,6 +35,7 @@ Page({
         imgUrl:[],//请求返回来的src
         goodsComments:[],
         chooseImage:false,//选择是照相还是相册悬浮窗    
+        isTextAreaShow:false,
         imgListMaxLength:9,//最多选择9张图片
         remainImageLength:null,//还可以选几张
     },
@@ -167,7 +168,10 @@ Page({
         })
         //事件托管
         switch(dataType){
-            case "cancel":this.setData({chooseImage:false});return;
+            case "cancel":
+            this.setData({
+                chooseImage:false
+            });return;
             case "camera" : case "album":sourceType=dataType;break;
             default :return;
         }
@@ -219,6 +223,25 @@ Page({
         imageList.splice(index,1);//删除一项
         this.setData({
             imageList:imageList
+        })
+    },
+    textAreaTap(){
+        //置为true，则此标签就不再用了。目的就是避免一开始界面进去的时候textarea层级太高,而用的替代品，又因为要显示placeholder.故选用新的此标签
+         this.setData({
+            isTextAreaShow:true
+         },()=>{
+           var xx= wx.createSelectorQuery().select('#textAreaId').fields({
+            dataset: true,
+            size: true,
+            scrollOffset: true,
+            properties: ['focus', 'scrollY'],
+            computedStyle: ['padding', 'color']
+         },function(res){
+             console.log(res);
+         }).exec();
+         this.setData({
+            isTextAreaShow:true
+         })
         })
     },
     goodsCommentsTap:function(e){
@@ -312,7 +335,7 @@ Page({
                                 }
                                 console.log(this.data.imgUrl)
                                //发送最终请求
-                               this.submitEvaluate();
+                              this.submitEvaluate();
                             }
                             }, (error) => {
                             console.log('error: ' + JSON.stringify(error));

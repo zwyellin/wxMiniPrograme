@@ -328,7 +328,7 @@
 										</block>
 									</view>
 								</view>
-								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex" style="margin-top:0;">
+								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex" style="margin-top:{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0 ? '' : '20rpx'}};">
 									<image src="../image/cai.png"></image><!--踩-->
 									<view class="new-valuate-item-iconText">
 										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores}}"
