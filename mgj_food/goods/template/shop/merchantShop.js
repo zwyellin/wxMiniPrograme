@@ -18,7 +18,6 @@ const merchantShop = {
         		}	
         	},
         }).then(res=>{
-        	console.log("商家详情",res);
 			if (res.data.code === 0) {
 				let value = res.data.value;
 				let name = value.merchant.name;
@@ -30,7 +29,6 @@ const merchantShop = {
 				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}
-				console.log(value.merchant)
 				this.setData({
 					itemList:value.merchant,
 					item:value.merchant,
@@ -111,7 +109,6 @@ const merchantShop = {
 	},
 	//获取商家评价信息
 	getevaluate(isLoadMore){
-		console.log("加载评论：是否还有",!this.data.loading)
 		if (!this.data.isEvaluate&&!this.data.loading) {//正在加载或者没有更多评论了，则不发送请求
 			this.data.isEvaluate = true;
 			wxRequest({
@@ -128,7 +125,6 @@ const merchantShop = {
 	        	}
 	        }).then(res=>{
 				if (res.data.code === 0) {
-					console.log("评论：",res);
 					let resValue = res.data.value;
 					let evaluate = this.data.evaluate;
 					if (isLoadMore) {//下拉加载
@@ -141,7 +137,6 @@ const merchantShop = {
 					} else {//第一次加载
 						evaluate = resValue;
 					}
-					console.log(evaluate);
 	    			this.setData({
 	    				evaluate:evaluate,
 	    			});

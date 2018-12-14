@@ -75,7 +75,6 @@ var cart = {
 		return str;
 	},
 	numberToText:function(number){
-		  console.log("转文字",number)
 		  number=Math.round(number);
 		  var resText="";
 		  switch(number){
@@ -235,9 +234,6 @@ var cart = {
 		return Math.round(totalPrice*Math.pow(10, 2))/Math.pow(10, 2);
 	}
 };
-console.log("star程序测试");
-
-console.log(cart.itemClasses(3.6))
 
 
 
