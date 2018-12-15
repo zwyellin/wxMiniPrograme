@@ -53,6 +53,10 @@
       <image src='/lib/images/user-icon3.png'></image>  
       我的收藏
     </navigator>
+    <navigator url="/pages/webview/webview" hover-class="none">
+      <image src='/lib/images/user-icon3.png'></image>  
+      跳转webview域名
+    </navigator>
   </view>
   <view class='telephone' bindtap='tel' data-phone="{{phone}}">
       客服电话：{{phone}}

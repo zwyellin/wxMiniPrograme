@@ -167,11 +167,9 @@ Page(Object.assign({}, merchantShop,{
 		    success: res => {
 				//根据app.globalData.pixelRatio转化为像素 格式为:px/pixelRatio=px
 				let heightPx=280/app.globalData.pixelRatio;
-				console.log("heightPx",280*res.windowWidth/750)
 		        this.setData({
 		          windowScrollHeight: res.windowHeight - 280*res.windowWidth/750
 				});
-				console.log("onload中，高度为",res.windowHeight,app.globalData.pixelRatio)
 		    }
 	    });
 	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
@@ -279,7 +277,6 @@ Page(Object.assign({}, merchantShop,{
 	getStorageShop(merchantId){
 		if (wx.getStorageSync('shoppingCart')) {
 			let shoppingCart = wx.getStorageSync('shoppingCart');
-			console.log(12);
 			if (shoppingCart[merchantId]) {
 				this.setData({
 					selectFoods:shoppingCart[merchantId]
@@ -1416,7 +1413,6 @@ Page(Object.assign({}, merchantShop,{
 				let shoppingCart = {};
 				shoppingCart[merchantId] = this.data.selectFoods;
 				wx.setStorageSync('shoppingCart',shoppingCart);
-	  			console.log(shoppingCart);
 	  		} else {
 	  			let shoppingCart = wx.getStorageSync('shoppingCart');
 	  			shoppingCart[merchantId] = this.data.selectFoods;
