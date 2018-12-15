@@ -16,22 +16,33 @@
 }
 .delivery-l{
     align-items:center;
+    overflow: hidden;
 }
 .delivery-l image{
     width: 56rpx;
     height: 56rpx;
     border-radius: 50%;
+    flex: 0 0 auto;
 }
 .delivery-l-text{
     margin-left: 20rpx;
     flex-direction: column;
+    overflow:hidden;
+}
+.delivery-l-text text{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex: 0 0 auto;
 }
 .deliery-r{
     align-items:center;
+    flex: 0 0 auto;
 }
 .deliery-r text{
     color:#999999;
     font-size: 24rpx;
+    flex: 0 0 auto;
 }
 /* 骑手评价主区 笑脸*/
 .deliveryImages{
@@ -84,21 +95,28 @@
 }
 .merchant-header-l{
     align-items: center; 
+    overflow: hidden;
 }
 .merchant-header-l image{
     width: 56rpx;
     height: 56rpx;
     border-radius: 50%;
+    flex: 0 0 auto;
 }
 .merchant-header-l text{
     margin-left: 20rpx;
     color:#333333;
     font-size: 30rpx;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.merchant-header-r {
+    flex: 0 0 auto;
 }
 .merchant-header-r label{
   font-size: 24rpx;
   color:#999999;
-
 }
 .merchant-header-r checkbox{
     transform: scale(0.8,0.8);

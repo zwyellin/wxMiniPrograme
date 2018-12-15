@@ -245,14 +245,22 @@ Page({
         }
     },
     submitForm(){
-        var msgTitle="评价不完整，请继续评价";
-       //检验两项，包裹分 和口味分
+        var msgTitle="评价不完整";
+       //检验4项，骑手分，店家评分，包裹分 和口味分
+       if(this.data.deliveryImageActiveNum===''){//必传
+            feedbackApi.showToast({title:msgTitle+"，请为骑手打分"});
+            return;
+       }
+       if(this.data.merchantScore===0){//必传
+        feedbackApi.showToast({title:msgTitle+"，请为店家打分"});
+        return;
+       }
         if(this.data.pickageScore===0){//必传
-            feedbackApi.showToast({title:msgTitle});
+            feedbackApi.showToast({title:msgTitle+"，觉得包装如何？"});
 			return;
         }
         if(this.data.tasteScore===0){//必传，
-            feedbackApi.showToast({title: msgTitle});
+            feedbackApi.showToast({title: msgTitle+"，觉得口味怎么样？"});
 			return;
         }
         //修正数据
