@@ -217,11 +217,16 @@ Page(Object.assign({}, merchantShop,{
 	},
 	//商家资质图片
 	scaleImg(e){
-		let { img } = e.currentTarget.dataset;
-		this.setData({
-			merchantAptitudeImg: img,
-			maskimgShow:true,
-		});
+		let { id,imgs } = e.currentTarget.dataset;
+		console.log(id,imgs)
+		wx.previewImage({
+			current: imgs[id], // 当前显示图片的http链接
+			urls:imgs // 需要预览的图片http链接列表
+		  })
+		// this.setData({
+		// 	merchantAptitudeImg: img,
+		// 	maskimgShow:true,
+		// });
 	},
 	hideScaleImg(e){
 		this.setData({
