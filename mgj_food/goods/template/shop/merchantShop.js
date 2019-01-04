@@ -56,7 +56,7 @@ const merchantShop = {
 						merchantRedBagList:merchantRedBagList
 					});
 				}
-			} else {
+			}else {
 				let msg = res.data.value;
 				if (res.data.code === 100000 ) {
 					setTimeout(()=>{
@@ -64,6 +64,13 @@ const merchantShop = {
 							url:'/pages/login/login'
 						});
 					},1000);	
+				}
+				if(res.data.code === 500 && res.data.value=="商家未关联代理商"){//返回
+					setTimeout(()=>{
+					wx.navigateBack({ //返回前一页
+						delta: 1
+					  })
+					},2000);	
 				}
 				feedbackApi.showToast({title: msg});
 			}

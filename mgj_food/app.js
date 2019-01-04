@@ -131,5 +131,5 @@ App({
     longitude:''
   }
 });
-//
+//wxapi
 // prelaunch
