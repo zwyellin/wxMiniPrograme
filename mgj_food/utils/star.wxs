@@ -232,6 +232,9 @@ var cart = {
 			totalPrice = parseFloat(food.priceObject.price)*food.count;
 		}
 		return Math.round(totalPrice*Math.pow(10, 2))/Math.pow(10, 2);
+	},
+	_num: function(firstNum,secondNum){
+		return parseInt(firstNum) - parseInt(secondNum);
 	}
 };
 
@@ -258,5 +261,6 @@ module.exports = {
   sortGoodsSpecList:cart.sortGoodsSpecList,
   price:cart.price,
   numberToText:cart.numberToText,
-  filterEvaluateScore:cart.filterEvaluateScore
+  filterEvaluateScore:cart.filterEvaluateScore,
+  _num:cart._num
 };

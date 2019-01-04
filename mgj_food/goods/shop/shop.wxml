@@ -16,7 +16,7 @@
 					<text>￥{{itemList.minPrice}}</text>
 					<text class="count">|</text>
 					<text class="count-right">配送费</text>
-					<text>￥{{itemList.shipFee}}</text>
+					<text>￥{{itemList.shipFee-itemList.merchantAssumeAmt}}</text>
 					<text class="count">|</text>
 					<text>{{itemList.avgDeliveryTime}}分钟送达</text>
 				</view>
@@ -510,7 +510,7 @@
 					</view>
 				</view>
 				<view class="price" style="color:#fff"><text>￥{{totalprice}}</text></view>
-				<text class="desc" style="color:#fff">另需配送费¥{{itemList.shipFee}}</text>
+				<text class="desc" style="color:#fff">另需配送费¥{{itemList.shipFee-itemList.merchantAssumeAmt}}</text>
 			</view>
 			<view class="content-right" bindtap="checkOut">
 				<view class="pay {{ totalprice>=minPrice ? 'enough' : 'not-enough'}}" >
