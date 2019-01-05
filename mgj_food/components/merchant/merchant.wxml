@@ -33,8 +33,8 @@
 			<view class="extra">
 				<text class="count">起送价￥{{item.minPrice}}</text>
 				<text class="count">|</text>
-				<text>{{(item.shipFee-item.merchantAssumeAmt) > 0 ? '配送费￥'+(item.shipFee-item.merchantAssumeAmt) : '免配送费'}}</text>
-				<text wx:if="{{item.merchantAssumeAmt > 0 && item.shipFee-item.merchantAssumeAmt!=0 }}" style="color:#999;margin-left:8rpx;text-decoration:line-through">￥{{item.shipFee}}</text>
+				<text>{{(item.shipFee - item.merchantAssumeAmt) > 0 ? '配送费￥'+(item.shipFee - item.merchantAssumeAmt) : '免配送费'}}</text>
+				<text wx:if="{{item.merchantAssumeAmt > 0 && item.shipFee - item.merchantAssumeAmt!=0 }}" style="color:#999;margin-left:8rpx;text-decoration:line-through">￥{{item.shipFee}}</text>
 				<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
 			</view>
 			<view class="cartcontrol-wrapper" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height: {{item.isHeight}}">

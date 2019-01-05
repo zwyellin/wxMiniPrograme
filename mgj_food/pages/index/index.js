@@ -501,7 +501,8 @@ Page(Object.assign({}, merchantObj, {
         	}	
         }).then(res=>{
 			let dataList = this.data.dataList;
-			let list = res.data.value;		
+			//mapList在merchant.js中定义的，用于对原数据进行精简，返回精简数组
+			let list=this.mapList(res.data.value);
 			if (res.data.code === 0) {
 				if(Boos){
 					if (status) {  

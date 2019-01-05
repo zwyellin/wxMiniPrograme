@@ -20,6 +20,28 @@ let merchantObj = {
 			this.data.moveDown = false;	
 		}
 	},
+	//对源数据，获得精简数据
+	mapList(list){
+		return list.map(function(item,index,arr){
+					//对list数组的以下属性，提取出来
+					let {logo,id,status,businessStatus,isBrandMerchant,
+						name,hasVisualRestaurant,averageScore,monthSaled,
+						distance,minPrice,shipFee,avgDeliveryTime,isHeight,
+						merchantAssumeAmt,promotionActivityList
+					}=item;
+					//再对promotionActivityList解析
+					promotionActivityList=promotionActivityList.map(function(item,index,arr){
+						let {promoImg,promoName}=item;
+						return {promoImg,promoName}
+					})
+					//返回仅仅有这些属性的新对象 数组项
+					return {logo,id,status,businessStatus,isBrandMerchant,
+						name,hasVisualRestaurant,averageScore,monthSaled,
+						distance,minPrice,shipFee,avgDeliveryTime,isHeight,
+						merchantAssumeAmt,promotionActivityList
+						}
+		})
+	},
 	//阻止遮罩层
 	myCatchTouch(){
 		return false;
