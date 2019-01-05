@@ -131,5 +131,5 @@ App({
     longitude:''
   }
 });
-//wxapi
+//wxapi     线上
 // prelaunch
