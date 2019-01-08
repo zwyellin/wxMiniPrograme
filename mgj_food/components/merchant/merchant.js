@@ -1,13 +1,19 @@
 const app = getApp();
 let merchantObj = {
 	moveDown(e){
-		let { item, index } = e.currentTarget.dataset;
+		let { item, index,linearArrayIndex } = e.currentTarget.dataset;
+		console.log("moveDown click ",e,linearArrayIndex)
 		if (item.promotionActivityList.length < 3) return;
 		if (!this.data.moveDown) {
 			this.data.moveDown = true;
 			let itemObject = {};
-			let itemkey = 'dataList['+index+'].isHeight';
-			let dataList = this.data.dataList;
+			let itemkey=undefined;
+			if(linearArrayIndex==undefined){
+				itemkey= 'dataList['+index+'].isHeight';
+			}else{//仅仅在首页，datalist是二维数组，此时需要该 处于哪一一维数组中
+				//itemkey= 'dataList['+linearArrayIndex+']['+index+'].isHeight';
+				itemkey='dataList'+linearArrayIndex+'['+index+'].isHeight';
+			}
 			if (item.isHeight == '68rpx') {
 				// dataList[index].isHeight = 'auto';
 				itemObject[itemkey] = 'auto';
@@ -27,7 +33,7 @@ let merchantObj = {
 					//对list数组的以下属性，提取出来
 					let {logo,id,status,businessStatus,isBrandMerchant,
 						name,hasVisualRestaurant,averageScore,monthSaled,
-						distance,minPrice,shipFee,avgDeliveryTime,isHeight,
+						distance,minPrice,shipFee,avgDeliveryTime,
 						merchantAssumeAmt,promotionActivityList
 					}=item;
 					//再对promotionActivityList解析
@@ -38,7 +44,7 @@ let merchantObj = {
 					//返回仅仅有这些属性的新对象 数组项
 					return {logo,id,status,businessStatus,isBrandMerchant,
 						name,hasVisualRestaurant,averageScore,monthSaled,
-						distance,minPrice,shipFee,avgDeliveryTime,isHeight,
+						distance,minPrice,shipFee,avgDeliveryTime,
 						merchantAssumeAmt,promotionActivityList
 						}
 		})
