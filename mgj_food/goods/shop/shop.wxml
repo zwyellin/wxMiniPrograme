@@ -1,4 +1,4 @@
-<import src="../../components/control/control.wxml" />
+ <import src="../../components/control/control.wxml" />
 <import src="../../components/star/star.wxml" />
 <import src="../template/shop/activity.wxml" />
 <import src="../template/shop/manfull.wxml" />
@@ -19,6 +19,10 @@
 					<text>￥{{itemList.shipFee-itemList.merchantAssumeAmt}}</text>
 					<text class="count">|</text>
 					<text>{{itemList.avgDeliveryTime}}分钟送达</text>
+					<!--new 这边新增搜索 -->
+					<view class="shopSearch" catchtap="SearchIconTap">
+						<image src="../../images/images/search.png"></image>
+					</view>
 				</view>
 				<view class="cartcontrol-wrapper">
 					<swiper autoplay="true" circular="true" 
@@ -46,7 +50,110 @@
 			<image class="icon-arrow_lift" src="../../images/images/down.png"></image>
 		</view>
 	</view>
-
+	<!--新增的搜索 页面布局-->
+	<view wx:if="{{isSearchWrapperShow}}" class="mask" style="z-index:20;background:#F8F8FF;opacity:1">
+		<view class="shopSearch-wrapper font-14">
+			<view class="shopSearch-header flex">
+				<view class="shopSearch-header-l flex">
+					<image src="../../images/images/search.png"></image>
+					<input placeholder="请输入商品名(请输入有效词组)" placeholder-class="placeholder"
+					value="{{searchValue}}" bindinput="shopSearchInput" bindconfirm="shopSearchSubmit"></input>
+				</view>
+				<view class="shopSearch-header-r" catch:tap="shopSearchSubmit">
+					<text style="{{searchInputValue.length>0 ? 'color:#ff9900' : ''}}">搜索</text>
+				</view>
+			</view>
+			<!-- 搜索历史记录-->
+			<view wx:if="{{isshopSearchRecordShow}}" class="shopSearchRecord mt20">
+				<view class="shopSearchRecord-header flex">
+					<text>历史搜索</text>
+					<image src="../../images/images/icon_dele.png"></image>
+				</view>
+				<view class="shopSearchRecord-main mt20 flex" >
+					<block wx:for="{{shopSearchRecord}}"
+						wx:for-index="index"
+						wx:for-item="item"
+						wx:key="index"
+					>
+						<text data-text="{{item}}" catch:tap="shopSearchRecordTap">{{item}}</text>
+					</block>
+				</view>
+			</view>
+			<!-- 搜索显示主体-->
+			<view  wx:if="{{!isshopSearchRecordShow}}" class="shopSearch-main">
+				<scroll-view  class="foods-wrapper" 
+					scroll-y="true"
+					>
+						<view class="food-item" 
+							wx:for="{{searchResList}}" 
+							wx:for-item="food" 
+							wx:for-index="index" 
+							wx:key="id"
+							data-food="{{food}}"
+							bindtap="selectefood">
+							<view class="icon">  
+								<!-- <image style="display: none" class="icon_img" src="{{tage.removefh(food.imgs,114,114)}}" data-parentindex="{{parentIndex}}" data-index="{{index}}" bindload="_imgOnLoad" />
+								<image class="icon_img" src="{{food.isImgLoadComplete ? tage.removefh(food.imgs,114,114) : '/images/merchant/merchantLogo.png'}}" /> -->
+								<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs,114,114)}}" />
+							</view>
+							<view class="content">
+								<view class="detail-name">
+									<text>{{food.name}}</text>
+								</view>
+								<view class="detail-descs">
+									<text>{{food.description}}</text>
+								</view>
+								<view class="detail-extra">
+									<text class="detail-count">月售{{food.monthSaled}}份</text>
+									<text wx:if="{{tage.praise(food.commentScore) && food.monthSaled}}">好评率{{tage.praise(food.commentScore)}}%</text>
+								</view>
+								<view class="detail-price flex">
+									<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{food.goodsSpecList.length > 1}}"class="now-min">起</text><text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}</text>
+									</text>
+									<view class="cartcontrol-wrapper">
+										<!-- if 如果休息-->
+										<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
+											<text>商家休息中</text>
+										</view>
+										<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
+										<view wx:elif="{{food.status === 0 || (food.status === 0 || food.goodsSpecList.length === 1 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && food.goodsSpecList[0].stock === 0 )}}" class="choice-else font-10">	
+											<text>商品已售罄</text><!--不再售卖 或 （针对规格只有一个的，并且库存状态是有限的，并且不是折扣商品已卖完，并且库存数为0）-->
+										</view>
+										<!-- else 正常卖（if有可能要选规格）-->
+										<view wx:elif="{{food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{food}}" data-parent-index="{{parentIndex}}" catchtap="choice">
+											<text>选规格</text>
+										</view>
+										<!--else 正常卖 不用选规格-->
+										<view wx:else >
+											<template is="contorl-add" data="{{food,selectFoods,parentIndex}}" ></template> <!--+购买图标-->
+										</view>    
+									</view>
+								</view>
+								<!-- 这个是在商品价格下面的商品信息文字提示-->
+								<!--针对规格只有一个的，并且有限制的（库存有限 或 最少购买 或最多购买几个折扣商品）-->
+								<view wx:if="{{food.goodsSpecList.length == 1 && (food.goodsSpecList[0].stockType || food.goodsSpecList[0].minOrderNum || food.everyGoodsEveryOrderBuyCount)}}" class="item-rules flex font-10">
+									<!-- 折扣商品 的限购显示折扣状态及限购情况-->
+									<block wx:if="{{food.hasDiscount === 1}}">
+										<image class="discount-icon" src="../../images/images/discount_icon.png"></image>
+										<text class="rules-discount-text" style="color:#fc524d">{{food.discountedGoods.discountProportion/10}}折</text>
+										<text wx:if="{{food.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#fc524d">每单限购{{food.everyGoodsEveryOrderBuyCount}}份</text>
+									</block>	
+									<!--普通商品 的限购-->
+									<block wx:else>
+										<!--普通商品如果有限购 ，显示限购信息-->
+										<text wx:if="{{food.goodsSpecList[0].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{food.goodsSpecList[0].orderLimit}}份</text>
+										<!--普通商品如果剩余数量不多，显示信息-->
+										<text wx:if="{{food.goodsSpecList[0].stockType && food.goodsSpecList[0].stock <10 && food.goodsSpecList[0].stock >0}}" class="rules-text rules-left" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{food.goodsSpecList[0].stock}}件</text>
+										<!--普通商品有最少购买要求的，显示信息-->
+										<text wx:if="{{food.goodsSpecList[0].minOrderNum >1 }}" class="rules-text rules-left" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{food.goodsSpecList[0].minOrderNum}}份起购</text>
+									</block>									
+								</view>
+							</view>
+						</view>
+			    </scroll-view>
+			</view>
+		</view>
+	</view>
 	<view class="tab">
       <view class="item-tab flex {{index===tabIndex ? 'item-tab-avtive' : ''}}"
       wx:for="{{tab.tabList}}"   
@@ -118,21 +225,6 @@
 							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{food.goodsSpecList.length > 1}}"class="now-min">起</text><text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}</text>
 							</text>
 							<view class="cartcontrol-wrapper">
-							   <!-- 旧版本 							 
-								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && food.status != 0}}">
-									<template is="contorl-add" data="{{food,selectFoods,parentIndex}}" ></template>
-								</view>
-								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
-									<text>商家休息中</text>
-								</view>
-								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && (food.status === 0 || food.goodsSpecList[0].stock === 0 &&food.goodsSpecList[0].stockType && food.goodsSpecList.length === 1 && !food.surplusDiscountStock)}}" class="choice-else font-10">
-									<text>商品已售罄</text>
-								</view>
-								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
-									<view wx:if="{{(food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount) }}" class="choice font-10" data-food="{{food}}" data-parent-index="{{parentIndex}}" catchtap="choice" >
-										<text>选规格</text>
-									</view>
-								</view>	 -->
 								<!-- if 如果休息-->
 								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
 									<text>商家休息中</text>
@@ -211,8 +303,6 @@
 				    data-food="{{food}}"
 				    bindtap="selectefood">
 					<view class="icon">
-						<!-- <image style="display: none" class="icon_img" src="{{tage.removefh(food.imgs,114,114)}}" data-parentindex="{{parentIndex}}" data-index="{{index}}" bindload="_imgOnLoad" />
-						<image class="icon_img" src="{{food.isImgLoadComplete ? tage.removefh(food.imgs,114,114) : '/images/merchant/merchantLogo.png'}}" /> -->
 						<image class="icon_img" lazy-load="true" src="{{tage.removefh(food.imgs,114,114)}}" />
 					</view>
 					<view class="content">
@@ -230,22 +320,6 @@
 							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}<text class="del"></text></text>
 							</text>
 							<view class="cartcontrol-wrapper">
-								<!--旧版本-->
-								<!-- <view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && food.status != 0}}">
-									<template is="contorl-add" data="{{food,selectFoods}}" ></template>
-								</view>
-								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
-									<text>商家休息中</text>
-								</view>
-								<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && (food.status === 0 || food.goodsSpecList[0].stock === 0 &&food.goodsSpecList[0].stockType && food.goodsSpecList.length === 1 && !food.surplusDiscountStock)}}" class="choice-else font-10">
-									<text>商品已售罄</text>
-								</view>
-								<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && food.status != 0}}">
-									<view wx:if="{{(food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1) && !(food.goodsSpecList[0].stock === 0 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && !food.hasDiscount) }}" class="choice font-10" data-food="{{food}}" catchtap="choice" >
-										<text>选规格</text>
-									</view>
-								</view>	 -->
-								<!--和前面这个模块对比，template的参数不一样-->
 								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
 									<text>商家休息中</text>
 								</view>
@@ -511,7 +585,7 @@
   		</view>
     </view>
     <!-- 商家 结束 -->
-
+	<!--购物车-->
 	<view wx:if="{{tab.cur==='商品'}}" class="shopcart">
 		<view wx:if="{{totalcount===0 && ruleDtoList.length > 0 && !activitySharedShow || !fold && ruleDtoList.length>0 && !isShowTogether && !activitySharedShow}}" class="shopcart-list-top lisTop">
 			<text 
@@ -631,6 +705,7 @@
 			</scroll-view>
 		</view>
 	</view>
+	<!--点击商品进详情页-->
 	<view wx:if="{{detailShow}}" animation="{{choiceAnimation}}" class="shopdetail" catchtouchmove="myCatchTouch">
 		<view class="detail-content">
 			<image class="detail-img" src="{{tage.removefh(selectedFood.imgs,642,656)}}"></image>
@@ -651,21 +726,6 @@
 			<text wx:if="{{selectedFood.hasDiscount === 1 && selectedFood.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#fc524d">每单限购{{selectedFood.everyGoodsEveryOrderBuyCount}}份</text>
 		</view> -->
 		<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
-			<!--旧版本-->
-			<!-- <view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
-				<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template>
-			</view>
-			<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  >
-				<text>商家休息中</text>
-			</view>
-			<view wx:if="{{(itemList.businessStatus != 1 && itemList.status != 0) && (selectedFood.status === 0|| selectedFood.goodsSpecList[0].stock === 0 &&selectedFood.goodsSpecList[0].stockType && selectedFood.goodsSpecList.length === 1 && !selectedFood.surplusDiscountStock)}}" class="choice-else font-10" >
-				<text>商品已售罄</text>
-			</view>
-			<view wx:if="{{itemList.businessStatus != 1 && itemList.status != 0 && selectedFood.status != 0}}">
-				<view wx:if="{{(selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1) && !(selectedFood.goodsSpecList[0].stock === 0 && selectedFood.goodsSpecList[0].stockType && !selectedFood.surplusDiscountStock && !selectedFood.hasDiscount)}}" class="choice font-10" data-food="{{selectedFood}}" catchtap="choice" >
-					<text>选规格</text>
-				</view>
-			</view>	 -->
 			<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
 				<text>商家休息中</text>
 			</view>
@@ -683,8 +743,10 @@
 			</view>  
 		</view>
 	</view>
+	<!--底下遮罩-->
 	<view wx:if="{{choice || detailShow || merchantRedBagList.length != 0 || pickertag}}" animation="{{maskAnimation}}" class="mask" bindtap="close" catchtouchmove="myCatchTouch">	
 	</view>
+	<!--选择规格弹窗-->
 	<view wx:if="{{choice}}" animation="{{choiceAnimation}}" class="shoprules font-16" catchtouchmove="myCatchTouch">
 		<view class="shoprules-title">
 			<text>{{selectedFood.name}}</text>
@@ -759,6 +821,7 @@
 			</view>
 		</view>
 	</view>
+	<!-- 天降红包-->
 	<view class="redbag" wx:if="{{merchantRedBagList.length != 0}}" animation="{{orderRedAnimation}}" catchtouchmove="myCatchTouch">
 		<view class="redbag-close">
 			<image class="redbag-close-img" catchtap="close" src="../../images/images/close_red.png"></image>

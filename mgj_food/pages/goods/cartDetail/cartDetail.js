@@ -500,5 +500,13 @@ Page({
 				url:'/pages/index/index'
 			})
 		}
+		//如果上一个页面是cartItem，则修改其页面字段，标注是从这个页面返回的，则该页面不再刷新数据
+		var pages = getCurrentPages();
+		var prevPage = pages[pages.length - 2]; // 上一级页面
+		let prePageReg=/cartItem/;//判断上一级页面的路径是不是含有cartItem
+		if(prePageReg.test(prevPage.route)){
+			prevPage.data.iscartDetailBack=true;
+			console.log("返回到"+prePageReg);
+		}
 	}
 });

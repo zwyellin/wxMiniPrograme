@@ -4,13 +4,13 @@
 @import "../../components/star/star.wxss";
 @import "../../components/showToast/showToast.wxss";
 @import "../template/shop/activity.wxss";
+@import "shopSearch.wxss";
 .header {
 	position: relative;
 	overflow: hidden;
 	color:#fff;
 	background:#482a1a;	
 }
-
 .title {
 	display: block;
 	width: 100%;
@@ -29,6 +29,7 @@
 	border-radius: 110rpx;
 	margin-right: 20rpx;
 	overflow: hidden;
+  flex:0 0 auto
 }
 .icon-image {
 	height: 110rpx;

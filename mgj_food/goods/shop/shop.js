@@ -1,10 +1,11 @@
 const { wxRequest } = require('../../utils/util.js');
 const feedbackApi = require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const { merchantShop } = require('../template/shop/merchantShop.js');
+const { shopSearch,shopSearchData } = require('shopSearch.js');
 const app = getApp();
 let ActivityListHeight = 149;
-Page(Object.assign({}, merchantShop,{
-	data:{
+Page(Object.assign({}, merchantShop,shopSearch,{
+	data:Object.assign({},{
 		merchantType:null,    //商家类型
 		categoryId:null,
 		goodsMoreLoading:false, //加载更多
@@ -84,37 +85,43 @@ Page(Object.assign({}, merchantShop,{
             scaleWidth: 680,
             scaleHeight: 1126
 		},
-		windowWidth:750
-	},
+		windowWidth:750,
+		isonLoadRun:false//onload是否执行
+		},shopSearchData),//data 对象合并
 	onLoad(options) {
-		//设置windowWidth
+		//初始化工作
+		this.data.isonLoadRun=true;//标识 onload是否执行
 		let windowWidth=app.globalData.windowWidth*2
 	    this.setData({
 			windowWidth:windowWidth
 		})
-		let { merchantid,longitude,latitude} = options;
+		let { merchantid,longitude,latitude,search} = options;
 		this.data.merchantId = merchantid;
-		// this.data.merchantId = 221;
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
         	app.globalData.latitude = latitude;
 		}
-		// this.data.merchantId = 402;
+		// this.data.merchantId = 402;	
+		//获取购物车缓存
+		this.getStorageShop(this.data.merchantId);
+		
+		//如果传了search参数，并且为true，则显示的搜索页悬浮窗。其下内容不加载
+		if(search){
+			//读取购物车其它信息，等价于this.findMerchantInfo();的初始化(这边为了显示优化)
+			let shoppingCartOthers=wx.getStorageSync('shoppingCartOther');
+			let shoppingCartOther=shoppingCartOthers[this.data.merchantId];
+			let setdata=Object.assign({},shoppingCartOther,{isSearchWrapperShow:true})
+			this.setData(setdata);
+			this.totalprice();
+			return;
+		}
+		//获取商家详情
 		this.findMerchantInfo();
+
+		//返回商家商品(热销榜，好评榜等) 
 		this.getShopList().then((res)=>{
 			let menu = res.data.value.menu;
 			let type = res.data.value.type;
-			// menu.map((leftItem,index) =>{
-			// 	if (index != 0 ) {
-			// 		leftItem.goodsList.map(leftItemShop =>{
-			// 			leftItemShop.isImgLoadComplete = false;
-			// 		});
-			// 	} else {
-			// 		leftItem.goodsList.map(leftItemShop =>{
-			// 			leftItemShop.isImgLoadComplete = true;
-			// 		});
-			// 	}	
-			// });
 			if (type == 0) {
 				this.setData({
 	        		menu:menu,
@@ -157,8 +164,8 @@ Page(Object.assign({}, merchantShop,{
         	}
         }).finally(()=>{
         	wx.hideLoading();
-        });
-        this.getStorageShop(this.data.merchantId);
+		});
+		////获取商家评价信息
 		this.getevaluate();
 		// this.boosLisr();
 		//获取系统信息 主要是为了计算产品scroll的高度
@@ -171,7 +178,6 @@ Page(Object.assign({}, merchantShop,{
 				});
 		    }
 	    });
-	    //设置right scroll height 实现右侧产品滚动级联左侧菜单互动   
 	},
 	onShow(){
 		let loginMessage = wx.getStorageSync('loginMessage');
@@ -182,7 +188,18 @@ Page(Object.assign({}, merchantShop,{
 				this.getPlatformRedBag();
 				wx.setStorageSync('isloginGetPlatformRedBag',false);
 			}
-  		}
+		}
+		//返回页面时，加载购物车缓存，比如商店搜索会改变购物车情况
+		//条件：onload没有重复读取缓存，并且这个页面是shop本身页面。不是商店搜索页面时才执行
+		//触发场景：从商家搜索返回来时
+		var pages = getCurrentPages();
+		var prevPage = pages[pages.length - 2]; // 上一级页面
+		let prePageReg=/goods\/shop\/shop/;
+		if(!this.data.isonLoadRun && !prePageReg.test(prevPage.route)){
+			this.getStorageShop(this.data.merchantId);
+			this.totalprice();
+		}
+		
 	},
 	//领取平台红包
 	getPlatformRedBag(){
@@ -232,7 +249,9 @@ Page(Object.assign({}, merchantShop,{
 					selectFoods:shoppingCart[merchantId]
 				});
 			}
-  		}
+		}
+		console.log("获取购物车情况,",this.data.selectFoods)
+	
 	},
 	boosList(){
 		this.setData({
@@ -528,6 +547,7 @@ Page(Object.assign({}, merchantShop,{
 			tabIndex:index
 		});
 	},
+	//返回商家商品(热销榜，好评榜等) 
 	getShopList(){
 		wx.showLoading({
 	        title: '加载中',
@@ -538,7 +558,7 @@ Page(Object.assign({}, merchantShop,{
         	method:'POST',
         	data:{
         		params:{
-        			merchantId:this.data.merchantId
+					merchantId:this.data.merchantId
         		},
 				client: app.globalData.client,
         		clientVersion: "3.2.2"    //此参数取值版本来自于与App版本
@@ -576,12 +596,15 @@ Page(Object.assign({}, merchantShop,{
 	selectefood(e){
 		this.maskShowAnimation();
 		this.choiceShowAnimation();
-		
 		let { food, parentIndex } = e.currentTarget.dataset;
-		if (this.data.menu[parentIndex].id === null || this.data.menu[parentIndex].id < 0) {
+		if(this.data.isSearchWrapperShow){//如果是商店页面
 			food.parentRelationCategoryId = food.relationCategoryId;
-		} else {
-			food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId;
+		}else{
+			if (parentIndex==undefined && this.data.menu[parentIndex].id === null  || this.data.menu[parentIndex].id < 0) {
+				food.parentRelationCategoryId = food.relationCategoryId;
+			} else {
+				food.parentRelationCategoryId = this.data.menu[parentIndex].relationCategoryId;
+			}
 		}
 		this.setData({
 	        selectedFood:food,
@@ -1232,10 +1255,10 @@ Page(Object.assign({}, merchantShop,{
 	//清空购物车
 	empty(){
 		this.setData({
-	      selectFoods: [],
-	      fold: false
-	    });
-	    this.totalprice();
+			selectFoods: [],
+			fold: false
+		  });
+		  this.totalprice();
 	},
 	//产品左侧分类菜单点击事件
 	scrollLeftTap(e) {
@@ -1362,8 +1385,9 @@ Page(Object.assign({}, merchantShop,{
   	},
   	onHide(){
 		this.data.isHide = true;
+		this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
   	},
-  	onUnload(){
+  	onUnload(){	
   		if (!this.data.isHide) {
 	  		let merchantId = this.data.merchantId;
 	  		if (!wx.getStorageSync('shoppingCart')) {
