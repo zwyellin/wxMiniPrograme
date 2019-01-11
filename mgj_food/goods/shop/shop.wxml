@@ -5,69 +5,24 @@
 <import src="../../components/showToast/showToast.wxml" />
 <wxs module="tage" src="../../utils/star.wxs"></wxs>
 <view class="container page-index">
-	<view class="header" >
-		<view class="content-wrapper">
-			<view class="avatar">
-				<image class="icon-image" src="{{itemList.logo}}" ></image>	
-			</view>
-			<view class="content">
-				<view class="desc" style="{{itemList.promotionActivityList.length === 0 ? 'margin-top: 29rpx' : ''}}">
-					<text class="count-right">起送价</text>
-					<text>￥{{itemList.minPrice}}</text>
-					<text class="count">|</text>
-					<text class="count-right">配送费</text>
-					<text>￥{{itemList.shipFee-itemList.merchantAssumeAmt}}</text>
-					<text class="count">|</text>
-					<text>{{itemList.avgDeliveryTime}}分钟送达</text>
-					<!--new 这边新增搜索 -->
-					<view class="shopSearch" catchtap="SearchIconTap">
-						<image src="../../images/images/search.png"></image>
-					</view>
-				</view>
-				<view class="cartcontrol-wrapper">
-					<swiper autoplay="true" circular="true" 
-						vertical="true" interval="3000" duration="500" style="height: 30rpx">
-						<swiper-item class="cartcontrol-content flex"
-							wx:for="{{itemList.promotionActivityList}}" 
-		      				wx:for-index="idx" 
-		      				wx:for-item="promotion"
-		      				wx:key="idx" >
-							<image class="bran" src="{{promotion.promoImg}}"></image>
-							<text class="name">{{promotion.promoName}}</text>
-						</swiper-item>
-					</swiper>
-					<view wx:if="{{itemList.promotionActivityList.length > 0}}" 
-						class="fr" bindtap="broadcast" style="margin-top: 6rpx;margin-right: -5rpx">
-						<text>{{itemList.promotionActivityList.length}}个活动</text>
-						<image class="desc-img" src="../../images/images/down.png"></image>	
-					</view>	
-				</view>
-			</view>  
-		</view>
-		<view class="bulletin-wrapper">
-			<image class="bulletin-title" src="../../images/images/video.png"></image>
-			<text class="bulletin-text">{{itemList.broadcast}}</text>
-			<image class="icon-arrow_lift" src="../../images/images/down.png"></image>
-		</view>
-	</view>
 	<!--新增的搜索 页面布局-->
 	<view wx:if="{{isSearchWrapperShow}}" class="mask" style="z-index:20;background:#F8F8FF;opacity:1">
 		<view class="shopSearch-wrapper font-14">
 			<view class="shopSearch-header flex">
 				<view class="shopSearch-header-l flex">
 					<image src="../../images/images/search.png"></image>
-					<input placeholder="请输入商品名(请输入有效词组)" placeholder-class="placeholder"
-					value="{{searchValue}}" bindinput="shopSearchInput" bindconfirm="shopSearchSubmit"></input>
+					<input placeholder="请输入商品名(请输入有效词组)" placeholder-class="placeholder" bindfocus="shopSearchInput" confirm-type="search"
+					value="{{searchValue}}" bindinput="shopSearchInput" data-reset="{{true}}" bindconfirm="shopSearchSubmit" focus="{{isShopSearchInputFocus}}"></input>
 				</view>
-				<view class="shopSearch-header-r" catch:tap="shopSearchSubmit">
+				<view class="shopSearch-header-r" catch:tap="shopSearchSubmit" data-reset="{{true}}">
 					<text style="{{searchInputValue.length>0 ? 'color:#ff9900' : ''}}">搜索</text>
 				</view>
 			</view>
 			<!-- 搜索历史记录-->
-			<view wx:if="{{isshopSearchRecordShow}}" class="shopSearchRecord mt20">
+			<view wx:if="{{isshopSearchRecordShow}}" class="shopSearchRecord">
 				<view class="shopSearchRecord-header flex">
 					<text>历史搜索</text>
-					<image src="../../images/images/icon_dele.png"></image>
+					<image src="{{shopSearchRecord.length>0 ? '../../images/images/icon_dele-active.png' : '../../images/images/icon_dele.png'}}" catch:tap="shopSearchRecordDel"></image>
 				</view>
 				<view class="shopSearchRecord-main mt20 flex" >
 					<block wx:for="{{shopSearchRecord}}"
@@ -83,6 +38,10 @@
 			<view  wx:if="{{!isshopSearchRecordShow}}" class="shopSearch-main">
 				<scroll-view  class="foods-wrapper" 
 					scroll-y="true"
+					lower-threshold="20"
+					data-reset="{{false}}"
+					bindscrolltolower="shopSearchSubmit"
+					style="height:{{shopSearchScrollHeight}}px;box-padding-bottom:20rpx"
 					>
 						<view class="food-item" 
 							wx:for="{{searchResList}}" 
@@ -149,12 +108,72 @@
 									</block>									
 								</view>
 							</view>
+						</view><!-- food 列表 end-->
+						<!--加载 底下信息-->
+						<view wx:if="{{shopSearchLoading}}" class="loading-info" >
+							<image src="../../images/merchant/loading.png" class="img-loading"></image>
+							<view class="loading-text">正在加载，请稍候</view>
 						</view>
+						<view class="bottom-info" wx:elif="{{searchResList.length>10}}"><!--内容太短就不显示这条信息-->
+     						<view class="bottom-text">我是有底线的</view>
+						</view>
+						<view class="bottom-info" wx:elif="{{searchResList.length==0}}">
+     						<view class="bottom-text">没有搜索到相关商品</view>
+    					</view>
 			    </scroll-view>
 			</view>
 		</view>
 	</view>
-	<view class="tab">
+	<!--搜索页 end-->
+
+	<!--以下为shop正常页-->
+	<view class="header" wx:if="{{!isSearchWrapperShow}}">
+		<view class="content-wrapper">
+			<view class="avatar">
+				<image class="icon-image" src="{{itemList.logo}}" ></image>	
+			</view>
+			<view class="content" >
+				<view class="desc" style="{{itemList.promotionActivityList.length === 0 ? 'margin-top: 29rpx' : ''}};position:relative">
+					<text class="count-right">起送价</text>
+					<text>￥{{itemList.minPrice}}</text>
+					<text class="count">|</text>
+					<text class="count-right">配送费</text>
+					<text>￥{{itemList.shipFee-itemList.merchantAssumeAmt}}</text>
+					<text class="count">|</text>
+					<text>{{itemList.avgDeliveryTime}}分钟送达</text>
+					<!--new 这边新增搜索 点击-->
+					<view class="shopSearch" catchtap="SearchIconTap">
+						<image src="../../images/images/search_tap.png"></image>
+					</view>
+				</view>
+				<view class="cartcontrol-wrapper">
+					<swiper autoplay="true" circular="true" 
+						vertical="true" interval="3000" duration="500" style="height: 30rpx">
+						<swiper-item class="cartcontrol-content flex"
+							wx:for="{{itemList.promotionActivityList}}" 
+		      				wx:for-index="idx" 
+		      				wx:for-item="promotion"
+		      				wx:key="idx" >
+							<image class="bran" src="{{promotion.promoImg}}"></image>
+							<text class="name">{{promotion.promoName}}</text>
+						</swiper-item>
+					</swiper>
+					<view wx:if="{{itemList.promotionActivityList.length > 0}}" 
+						class="fr" bindtap="broadcast" style="margin-top: 6rpx;margin-right: -5rpx">
+						<text>{{itemList.promotionActivityList.length}}个活动</text>
+						<image class="desc-img" src="../../images/images/down.png"></image>	
+					</view>	
+				</view>
+			</view>  
+		</view>
+		<view class="bulletin-wrapper">
+			<image class="bulletin-title" src="../../images/images/video.png"></image>
+			<text class="bulletin-text">{{itemList.broadcast}}</text>
+			<image class="icon-arrow_lift" src="../../images/images/down.png"></image>
+		</view>
+	</view>
+
+	<view class="tab" wx:if="{{!isSearchWrapperShow}}">
       <view class="item-tab flex {{index===tabIndex ? 'item-tab-avtive' : ''}}"
       wx:for="{{tab.tabList}}"   
       wx:for-item="item"
@@ -725,16 +744,18 @@
 			<text wx:if="{{selectedFood.discountedGoods}}"class="rules-discount-text" style="color:#fc524d">{{selectedFood.discountedGoods.discountProportion/10}}折</text>
 			<text wx:if="{{selectedFood.hasDiscount === 1 && selectedFood.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#fc524d">每单限购{{selectedFood.everyGoodsEveryOrderBuyCount}}份</text>
 		</view> -->
+		
+		
 		<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
 			<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
 				<text>商家休息中</text>
 			</view>
 			<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
-			<view wx:elif="{{food.status === 0 || (food.status === 0 || food.goodsSpecList.length === 1 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && food.goodsSpecList[0].stock === 0 )}}" class="choice-else font-10">	
+			<view wx:elif="{{selectedFood.status === 0 || (selectedFood.status === 0 || selectedFood.goodsSpecList.length === 1 && selectedFood.goodsSpecList[0].stockType && !selectedFood.surplusDiscountStock && selectedFood.goodsSpecList[0].stock === 0 )}}" class="choice-else font-10">	
 				<text>商品已售罄</text><!--不再售卖 或 （针对规格只有一个的，并且库存状态是有限的，并且不是折扣商品已卖完，并且库存数为0）-->
 			</view>
 			<!-- else 正常卖（if有可能要选规格）-->
-			<view wx:elif="{{food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{food}}" data-parent-index="{{parentIndex}}" catchtap="choice">
+			<view wx:elif="{{selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{selectedFood}}"  catchtap="choice">
 				<text>选规格</text>
 			</view>
 			<!--else 正常卖 不用选规格-->

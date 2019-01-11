@@ -12,7 +12,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		scrollTop:0,          //设置滚动条位置
 		itemCategoryList:[],  //某分类下的商品
 		loading:false,
-		isHide:false,         //控制本地购物车缓存
 		getOrderStatus:false,
 		show:true,
 		maskShow:false,       // 遮罩层
@@ -101,18 +100,31 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			app.globalData.longitude = longitude;
         	app.globalData.latitude = latitude;
 		}
+		//获取系统信息 主要是为了计算产品scroll的高度
+		wx.getSystemInfo({
+			success: res => {
+				this.setData({
+					windowScrollHeight: res.windowHeight - 280*res.windowWidth/750,
+					shopSearchScrollHeight: res.windowHeight-237*res.windowWidth/750
+				});
+			}
+		});
 		// this.data.merchantId = 402;	
 		//获取购物车缓存
 		this.getStorageShop(this.data.merchantId);
 		
 		//如果传了search参数，并且为true，则显示的搜索页悬浮窗。其下内容不加载
-		if(search){
+		if(search){//这部分用到变量方法在shopSearch文件
 			//读取购物车其它信息，等价于this.findMerchantInfo();的初始化(这边为了显示优化)
 			let shoppingCartOthers=wx.getStorageSync('shoppingCartOther');
 			let shoppingCartOther=shoppingCartOthers[this.data.merchantId];
-			let setdata=Object.assign({},shoppingCartOther,{isSearchWrapperShow:true})
+			let setdata=Object.assign({},shoppingCartOther,{isSearchWrapperShow:true});
 			this.setData(setdata);
 			this.totalprice();
+			this.shopSearchRecord();//读搜索记录缓存
+			wx.setNavigationBarTitle({//修改标题
+				title: this.data.itemList.name+"---店内搜索"
+		  })
 			return;
 		}
 		//获取商家详情
@@ -168,16 +180,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		////获取商家评价信息
 		this.getevaluate();
 		// this.boosLisr();
-		//获取系统信息 主要是为了计算产品scroll的高度
-	    wx.getSystemInfo({
-		    success: res => {
-				//根据app.globalData.pixelRatio转化为像素 格式为:px/pixelRatio=px
-				let heightPx=280/app.globalData.pixelRatio;
-		        this.setData({
-		          windowScrollHeight: res.windowHeight - 280*res.windowWidth/750
-				});
-		    }
-	    });
 	},
 	onShow(){
 		let loginMessage = wx.getStorageSync('loginMessage');
@@ -1384,21 +1386,19 @@ Page(Object.assign({}, merchantShop,shopSearch,{
     	};
   	},
   	onHide(){
-		this.data.isHide = true;
 		this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
   	},
   	onUnload(){	
-  		if (!this.data.isHide) {
-	  		let merchantId = this.data.merchantId;
-	  		if (!wx.getStorageSync('shoppingCart')) {
-				let shoppingCart = {};
-				shoppingCart[merchantId] = this.data.selectFoods;
-				wx.setStorageSync('shoppingCart',shoppingCart);
-	  		} else {
-	  			let shoppingCart = wx.getStorageSync('shoppingCart');
-	  			shoppingCart[merchantId] = this.data.selectFoods;
-	  			wx.setStorageSync('shoppingCart',shoppingCart);
-	  		}
-  		}	
+		let merchantId = this.data.merchantId;
+		if (!wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = {};
+			shoppingCart[merchantId] = this.data.selectFoods;
+			wx.setStorageSync('shoppingCart',shoppingCart);
+		} else {
+			let shoppingCart = wx.getStorageSync('shoppingCart');
+			shoppingCart[merchantId] = this.data.selectFoods;
+			wx.setStorageSync('shoppingCart',shoppingCart);
+		}
+  			
   	}
 }));
