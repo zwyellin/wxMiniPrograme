@@ -506,7 +506,7 @@ Page({
 		let prePageReg=/cartItem/;//判断上一级页面的路径是不是含有cartItem
 		if(prePageReg.test(prevPage.route)){
 			prevPage.data.iscartDetailBack=true;
-			console.log("返回到"+prePageReg);
+			console.log("返回到",prePageReg,prevPage);
 		}
 	}
 });

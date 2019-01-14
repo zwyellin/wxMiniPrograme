@@ -42,7 +42,7 @@ let shopSearch={
        //缓存购物车其它信息 
         let shoppingCartOther={};
         shoppingCartOther[merchantId]={
-            itemList:this.data.itemList,//商家信息(以下信息都是这个字段的属性)
+            merchantInfoObj:this.data.merchantInfoObj,//商家信息(以下信息都是这个字段的属性)
 			minPrice:this.data.minPrice,
 			shipScore:this.data.shipScore,
             ruleDtoList:this.data.ruleDtoList  

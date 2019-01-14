@@ -16,7 +16,7 @@
 			<view style="height: 26rpx;line-height: 26rpx">
 				<text class="give">起送 ¥{{itemList.minPrice}}</text>
 				<text class="pickertag-text">|</text>
-				<text class="give">配送 ¥{{itemList.shipFee}}</text>
+				<text class="give">配送 ¥{{(itemList.shipFee-itemList.merchantAssumeAmt)>0 ? (itemList.shipFee-itemList.merchantAssumeAmt) : 0}}</text>
 				<text class="pickertag-text">|</text>
 				<text class="give">{{itemList.avgDeliveryTime}}分钟送达</text>
 			</view>

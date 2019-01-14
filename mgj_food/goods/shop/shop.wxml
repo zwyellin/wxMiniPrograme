@@ -71,7 +71,7 @@
 									</text>
 									<view class="cartcontrol-wrapper">
 										<!-- if 如果休息-->
-										<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
+										<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
 											<text>商家休息中</text>
 										</view>
 										<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
@@ -130,17 +130,17 @@
 	<view class="header" wx:if="{{!isSearchWrapperShow}}">
 		<view class="content-wrapper">
 			<view class="avatar">
-				<image class="icon-image" src="{{itemList.logo}}" ></image>	
+				<image class="icon-image" src="{{merchantInfoObj.logo}}" ></image>	
 			</view>
 			<view class="content" >
-				<view class="desc" style="{{itemList.promotionActivityList.length === 0 ? 'margin-top: 29rpx' : ''}};position:relative">
+				<view class="desc" style="{{merchantInfoObj.promotionActivityList.length === 0 ? 'margin-top: 29rpx' : ''}};position:relative">
 					<text class="count-right">起送价</text>
-					<text>￥{{itemList.minPrice}}</text>
+					<text>￥{{merchantInfoObj.minPrice}}</text>
 					<text class="count">|</text>
 					<text class="count-right">配送费</text>
-					<text>￥{{itemList.shipFee-itemList.merchantAssumeAmt}}</text>
+					<text>￥{{merchantInfoObj.shipFee-merchantInfoObj.merchantAssumeAmt}}</text>
 					<text class="count">|</text>
-					<text>{{itemList.avgDeliveryTime}}分钟送达</text>
+					<text>{{merchantInfoObj.avgDeliveryTime}}分钟送达</text>
 					<!--new 这边新增搜索 点击-->
 					<view class="shopSearch" catchtap="SearchIconTap">
 						<image src="../../images/images/search_tap.png"></image>
@@ -150,7 +150,7 @@
 					<swiper autoplay="true" circular="true" 
 						vertical="true" interval="3000" duration="500" style="height: 30rpx">
 						<swiper-item class="cartcontrol-content flex"
-							wx:for="{{itemList.promotionActivityList}}" 
+							wx:for="{{merchantInfoObj.promotionActivityList}}" 
 		      				wx:for-index="idx" 
 		      				wx:for-item="promotion"
 		      				wx:key="idx" >
@@ -158,9 +158,9 @@
 							<text class="name">{{promotion.promoName}}</text>
 						</swiper-item>
 					</swiper>
-					<view wx:if="{{itemList.promotionActivityList.length > 0}}" 
+					<view wx:if="{{merchantInfoObj.promotionActivityList.length > 0}}" 
 						class="fr" bindtap="broadcast" style="margin-top: 6rpx;margin-right: -5rpx">
-						<text>{{itemList.promotionActivityList.length}}个活动</text>
+						<text>{{merchantInfoObj.promotionActivityList.length}}个活动</text>
 						<image class="desc-img" src="../../images/images/down.png"></image>	
 					</view>	
 				</view>
@@ -168,7 +168,7 @@
 		</view>
 		<view class="bulletin-wrapper">
 			<image class="bulletin-title" src="../../images/images/video.png"></image>
-			<text class="bulletin-text">{{itemList.broadcast}}</text>
+			<text class="bulletin-text">{{merchantInfoObj.broadcast}}</text>
 			<image class="icon-arrow_lift" src="../../images/images/down.png"></image>
 		</view>
 	</view>
@@ -181,7 +181,7 @@
       wx:key="index" 
       bindtap="selectTab" data-index="{{index}}">
         <text>{{item}}</text>
-        <image wx:if="{{itemList.hasVisualRestaurant === 1 && index == 2}}" class="extra-img fr" src="/images/images/can_see.png"></image>
+        <image wx:if="{{merchantInfoObj.hasVisualRestaurant === 1 && index == 2}}" class="extra-img fr" src="/images/images/can_see.png"></image>
       </view>
     </view>
     <!-- 外卖商品 开始 -->
@@ -245,7 +245,7 @@
 							</text>
 							<view class="cartcontrol-wrapper">
 								<!-- if 如果休息-->
-								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
+								<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
 									<text>商家休息中</text>
 								</view>
 								<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
@@ -339,7 +339,7 @@
 							<text class="now">¥{{tage.sortGoodsSpecList(food.goodsSpecList).price}}<text wx:if="{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(food.goodsSpecList).originalPrice}}<text class="del"></text></text>
 							</text>
 							<view class="cartcontrol-wrapper">
-								<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
+								<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
 									<text>商家休息中</text>
 								</view>
 								<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
@@ -382,25 +382,25 @@
     	<view class="new-evaluate-header">
 		   <view class="new-evaluate-userinfo">
 		       <view>
-			      <text class="new-evaluate-userinfo-number">{{tage.formatFloat(item.averageScore,1)}}</text>
+			      <text class="new-evaluate-userinfo-number">{{tage.formatFloat(merchantInfoObj.averageScore,1)}}</text>
 			   </view>
 			   <view class="new-evaluate-userinfo-star">
 				   <text class="new-evaluate-userinfo-star-text">商家评分</text>
-				   <template is="star-AttrScore" data="{{size:36,item,AttrName:'averageScore'}}"></template>
+				   <template is="star-AttrScore" data="{{size:36,merchantInfoObj,AttrName:'averageScore'}}"></template>
 			   </view>
 		   </view>
 		   <view class="new-evaluate-right">
 			   <view class="new-evaluate-right-item">
 				   <text class="new-evaluate-right-text">味道</text>
-				   <text class="new-evaluate-right-number">{{tage.formatFloat(item.tasteScore,1)}}</text>
+				   <text class="new-evaluate-right-number">{{tage.formatFloat(merchantInfoObj.tasteScore,1)}}</text>
 			   </view>
 			   <view class="new-evaluate-right-item">
 				   <text class="new-evaluate-right-text">包装</text>
-				   <text class="new-evaluate-right-number">{{tage.formatFloat(item.packagingScore,1)}}</text>
+				   <text class="new-evaluate-right-number">{{tage.formatFloat(merchantInfoObj.packagingScore,1)}}</text>
 			   </view>
 			    <view class="new-evaluate-right-item" style="padding-left:50rpx;border-left:1px solid #e9e9e9">
 				   <text class="new-evaluate-right-text">配送</text>
-				   <text class="new-evaluate-right-number">{{tage.formatFloat(item.shipScore,1)}}</text>
+				   <text class="new-evaluate-right-number">{{tage.formatFloat(merchantInfoObj.shipScore,1)}}</text>
 			   </view>
 			</view>
 	    </view>
@@ -487,40 +487,40 @@
     <view wx:if="{{tab.cur==='商家'}}" class="shop">
     	<view class="shop-header font-12">
     		<view class="shop-text font-14">
-    			<text>{{itemList.name}}</text>
+    			<text>{{merchantInfoObj.name}}</text>
     		</view>
 			<view class="shop-text" style="margin-top:16rpx">
-    			<template is="star-AttrScore" data="{{size,item,AttrName:'averageScore'}}"></template>
-    			<text style="color:#ff9900;margin-left:10rpx">{{tage.shopFloat(itemList.averageScore,1)}}分</text>
-    			<text style="color:#666;margin-left:20rpx">月售{{itemList.monthSaled}}单</text>
+    			<template is="star-AttrScore" data="{{size,merchantInfoObj,AttrName:'averageScore'}}"></template>
+    			<text style="color:#ff9900;margin-left:10rpx">{{tage.shopFloat(merchantInfoObj.averageScore,1)}}分</text>
+    			<text style="color:#666;margin-left:20rpx">月售{{merchantInfoObj.monthSaled}}单</text>
     		</view>
     	</view>
     	<view class="user-center">
   			<view class="user-message">
   				<view class="font-12"><text >起送价</text></view>
-  				<view class="mt10"><text style="color:#333" >{{itemList.minPrice}}元</text></view>
+  				<view class="mt10"><text style="color:#333" >{{merchantInfoObj.minPrice}}元</text></view>
   			</view>
-  			<view wx:if="{{itemList.shipmentMode === 2}}" class="user-message">
+  			<view wx:if="{{merchantInfoObj.shipmentMode === 2}}" class="user-message">
   				<view class="font-12"><text>第三方配送</text></view>
-  				<view class="mt10"><text style="color:#333">{{itemList.shipFee}}元</text></view>
+  				<view class="mt10"><text style="color:#333">{{merchantInfoObj.shipFee}}元</text></view>
   			</view>
-  			<view wx:if="{{itemList.shipmentMode === 1}}" class="user-message">
+  			<view wx:if="{{merchantInfoObj.shipmentMode === 1}}" class="user-message">
   				<view class="font-12"><text>商家自配送</text></view>
-  				<view class="mt10"><text style="color:#333">{{itemList.shipFee || 0}}元</text></view>
+  				<view class="mt10"><text style="color:#333">{{merchantInfoObj.shipFee || 0}}元</text></view>
   			</view>
   			<view class="user-message">
   				<view class="font-12"><text>平均配送时间</text></view>
-  				<view class="mt10"><text style="color:#333">{{itemList.avgDeliveryTime}}分钟</text></view>
+  				<view class="mt10"><text style="color:#333">{{merchantInfoObj.avgDeliveryTime}}分钟</text></view>
   			</view>
   		</view>
-  		<view wx:if="{{itemList.visualRestaurantList && itemList.visualRestaurantList.length != 0}}" class="shop-content font-16">
+  		<view wx:if="{{merchantInfoObj.visualRestaurantList && merchantInfoObj.visualRestaurantList.length != 0}}" class="shop-content font-16">
   			<view class="shop-message shop-message-letter" style="color:#666;padding-left: 10rpx;border: none">
   				<text>可视餐厅</text>
   			</view>
   			<scroll-view scroll-x="true" style="width: 100%;height: 166rpx;padding-bottom: 20rpx">
   				<view class="flex">
 					<block
-						wx:for="{{itemList.visualRestaurantList}}"   
+						wx:for="{{merchantInfoObj.visualRestaurantList}}"   
 				      	wx:for-item="item"
 				      	wx:for-index="index" 
 				      	wx:key="index">
@@ -543,7 +543,7 @@
 			<view class="shop-message flex" bindtap="merchantAddress">
 				<view class="merchant-address flex-item">
 					<text class="shop-message-letter">商家地址:</text>
-  					<text class="shop-message-letter shop-left">{{itemList.address}}</text>
+  					<text class="shop-message-letter shop-left">{{merchantInfoObj.address}}</text>
 				</view>
   				<view class="address_icon flex">
   					<image class="map_icon" src="/images/images/map_1.png"></image>
@@ -551,11 +551,11 @@
   			</view>
   			<view class="shop-message">
   				<text class="shop-message-letter">营业时间:</text>
-  				<text class="shop-message-letter shop-left">{{itemList.workingTime}}</text>
+  				<text class="shop-message-letter shop-left">{{merchantInfoObj.workingTime}}</text>
   			</view>
   			<view class="shop-message" bindtap="callPhone">
   				<text class="shop-message-letter">电话:</text>
-  				<text class="shop-message-letter shop-left">{{itemList.contacts}}</text>
+  				<text class="shop-message-letter shop-left">{{merchantInfoObj.contacts}}</text>
   			</view>
   		</view>
   		<view class="shop-content font-16">
@@ -563,7 +563,7 @@
   				<text>商家公告</text>
   			</view>
   			<view class="shop-message-letter shop-flex font-14" style="color:#bc4500">
-  				<text>{{item.broadcast || '商家暂无公告'}}</text>
+  				<text>{{merchantInfoObj.broadcast || '商家暂无公告'}}</text>
   			</view>
   		</view>
   		<view class="shop-content font-18">
@@ -571,7 +571,7 @@
   				<text>活动与支持</text>
   			</view>
   			<view class="query-message font-12 clearfix"
-				wx:for="{{itemList.promotionActivityList}}" 
+				wx:for="{{merchantInfoObj.promotionActivityList}}" 
 				wx:for-index="idx" 
 				wx:for-item="promotion"
 				wx:key="idx">
@@ -581,22 +581,22 @@
 				</view>
 			</view>
   		</view>
-  		<view class="shop-content font-18" wx:if="{{itemList.businessLicenseImg || itemList.hygieneLicenseImg}}">
+  		<view class="shop-content font-18" wx:if="{{merchantInfoObj.businessLicenseImg || merchantInfoObj.hygieneLicenseImg}}">
   			<view class="shop-message shop-message-letter" >
   				<text>商家资质</text>
   			</view>
   			<view class="merchant-aptitude flex">
   				<view class="merchant-aptitude-img">
-  					<image class="aptitude-img" src="{{itemList.businessLicenseImg}}?imageView2/0/w/560/h/380/q/100!" 
+  					<image class="aptitude-img" src="{{merchantInfoObj.businessLicenseImg}}?imageView2/0/w/560/h/380/q/100!" 
   						  data-id="0" 
-						  data-imgs="{{[itemList.businessLicenseImg,itemList.hygieneLicenseImg]}}"
+						  data-imgs="{{[merchantInfoObj.businessLicenseImg,merchantInfoObj.hygieneLicenseImg]}}"
   						catchtap="scaleImg">	
   					</image>
   				</view>
   				<view class="merchant-aptitude-img">
-  					<image class="aptitude-img" src="{{itemList.hygieneLicenseImg}}?imageView2/0/w/560/h/380/q/100!" 
+  					<image class="aptitude-img" src="{{merchantInfoObj.hygieneLicenseImg}}?imageView2/0/w/560/h/380/q/100!" 
   						data-id="1"
- 						data-imgs="{{[itemList.businessLicenseImg,itemList.hygieneLicenseImg]}}"
+ 						data-imgs="{{[merchantInfoObj.businessLicenseImg,merchantInfoObj.hygieneLicenseImg]}}"
   						catchtap="scaleImg">	
   					</image>
   				</view>
@@ -630,7 +630,7 @@
 					</view>
 				</view>
 				<view class="price" style="color:#fff"><text>￥{{totalprice}}</text></view>
-				<text class="desc" style="color:#fff">另需配送费¥{{itemList.shipFee-itemList.merchantAssumeAmt}}</text>
+				<text class="desc" style="color:#fff">另需配送费¥{{merchantInfoObj.shipFee-merchantInfoObj.merchantAssumeAmt}}</text>
 			</view>
 			<view class="content-right" bindtap="checkOut">
 				<view class="pay {{ totalprice>=minPrice ? 'enough' : 'not-enough'}}" >
@@ -653,7 +653,7 @@
 					wx:for-item="food" 
 					wx:for-index="index" 
 					wx:key="index">
-					<view class="food" >
+					<view class="food" ><!-- 购物车展示的列表-->
 						<view class="name food-name">{{food.name}}
 							<text wx:if="{{food.priceObject.spec}}">({{food.priceObject.spec}})</text>
 							<text wx:if="{{food.attributes}}">{{food.attributes}}</text>
@@ -747,7 +747,7 @@
 		
 		
 		<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
-			<view wx:if="{{itemList.businessStatus === 1 || itemList.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
+			<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
 				<text>商家休息中</text>
 			</view>
 			<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
@@ -799,15 +799,15 @@
 				</view>
 				<view class="shoprules-content"
 					wx:for="{{selectedFood.goodsAttributeList}}" 
-					wx:for-item="item" 
+					wx:for-item="merchantInfoObj" 
 					wx:for-index="parentindex" 
 					wx:key="parentindex">
 					<view class="shoprules-text">
-						<text>{{item.title}} :</text>
+						<text>{{merchantInfoObj.title}} :</text>
 					</view>
 					<view class="shoprules-options font-14">
-						<text class="shoprules-select {{item.select == taste ? 'shoprules-active' : ''}}" 
-							wx:for="{{tage.splitStr(item.name)}}" 
+						<text class="shoprules-select {{merchantInfoObj.select == taste ? 'shoprules-active' : ''}}" 
+							wx:for="{{tage.splitStr(itemList.name)}}" 
 							wx:for-item="taste" 
 							wx:for-index="index" 
 							wx:key="index"
@@ -876,5 +876,5 @@
 		</view>
 	</view>
 	<template is="showToast" data="{{showToast: showToast}}" />
-	<template is="activity" data="{{pickertag,itemList,pickertagAnimation}}" />
+	<template is="activity" data="{{pickertag,itemList:merchantInfoObj,pickertagAnimation}}" />
 </view>

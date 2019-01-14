@@ -57,7 +57,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	    specIndex:0,
 	    merchantRedBagList:[],
 	    orderList:[],
-	    itemList:{},     //商家信息
+	    merchantInfoObj:{},     //商家信息
 	    item:{},
 	    shipScore:0,
 		evaluate:{},
@@ -123,7 +123,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			this.totalprice();
 			this.shopSearchRecord();//读搜索记录缓存
 			wx.setNavigationBarTitle({//修改标题
-				title: this.data.itemList.name+"---店内搜索"
+				title: this.data.merchantInfoObj.name+"---店内搜索"
 		  })
 			return;
 		}
@@ -780,7 +780,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		let count = this.getCartCount(id,priceObject);
 		console.log(food.hasDiscount);
 		//点击之后就判断能否购买 （最少购买数量》库存数）
-		console.log("判断",count,priceObject.minOrderNum,priceObject.stock)
 		if(priceObject.stockType && food.hasDiscount=== 0 && priceObject.minOrderNum>priceObject.stock){
 			feedbackApi.showToast({title: '该商品库存不足'});
 			return;
@@ -1387,6 +1386,16 @@ Page(Object.assign({}, merchantShop,shopSearch,{
   	},
   	onHide(){
 		this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
+		let merchantId = this.data.merchantId;
+		if (!wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = {};
+			shoppingCart[merchantId] = this.data.selectFoods;
+			wx.setStorageSync('shoppingCart',shoppingCart);
+		} else {
+			let shoppingCart = wx.getStorageSync('shoppingCart');
+			shoppingCart[merchantId] = this.data.selectFoods;
+			wx.setStorageSync('shoppingCart',shoppingCart);
+		}	
   	},
   	onUnload(){	
 		let merchantId = this.data.merchantId;
@@ -1398,7 +1407,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			let shoppingCart = wx.getStorageSync('shoppingCart');
 			shoppingCart[merchantId] = this.data.selectFoods;
 			wx.setStorageSync('shoppingCart',shoppingCart);
-		}
-  			
+		}		
   	}
 }));
