@@ -799,15 +799,15 @@
 				</view>
 				<view class="shoprules-content"
 					wx:for="{{selectedFood.goodsAttributeList}}" 
-					wx:for-item="merchantInfoObj" 
+					wx:for-item="item" 
 					wx:for-index="parentindex" 
 					wx:key="parentindex">
 					<view class="shoprules-text">
-						<text>{{merchantInfoObj.title}} :</text>
+						<text>{{item.title}} :</text>
 					</view>
 					<view class="shoprules-options font-14">
-						<text class="shoprules-select {{merchantInfoObj.select == taste ? 'shoprules-active' : ''}}" 
-							wx:for="{{tage.splitStr(itemList.name)}}" 
+						<text class="shoprules-select {{item.select == taste ? 'shoprules-active' : ''}}" 
+							wx:for="{{tage.splitStr(item.name)}}" 
 							wx:for-item="taste" 
 							wx:for-index="index" 
 							wx:key="index"

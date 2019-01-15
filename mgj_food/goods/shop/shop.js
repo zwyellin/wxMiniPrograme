@@ -758,14 +758,14 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		let attributes = '';
 		let id = food.id; //选择的产品id
 		let categoryId = food.categoryId;  //选择的产品分类id
-		let priceObject = {}; //产品价格对象
+		let priceObject = {}; //产品价格对象  
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
 		} else {
 			priceObject = food.goodsSpecList[specIndex]; //产品价格	
 		}
-
-		if (parentIndex == 0 || parentIndex) {
+		//关联parentRelationCategoryId
+		if (parentIndex == 0 || parentIndex) {//如果传了parentIndex，普通购买和点详情进去的购买
 			if (this.data.menu[parentIndex].id === null || this.data.menu[parentIndex].id < 0) {
 				food.parentRelationCategoryId = food.relationCategoryId
 			} else {
@@ -778,15 +778,15 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		let tmpArr = [];
 		tmpArr = this.data.selectFoods;
 		let count = this.getCartCount(id,priceObject);
-		console.log(food.hasDiscount);
-		//点击之后就判断能否购买 （最少购买数量》库存数）
-		if(priceObject.stockType && food.hasDiscount=== 0 && priceObject.minOrderNum>priceObject.stock){
+
+		//点击之后就判断能否购买 
+		//普通商品 （最少购买数量>库存数）
+		if(food.hasDiscount=== 0 && priceObject.stockType &&  priceObject.minOrderNum>priceObject.stock){
 			feedbackApi.showToast({title: '该商品库存不足'});
 			return;
 		}
-		//普通商品库存有限 或者 普通商品有限购要求
-		if (priceObject.stockType && food.hasDiscount=== 0 || priceObject.orderLimit && food.hasDiscount===0) {
-			console.log(count,priceObject.stock);
+		//普通商品库存有限 或 有限购要求
+		if (food.hasDiscount=== 0  &&  priceObject.stockType ||food.hasDiscount===0  && priceObject.orderLimit ) {
 			if (count >=priceObject.stock && priceObject.stockType) {
 				feedbackApi.showToast({title: '你购买的商品库存不足'});
 				return;
@@ -795,8 +795,10 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				feedbackApi.showToast({title: '该商品每单限购'+ count +'份'});
 				return;
 			}
-    	} 
-    	if(priceObject.stockType && food.hasDiscount===1 || priceObject.orderLimit && food.hasDiscount===1) {
+		} 
+		//针对折扣商品 库存有限 或 有限购要求
+    	if( food.hasDiscount===1  && priceObject.stockType||food.hasDiscount===1  &&  priceObject.orderLimit) {
+			//如果折扣剩余库存 小于 折扣商品最多购买量=>(折扣商品快不足了)
     		if (food.surplusDiscountStock < food.everyGoodsEveryOrderBuyCount && food.surplusDiscountStock) {
     			if(count >= food.surplusDiscountStock) {
 					let surCount = count - food.surplusDiscountStock;
@@ -810,6 +812,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 						return;
 					}	
 				}
+			//如果折扣剩余库存 大于等于 折扣商品最多购买数量=>（折扣商品还是多多的）
     		} else if (food.surplusDiscountStock >=food.everyGoodsEveryOrderBuyCount && food.surplusDiscountStock) {
 				if (count>=food.everyGoodsEveryOrderBuyCount) {
 					console.log(23343);
