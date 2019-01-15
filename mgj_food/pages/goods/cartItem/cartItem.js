@@ -14,9 +14,10 @@ Page({
       show:false,
       firstRefresh:false
   	},
-  	onShow(){
+  	onShow(options){
         let loginMessage = wx.getStorageSync('loginMessage');
         let loginStatus = wx.getStorageSync('loginstatus');
+        //判断是否登入
         if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
             this.setData({
                 start:0,

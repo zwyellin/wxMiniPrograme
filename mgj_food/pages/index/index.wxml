@@ -109,18 +109,38 @@
 	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 		</view>
-		<template is="merchant" data="{{dataList,cartObject,size}}"></template>
+		<!--优化列表显示，这边放了十个一维数组，最后数据都放到最后一个数组那里-->
+		<template is="merchant" data="{{dataList:dataList1,cartObject,size,linearArrayIndex:1}}"></template>
+		<template is="merchant" data="{{dataList:dataList2,cartObject,size,linearArrayIndex:2}}"></template>
+		<template is="merchant" data="{{dataList:dataList3,cartObject,size,linearArrayIndex:3}}"></template>
+		<template is="merchant" data="{{dataList:dataList4,cartObject,size,linearArrayIndex:4}}"></template>
+		<template is="merchant" data="{{dataList:dataList5,cartObject,size,linearArrayIndex:5}}"></template>
+		<template is="merchant" data="{{dataList:dataList6,cartObject,size,linearArrayIndex:6}}"></template>
+		<template is="merchant" data="{{dataList:dataList7,cartObject,size,linearArrayIndex:7}}"></template>
+		<template is="merchant" data="{{dataList:dataList8,cartObject,size,linearArrayIndex:8}}"></template>
+		<template is="merchant" data="{{dataList:dataList9,cartObject,size,linearArrayIndex:9}}"></template>
+		<template is="merchant" data="{{dataList:dataList10,cartObject,size,linearArrayIndex:10}}"></template>
+		<!--列表骨架屏-->
+		<template is="merchantscreen" wx:if="{{!loading && skeletonScreen}}"></template>
 		<!-- 附近的商家 结束 -->
-		<view class="loading-info" wx:if="{{!loading}}">
+		<!--附近商家，底下信息展示 srart-->
+		<!--loading ，false表示要去加载，列表返回不为空则会一直底下view会存在-->
+		<view wx:if="{{!loading}}" class="loading-info" >
 	        <image src="/images/merchant/loading.png" class="img-loading"></image>
 	        <view class="loading-text">正在加载，请稍候</view>
 	    </view>
-	    <view class="bottom-info" wx:if="{{loading && dataList.length != 0}}">
-     		<view class="bottom-text">我是有底线的</view>
-    	</view>
-    	<view wx:if="{{!dataList.length && loading}}" class="text-center">
-      		<view class="no-result mt30">抱歉，没有搜索到您想要的商家</view>
-    	</view>
+		<!--loading为true即列表返回为空（或少于请求数量，表示不再加载）的情况 -->
+		<block wx:if="{{loading}}">
+			<!--如果dataList1一条数据都没有-->
+			<view wx:if="{{!dataList1.length}}" class="text-center">
+      			<view class="no-result mt30">抱歉，没有搜索到您想要的商家</view>
+    		</view>
+			<!--else-->
+			<view class="bottom-info" wx:else>
+     			<view class="bottom-text">我是有底线的</view>
+    		</view>
+		</block>
+	    <!--附近商家，底下信息展示 end-->
 	</view>
 	
 

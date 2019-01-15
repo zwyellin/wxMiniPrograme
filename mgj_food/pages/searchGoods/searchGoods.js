@@ -1,7 +1,7 @@
 const app = getApp();
 const { wxRequest } = require('../../utils/util.js');
-
-Page({
+const { merchantObj } = require('../../components/merchant/merchant.js');
+Page(Object.assign({}, merchantObj,{
 	data:{
         searchValueIndex:-1,
         size:24,
@@ -54,7 +54,8 @@ Page({
         }).then(res=> {
             console.log(res);
             if (res.data.code ===0) {
-                let dataList = res.data.value;
+                //let dataList = res.data.value;
+                 let dataList = this.mapList(res.data.value);
                 dataList.map((item)=>{
                     if(!item.logo || !/.*(\.png|\.jpg)$/i.test(item.logo)){
                         item.logo = '/images/merchant/merchantLogo.png';
@@ -127,4 +128,4 @@ Page({
         let historyList = this.data.historyList
         wx.setStorageSync('historyList',historyList)
     }
-});
+}));

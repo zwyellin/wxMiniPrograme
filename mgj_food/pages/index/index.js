@@ -4,17 +4,18 @@ const { Promise, wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} 
 const { initClassList, imgUrls, merchantFeature, merchantActive } = require('../../components/homeClass.js');
 const { merchantObj } = require('../../components/merchant/merchant.js');
 let interval;
+const dataListSize = 40;//商家列表的二维数组大小
 Page(Object.assign({}, merchantObj, {
   	data: {
   		islocal:false,       //是否计算本地缓存
   		moveDown:false,
   		toSearch:false,
   		loading:false,
-  		isAgentId:false,
+  		isAgentId:false,//
   		clickPage:false,
   		cartObject:null,
   		isSwipper:false,
-  		isShoppingCart:false,
+  		isShoppingCart:false,                                                                              
 	    swiper: {
 	      imgUrls: imgUrls,
 	      imageShow:false,
@@ -58,8 +59,19 @@ Page(Object.assign({}, merchantObj, {
 		sortShow:false,
 		maskShow:false,
 		maskAnimation:null,   //遮罩层动画
-		start:0,
-		dataList:[],      //商家列表
+		start:0, 
+		dataList1:[],
+		dataList2:[],
+		dataList3:[],
+		dataList4:[],
+		dataList5:[],
+		dataList6:[],
+		dataList7:[],
+		dataList8:[],
+		dataList9:[],
+		dataList10:[],
+		dataListIndex:0,//用于确定要放哪个数组里面,
+		skeletonScreen:true,//是否展示骨架屏,一开始为true。加载数据前置为true，加载后false
 		initClassList:initClassList,	  //分类列表
 		platformRedList:[],               //平台红包列表
 		isloginGetPlatformRedBag:false,   //是否登录领取过平台红包
@@ -119,7 +131,7 @@ Page(Object.assign({}, merchantObj, {
 						}
 						this.initBanner();
 						this.initClass();
-						this.getDataList(false,false);
+						this.getDataList(false,true);
 	        			this.findTagCategory();	
 					}	
 		        }).catch(err=>{
@@ -243,7 +255,7 @@ Page(Object.assign({}, merchantObj, {
 						app.globalData.agentPhone = null;
 						app.globalData.agentId = null;
 					}
-					this.getDataList(false,false);//getinitDataList
+					this.getDataList(false,true);//getinitDataList
 					this.initClass();
         			this.initBanner();
         			this.findTagCategory();
@@ -472,6 +484,8 @@ Page(Object.assign({}, merchantObj, {
         });
 	},
 	getDataList(status,Boos){
+		//status:判断需不需要加载中小图标,false为需要
+		//Boos:判断需不需要重置，true为需要重置
 		if (!status) {
 			wx.showLoading({
 		        title: '加载中',
@@ -480,6 +494,25 @@ Page(Object.assign({}, merchantObj, {
 		        mask: true
 			});	
 		}
+		if(Boos){
+			this.data.dataListIndex=0;//重置
+			this.setData({//重置数组,这边setData是为了不显示这个，而显示骨架屏
+				dataList1:[],
+				dataList2:[],
+				dataList3:[],
+				dataList4:[],
+				dataList5:[],
+				dataList6:[],
+				dataList7:[],
+				dataList8:[],
+				dataList9:[],
+				dataList10:[],
+				loading:false,
+				isAgentId:false //重置时，置为false。再根据返回状态来改变
+			})
+		}
+		let dataListIndex=this.data.dataListIndex;
+		this.data.start=dataListIndex*dataListSize+this.data['dataList'+(dataListIndex+1)].length;
 		let data = {
 			agentId:app.globalData.agentId,
         	longitude:app.globalData.longitude,
@@ -492,6 +525,10 @@ Page(Object.assign({}, merchantObj, {
         	size:10,
         	start:this.data.start
 		};
+		//加载数据前，展示骨架屏
+		this.setData({
+			skeletonScreen:true
+		});
 		wxRequest({
         	url:'/merchant/userClient?m=findTakeAwayMerchant4&uuid=' + parseInt(Math.random()*1000000000000000),
         	method:'POST',
@@ -500,6 +537,7 @@ Page(Object.assign({}, merchantObj, {
         		params:data
         	}	
         }).then(res=>{
+<<<<<<< HEAD
 			let dataList = this.data.dataList;
 			let list = res.data.value;		
 			if (res.data.code === 0) {
@@ -564,15 +602,52 @@ Page(Object.assign({}, merchantObj, {
 								dataList:list,
 							});
 						} else {
+=======
+			//mapList在merchant.js中定义的，用于对原数据进行精简，返回精简数组
+			let list=this.mapList(res.data.value);
+		    //放到固定的几个数组中
+		   	let  dataListIndex=this.data.dataListIndex;
+			if(this.data['dataList'+(dataListIndex+1)].length>=dataListSize){//如果该数组的已经放了这么多，则放到下一组
+				dataListIndex+=1;
+				if(dataListIndex>9){//剩余数据，直接放到最后一组
+					dataListIndex=9;
+				}
+				this.data.dataListIndex=dataListIndex;
+			}
+			if(res.data.code === 0) {//返回状态成功
+				//loading:如果还有数据可以加载，则置为false:会显示列表加载loaging
+				//列表加载loading和数据加载小图标是不一样的哦
+				if(list.length==0){//如果没有数据返回
+					setTimeout(()=>{//加载loading，多转一下=>加载痕迹更明显
+						this.setData({
+							loading:true,
+							skeletonScreen:false//关闭骨架屏
+						});
+					},1500);
+					//没有返回值时，有可能没有代理商，则不显示内容
+					if (Boos && app.globalData.agentId === null) {
+						this.setData({
+							isAgentId:true,
+							skeletonScreen:false
+						});
+					} 
+				}else{//有数据返回
+					list = this.seatImg(list);
+					this.setData({
+						['dataList'+(dataListIndex+1)]:this.data['dataList'+(dataListIndex+1)].concat(list),				
+						loading:false,
+						skeletonScreen:false
+					});
+					if(list.length<10){//最后几项数据
+						setTimeout(()=>{//加载loading，多转一下=>加载痕迹更明显
+>>>>>>> 1a6d155f0831e5758ae79408e477fb77d6bc73f7
 							this.setData({
-								isAgentId:false,
-								dataList:list,
-								loading:false
+								loading:true
 							});
-						}	
+						},1500);
 					}
-				}	
-			}else {
+				}
+			}else{//返回状态出错			
 				this.setData({
 					isAgentId:true	
 				});
@@ -597,15 +672,13 @@ Page(Object.assign({}, merchantObj, {
 			}, 1000);
 		}	
 	},
+	//触拉到底刷新
 	onReachBottom(){
-		if (!this.data.islocal) {
-			this.data.start+= 10;
-			this.getDataList(true,true);	
-		} else {
-			this.data.islocal = false;
+		if(!this.data.skeletonScreen){//true:表示还在显示骨架屏，说明还没有返回数据，则数据返回前不重新加载数据
+			this.getDataList(true,false);
 		}
 	},
-	//下拉刷新
+	//微信额头下拉刷新
     onPullDownRefresh() {
     	if (this.data.maskShow) {
     		wx.stopPullDownRefresh();

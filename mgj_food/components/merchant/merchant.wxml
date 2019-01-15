@@ -3,7 +3,7 @@
 <template name="merchant">
 	<view class="goods-wrapper clearfix" 
 		wx:for="{{dataList}}" 
-      	wx:for-index="index" 
+      	wx:for-index="index"
       	wx:for-item="item"
       	wx:key="id"
       	data-id="{{item.id}}"
@@ -33,24 +33,48 @@
 			<view class="extra">
 				<text class="count">起送价￥{{item.minPrice}}</text>
 				<text class="count">|</text>
-				<text>{{(item.shipFee-item.merchantAssumeAmt) > 0 ? '配送费￥'+(item.shipFee-item.merchantAssumeAmt) : '免配送费'}}</text>
-				<text wx:if="{{item.merchantAssumeAmt > 0 && item.shipFee-item.merchantAssumeAmt!=0 }}" style="color:#999;margin-left:8rpx;text-decoration:line-through">￥{{item.shipFee}}</text>
+				<text>{{(item.shipFee - item.merchantAssumeAmt) > 0 ? '配送费￥'+(item.shipFee - item.merchantAssumeAmt) : '免配送费'}}</text>
+				<text wx:if="{{item.merchantAssumeAmt > 0 && item.shipFee - item.merchantAssumeAmt!=0 }}" style="color:#999;margin-left:8rpx;text-decoration:line-through">￥{{item.shipFee}}</text>
 				<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
 			</view>
-			<view class="cartcontrol-wrapper" data-item="{{item}}" data-index="{{index}}" style="overflow: hidden;height: {{item.isHeight}}">
+			<view class="cartcontrol-wrapper"  style="overflow: hidden;height: {{item.isHeight}}"
+			data-item="{{item}}" data-linear-array-index="{{linearArrayIndex}}" data-index="{{index}}"  catchtap="moveDown">
 				<view class="cartcontrol-content flex"
 					wx:for="{{item.promotionActivityList}}" 
       				wx:for-index="idx" 
       				wx:for-item="promotion"
-      				wx:key="idx" >
+      				wx:key='activity+"idx"'>
 					<image class="bran" src="{{promotion.promoImg}}"></image>
 					<text class="name">{{promotion.promoName}}</text>
 				</view>
 			</view>
-			<view wx:if="{{item.promotionActivityList.length>2}}" data-item="{{item}}" data-index="{{index}}" class="cartcontrol-down" catchtap="moveDown">
+			<view wx:if="{{item.promotionActivityList.length>2}}" class="cartcontrol-down" data-item="{{item}}" data-linear-array-index="{{linearArrayIndex}}" data-index="{{index}}"  catchtap="moveDown">
 				<text class="font-12" style="margin-right: 10rpx;color:#666">{{item.promotionActivityList.length}}个活动</text>
 				<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
 			</view>
+		</view>
+	</view>
+</template>
+
+<!--
+参数：无
+说明：商家列表的骨架屏，这边显示两个
+-->
+<template name="merchantscreen">
+	<view class="goods-wrapper clearfix" 
+		wx:for="{{[0,1]}}" 
+      	wx:for-index="index"
+      	wx:for-item="item"
+      	wx:key="index">
+		<view class="icon">
+			<image class="icon-image screenbg" />
+		</view>
+		<view class="content">
+			<view class="name">
+				<view class="name-txt screenbg" style="width:50%"></view>
+			</view>
+			<view class="desc clearfix screenbg" style="height:34rpx"></view>
+			<view class="extra screenbg" style="border-bottom:none"></view>
 		</view>
 	</view>
 </template>

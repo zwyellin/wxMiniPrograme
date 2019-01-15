@@ -128,7 +128,7 @@ Page(Object.assign({}, merchantObj, {
         	}	
         }).then(res=>{
 			let dataList = this.data.dataList;
-			let list = res.data.value;
+			let list =this.mapList(res.data.value);
 			if (res.data.code === 0) {
 				if (status) {
 					if (res.data.value.length != 0) {
