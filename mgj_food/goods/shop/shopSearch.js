@@ -25,9 +25,6 @@ let shopSearchData={
 let shopSearch={
 	//shop head部分点击搜索图标 事件
 	SearchIconTap(e){
-       if(!isAbleSearchIconTap){//如果不允许再点击
-         feedbackApi.showToast({title: '请稍等，正在跳转...'});    
-       }
        //先缓存购物车情况
        let merchantId = this.data.merchantId;
        if (!wx.getStorageSync('shoppingCart')) {
@@ -45,7 +42,10 @@ let shopSearch={
             merchantInfoObj:this.data.merchantInfoObj,//商家信息(以下信息都是这个字段的属性)
 			minPrice:this.data.minPrice,
 			shipScore:this.data.shipScore,
-            ruleDtoList:this.data.ruleDtoList  
+            ruleDtoList:this.data.ruleDtoList,
+            removalMenuList:this.data.removalMenuList,
+            activitySharedShow:this.data.activitySharedShow,
+            activitySharedStatus:this.data.activitySharedStatus
         }
        wx.setStorageSync('shoppingCartOther',shoppingCartOther);   
        //设置不允许再点击

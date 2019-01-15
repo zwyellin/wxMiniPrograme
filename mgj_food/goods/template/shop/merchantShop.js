@@ -44,14 +44,14 @@ const merchantShop = {
 					shipScore:value.merchant.shipScore,
 					ruleDtoList
 				});
-				if (wx.getStorageSync('shoppingCart')) {
-					this.totalprice();	
-				}
 				value.merchant.activitySharedRelationList.forEach(item=>{
 					if (item.promotionActivityType === 5 && item.relationPromotionActivityType === 2) {
 						this.data.activitySharedStatus = item.status;
 					}
 				});
+				if (wx.getStorageSync('shoppingCart')) {
+					this.totalprice();	
+				}
 				ActivityListHeight += this.data.merchantInfoObj.promotionActivityList.length*16;
 
 				if (value.merchant.merchantRedBagList.length != 0) {

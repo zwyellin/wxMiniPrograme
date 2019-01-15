@@ -115,10 +115,12 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		
 		//如果传了search参数，并且为true，则显示的搜索页悬浮窗。其下内容不加载
 		if(search){//这部分用到变量方法在shopSearch文件
+			//先设置isSearchWrapperShow
+			this.setData({isSearchWrapperShow:true});
 			//读取购物车其它信息，等价于this.findMerchantInfo();的初始化(这边为了显示优化)
 			let shoppingCartOthers=wx.getStorageSync('shoppingCartOther');
 			let shoppingCartOther=shoppingCartOthers[this.data.merchantId];
-			let setdata=Object.assign({},shoppingCartOther,{isSearchWrapperShow:true});
+			let setdata=Object.assign({},shoppingCartOther);
 			this.setData(setdata);
 			this.totalprice();
 			this.shopSearchRecord();//读搜索记录缓存
@@ -254,6 +256,18 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		}
 		console.log("获取购物车情况,",this.data.selectFoods)
 	
+	},
+	//设置购物车缓存
+	setStorageShop(merchantId){
+		if (!wx.getStorageSync('shoppingCart')) {
+			let shoppingCart = {};
+			shoppingCart[merchantId] = this.data.selectFoods;
+			wx.setStorageSync('shoppingCart',shoppingCart);
+		} else {
+			let shoppingCart = wx.getStorageSync('shoppingCart');
+			shoppingCart[merchantId] = this.data.selectFoods;
+			wx.setStorageSync('shoppingCart',shoppingCart);
+		}	
 	},
 	boosList(){
 		this.setData({
@@ -775,8 +789,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			food.parentRelationCategoryId = food.parentRelationCategoryId
 		}
 		let name = food.name; //产品名称
-		let tmpArr = [];
-		tmpArr = this.data.selectFoods;
+		let tmpArr =  this.data.selectFoods;
 		let count = this.getCartCount(id,priceObject);
 
 		//点击之后就判断能否购买 
@@ -846,39 +859,42 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			}
 		}
 		// console.log(food);
+		//购物车那里，如果这个商品是有属性的,则置rules为true
 		if (fullActivity && food.attributes) {
 			attributes = food.attributes;
 			rules = true;
 		}
 		let isToastZK = false;
-		if (id) {
+		if (id) {//选择的产品id
 	        //遍历数组 
         	let isFound = false;
         	let isHasDiscount = false;
         	let isHasDiscountShare = false;
-        	tmpArr.map((item)=> {
-	          	if (item.id == id) {
+        	tmpArr.map((item)=> {//selectfood []
+	          	if (item.id == id) {//如果之前有买
 	            	if (item.priceObject.id == priceObject.id) {
-	            		if (item.attributes && rules) {            //规格判断
-							if (attributes == item.attributes) {
-								if (food.hasDiscount) {
+	            		if (item.attributes && rules) { //如果是有属性的
+							if (item.attributes  == attributes) {
+								if (food.hasDiscount) {//折扣商品
+									//如果折扣库存还很多
 									if (food.surplusDiscountStock >=food.everyGoodsEveryOrderBuyCount) {
-										let orderBuyCount
+										let orderBuyCount;//折扣最多购买数量
 										if (food.everyGoodsEveryOrderBuyCount === 0) {
 											orderBuyCount = food.surplusDiscountStock;
 										} else {
-											orderBuyCount = food.everyGoodsEveryOrderBuyCount;
+											orderBuyCount = food.everyGoodsEveryOrderBuyCount;//折扣最多购买数量
 										}
-										if(item.count === orderBuyCount){
+										if(item.count === orderBuyCount){//则走普通商品购买
 											if (priceObject.minOrderNum) {
 												item.count += 1*priceObject.minOrderNum;
 												feedbackApi.showToast({title: item.name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
 											} else {
 												item.count += 1;
 											}
-										} else {
+										} else {//走折扣商品，折扣商品没有最少购买数量
 											item.count += 1;
 										}
+									//折扣商品库存不是很多
 									} else {
 										if (item.count === food.surplusDiscountStock) {
 											if (priceObject.minOrderNum) {
@@ -891,12 +907,13 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 											item.count += 1;
 										}
 									}
-									
+								//普通商品
 								} else {
 									item.count += 1;
 								}
 								isFound = true;			
-							}	
+							}
+						//没有属性的	
 	            		} else {
 	            			if (food.hasDiscount) {
 								if (food.surplusDiscountStock >=food.everyGoodsEveryOrderBuyCount) {
@@ -930,6 +947,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 										item.count += 1;
 									}
 								}
+							//普通商品
 	            			} else {
 	            				item.count += 1;
 	            			}
@@ -937,7 +955,8 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 						}		
 	                }
 				} 	
-	        });
+			});
+			//
 	        if(!isFound){
 		      	if (rules) {
 		      		if (food.hasDiscount) {
@@ -1390,26 +1409,10 @@ Page(Object.assign({}, merchantShop,shopSearch,{
   	onHide(){
 		this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
 		let merchantId = this.data.merchantId;
-		if (!wx.getStorageSync('shoppingCart')) {
-			let shoppingCart = {};
-			shoppingCart[merchantId] = this.data.selectFoods;
-			wx.setStorageSync('shoppingCart',shoppingCart);
-		} else {
-			let shoppingCart = wx.getStorageSync('shoppingCart');
-			shoppingCart[merchantId] = this.data.selectFoods;
-			wx.setStorageSync('shoppingCart',shoppingCart);
-		}	
+		this.setStorageShop(merchantId)
   	},
   	onUnload(){	
 		let merchantId = this.data.merchantId;
-		if (!wx.getStorageSync('shoppingCart')) {
-			let shoppingCart = {};
-			shoppingCart[merchantId] = this.data.selectFoods;
-			wx.setStorageSync('shoppingCart',shoppingCart);
-		} else {
-			let shoppingCart = wx.getStorageSync('shoppingCart');
-			shoppingCart[merchantId] = this.data.selectFoods;
-			wx.setStorageSync('shoppingCart',shoppingCart);
-		}		
+		this.setStorageShop(merchantId)
   	}
 }));
