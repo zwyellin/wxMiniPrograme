@@ -537,72 +537,6 @@ Page(Object.assign({}, merchantObj, {
         		params:data
         	}	
         }).then(res=>{
-<<<<<<< HEAD
-			let dataList = this.data.dataList;
-			let list = res.data.value;		
-			if (res.data.code === 0) {
-				if(Boos){
-					if (status) {  
-						if (res.data.value.length != 0) {
-							list = this.seatImg(list);
-							dataList = dataList.concat(list);
-							this.setData({
-								dataList:dataList,
-								loading:false
-							});	
-						} else {
-							this.setData({
-								loading:true,
-							});	
-						}
-					} else {
-						if (list.length === 0) {
-							setTimeout(()=>{
-								this.setData({
-									loading:true
-								});
-							},1500);
-							this.setData({
-								dataList:list
-							});
-						} else {
-							list = this.seatImg(list);
-							this.setData({
-								dataList:list,
-								loading:false
-							});
-						}	
-					}	
-				} else {
-					if (list.length === 0) {
-						if (app.globalData.agentId === null) {
-							this.setData({
-								isAgentId:true
-							});
-						} else {
-							setTimeout(()=>{
-								this.setData({
-									loading:true
-								});
-							},1500);
-							this.setData({
-								dataList:list
-							});
-						}	
-					} else {
-						list = this.seatImg(list);
-						if (list.length < 10) {
-							setTimeout(()=>{
-								this.setData({
-									loading:true
-								});
-							},1500);
-							this.setData({
-								isAgentId:false,
-								dataList:list,
-							});
-						} else {
-=======
 			//mapList在merchant.js中定义的，用于对原数据进行精简，返回精简数组
 			let list=this.mapList(res.data.value);
 		    //放到固定的几个数组中
@@ -640,7 +574,6 @@ Page(Object.assign({}, merchantObj, {
 					});
 					if(list.length<10){//最后几项数据
 						setTimeout(()=>{//加载loading，多转一下=>加载痕迹更明显
->>>>>>> 1a6d155f0831e5758ae79408e477fb77d6bc73f7
 							this.setData({
 								loading:true
 							});
