@@ -117,11 +117,10 @@ Page({
     localPosition.latitude = (item.location && item.location.lat) || item.latitude;
     //wx.setStorageSync('localPosition', localPosition)
     globalData.addressSel = item
-    console.log(globalData.addressSel)
+    var page = getCurrentPages()[getCurrentPages().length-2]; 
     wx.switchTab({
       url: '../index/index',
       success: function (e) {
-        var page = getCurrentPages().pop();
         if (page == undefined || page == null) return;
         page.onLoad();
       }

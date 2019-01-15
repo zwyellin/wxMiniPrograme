@@ -753,16 +753,13 @@ Page(Object.assign({}, merchantShop,{
 		let tmpArr = [];
 		tmpArr = this.data.selectFoods;
 		let count = this.getCartCount(id,priceObject);
-		console.log(food.hasDiscount);
-		//点击之后就判断能否购买 （最少购买数量》库存数）
-		console.log("判断",count,priceObject.minOrderNum,priceObject.stock)
+		
 		if(priceObject.stockType && food.hasDiscount=== 0 && priceObject.minOrderNum>priceObject.stock){
 			feedbackApi.showToast({title: '该商品库存不足'});
 			return;
 		}
 		//普通商品库存有限 或者 普通商品有限购要求
 		if (priceObject.stockType && food.hasDiscount=== 0 || priceObject.orderLimit && food.hasDiscount===0) {
-			console.log(count,priceObject.stock);
 			if (count >=priceObject.stock && priceObject.stockType) {
 				feedbackApi.showToast({title: '你购买的商品库存不足'});
 				return;
@@ -788,7 +785,6 @@ Page(Object.assign({}, merchantShop,{
 				}
     		} else if (food.surplusDiscountStock >=food.everyGoodsEveryOrderBuyCount && food.surplusDiscountStock) {
 				if (count>=food.everyGoodsEveryOrderBuyCount) {
-					console.log(23343);
 					let surCount
 					if (food.everyGoodsEveryOrderBuyCount !=0) {
 						surCount = count - food.everyGoodsEveryOrderBuyCount;

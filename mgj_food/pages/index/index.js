@@ -529,7 +529,6 @@ Page(Object.assign({}, merchantObj, {
 							});
 						} else {
 							list = this.seatImg(list);
-							dataList = dataList.concat(list);
 							this.setData({
 								dataList:list,
 								loading:false
