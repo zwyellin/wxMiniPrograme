@@ -175,13 +175,16 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	        		merchantType:type
 	        	});
 	        	this.removalMenuList();
-        	}
+			}
+			//获得折扣商品的每个客户最多购买数量
+			this.getDis();
         }).finally(()=>{
         	wx.hideLoading();
 		});
-		////获取商家评价信息
+		
+
+		//获取商家评价信息
 		this.getevaluate();
-		// this.boosLisr();
 	},
 	onShow(){
 		let loginMessage = wx.getStorageSync('loginMessage');
@@ -204,6 +207,36 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			this.totalprice();
 		}
 		
+	},
+	getDis(){//
+		console.log("开始....")
+		let removalMenuList=this.data.removalMenuList;
+		let arrList=[];
+		removalMenuList.forEach((item,index,arr)=>{
+			if(item.hasDiscount){
+				console.log("折扣"+index);
+				console.log(item)
+				arrList.push(wxRequest({
+					url:'/merchant/userClient?m=findGoodsSpecIdBuyNum',
+					method:'POST',
+					data:{
+						params:{
+							merchantId:this.data.merchantId,
+							goodsSpecId:item.id
+						},
+						token:app.globalData.token,
+						client: app.globalData.client,
+						clientVersion: "3.2.2"    //此参数取值版本来自于与App版本
+						 },
+					})
+				)
+			}
+		})
+		let p1=
+		Promise.all(arrList).then((res)=>{
+			console.log("全都成功");
+			console.log(res)
+		})
 	},
 	//领取平台红包
 	getPlatformRedBag(){
@@ -1048,7 +1081,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	    }
 	    
 		if (food.hasDiscount) {
-			if (!this.data.activitySharedStatus) {
+			if (!this.data.activitySharedStatus) {//
 				if (!this.data.isTipOne) {
 					feedbackApi.showToast({title: '满减活动与折扣商品不共享'});
 					isToastZK = true;
