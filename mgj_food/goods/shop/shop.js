@@ -793,13 +793,12 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		let count = this.getCartCount(id,priceObject);
 
 		//点击之后就判断能否购买 
-		//普通商品 （最少购买数量>库存数）
-		if(food.hasDiscount=== 0 && priceObject.stockType &&  priceObject.minOrderNum>priceObject.stock){
-			feedbackApi.showToast({title: '该商品库存不足'});
-			return;
-		}
-		//普通商品库存有限 或 有限购要求
-		if (food.hasDiscount=== 0  &&  priceObject.stockType ||food.hasDiscount===0  && priceObject.orderLimit ) {
+		//普通商品库存有限 或 有限购要求 或 最少购买数量>库存数
+		if (food.hasDiscount=== 0  &&  (priceObject.stockType || priceObject.orderLimit) ) {
+			if (priceObject.minOrderNum > priceObject.stock) {
+				feedbackApi.showToast({title: '该商品库存不足'});
+				return;
+			}
 			if (count >=priceObject.stock && priceObject.stockType) {
 				feedbackApi.showToast({title: '你购买的商品库存不足'});
 				return;
