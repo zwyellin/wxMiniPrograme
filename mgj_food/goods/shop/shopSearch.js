@@ -140,7 +140,7 @@ let shopSearch={
             this.setData({
                 isshopSearchRecordShow:true,
                 searchResList:[]
-               })
+            })
         }
     },
     shopSearchRecord:function(val){

@@ -704,7 +704,7 @@
 						<view class="price">
 							<!-- <text wx:if="{{food.everyGoodsEveryOrderBuyCount==0}}">￥{{tage.shopFloat(food.priceObject.price*food.count,2)}}</text>
 							<text wx:if="{{food.everyGoodsEveryOrderBuyCount!=0}}">￥{{tage.shopFloat(price,1)}}</text> -->
-							<text>￥{{tage.price(food)}}</text>
+							<text>￥{{tage.price(food,userDiscountGoodsList)}}</text>
 						</view>
 						<view class="cartcontrol-wrapper">
 							<view class="control" style="height: 72rpx">

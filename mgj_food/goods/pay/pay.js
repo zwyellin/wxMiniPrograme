@@ -334,4 +334,7 @@ Page({
        maskAnimation: animation.export()  
     }); 
   },
+  onUnload(){
+		wx.setStorageSync('isPayPageRoute',true);
+	}
 });

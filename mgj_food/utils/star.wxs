@@ -207,23 +207,49 @@ var cart = {
 			if (food.surplusDiscountStock > food.everyGoodsEveryOrderBuyCount) {
 				if (food.everyGoodsEveryOrderBuyCount === 0) {
 					if (food.count > food.surplusDiscountStock) {
-						price = food.priceObject.price*food.surplusDiscountStock;
-						totalPrice = food.priceObject.originalPrice*(food.count - food.surplusDiscountStock) + price;
+						if (food.isEveryUserBuyNum.buyNum != -1 && food.surplusDiscountStock > food.isEveryUserBuyNum.buyNum) {
+							price = food.priceObject.price*food.isEveryUserBuyNum.buyNum;
+							totalPrice = food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum) + price;
+						} else {
+							price = food.priceObject.price*food.surplusDiscountStock;
+							totalPrice = food.priceObject.originalPrice*(food.count - food.surplusDiscountStock) + price;
+						}
 					} else {
-						totalPrice = food.priceObject.price*food.count;
+						if (food.isEveryUserBuyNum.buyNum != -1 && food.count > food.isEveryUserBuyNum.buyNum) {
+							price = food.priceObject.price*food.isEveryUserBuyNum.buyNum;
+							totalPrice = food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum) + price;
+						} else {
+							totalPrice = food.priceObject.price*food.count;
+						}	
 					}
 				} else {
+					
 					if (food.count > food.everyGoodsEveryOrderBuyCount) {
-						price = food.priceObject.price*food.everyGoodsEveryOrderBuyCount;
-						totalPrice = food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount) + price;
+						if (food.isEveryUserBuyNum.buyNum != -1 && food.everyGoodsEveryOrderBuyCount > food.isEveryUserBuyNum.buyNum) {
+							price = food.priceObject.price*food.isEveryUserBuyNum.buyNum;
+							totalPrice = food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum) + price;
+						} else {
+							price = food.priceObject.price*food.everyGoodsEveryOrderBuyCount;
+							totalPrice = food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount) + price;
+						}
 					}else {
-						totalPrice = food.priceObject.price*food.count;
+						if (food.isEveryUserBuyNum.buyNum != -1 && food.count > food.isEveryUserBuyNum.buyNum) {
+							price = food.priceObject.price*food.isEveryUserBuyNum.buyNum;
+							totalPrice = food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum) + price;
+						} else {
+							totalPrice = food.priceObject.price*food.count;
+						}
 					}	
 				}	
 			} else {
 				if(food.count > food.surplusDiscountStock){
-					price = food.priceObject.price*food.surplusDiscountStock;
-					totalPrice = food.priceObject.originalPrice*(food.count - food.surplusDiscountStock) + price;
+					if (food.isEveryUserBuyNum.buyNum != -1 && food.surplusDiscountStock > food.isEveryUserBuyNum.buyNum) {
+						price = food.priceObject.price*food.isEveryUserBuyNum.buyNum;
+						totalPrice = food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum) + price;
+					} else {
+						price = food.priceObject.price*food.surplusDiscountStock;
+						totalPrice = food.priceObject.originalPrice*(food.count - food.surplusDiscountStock) + price;
+					}
 				}else {
 					totalPrice = food.priceObject.price*food.count;
 				}

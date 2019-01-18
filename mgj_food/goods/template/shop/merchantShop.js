@@ -86,7 +86,7 @@ const merchantShop = {
 	},
 	//领取商家红包
 	getMerchantRedBag(e){
-		let { merchantInfoObj, index} = e.currentTarget.dataset;
+		let { item, index} = e.currentTarget.dataset;
 		if (this.data.merchantRedBagList[index].isReceive === "已领取") return;
 		wxRequest({
         	url:'/merchant/userClient?m=getMerchantRedBag',
@@ -95,7 +95,7 @@ const merchantShop = {
         		token:app.globalData.token,
         		params:{
         			merchantId:this.data.merchantId,
-        			id:merchantInfoObj.id
+        			id:item.id
         		}	
         	},
         }).then(res=>{
