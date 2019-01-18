@@ -686,55 +686,64 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		this.data.selectFoods.forEach((food)=>{	
 			if(food.hasDiscount){
 				isHasDiscountShare = true;
-				if (food.surplusDiscountStock > food.everyGoodsEveryOrderBuyCount) {
-					if (food.everyGoodsEveryOrderBuyCount === 0) {
-						if(food.count > food.surplusDiscountStock){
-							if (food.isEveryUserBuyNum.buyNum != -1 && food.surplusDiscountStock > food.isEveryUserBuyNum.buyNum) { //用户购买与折扣库存比较
-								add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
-								price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
-							} else {
-								add = parseFloat(food.priceObject.price)*food.surplusDiscountStock;
-								price += food.priceObject.originalPrice*(food.count - food.surplusDiscountStock)+add;
-							}	
-						} else {
-							if (food.isEveryUserBuyNum.buyNum != -1 && food.count > food.isEveryUserBuyNum.buyNum) {
-								add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
-								price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
-							} else {
-								price += parseFloat(food.priceObject.price)*food.count;
-							}	
-						}
-					} else {
-						if(food.count > food.everyGoodsEveryOrderBuyCount){
-							if (food.isEveryUserBuyNum.buyNum != -1 && food.everyGoodsEveryOrderBuyCount > food.isEveryUserBuyNum.buyNum) { //用户购买与折扣限购比较
-								add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
-								price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
-							} else {
-								add = parseFloat(food.priceObject.price)*food.everyGoodsEveryOrderBuyCount;
-								price += food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount)+add;
-							}	
-						}else {
-							if (food.isEveryUserBuyNum.buyNum != -1 && food.count > food.isEveryUserBuyNum.buyNum) {
-								add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
-								price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
-							} else {
-								price += parseFloat(food.priceObject.price)*food.count;
-							}
-						}
-					}
-				} else {
-					if(food.count > food.surplusDiscountStock){
-						if (food.isEveryUserBuyNum.buyNum != -1 && food.surplusDiscountStock > food.isEveryUserBuyNum.buyNum) { //用户购买与折扣库存比较
-							add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
-							price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
-						} else {
-							add = parseFloat(food.priceObject.price)*food.surplusDiscountStock;
-							price += food.priceObject.originalPrice*(food.count - food.surplusDiscountStock)+add;
-						}
-					}else {
-						price += parseFloat(food.priceObject.price)*food.count;
-					}
-				}
+				//走折扣的数量 受，折扣库存，折扣每天最多买，折扣每个客户还可以买的约束
+				//即走折扣的数量 为：买的数量和她们之间的最小值
+				let discountArr=[food.surplusDiscountStock,food.count]
+				if(food.everyGoodsEveryOrderBuyCount != 0) discountArr.push(food.everyGoodsEveryOrderBuyCount)
+				if(food.isEveryUserBuyNum.buyNum != -1) discountArr.push(food.isEveryUserBuyNum.buyNum)
+				//得走折扣，的数量为
+				let discountNum = Math.min.apply(null, discountArr);
+				add = parseFloat(food.priceObject.price)*discountNum;
+				price += food.priceObject.originalPrice*(food.count -discountNum)+add;
+				// if (food.surplusDiscountStock > food.everyGoodsEveryOrderBuyCount) {
+				// 	if (food.everyGoodsEveryOrderBuyCount === 0) {
+				// 		if(food.count > food.surplusDiscountStock){
+				// 			if (food.isEveryUserBuyNum.buyNum != -1 && food.surplusDiscountStock > food.isEveryUserBuyNum.buyNum) { //用户购买与折扣库存比较
+				// 				add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
+				// 				price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
+				// 			} else {
+				// 				add = parseFloat(food.priceObject.price)*food.surplusDiscountStock;
+				// 				price += food.priceObject.originalPrice*(food.count - food.surplusDiscountStock)+add;
+				// 			}	
+				// 		} else {
+				// 			if (food.isEveryUserBuyNum.buyNum != -1 && food.count > food.isEveryUserBuyNum.buyNum) {
+				// 				add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
+				// 				price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
+				// 			} else {
+				// 				price += parseFloat(food.priceObject.price)*food.count;
+				// 			}	
+				// 		}
+				// 	} else {
+				// 		if(food.count > food.everyGoodsEveryOrderBuyCount){
+				// 			if (food.isEveryUserBuyNum.buyNum != -1 && food.everyGoodsEveryOrderBuyCount > food.isEveryUserBuyNum.buyNum) { //用户购买与折扣限购比较
+				// 				add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
+				// 				price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
+				// 			} else {
+				// 				add = parseFloat(food.priceObject.price)*food.everyGoodsEveryOrderBuyCount;
+				// 				price += food.priceObject.originalPrice*(food.count - food.everyGoodsEveryOrderBuyCount)+add;
+				// 			}	
+				// 		}else {
+				// 			if (food.isEveryUserBuyNum.buyNum != -1 && food.count > food.isEveryUserBuyNum.buyNum) {
+				// 				add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
+				// 				price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
+				// 			} else {
+				// 				price += parseFloat(food.priceObject.price)*food.count;
+				// 			}
+				// 		}
+				// 	}
+				// } else {
+				// 	if(food.count > food.surplusDiscountStock){
+				// 		if (food.isEveryUserBuyNum.buyNum != -1 && food.surplusDiscountStock > food.isEveryUserBuyNum.buyNum) { //用户购买与折扣库存比较
+				// 			add = parseFloat(food.priceObject.price)*food.isEveryUserBuyNum.buyNum;
+				// 			price += food.priceObject.originalPrice*(food.count - food.isEveryUserBuyNum.buyNum)+add;
+				// 		} else {
+				// 			add = parseFloat(food.priceObject.price)*food.surplusDiscountStock;
+				// 			price += food.priceObject.originalPrice*(food.count - food.surplusDiscountStock)+add;
+				// 		}
+				// 	}else {
+				// 		price += parseFloat(food.priceObject.price)*food.count;
+				// 	}
+				// }
 			}else{
 				totals+= parseFloat(food.priceObject.price)*food.count;
 			}	
