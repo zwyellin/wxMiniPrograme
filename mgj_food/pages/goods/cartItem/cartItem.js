@@ -21,8 +21,8 @@ Page({
     },
   	onShow(){
         if(this.data.iscartDetailBack){//如果cartDetail返回来的，则会修改这个字段为true
-          this.data.iscartDetailBack=false;//重置
-          return //不刷新页面
+          wx.startPullDownRefresh();//开启下拉刷新,在数据请求回来后重置
+          return 
         }
         let loginMessage = wx.getStorageSync('loginMessage');
         let loginStatus = wx.getStorageSync('loginstatus');
@@ -32,11 +32,11 @@ Page({
                 start:0,
                 loginsuccess:true,
             });
-            //首次进入页面,如果滚动条下拉了半个item时，则滚动条上拉，再刷新
+            //首次进入页面,如果滚动条下拉了半个item时，则滚动条上拉到顶部，再刷新
             if(scrollHeight>100){
               wx.pageScrollTo({
                 scrollTop:0,
-                duration:300 //默认
+                duration:300 
               })
               setTimeout(() => {
                 this.findNewUserTOrders();
@@ -186,12 +186,16 @@ Page({
             loading:false
           });
           wx.hideLoading();
+          
           feedbackApi.showToast({title: msg});   
         } 
+        console.log(2)
       }).catch(err=>{
         wx.hideLoading();
       }).finally(res=>{
+        console.log(1)
         wx.stopPullDownRefresh();
+        this.data.iscartDetailBack=false;//重置
       });
     },
     //再来一单
@@ -271,7 +275,7 @@ Page({
     //下拉刷新
     onPullDownRefresh:function() {
       this.data.start = 0;
-      this.findNewUserTOrders(); 
+      this.findNewUserTOrders(this.data.iscartDetailBack);//如果是订单详情页返回来的，则不显示加载中图标
     },
     //上滑加载更多
     onReachBottom(){
