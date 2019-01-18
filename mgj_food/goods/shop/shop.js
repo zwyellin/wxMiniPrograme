@@ -827,6 +827,11 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		let priceObject = {}; //产品价格对象  
     	if (food.priceObject) {
 			priceObject = food.priceObject; //产品价格
+			if (food.hasDiscount) {
+				let discountedGoods = {}
+				discountedGoods.maxBuyNum = food.userMaxBuyNum
+				food.discountedGoods = discountedGoods
+			}
 		} else {
 			priceObject = food.goodsSpecList[specIndex]; //产品价格	
 		}
@@ -1050,7 +1055,8 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		      				id: id,
 		      				hasDiscount:food.hasDiscount,
 	      					surplusDiscountStock:food.surplusDiscountStock,
-							everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,   
+							everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
+							userMaxBuyNum: food.discountedGoods.maxBuyNum,
 							isEveryUserBuyNum: isEveryUserBuyNum,
 		      				categoryId:categoryId, 
 		      				relationCategoryId:food.parentRelationCategoryId,
@@ -1095,7 +1101,8 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		      				id: id,
 		      				hasDiscount:food.hasDiscount,
 	      					surplusDiscountStock:food.surplusDiscountStock,
-							everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,  
+							everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
+							userMaxBuyNum: food.discountedGoods.maxBuyNum,  
 							isEveryUserBuyNum: isEveryUserBuyNum,
 		      				categoryId:categoryId, 
 		      				relationCategoryId:food.parentRelationCategoryId,
