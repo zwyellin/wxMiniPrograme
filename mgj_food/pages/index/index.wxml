@@ -121,7 +121,7 @@
 		<template is="merchant" data="{{dataList:dataList9,cartObject,size,linearArrayIndex:9}}"></template>
 		<template is="merchant" data="{{dataList:dataList10,cartObject,size,linearArrayIndex:10}}"></template>
 		<!--列表骨架屏-->
-		<template is="merchantscreen" wx:if="{{!loading && skeletonScreen}}"></template>
+		<template is="goodItemscreen" wx:if="{{!loading && skeletonScreen}}"></template>
 		<!-- 附近的商家 结束 -->
 		<!--附近商家，底下信息展示 srart-->
 		<!--loading ，false表示要去加载，列表返回不为空则会一直底下view会存在-->

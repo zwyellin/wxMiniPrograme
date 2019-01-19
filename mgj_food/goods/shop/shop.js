@@ -78,12 +78,13 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		isTipOne:false,            //折扣商品与满减活动不共享关系提示一次
 		merchantAptitudeImg:'',
 		windowWidth:750,
-		isonLoadRun:false           //onload是否执行
+		isonLoadRun:false,           //onload是否执行，用于show。
+		isShopSkeletonScreenShow:false  //商店整体骨架屏显示控制
 		},shopSearchData),          //data 对象合并
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-
+		
 		let { merchantid,longitude,latitude,search} = options;
 		this.data.merchantId = merchantid;
 		if (longitude && latitude) {
@@ -116,6 +117,10 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		  })
 			return;
 		}
+		//请求数据前,显示shop骨架屏，=>返回商家商品(热销榜，好评榜等)后关闭骨架屏
+		this.setData({
+			isShopSkeletonScreenShow:true
+		})
 		//获取商家详情
 		this.findMerchantInfo();
 
@@ -123,7 +128,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		this.getShopList().then((res)=>{
 			let menu = res.data.value.menu;
 			let type = res.data.value.type;
-			if (type == 0) {
+			if (type == 0) {//普通
 				this.setData({
 	        		menu:menu,
 	        		orderList:res.data.value.orderList,
@@ -147,7 +152,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			      this.removalMenuList();
 			    }
 			}
-        	if (type == 1) {
+        	if (type == 1) {//大容量
         		let itemCategoryList = menu[0].goodsList;
         		let categoryId = menu[0].id;
         		let relationCategoryId = menu[0].relationCategoryId
@@ -164,7 +169,10 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	        	this.removalMenuList();
 			}
         }).finally(()=>{
-        	wx.hideLoading();
+			wx.hideLoading();
+			this.setData({
+				isShopSkeletonScreenShow:false
+			})
 		});
 		
 		//获取商家评价信息
@@ -596,7 +604,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		wx.showLoading({
 	        title: '加载中',
 	        mask: true
-	    });
+		});
 		return wxRequest({
         	url:'/merchant/userClient?m=showMerchantTakeAwayCategory2',
         	method:'POST',

@@ -119,6 +119,9 @@
   color: #666666;
   font-size: 14px;
 }
+.skeletonScreenbg{ /*骨架屏背景色*/
+	background:  rgb(227, 234, 238);
+}
 
 /*底线*/
 .bottom-info {
