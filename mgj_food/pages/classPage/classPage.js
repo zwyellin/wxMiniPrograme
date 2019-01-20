@@ -23,7 +23,7 @@ Page(Object.assign({}, merchantObj, {
 		sortList:["智能排序","距离最近","销量最高","起送价最低","配送速度最快","评分最高"],
 		merchantFeature:merchantFeature,
 		merchantActive:merchantActive,
-		merchantTags:'',
+		merchantTagsList:[],  //筛选类型
 		sortIndex:0,
 		tagParentId:0,
 		tagId:null,
@@ -113,7 +113,7 @@ Page(Object.assign({}, merchantObj, {
         	longitude:app.globalData.longitude,
         	latitude:app.globalData.latitude,
         	queryType:this.data.queryType,
-        	merchantTags:this.data.merchantTags,
+        	merchantTags:this.data.merchantTagsList.join(' '),
         	// shipFilter:this.data.shipFilter,
 			tagId:this.data.tagId,
         	tagParentId:this.data.tagParentId,
