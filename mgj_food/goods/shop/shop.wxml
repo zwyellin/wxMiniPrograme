@@ -43,7 +43,7 @@
 					lower-threshold="20"
 					data-reset="{{false}}"
 					bindscrolltolower="shopSearchSubmit"
-					style="height:{{shopSearchScrollHeight}}px;box-padding-bottom:20rpx"
+					style="height:{{shopSearchScrollHeight}}px;"
 					>
 						<view class="food-item" 
 							wx:for="{{searchResList}}" 
@@ -380,7 +380,7 @@
 	
     <!--新版评价页面-->
    <scroll-view 
-    	wx:if="{{tab.cur==='评价'}}" 
+    	hidden="{{tab.cur!='评价'}}" 
     	class="new-evaluate"
     	scroll-y="true"
     	style="height:{{windowScrollHeight}}px"

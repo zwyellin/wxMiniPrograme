@@ -96,7 +96,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			success: (res)=> {
 				this.setData({
 					windowScrollHeight: res.windowHeight - 280*(app.globalData.windowWidth/750),
-					shopSearchScrollHeight: res.windowHeight.windowHeight-237*(app.globalData.windowWidth/750)
+					shopSearchScrollHeight: res.windowHeight-216*(app.globalData.windowWidth/750)
 				});
 			}
 		});
