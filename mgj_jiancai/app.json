@@ -1,12 +1,12 @@
 {
   "pages":[
     "pages/accredit/accredit",
+    "pages/index/index",
     "pages/sellerHome/sellerHome",
     "pages/evaluate/evaluate",
     "pages/order-commodity/order-commodity",
     "pages/bindPhone/bindPhone",
     "pages/shopProcess/shopProcess",
-    "pages/index/index",
     "pages/count/discount",
     "pages/searchAddress/address",
     "pages/user/index",

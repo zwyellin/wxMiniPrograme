@@ -154,7 +154,7 @@ Page({
 				} else if (this.data.switch === 'cartitem') {
 					let pages = getCurrentPages();
 	    			let prevPage = pages[pages.length - 2];
-	    			wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过订单页登录领取过平台红包
+	    			wx.setStorageSync('isloginGetPlatformRedBag',true);     // 是否通过订单页登录领取过平台红包
 					wx.switchTab({
 				  		url:'/pages/goods/cartItem/cartItem',
 				  		success : function(){
@@ -167,7 +167,7 @@ Page({
 				  		}
 					});
 				} else if(this.data.switch === 'homepage'){
-					wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过首页登录领取过平台红包
+					wx.setStorageSync('isloginGetPlatformRedBag',true);    // 是否通过首页登录领取过平台红包
 					wx.navigateBack({
 				  		delta: 1,
 				  		success : function(){
@@ -177,7 +177,8 @@ Page({
 				  		}
 					});
 				} else if(this.data.switch === 'shop'){
-					wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过首页登录领取过平台红包
+					wx.setStorageSync('isloginGetPlatformRedBag',true);    // 是否通过首页登录领取过平台红包
+					wx.setStorageSync('isloginGetDiscountUserNum',true);
 					wx.navigateBack({
 				  		delta: 1,
 				  		success : function(){
