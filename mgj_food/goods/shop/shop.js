@@ -4,7 +4,9 @@ const { merchantShop } = require('../template/shop/merchantShop.js');
 const { shopSearch,shopSearchData } = require('shopSearch.js');
 const app = getApp();
 let ActivityListHeight = 149;
-let userDiscountGoodsList = [];
+let userDiscountGoodsList = [];//保存折扣商品每个客户最多买的请求返回值
+let discountGoodsIdList = [];//这里是保存折扣商品每个客户最多买的商品id
+const DiscountGoodsMaxRequest=20;//折扣商品每个客户最多买的数组最大数。如果大于该数，则不一次性发请求
 Page(Object.assign({}, merchantShop,shopSearch,{
 	data:Object.assign({},{
 		merchantType:null,    //商家类型
@@ -84,7 +86,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-		
 		let { merchantid,longitude,latitude,search} = options;
 		this.data.merchantId = merchantid;
 		if (longitude && latitude) {
@@ -96,11 +97,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			success: (res)=> {
 				this.setData({
 					windowScrollHeight: res.windowHeight - 280*(app.globalData.windowWidth/750),
-<<<<<<< HEAD
 					shopSearchScrollHeight: res.windowHeight-216*(app.globalData.windowWidth/750)
-=======
-					shopSearchScrollHeight: res.windowHeight-237*(app.globalData.windowWidth/750)
->>>>>>> adb45cfaa419699de432721ce9165322dc0288df
 				});
 			}
 		});
@@ -179,7 +176,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
         }).finally(()=>{
 			wx.hideLoading();
 			this.setData({
-				isShopSkeletonScreenShow:false
+				isShopSkeletonScreenShow:false //关闭骨架屏
 			})
 		});
 		
@@ -213,19 +210,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				this.totalprice();
 			}
 		}
-	},
-	// 获取商店下用户每个折扣商品的还可购买数量
-	getUserDiscountNum(discountGoodsList){
-		userDiscountGoodsList = []
-		Promise.all(discountGoodsList).then((res)=>{
-			res.forEach(item=>{
-				if (item.data.code === 0) {
-					userDiscountGoodsList.push(item.data.value)
-				}
-			})
-		}).catch(err=>{
-			console.log(err)
-		})
 	},
 	//领取平台红包
 	getPlatformRedBag(){
@@ -294,11 +278,45 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			isShowTogether:false
 		});
 	},
+	//每个客户最多买，的请求，
+	//@goodsSpecIds:goodsSpecId的数组。
+	findGoodsSpecIdBuyNum(goodsSpecIds){
+		let discountGoodsList=[];
+		//区分是为了，解决promise.all(单个).then 不触发的问题
+		if(typeof goodsSpecIds=="number"){
+			discountGoodsList=wxRequest({
+				url:'/merchant/userClient?m=findGoodsSpecIdBuyNum',
+				method:'POST',
+				data:{
+						params:{
+							merchantId:this.data.merchantId,
+							goodsSpecId:goodsSpecIds      //折扣商品为单规格
+						},
+					},
+				})
+			return discountGoodsList
+		}else{
+			goodsSpecIds.forEach((item,index,arr)=>{
+				discountGoodsList.push(wxRequest({
+					url:'/merchant/userClient?m=findGoodsSpecIdBuyNum',
+					method:'POST',
+					data:{
+							params:{
+								merchantId:this.data.merchantId,
+								goodsSpecId:item      //折扣商品为单规格
+							},
+						},
+					})
+				)
+			});
+			return Promise.all(discountGoodsList);
+		}
+	},
 	//商家相同商品id去重
 	removalMenuList(){
 		let menu = this.data.menu;
 		let removalMenuList = [];
-		let discountGoodsList = [];
+		let discountGoodsList=[];
 		let loginMessage = wx.getStorageSync('loginMessage');
 		let loginStatus = wx.getStorageSync('loginstatus');
 		menu.map(item=>{
@@ -309,17 +327,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 					if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
   						if (value.hasDiscount ===1) {
 							if (value.discountedGoods.maxBuyNum != null) {
-								discountGoodsList.push(wxRequest({
-									url:'/merchant/userClient?m=findGoodsSpecIdBuyNum',
-									method:'POST',
-									data:{
-											params:{
-												merchantId:this.data.merchantId,
-												goodsSpecId:value.goodsSpecList[0].id       //折扣商品为单规格
-											},
-										},
-									})
-								)
+								discountGoodsIdList.push(value.goodsSpecList[0].id);
 								this.data.everyOrderBuyCount = value.discountedGoods.goodsRestrictedPurchaseRule.everyOrderBuyCount;
 							}
 						}
@@ -327,7 +335,18 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				});
 			}
 		});
-		this.getUserDiscountNum(discountGoodsList)
+		//如果折扣每个客户最多买的数组太大，则不一次性发请求.换成==>在购物时发请求判断
+		if(discountGoodsIdList.length<=DiscountGoodsMaxRequest){//小于则发请求
+			this.findGoodsSpecIdBuyNum(discountGoodsIdList).then((res)=>{
+				res.forEach(item=>{
+					if (item.data.code === 0) {
+						userDiscountGoodsList.push(item.data.value)
+					}
+				})
+			}).catch(err=>{
+				console.log(err)
+			});
+		}
 		let obj = {};
 		removalMenuList = removalMenuList.reduce((cur,next)=>{
 			obj[next.id] ? "": obj[next.id] = true && cur.push(next);
@@ -464,16 +483,15 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	},
 	//判断每个折扣商品该用户还可购买的数量
 	isEveryUserBuyNum(priceObject){
-		let userFlag = false, buyNum = -1
+		let isRequestData = false, buyNum = -1;//isRequestData表示，是不是服务器返回来的.主要区分buyNum-1
 		for (let i = 0; i < userDiscountGoodsList.length; i++) {
 			if (userDiscountGoodsList[i].goodsSpecId === priceObject.id) {
-				if (userDiscountGoodsList[i].buyNum != -1) {
-					buyNum = userDiscountGoodsList[i].buyNum
-					break		
-				}	
+				buyNum = userDiscountGoodsList[i].buyNum;
+				isRequestData=true;
+				break;
 			}	
 		}
-		return { userFlag, buyNum }
+		return { isRequestData, buyNum }
 	},
 	//去结算
 	checkOut(){
@@ -797,10 +815,8 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	//添加进购物车
 	addCart(e) {
 		let specIndex = e.currentTarget.dataset.specindex || 0;
-		// console.log(specIndex)
 		let { food, rules, fullActivity, parentIndex } = e.currentTarget.dataset;
 
-		// console.log(food, rules)
 		let attributes = '';
 		let id = food.id; //选择的产品id
 		let categoryId = food.categoryId;  //选择的产品分类id
@@ -879,13 +895,11 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				}
 			}
 		}
-		// console.log(food);
 		//购物车那里，如果这个商品是有属性的,则置rules为true
 		if (fullActivity && food.attributes) {
 			attributes = food.attributes;
 			rules = true;
 		}
-		let isToastZK = false;
 		if (id) {//选择的产品id
 	        //遍历数组 
         	let isFound = false;
@@ -903,7 +917,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 									if(item.isEveryUserBuyNum.buyNum != -1) discountArr.push(item.isEveryUserBuyNum.buyNum)
 									//折扣最多购买数量
 									let orderBuyCount = Math.min.apply(null, discountArr);	
-									if(item.count === orderBuyCount){//则走普通商品购买
+									if(item.count === orderBuyCount){//说明，不能再走折扣商品了。则走普通商品购买
 										if (priceObject.minOrderNum) {
 											item.count += 1*priceObject.minOrderNum;
 											feedbackApi.showToast({title: item.name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
@@ -943,104 +957,94 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	                }
 				} 	
 			});
-			//
+			//没有找到，第一次添加该商品(或规格)
 	        if(!isFound){
-		      	if (rules) {
-		      		if (food.hasDiscount) {
-						let isEveryUserBuyNum = this.isEveryUserBuyNum(priceObject)
-		      			tmpArr.push({
-		      				attributes:attributes, 
-		      				id: id,
-		      				hasDiscount:food.hasDiscount,
-	      					surplusDiscountStock:food.surplusDiscountStock,
-							everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
-							userMaxBuyNum: food.discountedGoods.maxBuyNum,
-							isEveryUserBuyNum: isEveryUserBuyNum,
-		      				categoryId:categoryId, 
-		      				relationCategoryId:food.parentRelationCategoryId,
-		      				name: name,
-		      				priceObject:priceObject, 
-		      				count: 1
-		      			});
-		      		} else {
-						if (priceObject.minOrderNum) {
-		      				tmpArr.push({
-			      				attributes:attributes, 
-			      				id: id,
-			      				hasDiscount:food.hasDiscount,
-		      					surplusDiscountStock:food.surplusDiscountStock,
-		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
-		      					relationCategoryId:food.parentRelationCategoryId,
-			      				categoryId:categoryId, 
-			      				name: name, 
-			      				priceObject:priceObject, 
-			      				count: 1*priceObject.minOrderNum
-			      			});
-							feedbackApi.showToast({title: food.name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
-		      			} else {
-							tmpArr.push({
-			      				attributes:attributes, 
-			      				id: id,
-			      				hasDiscount:food.hasDiscount,
-		      					surplusDiscountStock:food.surplusDiscountStock,
-		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
-			      				categoryId:categoryId, 
-			      				relationCategoryId:food.parentRelationCategoryId,
-			      				name: name, 
-			      				priceObject:priceObject, 
-			      				count: 1
-			      			});
-		      			}
-		      		} 
-	      		} else {
-	      			if (food.hasDiscount) {
-						let isEveryUserBuyNum = this.isEveryUserBuyNum(priceObject)
-		      			tmpArr.push({
-		      				id: id,
-		      				hasDiscount:food.hasDiscount,
-	      					surplusDiscountStock:food.surplusDiscountStock,
-							everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
-							userMaxBuyNum: food.discountedGoods.maxBuyNum,  
-							isEveryUserBuyNum: isEveryUserBuyNum,
-		      				categoryId:categoryId, 
-		      				relationCategoryId:food.parentRelationCategoryId,
-		      				name: name, 
-		      				priceObject:priceObject, 
-		      				count: 1
-		      			});
-		      		} else {
-						if (priceObject.minOrderNum) {
-		      				tmpArr.push({
-			      				id: id,
-			      				hasDiscount:food.hasDiscount,
-		      					surplusDiscountStock:food.surplusDiscountStock,
-		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
-			      				categoryId:categoryId, 
-			      				relationCategoryId:food.parentRelationCategoryId,
-			      				name: name, 
-			      				priceObject:priceObject, 
-			      				count: 1*priceObject.minOrderNum
-			      			});
-							feedbackApi.showToast({title: food.name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
-		      			} else {
-							tmpArr.push({
-			      				id: id,
-			      				hasDiscount:food.hasDiscount,
-		      					surplusDiscountStock:food.surplusDiscountStock,
-		      					everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
-			      				categoryId:categoryId, 
-			      				relationCategoryId:food.parentRelationCategoryId,
-			      				name: name, 
-			      				priceObject:priceObject, 
-			      				count: 1
-			      			});
-		      			}
-		      		} 
-	      		}	  		
-	        }
-			console.log(tmpArr);		
-	    }
-	    
+				let isEveryUserBuyNum = -1;//初始值 
+				//if 自己发请求获取isEveryUserBuyNum  else之前有发请求，直接读取
+				//针对折扣商品，即在规格id 在 discountGoodsIdList 中的商品 && 如果找到了，则不再发请求
+				if(discountGoodsIdList.indexOf(priceObject.id)!=-1 && !this.isEveryUserBuyNum(priceObject).isRequestData){
+					this.findGoodsSpecIdBuyNum(priceObject.id).then((res)=>{
+						if (res.data.code === 0) {
+							isEveryUserBuyNum=res.data.value;
+							//保存起来
+							userDiscountGoodsList.push(res.data.value);
+						}else{
+							console.log("折扣商品每个客户请求失败")
+						}
+						//添加进购物车
+						this.firstAddIntoCart(food,tmpArr,rules,attributes,isEveryUserBuyNum,categoryId,priceObject)
+						//折扣消息
+						this.addCartDiscountMsg(food,priceObject);
+						this.setData({
+							selectFoods: tmpArr,
+							maskShow:true,
+						});
+						this.totalprice();
+					}).catch(()=>{
+				
+					})
+				}else{
+					isEveryUserBuyNum=this.isEveryUserBuyNum(priceObject);
+					//添加进购物车
+					this.firstAddIntoCart(food,tmpArr,rules,attributes,isEveryUserBuyNum,categoryId,priceObject)
+					//折扣消息
+					this.addCartDiscountMsg(food,priceObject);
+					this.setData({
+						selectFoods: tmpArr,
+						maskShow:true,
+					});
+					this.totalprice();
+				}
+	        }else{//除 第一次购买
+				this.addCartDiscountMsg(food,priceObject);
+				this.setData({
+					selectFoods: tmpArr,
+					maskShow:true,
+				});
+				this.totalprice();
+			}			
+	    }//添加进购物车流程结束
+	},
+	//第一次添加购物车
+	firstAddIntoCart(food,tmpArr,rules,attributes,isEveryUserBuyNum,categoryId,priceObject){
+		/*@food 
+		  @attributes 
+		  @isEveryUserBuyNum 折扣独有，每个客户折扣最多买
+		  @categoryId 
+		  @priceObject
+		  @rules
+		*/
+		let _userMaxBuyNum,_isEveryUserBuyNum,_attributes,_count=1;
+		if(rules){//如果多规格，则该属性有值
+			_attributes=attributes;
+		}
+		if(food.hasDiscount){//如果该商品是折扣商品
+			_userMaxBuyNum=food.discountedGoods.maxBuyNum; //折扣独有
+			_isEveryUserBuyNum=isEveryUserBuyNum;//折扣商品独有
+			//折扣商品时，count+1     _count=1;
+		}
+		if(priceObject.minOrderNum && !food.hasDiscount){//如果有最低购买要求 并且不是在折扣阶段
+			_count= 1*priceObject.minOrderNum;
+			feedbackApi.showToast({title: food.name+'商品最少购买'+priceObject.minOrderNum+'份哦'});
+		}
+		tmpArr.push({
+			attributes:_attributes,
+			id: food.id,
+			hasDiscount:food.hasDiscount,
+			surplusDiscountStock:food.surplusDiscountStock,
+			everyGoodsEveryOrderBuyCount:food.everyGoodsEveryOrderBuyCount,
+			userMaxBuyNum:_userMaxBuyNum,  
+			isEveryUserBuyNum:_isEveryUserBuyNum,
+			categoryId:categoryId, 
+			relationCategoryId:food.parentRelationCategoryId,
+			name: food.name, 
+			priceObject:priceObject, 
+			count: _count
+		});	
+	},
+	//购物车 添加时 折扣商品的消息提醒
+	addCartDiscountMsg(food,priceObject){
+		let isToastZK=false;
 		if (food.hasDiscount) {
 			if (!this.data.activitySharedStatus && this.data.ruleDtoList.length>0) {//
 				if (!this.data.isTipOne) {
@@ -1049,7 +1053,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 					this.data.isTipOne = true;
 				}	
 			} 
-			let everyCount = this.getCartCount(id,priceObject);
+			let everyCount = this.getCartCount(food.id,priceObject);
 			let isEveryUserBuyNum = this.isEveryUserBuyNum(priceObject)
 			if (food.surplusDiscountStock) {
 				if(food.surplusDiscountStock > food.everyGoodsEveryOrderBuyCount){
@@ -1103,11 +1107,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				}
 			} 
 		}
-		this.setData({
-			selectFoods: tmpArr,
-			maskShow:true,
-		});
-	 	this.totalprice();
 	},
 	decrease(e){
 		let specIndex = e.currentTarget.dataset.specindex || 0;
@@ -1135,7 +1134,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			}
 		}
 		if (food.goodsSpecList && rules) {
-			console.log(2345);
 			priceObject = food.goodsSpecList[specIndex];
 		} 
 		let isNum = 0;
@@ -1204,9 +1202,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	                isNum++;
 	            }
 	        });
-	        // console.log(isNum);
 	        if (isNum === 1 && !isNumstatus) {
-	        	console.log(345);
 	        	tmpArr.map((item,index)=>{
 	        		if (item.id === id) {
 	        			if (item.count > 1) {
