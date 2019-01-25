@@ -109,7 +109,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		//如果传了search参数，并且为true，则显示的搜索页悬浮窗。其下内容不加载
 		if(search){//这部分用到变量方法在shopSearch文件
 			//先设置isSearchWrapperShow
-			this.setData({});
 			this.setData({
 				isSearchWrapperShow:true,
 				isShopSkeletonScreenShow:false
@@ -195,7 +194,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			}
 			if (isloginGetDiscountUserNum) {
 				this.removalMenuList();
-				wx.setStorageSync('isloginGetPlatformRedBag',false);
+				wx.setStorageSync('isloginGetDiscountUserNum',false);
 			}
 		}
 		//返回页面时，加载购物车缓存，比如商店搜索会改变购物车情况
@@ -316,7 +315,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	removalMenuList(){
 		let menu = this.data.menu;
 		let removalMenuList = [];
-		let discountGoodsList=[];
+		discountGoodsIdList = [];
 		let loginMessage = wx.getStorageSync('loginMessage');
 		let loginStatus = wx.getStorageSync('loginstatus');
 		menu.map(item=>{
@@ -337,6 +336,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		});
 		//如果折扣每个客户最多买的数组太大，则不一次性发请求.换成==>在购物时发请求判断
 		if(discountGoodsIdList.length<=DiscountGoodsMaxRequest){//小于则发请求
+			userDiscountGoodsList = []
 			this.findGoodsSpecIdBuyNum(discountGoodsIdList).then((res)=>{
 				res.forEach(item=>{
 					if (item.data.code === 0) {
@@ -644,8 +644,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
         		params:{
 					merchantId:this.data.merchantId
         		},
-				client: app.globalData.client,
-        		clientVersion: "3.2.2"    //此参数取值版本来自于与App版本
         	},
         });
 	},
