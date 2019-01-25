@@ -4,7 +4,7 @@
 	margin-top: -22rpx;
 }
 .top-status {
-	margin-top: -12rpx;
+	/*针对商品详情的margin-top:-12rpx 优化*/
 }
 .cart-add{
 	display: inline-block;
