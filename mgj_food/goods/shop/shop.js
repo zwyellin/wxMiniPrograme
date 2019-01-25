@@ -828,7 +828,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		//点击之后就判断能否购买 
 		//普通商品库存有限 或 有限购要求 或 最少购买数量>库存数
 		if (food.hasDiscount=== 0  &&  (priceObject.stockType || priceObject.orderLimit) ) {
-			if (priceObject.minOrderNum > priceObject.stock) {
+			if (priceObject.minOrderNum > priceObject.stock && priceObject.stockType) {
 				feedbackApi.showToast({title: '该商品库存不足'});
 				return;
 			}
@@ -850,7 +850,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			//折扣最多购买数量
 			let orderBuyCount = Math.min.apply(null, discountArr);
 			let surCount = count - orderBuyCount;
-			if (surCount >=0 && priceObject.minOrderNum > priceObject.stock) {
+			if (surCount >=0 && priceObject.minOrderNum > priceObject.stock && priceObject.stockType) {
 				feedbackApi.showToast({title: '该商品库存不足'});
 				return;
 			}
