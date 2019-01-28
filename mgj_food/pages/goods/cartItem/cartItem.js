@@ -144,7 +144,7 @@ Page({
       }).then(res=>{
         if (res.data.code === 0) {
           let valueArr = res.data.value;
-          if (status) {
+          if (status && !this.data.iscartDetailBack) {  //!this.data.iscartDetailBack cartDeatail页面返回时重置订单列表
             if (valueArr.length != 0) {
               let orderList = this.data.orderList;
               console.log(orderList)
@@ -186,14 +186,11 @@ Page({
             loading:false
           });
           wx.hideLoading();
-          
           feedbackApi.showToast({title: msg});   
         } 
-        console.log(2)
       }).catch(err=>{
         wx.hideLoading();
       }).finally(res=>{
-        console.log(1)
         wx.stopPullDownRefresh();
         this.data.iscartDetailBack=false;//重置
       });

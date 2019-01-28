@@ -487,7 +487,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		for (let i = 0; i < userDiscountGoodsList.length; i++) {
 			if (userDiscountGoodsList[i].goodsSpecId === priceObject.id) {
 				buyNum = userDiscountGoodsList[i].buyNum;
-				isRequestData=true;
+				isRequestData = true;
 				break;
 			}	
 		}
