@@ -1,6 +1,7 @@
 const Promise = require('./es6-promise.min.js');
 const app = getApp();
 const host = app.globalData.domain;
+const token=app.globalData.token;
 const qqmap = require('./qqmap-wx-jssdk.js');
 const qqMap = new qqmap({ 
   key:'OLNBZ-ZH73K-LIWJI-A3DA6-GIWLZ-ONFL4' 
@@ -71,7 +72,16 @@ const wxRequest = function (obj = {}) {
           reject(res);
         }
       };
+     
+      //请求的参数 这边固定要发的数据
+      var data={
+        client:app.globalData.client,
+        clientVersion:app.globalData.clientVersion,
+        token:app.globalData.token
+      }
       var config = Object.assign({}, defaultConfig, obj);
+      config.data=Object.assign({},data,config.data);
+      
       config.url = host + config.url;
     } catch (e) {
       // throw e  无效？

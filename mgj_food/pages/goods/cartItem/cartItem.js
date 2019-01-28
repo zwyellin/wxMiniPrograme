@@ -2,6 +2,7 @@ const { wxRequest, refundTime } = require('../../../utils/util.js');
 const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const app = getApp();
 let timer = null;
+let scrollHeight=0;
 Page({
   	data:{
       time:new Date('2018/5/25 2:00:00').getTime(),
@@ -12,9 +13,17 @@ Page({
       value:{},
       start:0,
       show:false,
-      firstRefresh:false
-  	},
-  	onShow(options){
+      firstRefresh:false,
+      iscartDetailBack:false//判断是否cartDetail返回,在该页面unload会修改这个字段。如果从该页面返回。则不再刷新这个页面 
+    },
+    onPageScroll(e){//保存滚动
+      scrollHeight=e.scrollTop;
+    },
+  	onShow(){
+        if(this.data.iscartDetailBack){//如果cartDetail返回来的，则会修改这个字段为true
+          wx.startPullDownRefresh();//开启下拉刷新,在数据请求回来后重置
+          return 
+        }
         let loginMessage = wx.getStorageSync('loginMessage');
         let loginStatus = wx.getStorageSync('loginstatus');
         //判断是否登入
@@ -23,7 +32,18 @@ Page({
                 start:0,
                 loginsuccess:true,
             });
-            this.findNewUserTOrders();
+            //首次进入页面,如果滚动条下拉了半个item时，则滚动条上拉到顶部，再刷新
+            if(scrollHeight>100){
+              wx.pageScrollTo({
+                scrollTop:0,
+                duration:300 
+              })
+              setTimeout(() => {
+                this.findNewUserTOrders();
+              }, 500);
+            }else{
+              this.findNewUserTOrders();
+            } 
           // if (!this.data.firstRefresh) {
           //     this.findNewUserTOrders();
           //     this.data.firstRefresh = true;
@@ -105,7 +125,7 @@ Page({
       return item;
     },
     findNewUserTOrders(status){
-      if (!status) {
+      if (!status) {//status false表示要展示加载小图标
         wx.showLoading({
           title: '加载中',
           mask: true
@@ -124,7 +144,7 @@ Page({
       }).then(res=>{
         if (res.data.code === 0) {
           let valueArr = res.data.value;
-          if (status) {
+          if (status && !this.data.iscartDetailBack) {  //!this.data.iscartDetailBack cartDeatail页面返回时重置订单列表
             if (valueArr.length != 0) {
               let orderList = this.data.orderList;
               console.log(orderList)
@@ -172,6 +192,7 @@ Page({
         wx.hideLoading();
       }).finally(res=>{
         wx.stopPullDownRefresh();
+        this.data.iscartDetailBack=false;//重置
       });
     },
     //再来一单
@@ -251,7 +272,7 @@ Page({
     //下拉刷新
     onPullDownRefresh:function() {
       this.data.start = 0;
-      this.findNewUserTOrders(); 
+      this.findNewUserTOrders(this.data.iscartDetailBack);//如果是订单详情页返回来的，则不显示加载中图标
     },
     //上滑加载更多
     onReachBottom(){

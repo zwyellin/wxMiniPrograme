@@ -1,0 +1,83 @@
+/*商店增加的搜索 点击搜索图标*/
+.shopSearch{
+	position:absolute;
+	top:-5rpx;
+	right:0;
+	padding: 10rpx;
+	height: 48rpx;
+}
+.shopSearch image{
+	width: 48rpx;
+	height:48rpx;
+}
+
+/*商店增加的搜索 主体 */
+.shopSearch-wrapper{
+	padding: 20rpx 20rpx;
+}
+.shopSearch-header{
+	height:60rpx;
+}
+.shopSearch-header-l{
+	flex:1;
+	align-items:center;
+	background: #f2f0f1;
+	padding:0 20rpx;
+	border-radius: 10rpx;
+}
+.shopSearch-header-l image{
+	width: 28rpx;
+	height:28rpx;
+	flex:0 0 auto;
+	/* vertical-align:middle; */
+}
+.shopSearch-header-l input{
+	display: inline-block;
+	margin-left: 20rpx;
+	flex:1;
+	/* vertical-align:middle; */
+}
+.placeholder{
+   
+}
+.shopSearch-header-r{
+	flex:0 0 auto;
+	margin-left: 20rpx;
+	width: 150rpx;
+	background: #f2f0f1;
+	border-radius: 10rpx;
+	text-align: center;
+}
+.shopSearch-header-r text{
+	line-height: 60rpx;
+	color:#999;
+
+}
+/* 商店搜索 历史搜索*/
+.shopSearchRecord{
+	margin-top: 40rpx;
+}
+.shopSearchRecord-header{
+	justify-content: space-between;	
+	align-items:center;
+}
+.shopSearchRecord-header image{
+	width: 28rpx;
+	height: 28rpx;
+	padding: 10rpx 10rpx 10rpx 30rpx;
+	flex:0 0 auto;
+}
+.shopSearchRecord-main{
+	flex-wrap:wrap;
+}
+.shopSearchRecord-main text{
+	padding: 20rpx;
+	line-height: 1;
+	margin: 0 20rpx 20rpx 0;
+	background: #f2f0f1;
+	font-size: 22rpx;
+}
+.shopSearch-main{
+	
+}
+/* 商店搜索结束*/

@@ -2,5 +2,6 @@
   "navigationBarTitleText": "服务分类",
   "navigationBarTextStyle":"black",
   "navigationBarBackgroundColor": "#fff",
-  "backgroundColor": "#f5f5f5"
+  "backgroundColor": "#f5f5f5",
+  "onReachBottomDistance":300
 }

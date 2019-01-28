@@ -9,7 +9,7 @@
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.6.5",
+	"libVersion": "2.3.2",
 	"appid": "wx38e6075b7760daa1",
 	"projectname": "mgj_good",
 	"condition": {

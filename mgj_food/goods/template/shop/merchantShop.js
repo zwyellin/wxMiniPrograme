@@ -20,31 +20,39 @@ const merchantShop = {
         }).then(res=>{
 			if (res.data.code === 0) {
 				let value = res.data.value;
+				console.log(res)
 				let name = value.merchant.name;
-				let ruleDtoList =value.merchant.ruleDtoList;
+				let ruleDtoList =[];
 				let merchantRedBagList = value.merchant.merchantRedBagList;
+				let promotionActivityList=value.merchant.promotionActivityList;
 				wx.setNavigationBarTitle({
 				  	title: name
 				});
 				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}
+				//这边从promotionActivityList里面获取
+				promotionActivityList.forEach((ele,index,arr) => {
+					if(ele.type===1 && ele.activityType===2){
+						ruleDtoList=ele.ruleDtoList
+					}
+				});
+				console.log("规则",ruleDtoList)
 				this.setData({
-					itemList:value.merchant,
-					item:value.merchant,
+					merchantInfoObj:value.merchant,
 					minPrice:value.merchant.minPrice,
 					shipScore:value.merchant.shipScore,
-					ruleDtoList:value.merchant.ruleDtoList,
+					ruleDtoList
 				});
-				if (wx.getStorageSync('shoppingCart')) {
-					this.totalprice();	
-				}
 				value.merchant.activitySharedRelationList.forEach(item=>{
 					if (item.promotionActivityType === 5 && item.relationPromotionActivityType === 2) {
 						this.data.activitySharedStatus = item.status;
 					}
 				});
-				ActivityListHeight += this.data.itemList.promotionActivityList.length*16;
+				if (wx.getStorageSync('shoppingCart')) {
+					this.totalprice();	
+				}
+				ActivityListHeight += this.data.merchantInfoObj.promotionActivityList.length*16;
 
 				if (value.merchant.merchantRedBagList.length != 0) {
 					merchantRedBagList.map((item)=>{
@@ -214,7 +222,7 @@ const merchantShop = {
 	// 查看商家地理位置
 	merchantAddress(){
 		wx.navigateTo({
-			url: '/goods/mapview/mapview?latitude=' + this.data.itemList.latitude + '&longitude=' + this.data.itemList.longitude + '&name=' + this.data.itemList.name
+			url: '/goods/mapview/mapview?latitude=' + this.data.merchantInfoObj.latitude + '&longitude=' + this.data.merchantInfoObj.longitude + '&name=' + this.data.merchantInfoObj.name
 		});
 	},
 	//底部弹出活动详情
@@ -230,7 +238,7 @@ const merchantShop = {
 	//拨打商家电话
 	callPhone(e){
 	    wx.makePhoneCall({
-	      phoneNumber: this.data.itemList.contacts   //电话号码
+	      phoneNumber: this.data.merchantInfoObj.contacts   //电话号码
 	    });
 	},
 	maskShowAnimation(){

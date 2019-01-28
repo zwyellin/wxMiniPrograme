@@ -71,6 +71,7 @@ Page({
     })
   },
   getInit(){
+    console.log("init")
     var param = {
       agentId: app.globalData.agentId,
       longitude: app.globalData.localPosition.longitude,
@@ -144,6 +145,7 @@ Page({
     })
   },
   getAds(){
+    console.log("ads")
     let mapXY = null
     qqmapsdk = new QQMapWX({
       key: 'R6XBZ-7B5AJ-YROFI-FVQII-DUY35-DEF5X'
@@ -161,7 +163,8 @@ Page({
         }
         this.setData({
           mapXY
-        })
+        });
+        console.log(111)
       }
     });
   },
@@ -171,9 +174,9 @@ Page({
    */
   onLoad: function (options) {
     //console.log(111, app.globalData.localPosition)
+    console.log("load执行")
     app.isInit(()=>{
       if (app.globalData.localPosition){
-        console.log(1)
         this.getInit();
         if(app.globalData.userInfo.token){
           this.receiveRed()

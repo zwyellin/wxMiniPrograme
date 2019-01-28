@@ -49,7 +49,6 @@ Page({
 		let { merchantId } = options;
 		let pages = getCurrentPages();
 	    let prevPage = pages[pages.length - 2];
-	    console.log(prevPage.data.value);
 	    this.setData({
 	    	merchantId:merchantId,
 			orderMessage:prevPage.data.value,
@@ -90,6 +89,7 @@ Page({
 		}
 		this.filterUsableRedBagList();
 		this.queryPlatformRedBagList();
+		wx.setStorageSync('isPayPageRoute',false);
 	},
 	onShow(){
 		if (this.data.useRedBagList != null || this.data.addressInfoId != null || this.data.usePlatformRedBagList != null) {
@@ -485,5 +485,14 @@ Page({
         		token:app.globalData.token	
         	},
         })
+	},
+	onUnload(){
+		//如果上一个页面是支付页面，则返回首页刷新数据
+		let pageRoute = wx.getStorageSync('isPayPageRoute');
+		if(pageRoute){
+			wx.switchTab({
+				url:'/pages/index/index'
+			})
+		}
 	}
 });

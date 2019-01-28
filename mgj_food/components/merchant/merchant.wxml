@@ -60,7 +60,7 @@
 参数：无
 说明：商家列表的骨架屏，这边显示两个
 -->
-<template name="merchantscreen">
+<template name="goodItemscreen">
 	<view class="goods-wrapper clearfix" 
 		wx:for="{{[0,1]}}" 
       	wx:for-index="index"

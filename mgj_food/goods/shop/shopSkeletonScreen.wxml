@@ -1,0 +1,83 @@
+<!--
+参数：无
+说明：商品列表的显示屏，这边显示两个
+-->
+<template name="goodItemScreen">
+	<view class="food-item" 
+		wx:for="{{[0,1]}}" 
+      	wx:for-index="index"
+      	wx:for-item="item"
+      	wx:key="index">
+		<view class="icon">
+			<image class="icon_img skeletonScreenbg" />
+		</view>
+		<view class="content">
+			<view class="detail-name skeletonScreenbg" style="height:30rpx;width:33%"></view>
+			<view class="detail-name skeletonScreenbg" style="height:30rpx;width:66%"></view>
+			<view class="detail-price skeletonScreenbg" style="height:30rpx"></view>
+		</view>
+	</view>
+</template>
+
+<!--
+参数：无
+说明：商店的整体骨架屏
+-->
+<template name="shopScreen">
+    <view class="container" >
+        <view class="header" >
+            <view class="content-wrapper">
+                <view class="avatar">
+                    <image class="icon-image skeletonScreenbg"></image>
+                </view>
+                <view class="content" style="padding:15rpx 0">
+                    <view class="desc skeletonScreenbg" style="height:30rpx;margin-bottom:20rpx;width:50%"></view>
+                    <view class="cartcontrol-wrapper skeletonScreenbg" style="height:30rpx;width:80%"></view>
+                </view>
+            </view>
+            <view class="bulletin-wrapper skeletonScreenbg"></view>
+        </view>
+        <!--头部布局 end-->
+        <!-- tab 部分 start-->
+        <view class="tab">
+            <view class="item-tab flex  skeletonScreenbg" style="margin:14rpx 60rpx"></view>
+            <view class="item-tab flex skeletonScreenbg" style="margin:14rpx 60rpx"></view>
+            <view class="item-tab flex  skeletonScreenbg" style="margin:14rpx 60rpx"></view>
+        </view>
+        <!-- goods部分 start-->
+        <view class="goods">
+            <!--good 的菜单部分 -->
+            <view class="menu-wrapper">
+                <!--菜单item -->
+                <view class="menu-item normal"  style="padding:28rpx;">
+                    <text class="menu-item-text skeletonScreenbg"></text>
+                </view>
+                 <!--菜单item -->
+                <view class="menu-item normal" style="padding:28rpx;">
+                    <text class="menu-item-text skeletonScreenbg"></text>
+                </view>
+                 <!--菜单item -->
+                <view class="menu-item normal"  style="padding:28rpx;">
+                    <text class="menu-item-text skeletonScreenbg"></text>
+                </view>
+                 <!--菜单item -->
+                <view class="menu-item normal"  style="padding:28rpx;">
+                    <text class="menu-item-text skeletonScreenbg"></text>
+                </view>
+            </view>
+            <!--good 的商品展示部分(右边) -->
+            <view class="foods-wrapper">
+                <!-- 商品列表item-->
+                <view>
+                    <text class="food-title"></text>
+                    <template is="goodItemScreen"></template>
+                </view>
+                <!-- 商品列表item-->
+                <view>
+                    <text class="food-title"></text>
+                    <template is="goodItemScreen"></template>
+                </view>
+            </view>
+        </view><!--goods end-->
+    </view>
+</template>
