@@ -17,11 +17,12 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		loading:false,
 		getOrderStatus:false,
 		show:true,
-		maskShow:false,       // 遮罩层
+		maskShow:false,            // 遮罩层
 		maskAnimation:null,
 		choiceAnimation:null,
-		orderRedAnimation:null,   //红包动画
+		orderRedAnimation:null,      //红包动画
 		pickertagAnimation:null,
+		isHide:false,                //控制本地购物车缓存   
 		tab: {
 	      tabList: ["商品","评价","商家"],
 	      cur: "商品",
@@ -97,7 +98,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			success: (res)=> {
 				this.setData({
 					windowScrollHeight: res.windowHeight - 280*(app.globalData.windowWidth/750),
-					shopSearchScrollHeight: res.windowHeight-216*(app.globalData.windowWidth/750)
+					shopSearchScrollHeight: res.windowHeight - 216*(app.globalData.windowWidth/750)
 				});
 			}
 		});
@@ -209,6 +210,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				this.totalprice();
 			}
 		}
+		wx.setStorageSync('isPayPageRoute',false);
 	},
 	//领取平台红包
 	getPlatformRedBag(){
@@ -1385,8 +1387,13 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		let merchantId = this.data.merchantId;
 		this.setStorageShop(merchantId)
   	},
-  	onUnload(){	
-		let merchantId = this.data.merchantId;
-		this.setStorageShop(merchantId)
+  	onUnload(){
+
+  		//如果销毁是因为支付完成之后的订单详情页面，则返回时不存储购物车
+		let isPayPageRoute = wx.getStorageSync('isPayPageRoute');
+  		if (!isPayPageRoute) {
+  			let merchantId = this.data.merchantId;
+			this.setStorageShop(merchantId)
+  		}		
   	}
 }));

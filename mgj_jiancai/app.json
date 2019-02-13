@@ -35,7 +35,6 @@
     "pages/order-detail/detail",
     "pages/cart/index",
     "pages/evaluateList/evaluateList",
-    "pages/webview/webview",
     "pages/commodityEvaluateList/commodityEvaluateList"
   ],
   "window":{

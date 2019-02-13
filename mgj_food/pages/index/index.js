@@ -107,14 +107,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				if(true){//测试用的地址,不用这个地址，为false即可
-					 // latitude:'39.966128', 
-					 // longitude:"116.304782"
-					 latitude='39.966128',
-					 longitude="116.304782"
-				}
-				app.globalData.longitude =longitude;
-				app.globalData.latitude =latitude;
+				app.globalData.longitude = longitude;
+				app.globalData.latitude = latitude;
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;

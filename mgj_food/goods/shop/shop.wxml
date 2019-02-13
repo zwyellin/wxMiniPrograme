@@ -80,14 +80,13 @@
 										<view wx:elif="{{food.status === 0 || (food.status === 0 || food.goodsSpecList.length === 1 && food.goodsSpecList[0].stockType && !food.surplusDiscountStock && food.goodsSpecList[0].stock === 0 )}}" class="choice-else font-10">	
 											<text>商品已售罄</text><!--不再售卖 或 （针对规格只有一个的，并且库存状态是有限的，并且不是折扣商品已卖完，并且库存数为0）-->
 										</view>
-										<!-- else 正常卖（if有可能要选规格）-->
-										<view wx:elif="{{food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{food}}" data-parent-index="{{parentIndex}}" catchtap="choice">
-											<text>选规格</text>
-										</view>
-										<!--else 正常卖 不用选规格-->
-										<view wx:else >
+										<view wx:else class="flex" style="align-items:center">
 											<template is="contorl-add" data="{{food,selectFoods,parentIndex}}" ></template> <!--+购买图标-->
-										</view>    
+											<!-- （if有可能要选规格,对应多规格:也必须存在 contorl-add 模板）-->
+											<view wx:if="{{food.goodsSpecList.length >1 || food.goodsAttributeList.length >=1}}" class="choice font-10" data-food="{{food}}" data-parent-index="{{parentIndex}}" catchtap="choice">
+												<text>选规格</text>
+											</view>
+										</view>   
 									</view>
 								</view>
 								<!-- 这个是在商品价格下面的商品信息文字提示-->
@@ -200,7 +199,7 @@
 		    	<view wx:if="{{item.goodsList != null}}" class="menu-item {{currentCateno=='A'+(index+1) ? 'active' : 'normal'}}" data-cateno="A{{index+1}}" id="l_A{{index+1}}" bindtap="scrollLeftTap">
 					<text class="menu-item-text">
 						<text wx:if="{{item.icon}}" class="text" style="background: url({{item.icon}});background-size: 24rpx 24rpx"></text>
-						{{item.name}}
+						<text>{{item.name}}</text>
 					</text>
 					<text wx:if="{{tage.getItemCount(item.id,selectFoods) > 0}}" class="menu-item-num">{{tage.getItemCount(item.id,selectFoods)}}</text>
 		    	</view>	

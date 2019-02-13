@@ -89,7 +89,6 @@ Page({
 		}
 		this.filterUsableRedBagList();
 		this.queryPlatformRedBagList();
-		wx.setStorageSync('isPayPageRoute',false);
 	},
 	onShow(){
 		if (this.data.useRedBagList != null || this.data.addressInfoId != null || this.data.usePlatformRedBagList != null) {
