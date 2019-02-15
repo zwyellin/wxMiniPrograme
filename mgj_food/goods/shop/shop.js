@@ -862,7 +862,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			}
 		} 
 		//针对折扣商品 库存有限 或 有限购要求
-    	if( food.hasDiscount===1  && (priceObject.stockType || priceObject.orderLimit)) {
+    if( food.hasDiscount===1  && (priceObject.stockType || priceObject.orderLimit)) {
 			let isEveryUserBuyNum = this.isEveryUserBuyNum(priceObject)
 			let discountArr=[food.surplusDiscountStock]
 			if(food.everyGoodsEveryOrderBuyCount != 0) discountArr.push(food.everyGoodsEveryOrderBuyCount)
@@ -882,7 +882,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				feedbackApi.showToast({title: '您购买的商品已超过限购数量'});
 				return;
 			}		
-    	}
+    }
 
 		console.log(tmpArr);
 		// 商品规格

@@ -391,7 +391,7 @@
 			   </view>
 			   <view class="new-evaluate-userinfo-star">
 				   <text class="new-evaluate-userinfo-star-text">商家评分</text>
-				   <template is="star-AttrScore" data="{{size:36,merchantInfoObj,AttrName:'averageScore'}}"></template>
+				   <template is="star-AttrScore" data="{{size:36,item:merchantInfoObj,AttrName:'averageScore'}}"></template>
 			   </view>
 		   </view>
 		   <view class="new-evaluate-right">
@@ -494,8 +494,8 @@
     		<view class="shop-text font-14">
     			<text>{{merchantInfoObj.name}}</text>
     		</view>
-			<view class="shop-text" style="margin-top:16rpx">
-    			<template is="star-AttrScore" data="{{size,merchantInfoObj,AttrName:'averageScore'}}"></template>
+				<view class="shop-text" style="margin-top:16rpx">
+    			<template is="star-AttrScore" data="{{size,item:merchantInfoObj,AttrName:'averageScore'}}"></template>
     			<text style="color:#ff9900;margin-left:10rpx">{{tage.shopFloat(merchantInfoObj.averageScore,1)}}分</text>
     			<text style="color:#666;margin-left:20rpx">月售{{merchantInfoObj.monthSaled}}单</text>
     		</view>
