@@ -5,7 +5,9 @@
 <import src="../../components/showToast/showToast.wxml" />
 <import src="shopSkeletonScreen.wxml"/><!--骨架屏-->
 <wxs module="tage" src="../../utils/star.wxs"></wxs>
+<view >37489247edsofhn</view>
 <template is="shopScreen" wx:if="{{isShopSkeletonScreenShow}}"></template> <!--商店整体骨架屏 -->
+
 <view class="container page-index" wx:else>
 	<!--新增的搜索 页面布局-->
 	<view wx:if="{{isSearchWrapperShow}}" class="mask" style="z-index:20;background:#F8F8FF;opacity:1">

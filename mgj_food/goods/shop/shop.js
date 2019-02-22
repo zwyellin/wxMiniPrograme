@@ -87,7 +87,11 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-		let { merchantid,longitude,latitude,search} = options;
+		let { merchantid,longitude,latitude,search,sharerToken} = options;
+		//search为商店搜索，点击后跳转自身商店(用于标识)
+		//sharerToken标识，是转发出去后点击转发卡片进来的。
+		console.log("分享者是:",sharerToken)
+		console.log("自身token为：",app.globalData.token)
 		this.data.merchantId = merchantid;
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
@@ -1373,13 +1377,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onShareAppMessage(res) {
     	return {
       		title: '马管家',
-      		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude,
-      		success: function(res) {
-        		// 转发成功
-     		},
-      		fail: function(res) {
-        		// 转发失败
-      		}
+      		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude+'&sharerToken='+app.globalData.token,
     	};
   	},
   	onHide(){
