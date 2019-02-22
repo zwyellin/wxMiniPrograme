@@ -158,28 +158,16 @@ let merchantObj = {
 		let { item, index } = e.currentTarget.dataset;
 		console.log(index)
 		let value = item.name;
-		this.maskHideAnimation()
-		if (index === 0) {
-			this.setData({
-				tagParentId:item.parentId,
-				tagId:null,
-				classShow:false,
-				type1:value,
-				loading:false,
-				secondIndex:index
-			});
-			this.getDataList(false,true);
-		} else {
-			this.setData({
-				tagParentId:item.parentId,
-				tagId:item.id,
-				classShow:false,
-				type1:value,
-				loading:false,
-				secondIndex:index
-			});
-			this.getDataList(false,true);
-		}	
+		this.maskHideAnimation();
+		this.setData({
+			tagParentId:item.parentId,
+			tagId:item.id,
+			classShow:false,
+			type1:value,
+			loading:false,
+			secondIndex:index
+		});
+		this.getDataList(false,true);	
 	},
 	getUserRedBag(){
 		let that = this;

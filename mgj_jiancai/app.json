@@ -43,6 +43,11 @@
     "navigationBarTitleText": "马管家建材",
     "navigationBarTextStyle":"black"
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
   "tabBar": {
     "color": "#999999",
     "selectedColor": "#ed655f",

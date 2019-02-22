@@ -625,7 +625,7 @@ Page(Object.assign({}, merchantObj, {
 			})
 		}
 	},
-	onShareAppMessage(res) {
+	onShareAppMessage(res) {		
     	return {
       		title: '马管家',
       		path: "/pages/index/index",
