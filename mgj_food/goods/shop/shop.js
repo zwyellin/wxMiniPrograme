@@ -87,7 +87,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-		let { merchantid,longitude,latitude,search,sharerToken} = options;
+		let { merchantid,apentId,longitude,latitude,search,sharerToken} = options;
 		//search为商店搜索，点击后跳转自身商店(用于标识)
 		//sharerToken标识，是转发出去后点击转发卡片进来的。
 		console.log("分享者是:",sharerToken)
@@ -95,7 +95,8 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		this.data.merchantId = merchantid;
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
-        	app.globalData.latitude = latitude;
+			app.globalData.latitude = latitude;
+			app.globalData.agentId=app.globalData.agentId || apentId;
 		}
 		//获取系统信息 主要是为了计算产品scroll的高度
 		wx.getSystemInfo({
@@ -1377,7 +1378,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onShareAppMessage(res) {
     	return {
       		title: '马管家',
-      		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude+'&sharerToken='+app.globalData.token,
+      		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&agentId='+app.globalData.agentId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude+'&sharerToken='+app.globalData.token,
     	};
   	},
   	onHide(){

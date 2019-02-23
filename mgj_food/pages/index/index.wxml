@@ -109,6 +109,7 @@
 	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 		</view>
+		<navigator open-type="navigate" url="/goods/GroupPurchaseShop/GroupPurchaseShop">团购入口</navigator>	
 		<!--优化列表显示，这边放了十个一维数组，最后数据都放到最后一个数组那里-->
 		<template is="merchant" data="{{dataList:dataList1,cartObject,size,linearArrayIndex:1}}"></template>
 		<template is="merchant" data="{{dataList:dataList2,cartObject,size,linearArrayIndex:2}}"></template>

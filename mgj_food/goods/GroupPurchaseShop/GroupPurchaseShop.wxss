@@ -1,0 +1,40 @@
+/* goods/GroupPurchaseShop/GroupPurchaseShop.wxss */
+@import "../../components/star/star.wxss";
+
+
+.flex-all-center{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.merchantInfo,.serviceCategory,.merchantRecommend{
+    padding: 0 20rpx;
+}
+.container text{
+    font-size: 30rpx;
+}
+.merchantMainInfo_image{
+    position: relative;
+    border-radius: 8rpx;
+    border: 1px solid grey
+}
+.merchantMainInfo_image image{
+    width: 180rpx;
+    height: 152rpx;
+}
+.merchantMainInfo_type image{
+    width: 40rpx;
+    height: 40rpx;
+}
+.merchantMainInfo_image_TotalIcon{
+    position: absolute;
+    bottom: 10%;
+    left:20%;
+    padding: 4rpx 20rpx;
+    border-radius: 20rpx;
+    background: rgba(0,0,0,0.4);
+}
+.serviceCategory image{
+    width: 40rpx;
+    height: 40rpx;
+}

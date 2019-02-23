@@ -24,7 +24,9 @@
   -webkit-flex: 1;
   flex: 1;
 }
-
+.flex-spaceBetween{
+  justify-content:space-between;
+}
 .fl {
   float: left;
 }

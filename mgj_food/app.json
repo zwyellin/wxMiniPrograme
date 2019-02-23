@@ -66,6 +66,7 @@
       "root": "goods",
       "pages": [
         "shop/shop",
+        "GroupPurchaseShop/GroupPurchaseShop",
         "mapview/mapview",
         "queryOrder/queryOrder",
         "pay/pay",
