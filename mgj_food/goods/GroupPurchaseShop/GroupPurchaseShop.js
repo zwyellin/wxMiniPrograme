@@ -19,13 +19,14 @@ Page({
         distance:2234,//距离：顾客位置到店家的距离
         serverType:[
           {type:0,discount:5.0,sold:200},
-          {type:1,total:120,value:100,tags:["需预约","可折叠"],sold:100},
-          {type:2,name:"窗帘",total:330,value:100,tags:["需预约","可折叠"],sold:400,img:"../image/good-face.png"}
+          {type:1,total:120,value:100,tags:["需预约","可折叠","需预约","可折叠","需预约","可折叠"],sold:100},
+          {type:2,name:"窗帘",total:330,value:100,tags:["需预约","可折叠","需预约","可折叠","需预约","可折叠"],sold:400,img:"../image/good-face.png"}
         ],
         phoneNumber:"13456789432"
       },
-      merchantRecommend:["推荐第一个","推荐第二个","推荐第三个"],
-      merchantServe:["无烟区","刷卡","停车","包厢","景观位","无烟区","刷卡","停车","包厢","景观位","无烟区","刷卡","停车","包厢","景观位"]
+      merchantRecommend:["推荐第一个","推荐第二个","推荐第三个","推荐的第四个","推荐的第五个","推荐的第六个"],
+      merchantServe:["无烟区","刷卡","停车","包厢","景观位","无烟区","刷卡","停车","包厢","景观位","无烟区","刷卡","停车","包厢","景观位"],
+      intro:"建材行业第一品牌，品质保障"
   },
 
   /**

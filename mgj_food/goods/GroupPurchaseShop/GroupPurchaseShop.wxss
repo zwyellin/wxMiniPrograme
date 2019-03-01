@@ -2,25 +2,64 @@
 @import "../../components/star/star.wxss";
 
 
+.flex-row-center{
+    align-items: center;
+}
 .flex-all-center{
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.merchantInfo,.serviceCategory,.merchantRecommend{
-    padding: 0 20rpx;
+.spaceBetween{
+    justify-content: space-between;
+}
+.container{
+    background: #eee;
+}
+.merchantInfo,.serviceCategory,.merchantRecommend,.merchantCardBox,.merchant-evaluate{
+    padding: 0 40rpx;
+    background:#fff;
 }
 .container text{
-    font-size: 30rpx;
+  
+}
+/* 主要信息 */
+.merchantName{
+    color:#333;
+    font-size: 44rpx;
+}
+.merchantStar{
+    margin-top: 20rpx;
+    align-items:center;
+}
+.merchantStar text{
+    margin-left: 20rpx;
+    font-size: 22rpx;
+    color:#666;
+}
+.merchantWorkTime{
+    font-size:22rpx;
+    color:#999;
+}
+
+.merchantMainInfo_type{
+    margin-top: 30rpx;
+
+}
+.merchantMainInfo_type navigator{
+    margin: 0 14rpx;
 }
 .merchantMainInfo_image{
     position: relative;
-    border-radius: 8rpx;
+    margin-top: 30rpx;
     border: 1px solid grey
+
 }
 .merchantMainInfo_image image{
-    width: 180rpx;
-    height: 152rpx;
+    width: 240rpx;
+    height: 203rpx;
+    border-radius: 8rpx;
+    margin-right: 20rpx;
 }
 .merchantMainInfo_type image{
     width: 40rpx;
@@ -34,7 +73,60 @@
     border-radius: 20rpx;
     background: rgba(0,0,0,0.4);
 }
-.serviceCategory image{
+
+.merchantInfoContactWay{
+    margin-top: 30rpx;
+    padding-bottom: 40rpx;
+}
+.merchantInfoTel{
+    margin:0 60rpx;
+    flex:0 0 auto;
+}
+/* 支付方式（服务类别） */
+.serviceCategory{
+    padding-bottom: 40rpx; 
+}
+.serviceCategoryItem{
+    padding-top: 40rpx;
+}
+.serviceCategory_typeIcon image{
     width: 40rpx;
-    height: 40rpx;
+    height:40rpx;
+    margin-right: 20rpx;
+    border-radius: 5rpx;
+}
+.serviceCategory_typeIcon text{
+    font-size: 34rpx;
+    color:#333;
+    font-weight: bold;
+}
+.serviceCategoryBuyButton button{
+    font-size: 26rpx;
+    color:#fff;
+    background: #ff9900;
+    border-radius: 5rpx;
+    width: 160rpx;
+}
+.serviceCategoryBuyButton text{
+    margin-top: 16rpx;
+    font-size: 22rpx;
+    color:#999;
+}
+.serviceCategoryItem_tuangouImage{
+    width: 130rpx;
+    height: 110rpx;
+    flex:0 0 auto;
+    margin-right: 20rpx;
+}
+/* 商家其它卡片信息 */
+.merchantCardBox{
+
+}
+.merchantCardItem{
+    padding: 40rpx 0;
+}
+.merchantCardItem-title{
+    font-size:34rpx;
+    color:#333;
+    font-weight: bold;
 }
