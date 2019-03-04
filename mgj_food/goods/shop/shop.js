@@ -9,6 +9,7 @@ let discountGoodsIdList = [];//这里是保存折扣商品每个客户最多买�
 const DiscountGoodsMaxRequest=20;//折扣商品每个客户最多买的数组最大数。如果大于该数，则不一次性发请求
 Page(Object.assign({}, merchantShop,shopSearch,{
 	data:Object.assign({},{
+		sharedUserId:null,//分享者id
 		merchantType:null,    //商家类型
 		categoryId:null,
 		goodsMoreLoading:false, //加载更多
@@ -87,11 +88,12 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-		let { merchantid,apentId,longitude,latitude,search,sharerToken} = options;
+		let { merchantid,apentId,longitude,latitude,search,sharedUserId} = options;
 		//search为商店搜索，点击后跳转自身商店(用于标识)
 		//sharerToken标识，是转发出去后点击转发卡片进来的。
-		console.log("分享者是:",sharerToken)
-		console.log("自身token为：",app.globalData.token)
+		this.data.sharedUserId=sharedUserId;
+		console.log("分享者是:",sharedUserId);
+		console.log("自身userId为：",app.globalData.userId)
 		this.data.merchantId = merchantid;
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
@@ -558,7 +560,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 							value:res.data.value
 	      				});
 	      				wx.navigateTo({
-		  					url: '/goods/queryOrder/queryOrder?merchantId='+this.data.merchantId,
+		  					url: '/goods/queryOrder/queryOrder?merchantId='+this.data.merchantId+"&sharedUserId="+this.data.sharedUserId,
 		  					complete: function(){
 		  						that.data.getOrderStatus = false;
 		  					}
@@ -610,6 +612,9 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			orderItems.push(json);
 		});
 		data.orderItems = orderItems;
+		data.sharedUserId=this.data.sharedUserId;
+		console.log("ok")
+		console.log(data);
 		return wxRequest({
         	url:'/merchant/userClient?m=orderPreview2',
         	method:'POST',
@@ -617,7 +622,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
         		params:{
         			data:JSON.stringify(data),
         			longitude:app.globalData.longitude || '1',
-        			latitude:app.globalData.latitude || '1'
+							latitude:app.globalData.latitude || '1'
         		},
         		token:app.globalData.token	
         	},
@@ -1376,23 +1381,24 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	    }
 	},
 	onShareAppMessage(res) {
+		console.log(app.globalData.userId);
     	return {
       		title: '马管家',
-      		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&agentId='+app.globalData.agentId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude+'&sharerToken='+app.globalData.token,
+      		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&agentId='+app.globalData.agentId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude+'&sharedUserId='+app.globalData.userId,
     	};
   	},
-  	onHide(){
+  onHide(){
 		this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
 		let merchantId = this.data.merchantId;
 		this.setStorageShop(merchantId)
   	},
-  	onUnload(){
+  onUnload(){
 
-  		//如果销毁是因为支付完成之后的订单详情页面，则返回时不存储购物车
+  	//如果销毁是因为支付完成之后的订单详情页面，则返回时不存储购物车
 		let isPayPageRoute = wx.getStorageSync('isPayPageRoute');
   		if (!isPayPageRoute) {
   			let merchantId = this.data.merchantId;
-			this.setStorageShop(merchantId)
+			  this.setStorageShop(merchantId)
   		}		
   	}
 }));

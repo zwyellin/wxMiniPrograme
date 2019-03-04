@@ -1,26 +1,28 @@
 <import src="../../components/star/star.wxml" />
-
+<import src="../../components/showToast/showToast.wxml" />
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
+<wxs module="tage" src="../../utils/star.wxs"></wxs>
+
 
 <view class="container"> 
     <view class="merchantInfo">
         <view class="merchantMainInfo mb20">
             <!--商家一张图片时布局-->
-            <view wx:if="{{merchantInfoObj.images.length <= 1}}" >
+            <view wx:if="{{false}}" >
                 <view class="flex flex-spaceBetween">
                     <view class="merchantMainInfo_license">
-                        <text class="merchantName">{{merchantInfoObj.name}}</text>
+                        <text class="merchantName">{{groupMerchantInfo.name}}</text>
                         <view class="merchantStar">
-                            <template is="star-AttrScore" data="{{size:36,item:merchantInfoObj,AttrName:'averageScore'}}"></template>
-                            <text>人均￥{{merchantInfoObj.averageConsume}}</text>
+                            <template is="star-AttrScore" data="{{size:36,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
+                            <text>人均￥{{groupMerchantInfo.avgPersonPrice}}</text>
                         </view>
                         <view class="businessHours">
-                            <text class="merchantWorkTime">营业时间:{{merchantInfoObj.businessHours}}</text>
+                            <text class="merchantWorkTime">营业时间:{{groupMerchantInfo.workingTime}}</text>
                         </view>
                     </view>
                     <view class="merchantMainInfo_image">                   
                         <block
-                            wx:for="{{merchantInfoObj.showImages}}"
+                            wx:for="{{groupMerchantInfo.imgs}}"
                             wx:for-index="index"
                             wx:for-item="item"
                             wx:key="index"
@@ -29,7 +31,7 @@
                         </block>
                     </view>
                 </view>
-                <view wx:if="{{merchantInfoObj.type==1}}" class="merchantMainInfo_type">
+                <view wx:if="{{groupMerchantInfo.type==1}}" class="merchantMainInfo_type">
                     <image src="../image/外卖标识.png"></image>
                     <navigator open-type="navigate" url="/goods/GroupPurchaseShop/GroupPurchaseShop" style="display:inline-block">  外卖  ></navigator>	
                 </view>
@@ -38,33 +40,33 @@
              <!--商家多张图片时布局-->
             <view wx:else>
                 <view class="merchantMainInfo_license">
-                    <text class="merchantName">{{merchantInfoObj.name}}</text>
+                    <text class="merchantName">{{groupMerchantInfo.name}}</text>
                     <view class="merchantStar flex flex-spaceBetween flex-row-center">
                         <view class="flex flex-row-center">
-                            <template is="star-AttrScore" data="{{size:36,item:merchantInfoObj,AttrName:'averageScore'}}"></template>
-                            <text>人均￥{{merchantInfoObj.averageConsume}}</text>
+                            <template is="star-AttrScore" data="{{size:36,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
+                            <text>人均￥{{groupMerchantInfo.evaluateAvgPersonPrice}}</text>
                         </view>
-                        <text class="merchantWorkTime">营业时间:{{merchantInfoObj.businessHours}}</text>   
+                        <text class="merchantWorkTime">营业时间:{{groupMerchantInfo.workingTime}}</text>   
                     </view>
                 </view>
-                <view wx:if="{{merchantInfoObj.type==1}}" class="merchantMainInfo_type flex flex-row-center">
+                <view wx:if="{{groupMerchantInfo.type==1}}" class="merchantMainInfo_type flex flex-row-center">
                     <image src="../image/外卖标识.png"></image>
                     <navigator open-type="navigate" url="/goods/GroupPurchaseShop/GroupPurchaseShop" style="display:inline-block">外卖  ></navigator>	
                 </view>
                 <view class="merchantMainInfo_image">
                     <view class="flex flex-spaceBetween">                
                         <block
-                            wx:for="{{merchantInfoObj.showImages}}"
+                            wx:for="{{groupMerchantInfo.showImgs}}"
                             wx:for-index="index"
                             wx:for-item="item"
                             wx:key="index"
                         >
-                            <image src="{{item}}" style="{{index==2?'margin-right:0;':''}}" data-index="{{index}}" data-images="{{merchantInfoObj.showImages}}" catch:tap="merchantInfoImageTap"></image>
+                            <image src="{{item}}" style="{{index==2?'margin-right:0;':''}}" data-index="{{index}}" data-images="{{groupMerchantInfo.imgs}}" catch:tap="merchantInfoImageTap"></image>
                         </block>
                     </view>
-                    <view class="merchantMainInfo_image_TotalIcon" data-images="{{merchantInfoObj.showImages}}" catch:tap="merchantInfoImageTap">
+                    <view class="merchantMainInfo_image_TotalIcon" data-images="{{groupMerchantInfo.imgs}}" catch:tap="merchantInfoImageTap">
                         <image src="../image/imagesIcon.png" style="width:30rpx;height:30rpx;"></image>
-                        {{merchantInfoObj.images.length}}
+                        {{groupMerchantInfo.imgs.length}}
                     </view>
                 </view>
             </view>
@@ -72,13 +74,13 @@
         <view class="merchantInfoContactWay flex flex-spaceBetween flex-row-center">
             <navigator  class="merchantInfoAddress"
             open-type="navigate"
-            url="/goods/mapview/mapview?latitude={{merchantInfoObj.latitude}}&longitude={{merchantInfoObj.longitude}}&name={{merchantInfoObj.name}}"
+            url="/goods/mapview/mapview?latitude={{groupMerchantInfo.latitude}}&longitude={{groupMerchantInfo.longitude}}&name={{groupMerchantInfo.name}}"
             >
                 <image src="../../images/images/map_1.png" style="width:40rpx;height:40rpx"></image>
-                <text style="font-size:28rpx;color:#ccc;line-height:14rpx;margin:0 14rpx 0 20rpx">{{merchantInfoObj.address}}</text>
-                <text style="border-left: 1px solid grey;padding: 0 15rpx;color: grey;font-size:28rpx; color:#999">距您{{fixed.round(merchantInfoObj.distance)}}km</text>
+                <text style="font-size:28rpx;color:#333;line-height:14rpx;margin:0 14rpx 0 20rpx">{{groupMerchantInfo.address}}</text>
+                <text style="border-left: 1px solid grey;padding: 0 15rpx;color: grey;font-size:28rpx; color:#999">距您{{fixed.round(groupMerchantInfo.distance)}}km</text>
             </navigator>
-            <view class="merchantInfoTel"  catch:tap="callPhoneTap">
+            <view class="merchantInfoTel"  data-callPhone="{{groupMerchantInfo.contacts}}" catch:tap="callPhoneTap">
                 <image src="../image/电话@2x.png" style="width:60rpx;height:60rpx;"></image>
             </view>
         </view>
@@ -208,16 +210,46 @@
         </view>
     </view>
     <!-- 商家评价 -->
-    <view class="mt20 merchantCardItem merchant-evaluate">
+    <view class="mt20  merchant-evaluate">
         <!-- 头部 -->
-        <view class="flex spaceBetween flex-row-center">
+        <view class="flex spaceBetween flex-row-center" style="padding-top:40rpx;">
             <text class="merchantCardItem-title">商家评价</text>
             <text style="font-size:22rpx;color:#666">100条评价 ></text>
         </view>
         <!-- 评价分类选择按钮 -->
-        <view>
-
+        <view style="padding-top:40rpx;flex-wrap:wrap;" class="flex merchant-evaluate-type">
+            <button wx:for="{{merchantEvaluateType}}"
+            wx:for-index="index"
+            wx:for-item="item"
+            wx:key="index"
+           >       
+                <text>{{item.name}}</text>
+                <text style="margin-left:20rpx">{{item.number}}</text>
+            </button>
         </view>
         <!-- 评论列表 -->
+        <view style="margin-top:50rpx;">
+            <block wx:for="{{merchant_evaluates}}"
+            wx:for-index="index"
+            wx:for-item="item"
+            wx:key="index">
+                <!-- 头部 -->
+                <view class="flex flex-spaceBetween flex-row-center">
+                    <image src="{{item.img}}" class="flex0" style="width:80rpx;height:80rpx;border-radius:40rpx;"  />
+                    <view class="flex1"  style="margin-left:14rpx;">
+                        <view class="flex flex-spaceBetween">
+                            <text style="font-size:28rpx;">{{item.name}}</text>
+                            <text style="color:#999;font-size:22rpx">{{item.time}}</text>
+                        </view>
+                        <template is="star-AttrScore" data="{{size:36,item:merchantInfoObj,AttrName:'averageScore'}}"></template>
+                    </view>
+                </view>
+                <!-- 内容 -->
+                <view class="mt20">
+                    <text style="font-size:28rpx;line-height:1.5">{{item.content}}</text>
+                </view>
+            </block>
+        </view>
     </view>
+    <template is="showToast" data="{{showToast: showToast}}" />
 </view>

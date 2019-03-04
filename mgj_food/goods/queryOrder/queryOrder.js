@@ -3,6 +3,7 @@ const feedbackApi=require('../../components/showToast/showToast.js');  //引入�
 const app = getApp();
 Page({
 	data:{
+		sharedUserId:null,
 		agentId:null,
 		isDisable:false,
 		totalPrice:0,
@@ -46,11 +47,12 @@ Page({
 		isOpenOrderMenu:false   //控制订单商品展开显示
 	},
 	onLoad(options){
-		let { merchantId } = options;
+		let { merchantId , sharedUserId } = options;
 		let pages = getCurrentPages();
-	    let prevPage = pages[pages.length - 2];
-	    this.setData({
-	    	merchantId:merchantId,
+		let prevPage = pages[pages.length - 2];
+		this.setData({
+			merchantId:merchantId,
+			sharedUserId:sharedUserId,
 			orderMessage:prevPage.data.value,
 			totalPrice:prevPage.data.value.totalPrice,
 			discountAmt:prevPage.data.value.discountAmt,
@@ -378,6 +380,8 @@ Page({
 				redBags:orderUseRedBagList.length === 0 ? null : orderUseRedBagList
 			};
 			data.orderItems = this.data.orderMessage.orderItems;
+			data.sharedUserId=this.data.sharedUserId;
+			console.log("下单请求，提交分享者id",this.data.sharerUserId)
 			wxRequest({
 	        	url:'/merchant/userClient?m=orderSubmit2',
 	        	method:'POST',
@@ -385,7 +389,7 @@ Page({
 	        		params:{
 	        			data:JSON.stringify(data),
 	        			longitude:app.globalData.longitude,
-	        			latitude:app.globalData.latitude,	
+								latitude:app.globalData.latitude
 	        		},
 	        		token:app.globalData.token	
 	        	},
@@ -397,14 +401,14 @@ Page({
 	        		console.log(price)
 	        		if (res.data.value.paymentType ===1) {
 	        			let merchantId = this.data.merchantId;
-		                let shoppingCart = wx.getStorageSync('shoppingCart');
-		                if (shoppingCart[merchantId]) {
-		                  shoppingCart[merchantId] = []
-		                }
-                		wx.setStorageSync('shoppingCart',shoppingCart);
+								let shoppingCart = wx.getStorageSync('shoppingCart');
+								if (shoppingCart[merchantId]) {
+										shoppingCart[merchantId] = []
+								}
+                wx.setStorageSync('shoppingCart',shoppingCart);
 	        			wx.navigateTo({
-					  		url: '/goods/pay/pay?orderId=' + orderId + '&price=' + price + '&merchantId=' + this.data.merchantId,
-						});
+					  			url: '/goods/pay/pay?orderId=' + orderId + '&price=' + price + '&merchantId=' + this.data.merchantId+"&sharerUserId"+this.data.sharerUserId,
+								});
 	        		} 
 	        		if (res.data.value.paymentType ===2){
 	        			let merchantId = this.data.merchantId;
@@ -471,7 +475,7 @@ Page({
 		data.orderItems = this.data.orderMessage.orderItems;
 		data.redBags = orderUseRedBagList.length === 0 ? null : orderUseRedBagList;
 		data.orderPayType = this.data.payIndex+1;
-		data.userAddressId = this.data.addressInfoId
+		data.userAddressId = this.data.addressInfoId;
 		return wxRequest({
         	url:'/merchant/userClient?m=orderPreview2',
         	method:'POST',
@@ -479,7 +483,8 @@ Page({
         		params:{
         			data:JSON.stringify(data),
         			longitude:this.data.addressLongitude,
-        			latitude:this.data.addressLatitude
+							latitude:this.data.addressLatitude,
+							sharedUserId:this.data.sharedUserId
         		},
         		token:app.globalData.token	
         	},

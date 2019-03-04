@@ -32,7 +32,7 @@
   width: 70%;
   left: 50%;
   transform: translateX(-50%);
-  margin: 718rpx auto 34rpx auto;
+  margin: 653rpx auto 34rpx auto;
   letter-spacing: 2rpx;
 }
 .line{
@@ -74,4 +74,16 @@
   margin-top: 20rpx;
   vertical-align: middle;
   margin-left: 20rpx;
+}
+.shareType {
+  position: fixed;
+  z-index:999p;
+  width:100%;
+}
+.shareType text{
+  width: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  color:blue;
+  text-align: center;
 }

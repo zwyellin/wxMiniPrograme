@@ -1,18 +1,6 @@
 /* goods/GroupPurchaseShop/GroupPurchaseShop.wxss */
 @import "../../components/star/star.wxss";
 
-
-.flex-row-center{
-    align-items: center;
-}
-.flex-all-center{
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.spaceBetween{
-    justify-content: space-between;
-}
 .container{
     background: #eee;
 }
@@ -52,8 +40,6 @@
 .merchantMainInfo_image{
     position: relative;
     margin-top: 30rpx;
-    border: 1px solid grey
-
 }
 .merchantMainInfo_image image{
     width: 240rpx;
@@ -129,4 +115,20 @@
     font-size:34rpx;
     color:#333;
     font-weight: bold;
+}
+/* 商家评价 */
+.merchant-evaluate-type button{
+    padding: 20rpx !important;
+    line-height: 1;
+    border-radius: 38rpx;
+    margin-right: 20rpx;
+    margin-left: 0rpx;
+    margin-bottom: 20rpx;
+    border:1px solid grey;
+
+}
+.merchant-evaluate-type button text{
+    color:#666;
+    font-size: 26rpx;
+    
 }

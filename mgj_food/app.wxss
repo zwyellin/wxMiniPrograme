@@ -1,4 +1,28 @@
-
+.flex-row-center{
+  align-items: center;
+}
+.flex-column-center{
+  flex-direction: column;
+  justify-content: center;
+}
+.flex-all-center{
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.spaceBetween{
+  justify-content: space-between;
+}
+.flex-spaceBetween{
+  justify-content: space-between;
+}
+.flex1{
+  flex:1 1 auto;
+}
+.flex0{
+  flex:0 0 auto;
+}
+/*  */
 .container {
   overflow: hidden;
   min-height: 100vh;

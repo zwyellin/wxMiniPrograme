@@ -1,3 +1,6 @@
+const app = getApp();
+const { wxRequest } = require('../../utils/util.js');
+const feedbackApi=require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口
 // goods/GroupPurchaseShop/GroupPurchaseShop.js
 Page({
 
@@ -5,51 +8,22 @@ Page({
    * 页面的初始数据
    */
   data: {
-      merchantInfoObj:{
-        name:"建材团购",
-        images:["../image/good-face.png","../image/good-face.png","../image/good-face.png","../image/good-face.png","../image/good-face.png","../image/good-face.png"],
-        showImages:[],
-        averageConsume:300,
-        businessHours:"6:00-18:30",
-        averageScore:4.3,
-        type:1,//是不是外卖商家
-        latitude:39.966128,
-        longitude: 116.304782,
-        address:"北京市海淀区北三环西路甲18号大钟寺c座605号",
-        distance:2234,//距离：顾客位置到店家的距离
-        serverType:[
-          {type:0,discount:5.0,sold:200},
-          {type:1,total:120,value:100,tags:["需预约","可折叠","需预约","可折叠","需预约","可折叠"],sold:100},
-          {type:2,name:"窗帘",total:330,value:100,tags:["需预约","可折叠","需预约","可折叠","需预约","可折叠"],sold:400,img:"../image/good-face.png"}
-        ],
-        phoneNumber:"13456789432"
-      },
-      merchantRecommend:["推荐第一个","推荐第二个","推荐第三个","推荐的第四个","推荐的第五个","推荐的第六个"],
-      merchantServe:["无烟区","刷卡","停车","包厢","景观位","无烟区","刷卡","停车","包厢","景观位","无烟区","刷卡","停车","包厢","景观位"],
-      intro:"建材行业第一品牌，品质保障"
+    groupMerchantInfo:null,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //这边设置要显示的商家图片列表
-
+    this.requestGrouopMerchantInfo();
+      
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    let showImages=undefined;
-    if(this.data.merchantInfoObj.images.length>=4){
-     showImages=this.data.merchantInfoObj.images.slice(0,3);
-    }else{
-     showImages=this.data.merchantInfoObj.images;
-    }
-    this.setData({
-     'merchantInfoObj.showImages':showImages
-    })
+  
   },
 
   /**
@@ -93,9 +67,61 @@ Page({
   onShareAppMessage: function () {
 
   },
-
-  //以下为个人方法
-
+  // 商家信息修改
+  GrouopMerchantModify:function(value){
+    value.imgs=value.imgs.split(";");
+    if(value.imgs.length >= 4){
+      value.showImgs=value.imgs.slice(0,3)
+    }else{
+      value.showImgs=value.imgs;
+    }
+    return value;
+  },
+   //以下为个人方法
+   requestGrouopMerchantInfo:function(){
+    console.log("调用成功")
+    wxRequest({
+      url:'/merchant/userClient?m=findGroupPurchaseMerchantInfo',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          latitude:"39.966128",
+          longitude:"116.304782",
+          groupPurchaseMerchantId:748
+        }	
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        var value=this.GrouopMerchantModify(res.data.value);
+          this.setData({
+            groupMerchantInfo:value
+          },function(){
+            console.log(this.data.groupMerchantInfo)
+          })
+      }else {
+      
+				let msg = res.data.value;
+				if (res.data.code === 100000 ) {
+					setTimeout(()=>{
+						wx.navigateTo({
+							url:'/pages/login/login'
+						});
+					},1000);	
+				}
+				if(res.data.code === 500 && res.data.value=="商家未关联代理商"){//返回
+					setTimeout(()=>{
+					wx.navigateBack({ //返回前一页
+						delta: 1
+					  })
+					},2000);	
+        }
+        console.log("else");
+        console.log(msg)
+				feedbackApi.showToast({title: msg});
+			}
+    })
+  },
   // 点击商家图片事件
   merchantInfoImageTap:function(e){
     let {index=0,images}=e.target.dataset;
@@ -106,9 +132,10 @@ Page({
 		  })
   },
   //点击电话图标事件
-  callPhoneTap:function(){
+  callPhoneTap:function(e){
+    let {contacts}=e.target.dataset;
     wx.makePhoneCall({
-      phoneNumber: this.data.merchantInfoObj.phoneNumber   //电话号码
+      phoneNumber: contacts  //电话号码
     })
   }
 })
