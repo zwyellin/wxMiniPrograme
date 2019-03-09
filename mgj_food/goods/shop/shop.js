@@ -89,10 +89,12 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		this.data.isonLoadRun=true;//标识 onload是否执行
 		let { merchantid,longitude,latitude,search} = options;
 		this.data.merchantId = merchantid;
-		if (longitude && latitude) {
-			app.globalData.longitude = longitude;
-        	app.globalData.latitude = latitude;
-		}
+		// if (longitude && latitude) {//如果有值，则保存到全局app中
+		// 	app.globalData.longitude = longitude;
+    //     	app.globalData.latitude = latitude;
+		// }
+		app.getLocation();
+
 		//获取系统信息 主要是为了计算产品scroll的高度
 		wx.getSystemInfo({
 			success: (res)=> {
@@ -548,6 +550,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				}
 				this.data.getOrderStatus = true;
 				this.orderPreview(loginMessage).then((res)=>{
+							console.log("进入前的调用",app.globalData.longitude)
 	      			if (res.data.code === 0) {
 	      				this.setData({
 							value:res.data.value
@@ -611,8 +614,8 @@ Page(Object.assign({}, merchantShop,shopSearch,{
         	data:{
         		params:{
         			data:JSON.stringify(data),
-        			longitude:app.globalData.longitude || '1',
-        			latitude:app.globalData.latitude || '1'
+        			longitude:app.globalData.longitude || this.data.merchantInfoObj.longitude,
+        			latitude:app.globalData.latitude ||  this.data.merchantInfoObj.longitude
         		},
         		token:app.globalData.token	
         	},

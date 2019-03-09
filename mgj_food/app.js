@@ -1,5 +1,6 @@
 //app.js
 
+
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
@@ -87,6 +88,86 @@ App({
       }  
     } 
   },
+  getLocation(){//获得经纬度
+    this.getSeting().then(()=>{
+			this.wxGetLocation({
+				type:'gcj02'
+			}).then(res=>{
+				let lat = res.latitude;
+				let lng = res.longitude;
+				let { longitude, latitude } = this.gcj02tobd09(lng,lat);
+				this.globalData.longitude = longitude;
+        this.globalData.latitude = latitude;
+        console.log("被调用",longitude)
+      })
+    })
+  },
+  gcj02tobd09 (lng, lat) {//经纬度坐标
+    let x_PI = 3.14159265358979324 * 3000.0 / 180.0;
+    let PI = 3.1415926535897932384626;
+    let a = 6378245.0;
+    let ee = 0.00669342162296594323;
+    let z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_PI);
+    let theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * x_PI);
+    let longitude = z * Math.cos(theta) + 0.0065;
+    let latitude = z * Math.sin(theta) + 0.006;
+    return {longitude, latitude}
+  },
+  wxGetLocation(obj){
+    return new Promise((resolve,reject)=>{
+      const defaultConfig = {
+        success:  (res)=> {
+          resolve(res);  
+        },
+        fail: (err)=> {
+          reject(err);
+        },
+      };
+      var config = Object.assign({}, defaultConfig, obj);
+      wx.getLocation(config);
+    });
+  },
+  	//调起授权
+	getSeting(){
+		let that = this;
+		return new Promise((resolve,reject)=>{
+			wx.getSetting({
+			    success: (res) => {
+			        if (res.authSetting["scope.userLocation"] !=true) {
+			        	this.setData({
+							isAgentId:true
+						});
+			          	wx.showModal({
+				            title: '用户未授权',
+				            content: '如需正常使用马管家小程序功能，请按确定进入小程序设置界面，勾选地理位置并点击确定。',
+				            showCancel: false,
+				            success: (res)=> {
+				              	if (res.confirm) {
+					                wx.openSetting({
+						                success: (res) => {
+						                    if (res.authSetting["scope.userLocation"] ===true) {
+												resolve();
+						                    }else {
+						                    	reject(err);
+						                    }
+						                },
+						                fail: (err)=>{
+						                	reject(err);
+						                }
+					                });
+				              	}
+				            },
+				            fail: (err)=>{
+				            	reject(err);
+				            }
+				        });
+			        } else {
+			        	resolve();
+			        }
+			    }
+	    	});
+		});	
+	},
   updataApp() {//版本更新
     if (wx.canIUse('getUpdateManager')) {
       const updateManager = wx.getUpdateManager();
