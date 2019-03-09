@@ -1,0 +1,65 @@
+/* goods/components/groupPurchaseList/groupPurchaseList.wxss */
+@import "../star/star.wxss";
+.flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.flex-row-center{
+    align-items: center;
+  }
+  .flex-column-center{
+    flex-direction: column;
+    justify-content: center;
+  }
+  .flex-all-center{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .spaceBetween{
+    justify-content: space-between;
+  }
+  .flex-spaceBetween{
+    justify-content: space-between;
+  }
+  .flex1{
+    flex:1 1 auto;
+  }
+  .flex0{
+    flex:0 0 auto;
+  }
+  /* 开始 */
+  .purchaseItem{
+    padding: 40rpx 40rpx;
+    border-bottom: 1px solid #eee;
+  }
+  .purchaseImage{
+    width: 130rpx;
+    height:110rpx;
+    border-radius: 8rpx;
+  }
+  .purchaseContent{
+    margin-left: 20rpx;
+  }
+  .purchaseRecommend{
+    margin-top: 22rpx;
+    }
+    /* 底下消费类型 */
+  .purchaseType{
+    margin-top: 20rpx;
+  }
+  .purchaseTypeItem{
+    margin-top: 10rpx;
+  }
+  .purchaseTypeItem image{
+    width: 26rpx;
+    height:26rpx;
+    margin-right: 10rpx;
+  }
+  .purchaseTypeItem text{
+    font-size:22rpx;
+    color:#333;
+    padding-right:10rpx;
+  }
+ 

@@ -1,0 +1,60 @@
+<!-- 在线支付 -->
+<import src="../../../components/showToast/showToast.wxml" />
+
+<view class="container page">
+    <!-- 消费总额及不参与优惠金额 -->
+    <view class="padding-lr-40  totalAmount" >
+        <!-- 消费总额 -->
+        <label class="mt20 flex flex-row-center flex-spaceBetween padding-20 bg-content-color border-radius4" style="border:1px solid #d7d7d7;">
+            <text class="font-size2 font-bold flex0" style="font-weight:bold;margin-right:40rpx;">消费总额</text>
+            <input class="font-size2 flex1" type="digit" confirm-type="next" placeholder="询问服务员后输入" value="{{totalAmountNewValue}}"
+             placeholder-color="color3" focus="{{istotalAmountInputFocues}}" bindinput="totalAmountInput" style="color:red"/>
+        </label>
+        <!-- 不参与优惠金额 -->
+        <switch type="input" class="mt20" color="#ff9900" disabled="{{!totalAmountInputValue}}" bindchange="excludeAmountSwitch" catch:tap="excludeAmountSwitchTap">
+            <text class="font-size4 color2" style="margin-left:20rpx;">输入不参与优惠金额(如酒水、主食)</text>
+        </switch>
+        <label wx:if="{{excludeAmountInputActive}}" class="mt20 flex flex-row-center flex-spaceBetween padding-20 bg-content-color border-radius4" style="border:1px solid #d7d7d7;">
+            <text class="font-size2 font-bold flex0" style="font-weight:bold;margin-right:40rpx;">不参与优惠金额</text>
+            <input class="font-size2 flex1" type="digit" confirm-type="next" placeholder="询问服务员后输入" value="{{excludeAmountNewValue}}"
+            placeholder-color="color3" focus="{{excludeAmountInputActive}}" bindinput="excludeAmountInput" style="color:red"/>
+        </label>
+    </view>
+
+    <!-- 打折 -->
+    <view class="mt20 flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40  bg-content-color" style="padding-right:10rpx;">
+        <text class="font-size3 font-bold color1">6.0折</text>
+        <view>
+            <text class="font-size4" style="color:red">{{discountAmount}}</text>
+            <switch type="checkbox" style="transform:scale(0.8);padding:5rpx 20rpx;" color="#ff9900" checked="{{true}}" bindchange="discountSwitch"></switch>
+        </view>
+       
+    </view>
+
+    <!-- 抵用卷及实付金额 -->
+    <view class="mt20 bg-content-color" >
+        <view class="flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40 row-line">
+            <text class="font-size3 color1">抵用卷</text>
+            <image src="../../image/more.png"  style="height:30rpx;width:30rpx"/>
+        </view>
+        <view class="flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40">
+            <text class="font-size3 color1">实付金额</text>
+            <text class="font-size4" style="color:red">{{actuallyAmount}}</text>
+        </view>
+    </view>
+    
+ 
+     <!-- 提交 -->
+    <view class="mt20 padding-tb-20 padding-lr-40">
+        <button class="bg-button-color font-size2" style="color:white">确认买单</button>
+    </view>
+    <!-- 优惠说明 -->
+    <view class="padding-lr-40">
+        <navigator url="/goods/GroupPurchaseChildPage/serviceCategory0/discountDescription/disccountDescription"
+            class="font-size2 padding-tb-20 border-radius4" style="text-align:center;color:#ff9900;display:inline-block;width:100%;background:#d7d7d7">优惠说明</navigator>
+    </view>
+    <view class="padding-lr-40 text-center">
+        <text class="font-size5">仅限到店支付，请确认金额后提交</text>
+    </view> 
+   	<template is="showToast" data="{{showToast: showToast}}" />
+</view>

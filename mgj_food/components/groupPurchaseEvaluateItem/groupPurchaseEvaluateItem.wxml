@@ -1,0 +1,90 @@
+<import src="../star/star.wxml" />
+<wxs module="fixed" src="../../utils/star.wxs"></wxs>
+<!-- 单个的布局，此时要传入单个对象 -->
+<view class="flex flex-spaceBetween" style="padding:40rpx;border-top:1px solid #eee" wx:if="{{!_evaluateList.length}}">
+    <!-- 左边 -->
+    <image src="{{_itemObj.headerImg ||'../../images/images/headerImage.png'}}" class="flex0" style="width:80rpx;height:80rpx;border-radius:40rpx;"  />
+    <!-- 右边 -->
+    <view class="flex1" style="margin-left:14rpx">
+        <!-- 姓名及评价时间 -->
+        <view class="flex flex-spaceBetween">
+            <text style="font-size:28rpx;">{{_itemObj.appUser.name}}</text>
+            <text style="color:#999;font-size:22rpx">{{_itemObj.createTime}}</text>  
+        </view>
+        <!-- 星星及其它信息 -->
+        <view>
+            <template is="star-AttrScore" data="{{size:24,item:_itemObj,AttrName:'totalScore'}}"></template>
+        </view>
+        <!-- 内容 -->
+        <view style="margin-top:10rpx;">
+            <text style="font-size:28rpx;line-height:1.5">{{_itemObj.content? _itemObj.content :'客户未作出评价'}}</text>
+            <!-- 图片 -->
+            <view class="contentImages flex mt20">
+                    <image wx:for="{{_itemObj.images}}"
+                        wx:for-index="imgIndex"
+                        wx:for-item="imgItem"
+                        wx:key="imgIndex"
+                        src="{{imgItem}}"
+                        data-index="{{imgIndex}}"
+                        data-images="{{_itemObj.images}}"
+                        catch:tap="imageTap"
+                        class="contentImage" style="{{imgIndex==2 ? 'margin-right:0rpx':''}}" />
+            </view>
+        </view>
+    </view>
+</view>
+
+
+<!-- 多个Item布局，此时，传入请求参数即可 -->
+<scroll-view wx:if="{{_evaluateList.length}}"  scroll-y="{{_height}}" style="{{_height ? 'max-height:'+_height : ''}}" bindscrolltolower="scrollViewScrolltolower">
+    <block wx:for="{{_evaluateList}}" wx:for-index="evaluateIndex" wx:for-item="evaluateItem" wx:key="evaluateIndex">
+        <view class="flex flex-spaceBetween" style="padding:40rpx;border-top:1px solid #eee">
+            <!-- 左边 -->
+            <image src="{{evaluateItem.headerImg ? evaluateItem.headerImg : '../../images/images/headerImage.png'}}" class="flex0" style="width:80rpx;height:80rpx;border-radius:40rpx;"  />
+            <!-- 右边 -->
+            <view class="flex1" style="margin-left:14rpx">
+                <!-- 姓名及评价时间 -->
+                <view class="flex flex-spaceBetween">
+                    <text style="font-size:28rpx;">{{evaluateItem.appUser.name}}</text>
+                    <text style="color:#999;font-size:22rpx">{{evaluateItem.createTime}}</text>  
+                </view>
+                <!-- 星星及其它信息 -->
+                <view>
+                    <template is="star-AttrScore" data="{{size:24,item:evaluateItem,AttrName:'totalScore'}}"></template>
+                </view>
+                <!-- 内容 -->
+                <view style="margin-top:10rpx;">
+                    <text style="font-size:28rpx;line-height:1.5">{{evaluateItem.content? evaluateItem.content :'客户未作出评价'}}</text>
+                    <!-- 图片 -->
+                    <view class="contentImages flex mt20">
+                        <image wx:for="{{evaluateItem.images}}"
+                            wx:for-index="imgIndex"
+                            wx:for-item="imgItem"
+                            wx:key="imgIndex"
+                            src="{{imgItem}}"
+                            data-index="{{imgIndex}}"
+                            data-images="{{evaluateItem.images}}"
+                            catch:tap="imageTap"
+                            class="contentImage" style="{{imgIndex==2 ? 'margin-right:0rpx':''}}" />
+                    </view>
+                </view>
+            </view>
+        </view>
+    </block>
+
+    <!-- 其它消息框 -->
+    <view class="padding-tb-20" wx:if="{{_isPageReachBottomState}}"> 
+        <view wx:if="{{!_listLastState}}" class="loading-info" >
+	        <image src="/images/merchant/loading.png" class="img-loading"></image>
+	        <view class="loading-text">正在加载，请稍候</view>
+        </view>
+        <view wx:elif="{{_evaluateList.length}}" class="bottom-info">
+            <view class="bottom-text">我是有底线的</view>
+        </view>
+        <view wx:else>
+	        <view class="no-result mt30">抱歉，没有搜索到您想要的商家</view>
+        </view>
+    </view>
+</scroll-view>
+
+

@@ -1,0 +1,17 @@
+.discountDescriptionContent{
+    padding:30rpx 0 40rpx;
+}
+.discountDescriptionContent text{
+    display: block;
+    font-size: 28rpx;
+    color:#666;
+    line-height:40rpx;
+}
+.discountDescriptionContent text::before{
+    content: ".";
+    display: inline-block;
+    font-weight: bold;
+    font-size: 40rpx;
+    transform:translateY(-10rpx);
+    padding:0 30rpx;
+}

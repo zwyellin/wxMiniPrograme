@@ -5,10 +5,10 @@
 			wx:for="{{star.itemClasses(item[AttrName])}}" 
 	      	wx:for-index="idx" 
 	      	wx:for-item="item" 
-	      	wx:key="idx">
-			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="../../images/star/star36_on@2x.png"></image>
-			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="../../images/star/star36_off@2x.png"></image>
-			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="../../images/star/star36_half@2x.png"></image>
+			  wx:key="idx">
+			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="/images/star/star36_on@2x.png"></image>
+			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="/images/star/star36_off@2x.png"></image>
+			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="/images/star/star36_half@2x.png"></image>
 		</block>
 	</view>
 </template>
@@ -19,9 +19,9 @@
 	      	wx:for-index="idx" 
 	      	wx:for-item="item" 
 	      	wx:key="idx">
-			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="../../images/star/star36_on@2x.png" data-evaluate="{{evaluate}}" data-index="{{idx}}" catchtap="starNum" ></image>
-			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="../../images/star/star36_off@2x.png" data-index="{{idx}}" data-evaluate="{{evaluate}}" catchtap="starNum" ></image>
-			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="../../images/star/star36_half@2x.png" data-index="{{idx}}" dtat-evaluate="{{evaluate}}" catchtap="starNum" ></image>
+			<image wx:if="{{item==='on'}}" class="star-item {{item}}" src="/images/star/star36_on@2x.png" data-evaluate="{{evaluate}}" data-index="{{idx}}" catchtap="starNum" ></image>
+			<image wx:if="{{item==='off'}}" class="star-item {{item}}" src="/images/star/star36_off@2x.png" data-index="{{idx}}" data-evaluate="{{evaluate}}" catchtap="starNum" ></image>
+			<image wx:if="{{item==='half'}}" class="star-item {{item}}" src="/images/star/star36_half@2x.png" data-index="{{idx}}" dtat-evaluate="{{evaluate}}" catchtap="starNum" ></image>
 		</block>
 	</view>
 </template>

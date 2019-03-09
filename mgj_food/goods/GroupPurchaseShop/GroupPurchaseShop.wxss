@@ -4,7 +4,7 @@
 .container{
     background: #eee;
 }
-.merchantInfo,.serviceCategory,.merchantRecommend,.merchantCardBox,.merchant-evaluate{
+.merchantInfo,.serviceCategory,.merchantRecommend,.merchantCardBox,.merchant-evaluate,.NearGroupPurchase{
     padding: 0 40rpx;
     background:#fff;
 }
@@ -64,8 +64,11 @@
     margin-top: 30rpx;
     padding-bottom: 40rpx;
 }
+.merchantInfoContactWay navigator{
+    font-size: 28rpx;
+}
 .merchantInfoTel{
-    margin:0 60rpx;
+    margin:0 20rpx;
     flex:0 0 auto;
 }
 /* 支付方式（服务类别） */
@@ -91,7 +94,9 @@
     color:#fff;
     background: #ff9900;
     border-radius: 5rpx;
-    width: 160rpx;
+    width:160rpx;
+    padding-left:10rpx;
+    padding-right:10rpx;
 }
 .serviceCategoryBuyButton text{
     margin-top: 16rpx;
@@ -99,10 +104,11 @@
     color:#999;
 }
 .serviceCategoryItem_tuangouImage{
-    width: 130rpx;
-    height: 110rpx;
+    width: 195rpx;
+    height: 130rpx;
     flex:0 0 auto;
     margin-right: 20rpx;
+    border-radius: 6rpx;
 }
 /* 商家其它卡片信息 */
 .merchantCardBox{
@@ -131,4 +137,12 @@
     color:#666;
     font-size: 26rpx;
     
+}
+
+.maskModal{
+    background: white;
+    border-radius: 20rpx;
+    margin: 20rpx;
+    text-align:center;
+
 }

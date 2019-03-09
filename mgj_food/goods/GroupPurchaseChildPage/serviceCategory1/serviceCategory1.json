@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "mask":"../../../components/mask/mask",
+    "groupPurchaseEvalueteItem":"../../../components/groupPurchaseEvaluateItem/groupPurchaseEvaluateItem"
+  },
+  "navigationBarTitleText":"详情"
+}

@@ -1,0 +1,1 @@
+<groupPurchaseEvalueteItem requestObj="{{ {merchantId,size:4} }}" config="{{ {isPageReachBottom} }}"></groupPurchaseEvalueteItem>

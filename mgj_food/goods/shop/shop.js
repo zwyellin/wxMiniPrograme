@@ -88,7 +88,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-		let { merchantid,apentId,longitude,latitude,search,sharedUserId} = options;
+		let { merchantid,agentId,longitude,latitude,search,sharedUserId} = options;
 		//search为商店搜索，点击后跳转自身商店(用于标识)
 		//sharerToken标识，是转发出去后点击转发卡片进来的。
 		this.data.sharedUserId=sharedUserId;
@@ -98,7 +98,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
 			app.globalData.latitude = latitude;
-			app.globalData.agentId=app.globalData.agentId || apentId;
+			app.globalData.agentId=app.globalData.agentId || agentId;
 		}
 		//获取系统信息 主要是为了计算产品scroll的高度
 		wx.getSystemInfo({

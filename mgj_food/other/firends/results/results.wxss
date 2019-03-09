@@ -1,6 +1,4 @@
-.results {
-	
-}
+
 .results-content {
   padding: 0 30rpx;
 	height: 121rpx;

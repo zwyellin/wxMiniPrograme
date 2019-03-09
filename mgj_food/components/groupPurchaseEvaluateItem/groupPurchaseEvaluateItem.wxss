@@ -1,0 +1,15 @@
+@import "../../app.wxss";
+@import "../star/star.wxss";
+
+
+/*  */
+.contentImages{
+    flex-wrap: wrap;
+}
+.contentImage{
+    width: 170rpx;
+    height:151rpx;
+    margin-bottom: 20rpx;
+    margin-right: 20rpx;
+    border-radius: 8rpx;
+}

@@ -1,0 +1,7 @@
+
+<view  catchtap='close' catchtouchmove="return" >
+  <view class="mask" catch:tap="maskclick"></view>
+  <view class="{{position}}" >
+       <slot ></slot>
+  </view>
+</view>
