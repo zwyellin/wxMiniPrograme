@@ -33,9 +33,10 @@ Component({
       })
     },
     "requestObj":function(newVal,oldVal){
-      if(newVal===oldVal) return;
+      if(newVal===oldVal || newVal.merchantId==null) return;
       let {size=10,merchantId}=newVal;
       this.setData({
+        _requestObj:newVal,
         _size:size,
         _merchantId:merchantId,
       })
@@ -69,6 +70,7 @@ Component({
     _evaluateList:[],
 
     // 布局二相关属性
+    _requestObj:null,//请求对象
     _loadingState:false,//加载状态，标识
     _listLastState:false,//列表请求完，标识
     _isPageReachBottomState:false,//是否显示加载等样式
@@ -103,16 +105,14 @@ Component({
         icon: 'loading',
         duration: 20000
       })
+      let _requestObj=this.data._requestObj;
+      console.log("_requestObj:",_requestObj)
       wxRequest({
         url:'/merchant/userClient?m=findGroupPurchaseEvaluateList',
         method:'POST',
         data:{
           token:app.globalData.token,
-          params:{
-            start:this.data._start,
-            size:this.data._size,
-            merchantId:this.data._merchantId
-          }	
+          params:_requestObj
         },
       }).then(res=>{
         if (res.data.code === 0) {
