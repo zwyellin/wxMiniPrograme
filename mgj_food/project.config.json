@@ -9,9 +9,9 @@
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.3.2",
+	"libVersion": "2.6.2",
 	"appid": "wx38e6075b7760daa1",
-	"projectname": "mgj_good",
+	"projectname": "mgj_food",
 	"condition": {
 		"search": {
 			"current": -1,

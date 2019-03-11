@@ -98,7 +98,7 @@ App({
 				let { longitude, latitude } = this.gcj02tobd09(lng,lat);
 				this.globalData.longitude = longitude;
         this.globalData.latitude = latitude;
-        console.log("被调用",longitude)
+        console.log("重新调用了获取经纬度接口。longitude:",longitude,",latitude:",latitude)
       })
     })
   },
@@ -203,7 +203,7 @@ App({
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain: 'https://prelaunch.horsegj.com',
+    domain: 'https://wxapi.horsegj.com',
     windowHeight: 0,
     windowWidth: 0,
     // latitude:'39.966128',

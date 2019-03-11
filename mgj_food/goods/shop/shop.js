@@ -93,8 +93,10 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		// 	app.globalData.longitude = longitude;
     //     	app.globalData.latitude = latitude;
 		// }
-		app.getLocation();
-
+		console.log("重新调用前,",app.globalData.longitude)
+		if(!app.globalData.longitude){
+			app.getLocation();
+		}
 		//获取系统信息 主要是为了计算产品scroll的高度
 		wx.getSystemInfo({
 			success: (res)=> {

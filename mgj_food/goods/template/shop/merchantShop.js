@@ -12,7 +12,7 @@ const merchantShop = {
         		token:app.globalData.token,
         		params:{
         			latitude:app.globalData.latitude,
-    				longitude:app.globalData.longitude,
+    					longitude:app.globalData.longitude,
         			agentId:app.globalData.agentId,
         			merchantId:this.data.merchantId
         		}	
