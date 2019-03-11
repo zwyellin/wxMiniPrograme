@@ -38,7 +38,8 @@
                         </view>
                     </view>
                     <view  style="margin-top:0">                
-                        <image src="{{groupMerchantInfo.imgs[0]}}" class="border-radius4" style="width:180rpx;height:152rpx;"></image>
+                        <image src="{{groupMerchantInfo.imgs[0]}}" data-index="0" data-images="{{groupMerchantInfo.imgs}}" catch:tap="merchantInfoImageTap"
+                        class="border-radius4" style="width:180rpx;height:152rpx;"></image>
                     </view>
                 </view>
                 <view wx:if="{{groupMerchantInfo.hasTakeaway==1}}" class="merchantMainInfo_type flex flex-row-center">
@@ -169,9 +170,9 @@
                 <image src="../../images/images/tuan@2x.png"></image>
                 <text>团购套餐</text>
             </view>
-            <navigator class="flex flex-spaceBetween mt20" url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory2"
-            wx:for="{{groupMerchantInfo.groupSetMeal}}"
-            wx:key="index">
+            <navigator class="flex flex-spaceBetween mt20" 
+            wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index"
+            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?itemIndex={{index}}">
                 <!-- 左边 -->
                 <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
                 <!-- 右边 -->
@@ -190,7 +191,7 @@
                     </view>
                     <!-- 右边 -->
                     <view class="flex flex-all-center serviceCategoryBuyButton">
-                        <button >购买</button>
+                        <button data-item_index="{{index}}" catch:tap="serviceCategory2Tap">购买</button>
                         <text>已售{{item.accumulateSoldCount}}</text>
                     </view>
                 </view>

@@ -108,7 +108,7 @@
     height: 130rpx;
     flex:0 0 auto;
     margin-right: 20rpx;
-    border-radius: 6rpx;
+    border-radius: 8rpx;
 }
 /* 商家其它卡片信息 */
 .merchantCardBox{

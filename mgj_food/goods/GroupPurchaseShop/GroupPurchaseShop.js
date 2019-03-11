@@ -242,4 +242,11 @@ Page({
       url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?itemIndex="+item_index
     })
   },
+  // 点击团购的 按钮
+  serviceCategory2Tap(e){
+    let {item_index}=e.target.dataset;
+    wx.navigateTo({
+      url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?itemIndex="+item_index
+    })
+  }
 })

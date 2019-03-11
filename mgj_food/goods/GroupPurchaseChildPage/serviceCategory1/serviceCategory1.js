@@ -9,6 +9,7 @@ Page({
     groupMerchantInfo:null,//直接读取上一页的该对象
     merchantId:null,
     voucherItem:null,
+    itemIndex:null,
   },
 
   /**
@@ -25,7 +26,8 @@ Page({
       this.setData({
         groupMerchantInfo:prevPage.data.groupMerchantInfo,
         voucherItem:prevPage.data.groupMerchantInfo.voucher[itemIndex],
-        merchantId:prevPage.data.groupMerchantInfo.id
+        merchantId:prevPage.data.groupMerchantInfo.id,
+        itemIndex
       })
 		}
   },
@@ -53,6 +55,13 @@ Page({
   maskCancelTap(e){
     this.setData({
       tel_mask_show:false
+    })
+  },
+  // 点击代金券 按钮
+  serviceCategory1Tap(e){
+    let {item_index}=e.target.dataset;
+    wx.navigateTo({
+      url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?itemIndex="+item_index
     })
   },
 })

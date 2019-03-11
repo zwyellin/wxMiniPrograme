@@ -1,0 +1,9 @@
+/* goods/GroupPurchaseChildPage/serviceCategory2/order/order.wxss */
+
+.serviceCategoryItem_tuangouImage{
+    width: 195rpx;
+    height: 130rpx;
+    flex:0 0 auto;
+    margin-right: 20rpx;
+    border-radius: 8rpx;
+}

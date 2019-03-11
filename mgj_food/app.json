@@ -71,6 +71,8 @@
         "GroupPurchaseChildPage/serviceCategory0/discountDescription/disccountDescription",
         "GroupPurchaseChildPage/serviceCategory1/serviceCategory1",
         "GroupPurchaseChildPage/serviceCategory1/order/order",
+        "GroupPurchaseChildPage/serviceCategory2/serviceCategory2",
+        "GroupPurchaseChildPage/serviceCategory2/order/order",
         "GroupPurchaseChildPage/evaluateListPage/evaluateListPage",
         "mapview/mapview",
         "queryOrder/queryOrder",
