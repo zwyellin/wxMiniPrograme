@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "groupPurchaseItem":"../../components/groupPurchaseItem/groupPurchaseItem" 
+  }
+}

@@ -26,12 +26,13 @@ Page({
     //访问上级页面(团购商家)的对象，赋值给本页面
     let pages = getCurrentPages();
 		let prevPage = pages[pages.length - 2]; // 上一级页面
-		let prePageReg=/GroupPurchaseShop/;//判断上一级页面的路径是不是含有GroupPurchaseShop
-		if(prePageReg.test(prevPage.route)){
+    let prePageReg=/GroupPurchaseShop/;//判断上一级页面的路径是不是含有GroupPurchaseShop
+    let prePageReg1=/serviceCategory2/;//判断上一级页面的路径是不是含有serviceCategory2
+		if(prePageReg.test(prevPage.route)||prePageReg1.test(prevPage.route)){
       // 修改一些显示的数据
       let groupSetMealItem=this.modifygroupSetMealItem(prevPage.data.groupMerchantInfo.groupSetMeal[itemIndex]);
       let groupSetMealexcludeItem=prevPage.data.groupMerchantInfo.groupSetMeal.filter((item,index,arr)=>{
-        console.log(index,itemIndex,index==itemIndex)
+        item.groupSetMealIndex=index;//保存原先的index。避免点本店优惠item时进去页面读取groupSetMeal时的Index出错
         return index!=itemIndex;
       })
       this.setData({
@@ -134,7 +135,7 @@ Page({
       tel_mask_show:false
     })
   },
-  // 点击团购的 按钮
+  // 点击团购的 按钮。注意，这里是返回
   serviceCategory2Tap(e){
     let {item_index}=e.target.dataset;
     wx.navigateTo({

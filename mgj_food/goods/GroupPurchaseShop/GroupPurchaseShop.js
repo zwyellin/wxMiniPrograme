@@ -73,6 +73,9 @@ Page({
         }
         //请求，附近商家
         this.findNearGroupPurchaseMerchant2();
+        // 或者直接组件内部请求
+        // let groupPurchaseItemRequsetObj={merchantId:748,latitude:"39.966128",longitude:"116.304782",size:3};
+        // this.setData({groupPurchaseItemRequsetObj})
       }else {
         let msg = res.data.value;
         if (res.data.code === 100000 ) {

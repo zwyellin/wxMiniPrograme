@@ -45,9 +45,9 @@
     </view>
 
     <!-- 提交 -->
-    <view class="mt20 padding-tb-20 padding-lr-40">
+    <navigator  url="/goods/pay/pay?merchantId={{groupMerchantInfo.id}}&price={{realTotalMoney}} " open-type="navigate" class="mt20 padding-tb-20 padding-lr-40">
         <button class="bg-button-color font-size2" style="color:white">提交订单</button>
-    </view>
+    </navigator>
     <view class="padding-lr-40 text-center" style="margin-bottom:40rpx;">
         <text class="font-size5">仅限到店支付，请确认金额后提交</text>
     </view> 

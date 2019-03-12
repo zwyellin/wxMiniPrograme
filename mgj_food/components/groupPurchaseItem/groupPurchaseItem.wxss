@@ -1,5 +1,7 @@
 /* goods/components/groupPurchaseList/groupPurchaseList.wxss */
+@import "../../app.wxss";
 @import "../star/star.wxss";
+
 .flex {
   display: -webkit-box;
   display: -webkit-flex;

@@ -18,10 +18,10 @@ Page({
   onLoad: function (options) {
     // 获得参数
     let {itemIndex}=options;
-    //访问上级页面(团购商家)的对象，赋值给本页面
+    //访问上级页面(团购商家也可能是团购套餐详情)的对象，赋值给本页面
     let pages = getCurrentPages();
 		let prevPage = pages[pages.length - 2]; // 上一级页面
-		let prePageReg=/GroupPurchaseShop/;//判断上一级页面的路径是不是含有GroupPurchaseShop
+    let prePageReg=/GroupPurchaseShop/;//判断上一级页面的路径是不是含有GroupPurchaseShop
 		if(prePageReg.test(prevPage.route)){
       this.setData({
         groupMerchantInfo:prevPage.data.groupMerchantInfo,

@@ -35,17 +35,24 @@ Component({
       })
     },
     "requestObj":function(newVal,oldVal){
-      if(newVal===oldVal) return;
-      let {size=10,merchantId,latitude,longitude}=newVal;
+      if(newVal===oldVal || newVal==null) return;
+      newVal=Object.assign({//初始值
+        start:0,
+        size:10,
+        latitude:app.globalData.latitude,
+        longitude:app.globalData.longitude
+      },newVal)
+
       this.setData({
-        _size:size,
-        _merchantId:merchantId,
-        _latitude:latitude,
-        _longitude:longitude
+        _requestObj:newVal
       })
       this.requestData();
     },
     "config.isPageReachBottom":function(newVal,oldVal){
+       // 如果传了该参数，则会显示加载的图标等信息
+       this.setData({
+        _isPageReachBottomState:true
+      })
       // 如果不是false，则执行
       if(newVal){
         if(this.data._loadingState) return;
@@ -62,19 +69,20 @@ Component({
    */
   data: {
     // 固定属性
-    _itemObj:null,
-    _responseList:null,
+    _itemObj:null,//布局一
+    _requestObj:null,//布局二
+    _responseList:[],//请求回来的列表
     _start:0,
-    _size:10,
-    _id:null,
+
     _height:null,
     _isMore:false,
+    
+   
     // 状态相关
+    _isPageReachBottomState:false,//是否显示加载等样式
     _loadingState:false,//加载状态，标识
     _listLastState:false,//列表请求完，标识
-    // 额外请求参数属性
-    _latitude:null,
-    _longitude:null
+
   },
   lifetimes: {       //生命周期函数，可以为函数，或一个在methods段中定义的方法名
     created(){},
@@ -98,25 +106,67 @@ Component({
       }
       // 内部方法
       function _modify(item){
-        if(value.imgs){
-            value.imgs=value.imgs.split(";");
+        if(item.imgs){
+            item.imgs=item.imgs.split(";");
         }else{
-            value.imgs=[];
+            item.imgs=[];
         }
         // 提取出来代金券和团购套餐对象=>对应数组
-        value.voucher=[];//代金券
-        value.groupSetMeal=[];//团购套餐
-        value.groupPurchaseCouponList.forEach((item,index,arr) => {
-          if(item.type==1){//代金券
-            value.voucher=value.voucher.concat(item);
-          }else if(item.type==2){//团购套餐
-            value.groupSetMeal= value.groupSetMeal.concat(item);
+        item.voucher=[];//代金券
+        item.groupSetMeal=[];//团购套餐
+        item.groupPurchaseCouponList.forEach((_item,index,arr) => {
+          if(_item.type==1){//代金券
+            item.voucher=item.voucher.concat(_item);
+          }else if(_item.type==2){//团购套餐
+            item.groupSetMeal= item.groupSetMeal.concat(_item);
           }
         })
         return item;
       }
       // 内部方法结束
       return value;
+    },
+
+    // 发送请求
+    requestData(loadingState,concatState){
+      this.data._loadingState=true;	
+      wx.showToast({
+        title: '加载中',
+        icon: 'loading',
+        duration: 20000
+      })
+      let _requestObj=this.data._requestObj;
+      wxRequest({
+        url:'/merchant/userClient?m=findNearGroupPurchaseMerchant2',
+        method:'POST',
+        data:{
+          token:app.globalData.token,
+          params:_requestObj
+        },
+      }).then(res=>{
+        if (res.data.code === 0) {
+          let value=this._modifyItemObj(res.data.value);
+          if(value.length<this.data._requestObj.size){ //说明请求完了
+            this.setData({
+              _listLastState:true
+            })
+          }
+          if(concatState){
+            value=value.concat(this.data._responseList);
+          }
+       
+          this.data._requestObj.start=value.length;
+          this.setData({   
+            _responseList:value
+          });
+        }else {}
+      }).finally(()=>{
+        this.data._loadingState=false;
+        setTimeout(()=>{ //数据请求好后，再显示半秒的缓存时间
+          wx.hideToast();
+        },500)
+      });
     }
+
   }
 })

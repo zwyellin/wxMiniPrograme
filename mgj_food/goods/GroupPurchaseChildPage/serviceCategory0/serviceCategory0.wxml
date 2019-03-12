@@ -45,9 +45,9 @@
     
  
      <!-- 提交 -->
-    <view class="mt20 padding-tb-20 padding-lr-40">
-        <button class="bg-button-color font-size2" style="color:white">确认买单</button>
-    </view>
+    <navigator  url="/goods/pay/pay?merchantId={{groupMerchantInfo.id}}&price={{actuallyAmount}}" open-type="navigate" class="mt20 padding-tb-20 padding-lr-40">
+        <button class="bg-button-color font-size2" style="color:white">提交订单</button>
+    </navigator>
     <!-- 优惠说明 -->
     <view class="padding-lr-40">
         <navigator url="/goods/GroupPurchaseChildPage/serviceCategory0/discountDescription/disccountDescription"

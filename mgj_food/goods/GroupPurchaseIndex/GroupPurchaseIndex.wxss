@@ -1,0 +1,38 @@
+/* goods/GroupPurchaseIndex/GroupPurchaseIndex.wxss */
+.swiper-image{
+    width: 100%;
+    height:180rpx;
+}
+.swiper-icon{
+    width: 80rpx;
+    height:80rpx;
+    border-radius: 50%;
+}
+
+
+/* 很优惠 */
+.primaryPublicityList{
+    flex-wrap: wrap;
+}
+.primaryPublicityListItem{
+    width:330rpx;
+    height:180rpx;
+    position: relative;
+    border-radius: 4rpx;
+    margin-bottom: 10rpx;
+}
+.primaryPublicityListItem-text-absolute{
+    position: absolute;
+    top:70rpx;
+    left:24rpx;
+    font-size:24rpx;
+    color:#333;
+}
+.primaryPublicityListItem-img-absolute{
+    position:absolute;
+    bottom:-100rpx;
+    right:0rpx;
+    width:200rpx;
+    height:200rpx;
+    border-radius:50%;
+}

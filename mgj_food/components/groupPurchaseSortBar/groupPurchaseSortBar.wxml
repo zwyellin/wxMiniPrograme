@@ -1,0 +1,8 @@
+<!--components/groupPurchaseSortBar/groupPurchaseSortBar.wxml-->
+
+<mask position="top" wx:if="{{_isShow}}" catch:maskclick="maskCancelTap">
+    <!-- 头部 -->
+    <view class="flex ">
+
+    </view>
+</mask>

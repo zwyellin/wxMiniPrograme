@@ -192,7 +192,7 @@
         </view>
         <navigator class="flex flex-spaceBetween mt20 padding-lr-40" 
             wx:for="{{groupSetMealexcludeItem}}" wx:key="index"
-            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?itemIndex={{index}}">
+            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?itemIndex={{item.groupSetMealIndex}}">
                 <!-- 左边 -->
                 <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
                 <!-- 右边 -->
@@ -211,7 +211,7 @@
                     </view>
                     <!-- 右边 -->
                     <view class="flex flex-all-center serviceCategoryBuyButton">
-                        <button >购买</button>
+                        <button data-item_index="{{item.groupSetMealIndex}}" catch:tap="serviceCategory2Tap">购买</button>
                         <text>已售{{item.accumulateSoldCount}}</text>
                     </view>
                 </view>

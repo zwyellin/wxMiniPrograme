@@ -1,5 +1,5 @@
-// var rootDocment = 'https://prelaunch.horsegj.com/merchant/';
-var rootDocment = 'https://wxapi.horsegj.com/merchant/'; //生产
+var rootDocment = 'https://prelaunch.horsegj.com/merchant/';
+// var rootDocment = 'https://wxapi.horsegj.com/merchant/'; //生产
 var header = {
   'Accept': 'application/json',
   'content-type': 'application/json'

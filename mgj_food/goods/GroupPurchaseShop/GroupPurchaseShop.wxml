@@ -256,5 +256,6 @@
         </view>
         <!-- 团购商家列表组件 -->
         <groupPurchaseItem wx:for="{{nearGroupPurchase}}" wx:key="index" itemObj="{{item}}"></groupPurchaseItem>
+        <!-- <groupPurchaseItem  requestObj="{{ groupPurchaseItemRequsetObj }}"></groupPurchaseItem> -->
     </view>
 </view>

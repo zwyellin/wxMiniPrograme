@@ -27,13 +27,14 @@ Page({
     console.log(itemIndex)
     //访问上级页面(团购商家)的对象，赋值给本页面
     let pages = getCurrentPages();
-    let prevPage = pages[pages.length - 2]; // 上一级页面
-    let prev_prevPage=pages[pages.length - 3]; // 上一级页面
+    let prevPage = pages[pages.length - 2]; // 上一级页面（团购商店,团购套餐详情,本地优惠点立即购买进来德）
+    let prev_prevPage=pages[pages.length - 3]; // 上上级页面
     let prePageReg=/GroupPurchaseShop/;//判断上一级页面的路径是不是含有GroupPurchaseShop
+    let prePageReg1=/serviceCategory2/;//判断上一级页面的路径是不是含有serviceCategory2
     let groupSetMealItem=[]; 
     let originPage=undefined;
 
-    if(prePageReg.test(prevPage.route)){//直接点购买进来德
+    if(prePageReg.test(prevPage.route) || prePageReg1.test(prevPage.route)){//直接点购买进来德
       console.log("店铺上一页过来的");
       originPage=prevPage;
     }else if(prePageReg.test(prev_prevPage.route)){//从详情页进来的
