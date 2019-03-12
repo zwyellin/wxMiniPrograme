@@ -67,6 +67,7 @@
       "pages": [
         "shop/shop",
         "GroupPurchaseIndex/GroupPurchaseIndex",
+        "GroupPurchaseIndex/GroupPurchaseSearch/GroupPurchaseSearch",
         "GroupPurchaseShop/GroupPurchaseShop",
         "GroupPurchaseChildPage/serviceCategory0/serviceCategory0",
         "GroupPurchaseChildPage/serviceCategory0/discountDescription/disccountDescription",

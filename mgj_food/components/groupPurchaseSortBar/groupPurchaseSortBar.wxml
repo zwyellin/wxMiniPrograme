@@ -2,7 +2,98 @@
 
 <mask position="top" wx:if="{{_isShow}}" catch:maskclick="maskCancelTap">
     <!-- 头部 -->
-    <view class="flex ">
-
+    <!-- 分类，排序，筛选 -->
+    <view class="pageItem  flex row-line" style="justify-content:space-around;padding:30rpx 40rpx;">
+        <!-- 分类 -->
+        <view style="padding-left:20rpx;" data-index="0" catch:tap="sortTap">
+            <text class="font-14 color2" style="padding-right:12rpx;{{sortActive==0? 'color:red':''}}">分类</text>
+            <image  src="{{sortActive==0? '../../images/images/down_1ye.png' :'../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+        </view>
+        <!-- 排序 -->
+        <view data-index="1" catch:tap="sortTap">
+            <text class="font-14 color2" style="padding-right:12rpx;{{sortActive==1? 'color:red':''}}">排序</text>
+            <image  src="{{sortActive==1? '../../images/images/down_1ye.png' :'../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+        </view>
+        <!-- 筛选 -->
+        <view style="padding:right:20rpx;" data-index="2" catch:tap="sortTap">
+            <text class="font-14 color2" style="padding-right:12rpx;{{sortActive==2? 'color:red':''}}">筛选</text>
+            <image  src="{{sortActive==2? '../../images/images/down_1ye.png' :'../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+        </view>
+    </view>
+    <!-- 内容 -->
+    <view wx:if="{{sortActive}}"  style="background:white;height:900rpx;">
+        <!--分类的内容-->
+        <view wx:if="{{sortActive==0}}" class="flex">
+            <!--主分类-->
+            <scroll-view scroll-y="{{true}}" class="padding-lr-40" style="width:50%;height:300rpx;">
+                <view wx:for="{{sortActive1}}" wx:key="index" class="flex flex-row-center flex-spaceBetween row-line padding-tb-20">
+                    <text>{{item}}</text>
+                    <image src="../../images/images/down_ye.png"  class="directionIcon" />
+                </view>
+            </scroll-view>
+            <!-- 次分类 -->
+            <scroll-view scroll-y="{{true}}" class="padding-lr-40" style="width:50%;height:300rpx;background:red">
+                asd
+            </scroll-view>
+        </view>
+        <!-- 排序的内容 -->
+        <view wx:if="{{sortActive==1}}">
+            排序的
+        </view>
+        <!-- 筛选的内容 -->
+        <view wx:if="{{sortActive==2}}" class="sortActive2Content pageItem">
+           <!-- 商家服务 -->
+           <view class="sortActive2ContentItem">
+                <text class="sortActive2ContentTitle">商家服务</text>
+                <view class="flex" style="padding-top:20rpx;flex-wrap:wrap" >
+                    <text wx:for="{{sortActive2Content0}}"  wx:key="index"
+                    data-index="{{index}}" catch:tap="sortActive2Content0Tap"
+                    class="sortActive2ContentBtn box-sizing-box {{item.active ? 'sortActive2ContentBtnActive':''}}" 
+                    style="{{(index+1)%4==0?'margin-right:0;':''}}">{{item.content}}</text>
+                </view>
+           </view>
+           <!-- 商家活动 -->
+            <view class="sortActive2ContentItem" style="padding-top:0">
+                <text class="sortActive2ContentTitle">商家活动</text>
+                <view class="flex" style="padding-top:20rpx;flex-wrap:wrap" >
+                    <text wx:for="{{sortActive2Content1}}"  wx:key="index"
+                    data-index="{{index}}" catch:tap="sortActive2Content1Tap"
+                    class="sortActive2ContentBtn box-sizing-box {{item.active ? 'sortActive2ContentBtnActive':''}}" 
+                    style="{{(index+1)%4==0?'margin-right:0;':''}}">{{item.content}}</text>
+                </view>
+           </view>
+           <!-- 人均消费 -->
+            <view class="sortActive2ContentItem row-line" style="padding-top:0">
+                <text class="sortActive2ContentTitle">人均消费</text>
+                <view class="flex flex-spaceBetween" style="padding-top:30rpx;" >
+                    <view wx:for="{{sortActive2Content2}}"  wx:key="index"
+                        data-index="{{index}}" catch:tap="sortActive2Content3Tap"
+                        class="box-sizing-box" style="justify-content: space-around;text-align:center;width:100rpx;line-height:0">
+                        <text style="display:block;line-height:1">{{item}}</text>
+                        <text style="font-size:22rpx;color:red;line-height:1.5">|</text>
+                    </view>
+                </view>
+                <!-- 滑动条 -->
+                <view class="flex flex-row-center" style="padding:0 50rpx;">
+                    <!-- 左边滑动条 -->
+                    <slider min='{{0}}' max='{{100}}' value="{{sliderValue.min|| 0}}"  step='50' 
+                    backgroundColor="#ff9900" activeColor="#f3f3f3" block-size="20"
+                    style="width:40%" 
+                    bindchange="sliderMinChange" />
+                    <!-- 中间部分 -->
+                    <view  style="background:#ff9900;height:6rpx;width:20%"></view>
+                    <!-- 右边滑动条 -->
+                    <slider min='{{200}}' max='{{400}}' value='{{sliderValue.max || 200}}'  step='100'  
+                    backgroundColor="#f3f3f3" activeColor="#ff9900" block-size="20"
+                    style="width:40%"
+                    bindchange="sliderMaxChange" />
+                </view>
+           </view>
+           <!-- 清空及确定 -->
+           <view class="flex flex-spaceBetween mt30">
+               <button class="btn_noActive" catch:tap="sortActive2CancelBtnTap">清空</button>
+               <button class="btn_Active"  catch:tap="sortActive2SubmitBtnTap">确定</button>
+           </view>
+        </view>
     </view>
 </mask>

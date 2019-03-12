@@ -26,6 +26,8 @@ Component({
     maskclick(e) {
       this.triggerEvent('maskclick')
     },
-
+    move(e){
+      
+    }
   }
 })

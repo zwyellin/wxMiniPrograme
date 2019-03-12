@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "groupPurchaseSortBar":"../../../components/groupPurchaseSortBar/groupPurchaseSortBar" 
+  }
+}
