@@ -151,6 +151,11 @@ image{
   -webkit-box-orient:vertical;
   word-break:break-all;
 }
+/* 去除button外边框 */
+button::after {
+  border: none
+}
+
 /*  */
 .container {
   overflow: hidden;

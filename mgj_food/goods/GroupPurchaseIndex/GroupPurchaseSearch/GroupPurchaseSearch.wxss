@@ -1,1 +1,11 @@
 /* goods/GroupPurchaseIndex/GroupPurchaseSearch/GroupPurchaseSearch.wxss */
+
+.recommendSearchItem{
+    height:54rpx;
+    line-height: 54rpx;
+    color:#333;
+    font-size:26rpx;
+    margin:0 30rpx 30rpx 0;
+    background:#f3f3f3;
+    padding:0 20rpx;
+}

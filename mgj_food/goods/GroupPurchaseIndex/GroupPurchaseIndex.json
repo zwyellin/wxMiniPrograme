@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "groupPurchaseItem":"../../components/groupPurchaseItem/groupPurchaseItem" 
+    "groupPurchaseItem":"../../components/groupPurchaseItem/groupPurchaseItem",
+    "groupPurchaseSortBar":"../../components/groupPurchaseSortBar/groupPurchaseSortBar" 
   }
 }

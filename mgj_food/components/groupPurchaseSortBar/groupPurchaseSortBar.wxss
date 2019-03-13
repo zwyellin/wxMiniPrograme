@@ -1,11 +1,24 @@
 /* components/groupPurchaseSortBar/groupPurchaseSortBar.wxss */
 @import "../../app.wxss";
 /* 方向图标 */
-.directionIcon{
+.choiseIcon{
     width:30rpx;
     height:30rpx;
+    position: absolute;
+    left:40rpx;
 }
-
+/* 分类和排序的行 */
+.sortrowItem{
+    font-size: 28rpx;
+    color:#333;
+    height:70rpx;
+    line-height:70rpx;
+    padding-left: 100rpx;
+    position: relative;
+}
+.sortrowItemActive{
+    color:#ff9900 !important;
+}
 .sortActive2Content{
 
 }
@@ -20,18 +33,21 @@
 }
 .sortActive2ContentBtn{
     font-size: 26rpx;
+    border-radius: 4rpx;
     display: inline-block;
     width: 152rpx;
     text-align: center;
     line-height: 54rpx;
     margin-right: 20rpx;
     margin-bottom: 30rpx;
-    background: grey;
-    border:1px solid grey;
-    border-radius: 4rpx;
+
+    color:#666;
+    border:1px solid #ddd; 
 }
 .sortActive2ContentBtnActive{
     color:#ff9900 !important;
+    background: #fdf1df !important;
+    border: 1px solid #ff9900 !important;
 }
 slider{
     margin: 10rpx 0;
@@ -44,11 +60,17 @@ button{
     width:152rpx;
     font-size: 26rpx;
     color:#333;
-    border-radius: 4rpx;
+    border-radius: 8rpx;
     margin: 0;
     padding:0;
+    border:1px solid #bbb;
+    outline:none
 }
+button::after {
+    border: none
+  }
 .btn_Active{
     background: #ff9900;
     color:#fff;
+    border:1px solid #ff9900;
 }

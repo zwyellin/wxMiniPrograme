@@ -16,13 +16,25 @@ Page({
     categoryList:[[]],//icon分类，请求返回对象。是一个二级数组
     publicityList:[],//广告屏
 
+    isSortBarHidden:true,//分类，筛选的浮层是否显示。
+
     groupPurchaseItemRequsetObj:null,//团购商家请求参数对象
+    groupPurchaseItemRequsetObjDefault:{
+      merchantId:748,
+      latitude:"39.966128",
+      longitude:"116.304782",
+      size:3
+    },
     groupPurchaseItemConfig:{//团购商家请求相关的配置
-      isPageReachBottom:false,//默认false
+    isPageReachBottom:false,//默认false
     },
 
-
-    sortActive:null,//分类筛选激活第几个。0,1,2
+    sortBar:{//分类，筛选，信息
+      sortActive:null,//分类筛选激活第几个。0,1,2
+      sort0Title:"分类",//分类默认值
+      sort1Title:"排序",//排序默认值
+    }
+  
   },
 
   /**
@@ -37,7 +49,8 @@ Page({
     this.findGroupPurchasePrimaryCategoryList();
     // 广告屏
     this.findGroupPurchasePrimaryPublicityList();
-    let groupPurchaseItemRequsetObj={merchantId:748,latitude:"39.966128",longitude:"116.304782",size:3};
+    // 开始商家列表请求
+    let groupPurchaseItemRequsetObj=this.data.groupPurchaseItemRequsetObjDefault;
     this.setData({
       groupPurchaseItemRequsetObj,groupPurchaseItemRequsetObj
     });
@@ -120,6 +133,7 @@ Page({
       }
     })
   },
+  //分类筛选点击
   sortTap(e){
     let {index}=e.currentTarget.dataset;
     let sortActive;
@@ -129,9 +143,34 @@ Page({
       sortActive=index;
     }
     this.setData({
-      sortActive
+      'sortBar.sortActive':sortActive,
+      isSortBarHidden:false//打开分类筛选浮层
     })
   },
+  // 分类，组件触发的事件
+  groupPurchaseSortBarParams(e){
+      let {type,params,title}=e.detail;
+      // 关闭该组件浮层
+      this.setData({
+        isSortBarHidden:true,//关闭分类筛选浮层
+        'sortBar.sortActive':null//关闭sortBar的icon显示
+      })
+      if(type){//type:true。则要发送请求。且要改变，标题
+        let groupPurchaseItemRequsetObjDefault=JSON.parse(JSON.stringify(this.data.groupPurchaseItemRequsetObjDefault));
+        Object.assign(groupPurchaseItemRequsetObjDefault,params);
+        //开始请求商家列表
+        this.setData({
+          groupPurchaseItemRequsetObj:groupPurchaseItemRequsetObjDefault
+        })
+        // 修改标题
+        let sortBar=this.data.sortBar;
+        Object.assign(sortBar,title);
+        this.setData({
+          sortBar
+        })
+      }
+  },
+  // 触底
   onReachBottom: function () {
     this.setData({
       'groupPurchaseItemConfig.isPageReachBottom':true
