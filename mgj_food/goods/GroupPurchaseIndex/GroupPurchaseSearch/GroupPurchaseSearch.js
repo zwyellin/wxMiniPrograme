@@ -11,7 +11,6 @@ Page({
     // 请求相关
     agentId:3,
     
-
     recommendSearch:[],//推荐搜索的请求回来的数组
     historyRecord:[],//历史搜索，缓存读取和设置
     merchantBySearchList:[],//搜索返回来的列表
@@ -24,6 +23,27 @@ Page({
     isSearchInputFocus:true,
 
     recommendPageShow:true,//是否显示推荐搜索页面，而不是搜索列表
+
+   //分类浮层及商家列表相关
+   groupPurchaseItemRequsetObj:null,//团购商家请求参数对象
+   groupPurchaseItemRequsetObjDefault:{//注意不能赋值，否则，分类筛选时合并默认请求参数会带上原先的请求参数
+     agentId:3,
+     latitude:"39.966128",
+     longitude:"116.304782",
+     size: 20,
+     start: 0,
+     queryString:""
+   },
+   isSortBarHidden:true,//分类，筛选的浮层是否显示。
+   sortBar:{//分类，筛选，信息
+     sortActive:null,//分类筛选激活第几个。0,1,2
+     sort0Title:"分类",//分类默认值
+     sort1Title:"排序",//排序默认值
+   },
+
+   groupPurchaseItemConfig:{//团购商家请求相关的配置
+     isPageReachBottom:false,//默认false
+     },
   },
 
   /**
@@ -67,37 +87,37 @@ Page({
     })
   } ,
   // 搜索
-  findGroupPurchaseMerchantBySearch(){
+  findGroupPurchaseMerchantBySearch(requestParams){
+    let groupPurchaseItemRequsetObjDefault={};
+    if(requestParams==undefined){
+      groupPurchaseItemRequsetObjDefault=this.data.groupPurchaseItemRequsetObjDefault;
+    }else{
+      groupPurchaseItemRequsetObjDefault=requestParams;
+    }
+    Object.assign(groupPurchaseItemRequsetObjDefault,{
+      queryString:this.data.searchInputOutValue
+    })
     wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseMerchantBySearch',
       method:'POST',
       data:{
         token:app.globalData.token,
-        params:{
-          agentId: 3,
-          latitude: 39.96606874899509,
-          longitude: 116.3047862214218,
-          size: 20,
-          start: 0,
-          queryString: this.data.searchInputOutValue 
-        }	
+        params:groupPurchaseItemRequsetObjDefault
       },
     }).then(res=>{
       if (res.data.code === 0) {
        let merchantBySearchList=res.data.value;
        let inputValue=this.data.searchInputOutValue;
-        //标记
-        merchantBySearchList.forEach((_item,_index)=>{
-          console.log(_index,_item.name)
-          if(_item.name.indexOf(inputValue)!=-1){
-            console.log("进来了")
-            _item.name=_item.name.replace(inputValue,"<text style='color:red'>"+inputValue+"</text>")
-          }
-        })
+        //标记搜索结果(不支持)
+        // merchantBySearchList.forEach((_item,_index)=>{
+        //   console.log(_index,_item.name)
+        //   if(_item.name.indexOf(inputValue)!=-1){
+        //     _item.name=_item.name.replace(inputValue,"<text >"+inputValue+"</text>")
+        //   }
+        // })
         console.log(merchantBySearchList)
         this.setData({
-          merchantBySearchList,
-          recommendPageShow:false
+          merchantBySearchList
         })
         console.log(merchantBySearchList)
       }
@@ -113,20 +133,24 @@ Page({
       })
     }
   },
-  // 点推荐item事件
+  // 点推荐item及历史搜索item事件
   recommendSearchItemTap(e){
     let {content}=e.target.dataset;
     this.setData({
       searchInputValue:content,
-      searchInputOutValue:content
+      searchInputOutValue:content,
+     
     })
   },
   // 点搜索事件
   searchSubmit(){
-    console.log("提交")
     let value=this.data.searchInputOutValue;
+    //先展示搜索pageItem
+    this.setData({
+      recommendPageShow:false
+    })
     // 生成搜索
-   this.findGroupPurchaseMerchantBySearch();
+    this.findGroupPurchaseMerchantBySearch();
 
     // 保存记录
     let  historyRecord=this.RecordReadWrite(value);
@@ -173,7 +197,45 @@ Page({
       this.setData({
         historyRecord:[]     
       })
-  }
+  },
+  // 搜索列表页相关方法
+  //分类筛选点击
+  sortTap(e){
+    let {index}=e.currentTarget.dataset;
+    let sortActive;
+    if(this.data.sortActive==index){
+      sortActive=null;
+    }else{
+      sortActive=index;
+    }
+    this.setData({
+      'sortBar.sortActive':sortActive,
+      isSortBarHidden:false//打开分类筛选浮层
+    })
+  },
+  // 分类，组件触发的事件
+  groupPurchaseSortBarParams(e){
+      let {type,params,title}=e.detail;
+      // 关闭该组件浮层
+      this.setData({
+        isSortBarHidden:true,//关闭分类筛选浮层
+        'sortBar.sortActive':null//关闭sortBar的icon显示
+      })
+      if(type){//type:true。则要发送请求。且要改变，标题
+        console.log("params",params)
+        let groupPurchaseItemRequsetObjDefault=JSON.parse(JSON.stringify(this.data.groupPurchaseItemRequsetObjDefault));
+        console.log("groupPurchaseItemRequsetObjDefault",groupPurchaseItemRequsetObjDefault)
+        Object.assign(groupPurchaseItemRequsetObjDefault,params);
+        //开始请求商家列表
+        this.findGroupPurchaseMerchantBySearch(groupPurchaseItemRequsetObjDefault);
+        // 修改标题
+        let sortBar=this.data.sortBar;
+        Object.assign(sortBar,title);
+        this.setData({
+          sortBar
+        })
+      }
+  },
 
  
 })

@@ -16,8 +16,8 @@ Page({
     categoryList:[[]],//icon分类，请求返回对象。是一个二级数组
     publicityList:[],//广告屏
 
-    isSortBarHidden:true,//分类，筛选的浮层是否显示。
-
+   
+    //分类浮层及商家列表相关
     groupPurchaseItemRequsetObj:null,//团购商家请求参数对象
     groupPurchaseItemRequsetObjDefault:{
       merchantId:748,
@@ -25,15 +25,16 @@ Page({
       longitude:"116.304782",
       size:3
     },
-    groupPurchaseItemConfig:{//团购商家请求相关的配置
-    isPageReachBottom:false,//默认false
-    },
-
+    isSortBarHidden:true,//分类，筛选的浮层是否显示。
     sortBar:{//分类，筛选，信息
       sortActive:null,//分类筛选激活第几个。0,1,2
       sort0Title:"分类",//分类默认值
       sort1Title:"排序",//排序默认值
-    }
+    },
+
+    groupPurchaseItemConfig:{//团购商家请求相关的配置
+      isPageReachBottom:false,//默认false
+      },
   
   },
 
@@ -49,10 +50,9 @@ Page({
     this.findGroupPurchasePrimaryCategoryList();
     // 广告屏
     this.findGroupPurchasePrimaryPublicityList();
-    // 开始商家列表请求
-    let groupPurchaseItemRequsetObj=this.data.groupPurchaseItemRequsetObjDefault;
+    // 开始商家列表请求,组件赋值就会请求
     this.setData({
-      groupPurchaseItemRequsetObj,groupPurchaseItemRequsetObj
+      groupPurchaseItemRequsetObj:this.data.groupPurchaseItemRequsetObjDefault
     });
   },
 

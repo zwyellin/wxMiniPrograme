@@ -4,10 +4,11 @@
     <view style="background:white">
         <!-- 搜索 -->
         <view class="padding-lr-40 padding-tb-20">
-            <view class="flex box-sizing-box flex-row-center" style="border-radius:30rpx;height:54rpx;line-height:54rpx;background:#f0f0f0"> 
+            <navigator url="/goods/GroupPurchaseIndex/GroupPurchaseSearch/GroupPurchaseSearch"
+            class="flex box-sizing-box flex-row-center" style="border-radius:30rpx;height:54rpx;line-height:54rpx;background:#f0f0f0"> 
                 <image class="flex0" src="../../images/images/search.png"  style="width:28rpx;height:28rpx;padding:0 20rpx;"/>
                 <text style="font-size:24rpx;color:#999">输入你想搜的内容</text>
-            </view>
+            </navigator>
         </view>
         <!--轮播图-->
         <swiper  style="height:160rpx;border-radius:8rpx;" indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">

@@ -2,7 +2,7 @@
 
 <view class="container page" style="background:white">
     <!-- 搜索条 -->
-    <view class="pageItem flex flex-row-center" style="padding-bottom:60rpx;">
+    <view class="pageItem flex flex-row-center">
         <!-- 搜索框 -->
         <view class="flex flex-row-center flex1 box-sizing-box" style="border-radius:30rpx;height:70rpx;line-height:70rpx;background:#f0f0f0">
             <image class="flex0" src="../../../images/images/search.png"  style="width:28rpx;height:28rpx;padding-left:20rpx;" />
@@ -17,10 +17,10 @@
     </view>
 
     <!-- 板块，内容1（推荐，历史搜索） -->
-    <view wx:if="{{recommendPageShow}}" class="pageItem">
+    <view wx:if="{{recommendPageShow}}" class="pageItem" style="padding-top:60rpx;">
         <!-- 推荐搜索标题 -->
         <block wx:if="{{recommendSearch.length}}">
-            <view>
+            <view class="flex flex-row-center">
                 <image src="../../../images/images/zan1.png" style="width:40rpx;height:40rpx;padding-right:10rpx;"/>
                 <text style="font-size:34rpx;color:#333;font-weight:bold">推荐搜索</text>
             </view>
@@ -38,7 +38,8 @@
                 <text style="font-size:28rpx;color:#999;">历史搜索</text>
                 <!-- 内容 -->
                 <view class="flex" style="flex-wrap:wrap;margin-top:30rpx;margin-bottom:90rpx">
-                    <view wx:for="{{historyRecord}}" wx:key="index" class="box-sizing-box border-radius4 recommendSearchItem" >
+                    <view wx:for="{{historyRecord}}" wx:key="index" data-content="{{item}}" catch:tap="recommendSearchItemTap"
+                    class="box-sizing-box border-radius4 recommendSearchItem" >
                     {{item}}</view>
                 </view>
                 <!--清空历史搜索  -->
@@ -49,7 +50,30 @@
         </block>
     </view>
     <!-- 板块2，搜索列表 -->
-    <view wx:else> 
-          <groupPurchaseItem wx:for="{{merchantBySearchList}}" wx:key="index" itemObj="{{item}}" ></groupPurchaseItem>
+    <view wx:else style="background:white;"> 
+        <!-- 分类，排序，筛选 -->
+        <view class="pageItem flex row-line" style="justify-content:space-around;padding:30rpx 40rpx;">
+            <!-- 分类 -->
+            <view  data-index="0" catch:tap="sortTap">
+                <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==0? 'color:#ff9900':''}}">{{sortBar.sort0Title}}</text>
+                <image  src="{{sortBar.sortActive==0? '../../../images/images/down_1ye.png' :'../../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+            </view>
+            <!-- 排序 -->
+            <view data-index="1" catch:tap="sortTap">
+                <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==1? 'color:#ff9900':''}}">{{sortBar.sort1Title}}</text>
+                <image  src="{{sortBar.sortActive==1? '../../../images/images/down_1ye.png' :'../../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+            </view>
+            <!-- 筛选 -->
+            <view  data-index="2" catch:tap="sortTap">
+                <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==2? 'color:#ff9900':''}}">筛选</text>
+                <image  src="{{sortBar.sortActive==2? '../../../images/images/down_1ye.png' :'../../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+            </view>
+        </view>
+        <!-- 对应的浮层 -->
+        <groupPurchaseSortBar style="{{isSortBarHidden? 'display:none':''}}" 
+            requestObj="{{ {agentId:3} }}" sortActive="{{sortBar.sortActive}}"  catch:outRequestparams="groupPurchaseSortBarParams">
+        </groupPurchaseSortBar>
+        <!-- 列表 -->
+        <groupPurchaseItem wx:for="{{merchantBySearchList}}" wx:key="index" itemObj="{{item}}" ></groupPurchaseItem>
     </view>
 </view>
