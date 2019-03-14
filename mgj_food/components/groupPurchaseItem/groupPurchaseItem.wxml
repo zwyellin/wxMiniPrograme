@@ -55,7 +55,7 @@
 <scroll-view wx:else scroll-y="{{_height}}" style="{{_height ? 'max-height:'+_height : ''}}" bindscrolltolower="scrollViewScrolltolower">
     <block wx:for="{{_responseList}}" wx:for-index="index" wx:for-item="_itemObj" wx:key="index">
         <navigator class="flex flex-spaceBetween purchaseItem" 
-            url="/goods/GroupPurchaseShop/GroupPurchaseShop?latitude={{_itemObj.latitude}}&longitude={{_itemObj.longitude}}&groupPurchaseMerchantId={{_itemObj.id}}">
+            url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{_itemObj.id}}">
             <!-- 左边，图片 -->  
             <image src="{{_itemObj.imgs[0] || '../../images/merchant/merchantLogo.png'}}" class="flex0 purchaseImage"/>
             <!-- 右边内容 -->
@@ -103,19 +103,19 @@
 
     <!-- 消息框 -->
     <view class="padding-tb-20" wx:if="{{_isPageReachBottomState}}"> 
-        <block wx:if="{{!_listLastState}}" > <!--还没有加载或加载完数据-->
+        <view wx:if="{{!_listLastState}}" > <!--还没有加载或加载完数据-->
             <view wx:if="{{_loadingState}}"  class="loading-info">
                 <image src="/images/merchant/loading.png" class="img-loading"></image>
 	            <view class="loading-text">正在加载，请稍候</view>
             </view> 
-        </block>
-        <block  wx:else> <!--加载完了数据-->
+        </view>
+        <view  wx:else> <!--加载完了数据-->
             <view wx:if="{{_responseList.length==0 }}" class="bottom-info">
                 <view class="color3 font-size4">抱歉，没有搜索到您想要的商家</view>
             </view>
             <view wx:elif="{{_responseList.length>4}}" class="bottom-info">
                 <view class="bottom-text">我是有底线的</view>
             </view>
-        </block>
+        </view>
     </view>
 </scroll-view>

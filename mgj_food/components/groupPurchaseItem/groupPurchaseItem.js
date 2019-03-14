@@ -51,14 +51,15 @@ Component({
 
       this.setData({
         _requestObj:newVal,
-        _requestUrl:requestUrl
+        _requestUrl:requestUrl,
+        _listLastState:false//组件会复用，所以在数据加载前就false。避免显示之前的消息
       })
       this.requestData();
     },
     "config.isPageReachBottom":function(newVal,oldVal){
        // 如果传了该参数，则会显示加载的图标等信息
        this.setData({
-        _isPageReachBottomState:true
+        _isPageReachBottomState:true,
       })
       // 如果不是false，则执行
       if(newVal){
