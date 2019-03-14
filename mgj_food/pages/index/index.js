@@ -107,8 +107,15 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				app.globalData.longitude = longitude;
-				app.globalData.latitude = latitude;
+				if(true){
+					console.log("测试地址")
+					app.globalData.longitude= "116.304782";
+					app.globalData.latitude="39.966128";
+				}else{
+					app.globalData.longitude = longitude;
+					app.globalData.latitude = latitude;
+				}
+				
 				this.init().then((res)=>{
 					if (res.data.code === 0) {
 						let value = res.data.value;

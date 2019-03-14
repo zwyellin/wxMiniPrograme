@@ -146,7 +146,7 @@
             <navigator class="flex flex-spaceBetween mt20" style="padding:30rpx;border:1px solid #feddab;background:#fffbf4"
             wx:for="{{groupMerchantInfo.voucher}}"
             wx:key="index"
-            url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?itemIndex={{index}}">
+            url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId={{item.id}}">
                 <!-- 左边 -->
                 <view > 
                     <text style="font-size:34rpx; color:#333;font-weight:bold;">{{item.originPrice}}元 代金券</text>
@@ -159,7 +159,7 @@
                 </view>
                 <!-- 右边 -->
                 <view class="flex flex-all-center serviceCategoryBuyButton">
-                    <button data-item_index="{{index}}" catch:tap="serviceCategory1Tap">购买</button>
+                    <button data-id="{{item.id}}" catch:tap="serviceCategory1Tap">购买</button>
                     <text>已售{{item.accumulateSoldCount}}</text>
                 </view>
             </navigator>
@@ -172,7 +172,7 @@
             </view>
             <navigator class="flex flex-spaceBetween mt20" 
             wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index"
-            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?itemIndex={{index}}">
+            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}">
                 <!-- 左边 -->
                 <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
                 <!-- 右边 -->
@@ -191,7 +191,7 @@
                     </view>
                     <!-- 右边 -->
                     <view class="flex flex-all-center serviceCategoryBuyButton">
-                        <button data-item_index="{{index}}" catch:tap="serviceCategory2Tap">购买</button>
+                        <button data-id="{{item.id}}" catch:tap="serviceCategory2Tap">购买</button>
                         <text>已售{{item.accumulateSoldCount}}</text>
                     </view>
                 </view>

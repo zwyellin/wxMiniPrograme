@@ -122,7 +122,7 @@
         <!-- 标题及更多优惠 -->
         <view class="flex flex-spaceBetween flex-row-center">
             <text class="color1 font-bold font-size2">商家信息</text>
-            <navigator class="flex flex-row-center" open-type="navigateBack" delta="1">
+            <navigator class="flex flex-row-center" url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{groupSetMealItem.merchantId}}">
                 <text class="font-size5">更多优惠</text>
                 <image src="../../image/more.png" style="width:20rpx;height:20rpx;padding-left:15rpx" />
             </navigator>
@@ -181,7 +181,7 @@
             </navigator>
         </view>
         <!-- 评价内容 -->
-        <groupPurchaseEvalueteItem requestObj="{{ {merchantId,size:3} }}"></groupPurchaseEvalueteItem>
+        <groupPurchaseEvalueteItem requestObj="{{ {merchantId:groupSetMealItem.merchantId,size:3} }}"></groupPurchaseEvalueteItem>
     </view>
 
     <!-- 板块，本店优惠 -->
@@ -192,7 +192,7 @@
         </view>
         <navigator class="flex flex-spaceBetween mt20 padding-lr-40" 
             wx:for="{{groupSetMealexcludeItem}}" wx:key="index"
-            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?itemIndex={{item.groupSetMealIndex}}">
+            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}">
                 <!-- 左边 -->
                 <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
                 <!-- 右边 -->
@@ -211,7 +211,7 @@
                     </view>
                     <!-- 右边 -->
                     <view class="flex flex-all-center serviceCategoryBuyButton">
-                        <button data-item_index="{{item.groupSetMealIndex}}" catch:tap="serviceCategory2Tap">购买</button>
+                        <button data-id="{{item.id}}" catch:tap="serviceCategory2Tap">购买</button>
                         <text>已售{{item.accumulateSoldCount}}</text>
                     </view>
                 </view>
@@ -225,7 +225,7 @@
             <text style="font-size:24rpx;" class="color2">门市价{{groupSetMealItem.packageOriginalPrice}}</text>
         </view>
         <button class="bg-button-color font-size2 border-radius3" style="color:white;margin:0;line-height:2"
-         data-item_index="{{itemIndex}}" catch:tap="serviceCategory2Tap">立即购买</button>
+         data-id="{{groupSetMealItem.id}}" catch:tap="serviceCategory2Tap">立即购买</button>
     </view>
 
 </view>

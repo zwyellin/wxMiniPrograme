@@ -35,7 +35,13 @@ Component({
       })
     },
     "requestObj":function(newVal,oldVal){
+      let requestUrl="";
       if(newVal===oldVal || newVal==null) return;
+      else{
+        requestUrl=newVal.url;
+        if(requestUrl==undefined) requestUrl="findNearGroupPurchaseMerchant2"//默认值
+        delete newVal.url;
+      }
       newVal=Object.assign({//初始值
         start:0,
         size:10,
@@ -44,7 +50,8 @@ Component({
       },newVal)
 
       this.setData({
-        _requestObj:newVal
+        _requestObj:newVal,
+        _requestUrl:requestUrl
       })
       this.requestData();
     },
@@ -71,6 +78,7 @@ Component({
     // 固定属性
     _itemObj:null,//布局一
     _requestObj:null,//布局二
+    _requestUrl:null,
     _responseList:[],//请求回来的列表
     _start:0,
 
@@ -136,8 +144,9 @@ Component({
         duration: 20000
       })
       let _requestObj=this.data._requestObj;
+
       wxRequest({
-        url:'/merchant/userClient?m=findNearGroupPurchaseMerchant2',
+        url:'/merchant/userClient?m='+this.data._requestUrl,
         method:'POST',
         data:{
           token:app.globalData.token,

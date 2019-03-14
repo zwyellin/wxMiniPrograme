@@ -1,13 +1,15 @@
 // goods/GroupPurchaseChildPage/serviceCategory1/order/order.js
+const app = getApp();
+const { wxRequest } = require('../../../../utils/util.js');
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    groupMerchantInfo:null,
+    loginsuccess:false,//是否登入
+
     voucherItem:null,
-    merchantId:null,
 
     sliderValue:1,//滑块选择的数量
 
@@ -21,31 +23,23 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let loginMessage = wx.getStorageSync('loginMessage');
+    let loginStatus = wx.getStorageSync('loginstatus');
+    //判断是否登入
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+        this.setData({
+            loginsuccess:true,
+        });
+        //  
       // 获得参数
-      let {itemIndex}=options;
-      console.log(itemIndex)
-      //访问上级页面(团购商家)的对象，赋值给本页面
-      let pages = getCurrentPages();
-      let prevPage = pages[pages.length - 2]; // 上一级页面
-      let prev_prevPage=pages[pages.length - 3]; // 上一级页面
-      let prePageReg=/GroupPurchaseShop/;//判断上一级页面的路径是不是含有GroupPurchaseShop
-      let originPage=undefined;
-      if(prePageReg.test(prevPage.route)){//直接点购买进来德
-        console.log("店铺上一页过来的")
-        originPage=prevPage;
-      }else if(prePageReg.test(prev_prevPage.route)){//从详情页进来的
-        console.log("店铺上上页过来的")
-        originPage=prev_prevPage;
-      }
-
-      this.setData({
-        groupMerchantInfo:originPage.data.groupMerchantInfo,
-        voucherItem:originPage.data.groupMerchantInfo.voucher[itemIndex],
-        merchantId:originPage.data.groupMerchantInfo.id
-      })
-
-      // 自动设置小计及总额
-      this.sliderChanging();
+      let {groupPurchaseCouponId}=options;
+      this.data.groupPurchaseCouponId=groupPurchaseCouponId;
+      this.findGroupPurchaseCouponInfo();
+    }else{
+        this.setData({
+          loginsuccess:false,
+        });
+    }
   },
 
   /**
@@ -63,18 +57,6 @@ Page({
   },
   // 滑块滑动事件
  sliderChanging(e){
-  // let value=e.detail.value;
-  // // 计算小计：
-  // let totalMoney=value*this.data.groupSetMealItem.price;
-  // // 计算实际付款：
-  // let realTotalMoney=totalMoney-this.data.redPacketDeduction;
-  // this.setData({
-  //   sliderValue:value,
-  //   totalMoney,
-  //   realTotalMoney
-  // })
-
-  // 以上为滑动模块，暂时不使用
     var type;
     try{
       type=e.target.dataset.type;
@@ -92,4 +74,43 @@ Page({
       realTotalMoney
     })
 },
+findGroupPurchaseCouponInfo(){
+  wxRequest({
+    url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
+    method:'POST',
+    data:{
+      token:app.globalData.token,
+      params:{
+        groupPurchaseCouponId:this.data.groupPurchaseCouponId,
+        size:20,
+        start:0
+      }	
+    },
+  }).then(res=>{
+    if (res.data.code === 0) {
+      let value=res.data.value;
+      let voucherItem=this.voucherItemModify(value)
+      this.setData({
+        voucherItem
+      });
+       // 自动设置小计及总额
+       this.sliderChanging();
+    }else {}
+  });
+},
+voucherItemModify(item){
+  // 处理是否叠加
+  if(item.isCumulate){//是否叠加 0:否,1:是 
+    item.isCumulateText="可叠加"
+  }else{
+  item.isCumulateText="不可叠加"
+  }
+  //处理是否预约  
+  if(item.isBespeak){//0:否,1:是 
+    item.isBespeakText="需预约"
+  }else{
+    item.isBespeakText="免预约"
+  }
+  return item;
+}
 })

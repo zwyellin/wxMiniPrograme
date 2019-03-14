@@ -1,0 +1,3 @@
+<!--pages/webView/webView.wxml-->
+<web-view src="{{webViewSrc}}" bindmessage="getMsg" bindload="webViewLoad" >
+</web-view>

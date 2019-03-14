@@ -14,14 +14,15 @@ Component({
     requestObj:{//分类的请求参数对象【必传参数,agentId】
       type:Object
     },
-    sortActive:null//根据父类，打开时要打开哪块内容
+    sortActive:null,//根据父类，打开时要打开哪块内容
+    sort0ActiveRowId:null//打开时默认要选中的哪个分类,对应其id
   },
   observers: {
     "requestObj":function(newVal,oldVal){
       if(newVal===oldVal || newVal==null) return;
+      if(newVal.agentId==null || newVal.agentId==undefined) return ;
       newVal=Object.assign({//初始值
-        parentCategoryId:0,
-        agentId:3
+        parentCategoryId:0,//除了二级分类，该值为0
       },newVal)
       this.data._requestObj=newVal;
       this.requestData();
@@ -30,6 +31,12 @@ Component({
       this.setData({
         _sortActive:newVal
       })
+    },
+    "sort0ActiveRowId":function(newVal,oldVal){
+      // 先保存起来。分类数据请求完之后。再Active并通知父级获得text
+     let _sort0ActiveRowId=newVal;
+     console.log("传的rowID",newVal,_sort0ActiveRowId)
+     this.data._sort0ActiveRowId=_sort0ActiveRowId;
     }
   },
   /**
@@ -37,6 +44,7 @@ Component({
    */
   data: {
     _requestObj:null,//分类请求参数对象
+    _sort0ActiveRowId:null,//要激活的分类Item 的id
     outRequestparams:{},//保存列表的请求对象，这个是要发送到父级
 
     _isShow:true,
@@ -44,7 +52,7 @@ Component({
     _mask_show:true,
     // 激活的是分类还是排序还是筛选
     _sortActive:null,
-    // 分类 对应请求列表参数为groupPurchaseCategoryId,值对应其id
+    // 分类 对应请求列表参数groupPurchaseCategoryId,值对应其id【如果其parentId==0,否则，参数为childGroupPurchaseCategoryId】
     sort0Content:[],
     sort0ActiveRow:null,//，默认要为null,因为这个也会涉及到sortBar名字
     // 排序 对应请求列表参数为sortType，值对应下面为1,2,3
@@ -87,9 +95,22 @@ Component({
       }).then(res=>{
         if (res.data.code === 0) {
           let value=this._modifyrequestData(res.data.value);
-          this.setData({   
-            sort0Content:value
-          });
+          let _sort0ActiveRowId=this.data._sort0ActiveRowId;
+          if(_sort0ActiveRowId!=null){
+            value.forEach((_item,_index)=>{
+                if(_item.id==_sort0ActiveRowId){
+                  this.setData({
+                    sort0ActiveRow:_index,
+                    sort0Content:value
+                  })
+                  this.changeFatherSort0text();
+                }
+            })
+          }else{
+            this.setData({   
+              sort0Content:value
+            });
+          }
         }else {}
       }).finally(()=>{});
     },
@@ -124,8 +145,18 @@ Component({
           sort1Title: title1,
         }
       }
-      console.log("触发事件",detail)
       this.triggerEvent('outRequestparams',detail);
+    },
+    changeFatherSort0text(){
+     
+      let detail={};
+      let title0="分类";
+      console.log(this.data.sort0Content)
+      if(this.data.sort0ActiveRow!=null) {
+        title0=this.data.sort0Content[this.data.sort0ActiveRow].name;
+      }
+      detail.title=title0;
+      this.triggerEvent('changeFatherSort0text',detail);
     },
     // bar点击
     sortTap(e){
@@ -157,7 +188,8 @@ Component({
       let _requestParams={};_requestParams[paramskey]=paramsvalue;
       let outRequestparams=this.data.outRequestparams;
       if(sort==0 && index==0){//针对分类的全部
-        delete outRequestparams.groupPurchaseCategoryId
+        delete outRequestparams.groupPurchaseCategoryId;//删除主分类
+        delete outRequestparams.childGroupPurchaseCategoryId;//如果是此分类，则主分类在父页面补充，这边删除次分类
       }else{
         Object.assign(outRequestparams,_requestParams)
       }

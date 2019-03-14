@@ -1,7 +1,7 @@
 <import src="../star/star.wxml" />
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
 <!-- 单个的布局，此时要传入单个对象 -->
-<view class="flex flex-spaceBetween" style="padding:40rpx;border-top:1px solid #eee" wx:if="{{!_evaluateList.length}}">
+<view class="flex flex-spaceBetween" style="padding:40rpx;border-top:1px solid #eee" wx:if="{{_requestObj==null}}">
     <!-- 左边 -->
     <image src="{{_itemObj.headerImg ||'../../images/images/headerImage.png'}}" class="flex0" style="width:80rpx;height:80rpx;border-radius:40rpx;"  />
     <!-- 右边 -->

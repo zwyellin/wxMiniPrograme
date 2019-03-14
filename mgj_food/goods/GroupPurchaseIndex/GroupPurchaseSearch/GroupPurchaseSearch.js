@@ -9,7 +9,7 @@ Page({
    */
   data: {
     // 请求相关
-    agentId:3,
+    agentId:null,
     
     recommendSearch:[],//推荐搜索的请求回来的数组
     historyRecord:[],//历史搜索，缓存读取和设置
@@ -27,9 +27,9 @@ Page({
    //分类浮层及商家列表相关
    groupPurchaseItemRequsetObj:null,//团购商家请求参数对象
    groupPurchaseItemRequsetObjDefault:{//注意不能赋值，否则，分类筛选时合并默认请求参数会带上原先的请求参数
-     agentId:3,
-     latitude:"39.966128",
-     longitude:"116.304782",
+     agentId:null,
+     latitude:null,
+     longitude:null,
      size: 20,
      start: 0,
      queryString:""
@@ -50,8 +50,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let {agentId}=options;
-
+    
+    let {agentId,latitude,longitude}=app.globalData;
+    let groupPurchaseItemRequsetObjDefault=this.data.groupPurchaseItemRequsetObjDefault;
+    Object.assign(groupPurchaseItemRequsetObjDefault,{
+      agentId,latitude,longitude
+    })
+    this.setData({
+      groupPurchaseItemRequsetObjDefault,
+      agentId,
+      latitude,
+      longitude
+    })
     
 
     // 读取历史搜索
@@ -89,7 +99,7 @@ Page({
   // 搜索
   findGroupPurchaseMerchantBySearch(requestParams){
     let groupPurchaseItemRequsetObjDefault={};
-    if(requestParams==undefined){
+    if(requestParams==undefined){//点搜索时，主动调用
       groupPurchaseItemRequsetObjDefault=this.data.groupPurchaseItemRequsetObjDefault;
     }else{
       groupPurchaseItemRequsetObjDefault=requestParams;
@@ -108,13 +118,6 @@ Page({
       if (res.data.code === 0) {
        let merchantBySearchList=res.data.value;
        let inputValue=this.data.searchInputOutValue;
-        //标记搜索结果(不支持)
-        // merchantBySearchList.forEach((_item,_index)=>{
-        //   console.log(_index,_item.name)
-        //   if(_item.name.indexOf(inputValue)!=-1){
-        //     _item.name=_item.name.replace(inputValue,"<text >"+inputValue+"</text>")
-        //   }
-        // })
         console.log(merchantBySearchList)
         this.setData({
           merchantBySearchList

@@ -26,7 +26,7 @@
         <view wx:if="{{_sortActive==0}}">
             <view>
                 <view wx:for="{{sort0Content}}" wx:key="index" 
-                data-index="{{index}}" data-sort="{{0}}" data-paramskey="groupPurchaseCategoryId" data-paramsvalue="{{item.id}}" catch:tap="sortRowTap"
+                data-index="{{index}}" data-sort="{{0}}" data-paramskey="{{item.parentId==0? 'groupPurchaseCategoryId':'childGroupPurchaseCategoryId'}}" data-paramsvalue="{{item.id}}" catch:tap="sortRowTap"
                 class="flex flex-row-center row-line sortrowItem {{sort0ActiveRow==index ? 'sortrowItemActive':''}}">
                     <image wx:if="{{sort0ActiveRow==index}}" src="../../images/images/dui.png"  class="choiseIcon" />    
                     <text>{{item.name}}</text>

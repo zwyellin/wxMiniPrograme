@@ -71,7 +71,7 @@
         </view>
         <!-- 对应的浮层 -->
         <groupPurchaseSortBar style="{{isSortBarHidden? 'display:none':''}}" 
-            requestObj="{{ {agentId:3} }}" sortActive="{{sortBar.sortActive}}"  catch:outRequestparams="groupPurchaseSortBarParams">
+            requestObj="{{ {agentId} }}" sortActive="{{sortBar.sortActive}}"  catch:outRequestparams="groupPurchaseSortBarParams">
         </groupPurchaseSortBar>
         <!-- 列表 -->
         <groupPurchaseItem wx:for="{{merchantBySearchList}}" wx:key="index" itemObj="{{item}}" ></groupPurchaseItem>

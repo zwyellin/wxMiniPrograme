@@ -303,3 +303,17 @@ button::after {
 }
 
 
+.no-order {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+.no-order-img {
+  width: 230rpx;
+  height: 230rpx;
+}
+.no-order-text {
+  font-size: 22rpx;
+  text-align: center;
+}

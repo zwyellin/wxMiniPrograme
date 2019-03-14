@@ -1,6 +1,7 @@
 // goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2.js
 const app = getApp();
 const { wxRequest } = require('../../../utils/util.js');
+const {modify} =require("../../GroupPurchaseIndex/groupPurchasePublicJs.js")
 
 Page({
 
@@ -9,42 +10,33 @@ Page({
    */
   data: {
     tel_mask_show:false,
-    groupMerchantInfo:null,//直接读取上一页的该对象
+    groupMerchantInfo:null,//
     merchantId:null,
     groupSetMealItem:null,//上一页团购套餐Item。以及加上请求回来的套餐具体内容
-    groupSetMealexcludeItem:null,//剔除自身的其它团购套餐项目
+    groupSetMealexcludeItem:null,//本店优惠
 
-    itemIndex:null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // 获得参数
-    let {itemIndex}=options;
-    //访问上级页面(团购商家)的对象，赋值给本页面
-    let pages = getCurrentPages();
-		let prevPage = pages[pages.length - 2]; // 上一级页面
-    let prePageReg=/GroupPurchaseShop/;//判断上一级页面的路径是不是含有GroupPurchaseShop
-    let prePageReg1=/serviceCategory2/;//判断上一级页面的路径是不是含有serviceCategory2
-		if(prePageReg.test(prevPage.route)||prePageReg1.test(prevPage.route)){
-      // 修改一些显示的数据
-      let groupSetMealItem=this.modifygroupSetMealItem(prevPage.data.groupMerchantInfo.groupSetMeal[itemIndex]);
-      let groupSetMealexcludeItem=prevPage.data.groupMerchantInfo.groupSetMeal.filter((item,index,arr)=>{
-        item.groupSetMealIndex=index;//保存原先的index。避免点本店优惠item时进去页面读取groupSetMeal时的Index出错
-        return index!=itemIndex;
+      // 获得参数@groupPurchaseCouponId为其id
+      let {groupPurchaseCouponId,latitude,longitude}=options;
+      if(!latitude){//如果没传经纬度
+        if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取经纬度
+  
+        }else{//app.json中，则赋值
+          latitude=app.globalData.latitude;
+          longitude=app.globalData.longitude;
+        }
+      }
+      Object.assign(this.data,{
+        groupPurchaseCouponId,
+        longitude,
+        latitude
       })
-      this.setData({
-        groupMerchantInfo:prevPage.data.groupMerchantInfo,
-        groupSetMealItem,
-        merchantId:prevPage.data.groupMerchantInfo.id,
-        groupSetMealexcludeItem,
-        itemIndex
-      })
-    }
-    // 基本信息通过上一页面可以拿到，这边请求获取套餐具体内容
-    this.findGroupPurchaseCouponInfo();
+     this.findGroupPurchaseCouponInfo();
   },
 
   /**
@@ -67,46 +59,102 @@ Page({
       data:{
         token:app.globalData.token,
         params:{
-          groupPurchaseCouponId:this.data.groupSetMealItem.id,
+          groupPurchaseCouponId:this.data.groupPurchaseCouponId,
           size:20,
           start:0
         }	
       },
     }).then(res=>{
       if (res.data.code === 0) {
+        let value=res.data.value;
+        let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseMerchant)
+        let groupSetMealItem=this.modifygroupSetMealItem(value)
         this.setData({
-          'groupSetMealItem.groupPurchaseCouponGoodsTypeList':res.data.value.groupPurchaseCouponGoodsTypeList
+           groupSetMealItem,
+           groupMerchantInfo
         });
+        // 加载本店优惠
+        this.findGroupPurchaseCouponList(groupSetMealItem.merchantId);
       }else {}
     });
   },
   modifygroupSetMealItem(value){
-    console.log("显示",value)
-    // images,字符串转换为数组
-    if(value.images instanceof Array){
-     //访问上一页面的对象，是引用,所以。第一次进来修改为数组。返回再进来时已经是数组了
-      //所以，这里doNothing  
-    }else{
-      if(value.images){
-        value.images=value.images.split(";");
-        if(value.images.length >= 4){
-          value.showImgs=value.images.slice(0,3)
-        }else{
-          value.showImgs=value.images;
-        }
+      // 处理是否叠加
+      if(value.isCumulate){//是否叠加 0:否,1:是 
+        value.isCumulateText="可叠加"
       }else{
-        value.showImgs=[];
-        value.images=[];
+        value.isCumulateText="不可叠加"
       }
+      //处理是否预约  
+      if(value.isBespeak){//0:否,1:是 
+        value.isBespeakText="需预约"  
+      }else{
+        value.isBespeakText="免预约"
+      }
+      // 处理图片
+    if(value.images){
+      value.images=value.images.split(";");
+      if(value.images.length >= 4){
+        value.showImgs=value.images.slice(0,3)
+      }else{
+        value.showImgs=value.images;
+      }
+    }else{
+      value.showImgs=[];
+      value.images=[];
     }
     // 修改createTime
-    console.log(value.createTime)
-    if(value.createTime.indexOf(" ")!=-1){
+    if(value.createTime && value.createTime.indexOf(" ")!=-1){
       value.createTime=value.createTime.substring(0,value.createTime.indexOf(" "));
     }
-  
     return value;
   },
+  modifygroupSetMealItem1(value){
+    value.forEach((_item)=>{
+      // 处理是否叠加
+      if(_item.isCumulate){//是否叠加 0:否,1:是 
+        val_itemue.isCumulateText="可叠加"
+      }else{
+        _item.isCumulateText="不可叠加"
+      }
+      //处理是否预约  
+      if(_item.isBespeak){//0:否,1:是 
+        _item.isBespeakText="需预约"
+      }else{
+        _item.isBespeakText="免预约"
+      }
+    })
+
+    return value;
+  },
+  // 请求本店优惠
+  findGroupPurchaseCouponList(id){
+    wxRequest({
+      url:'/merchant/userClient?m=findGroupPurchaseCouponList',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          groupPurchaseCouponId:this.data.groupPurchaseCouponId,
+          merchantId:id,
+          size:20,
+          start:0,
+          type:2
+        }	
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        let value=res.data.value;
+        let groupSetMealexcludeItem=this.modifygroupSetMealItem1(value);
+        this.setData({
+           groupSetMealexcludeItem
+        });
+        console.log("groupSetMealexcludeItem",groupSetMealexcludeItem)
+      }else {}
+    });
+  },
+
+
   // 点击图片事件
   merchantInfoImageTap(e){
     let {index=0,images}=e.target.dataset;
@@ -137,9 +185,9 @@ Page({
   },
   // 点击团购的 按钮。注意，这里是返回
   serviceCategory2Tap(e){
-    let {item_index}=e.target.dataset;
+    let {id}=e.target.dataset;
     wx.navigateTo({
-      url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?itemIndex="+item_index
+      url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id
     })
   }
 })

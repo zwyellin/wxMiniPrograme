@@ -1,4 +1,7 @@
 // goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1.js
+const app = getApp();
+const { wxRequest } = require('../../../utils/util.js');
+const {modify} =require("../../GroupPurchaseIndex/groupPurchasePublicJs.js")
 Page({
 
   /**
@@ -10,26 +13,32 @@ Page({
     merchantId:null,
     voucherItem:null,
     itemIndex:null,
+
+    groupPurchaseCouponId:null,//【必传】
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // 获得参数
-    let {itemIndex}=options;
-    //访问上级页面(团购商家也可能是团购套餐详情)的对象，赋值给本页面
-    let pages = getCurrentPages();
-		let prevPage = pages[pages.length - 2]; // 上一级页面
-    let prePageReg=/GroupPurchaseShop/;//判断上一级页面的路径是不是含有GroupPurchaseShop
-		if(prePageReg.test(prevPage.route)){
-      this.setData({
-        groupMerchantInfo:prevPage.data.groupMerchantInfo,
-        voucherItem:prevPage.data.groupMerchantInfo.voucher[itemIndex],
-        merchantId:prevPage.data.groupMerchantInfo.id,
-        itemIndex
-      })
-		}
+    // 获得参数@groupPurchaseCouponId为其id
+    let {groupPurchaseCouponId,latitude,longitude}=options;
+    if(!latitude){//如果没传经纬度
+      if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取经纬度
+
+      }else{//app.json中，则赋值
+        latitude=app.globalData.latitude;
+        longitude=app.globalData.longitude;
+      }
+    }
+    Object.assign(this.data,{
+      groupPurchaseCouponId,
+      longitude,
+      latitude
+    })
+    // 开始请求
+    console.log("传过来的参数为",groupPurchaseCouponId)
+    this.findGroupPurchaseCouponInfo();
   },
 
   /**
@@ -64,4 +73,46 @@ Page({
       url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?itemIndex="+item_index
     })
   },
+
+  findGroupPurchaseCouponInfo(){
+    wxRequest({
+      url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          latitude:this.data.latitude,
+          longitude:this.data.longitude,
+          groupPurchaseCouponId:this.data.groupPurchaseCouponId,
+        }	
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        let value=res.data.value;
+        let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseMerchant)
+        let voucherItem=this.voucherItemModify(value)
+        this.setData({
+          groupMerchantInfo,
+          voucherItem,
+          merchantId:value.groupPurchaseMerchant.id,
+        });
+      }else {}
+    });
+  },
+  voucherItemModify(item){
+    // 处理是否叠加
+    if(item.isCumulate){//是否叠加 0:否,1:是 
+      item.isCumulateText="可叠加"
+    }else{
+    item.isCumulateText="不可叠加"
+    }
+    //处理是否预约  
+    if(item.isBespeak){//0:否,1:是 
+      item.isBespeakText="需预约"
+    }else{
+      item.isBespeakText="免预约"
+    }
+    return item;
+  }
+
 })

@@ -1,16 +1,16 @@
 // goods/GroupPurchaseIndex/GroupPurchaseIndex.js
 const app = getApp();
 const { wxRequest } = require('../../utils/util.js');
-
+const { modify} = require('groupPurchasePublicJs.js');
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    latitude:"39.96606874899509",
-    longitude:"116.3047862214218",
-
+    latitude:null,
+    longitude:null,
+    agentId:null,//代理商id。请求分类时会返回该属性
     
     bannerList:[],//轮播图,请求返回对象
     categoryList:[[]],//icon分类，请求返回对象。是一个二级数组
@@ -19,11 +19,10 @@ Page({
    
     //分类浮层及商家列表相关
     groupPurchaseItemRequsetObj:null,//团购商家请求参数对象
-    groupPurchaseItemRequsetObjDefault:{
-      merchantId:748,
-      latitude:"39.966128",
-      longitude:"116.304782",
-      size:3
+    groupPurchaseItemRequsetObjDefault:{//其实还会加入经纬度
+      url:"findGroupPurchaseMerchantBySearch",
+      start:0,
+      size:10
     },
     isSortBarHidden:true,//分类，筛选的浮层是否显示。
     sortBar:{//分类，筛选，信息
@@ -43,7 +42,10 @@ Page({
    */
   onLoad: function (options) {
 
-
+    if(app.globalData.latitude){
+      this.data.latitude=app.globalData.latitude;
+      this.data.longitude=app.globalData.longitude;
+    }
     // 请求轮播图
     this.findGroupPurchaseBannerList();
     //请求icon分类
@@ -51,9 +53,14 @@ Page({
     // 广告屏
     this.findGroupPurchasePrimaryPublicityList();
     // 开始商家列表请求,组件赋值就会请求
+    let groupPurchaseItemRequsetObjDefault=this.data.groupPurchaseItemRequsetObjDefault;
+    Object.assign(groupPurchaseItemRequsetObjDefault,{
+      latitude:this.data.latitude,
+      longitude:this.data.longitude
+    })
     this.setData({
       groupPurchaseItemRequsetObj:this.data.groupPurchaseItemRequsetObjDefault
-    });
+    })
   },
 
   /**
@@ -76,11 +83,39 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
+        let value=this.findGroupPurchaseBannerListModify(res.data.value);
         this.setData({
-          bannerList:res.data.value
+          bannerList:value
         })
       }
     })
+  },
+  findGroupPurchaseBannerListModify(value){
+    value.forEach((_item,_index)=>{
+      switch(_item.bannerType){
+        case 1:{//外部链接
+          _item.url="/"+_item.url;
+          break;//
+        }
+        case 2:{//代金券
+          _item.url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseMerchantId="+ _item.groupPurchaseMerchantId+"&groupPurchaseCouponId="+_item.groupPurchaseCouponId
+          break;
+        }
+        case 3:{//团购商家
+
+          break;
+        }
+        case 4:{//团购分类
+          _item.url
+          brack;
+        }
+        default:{
+
+        }
+      }
+    })
+    console.log("返回value",value)
+    return value;
   },
   // 获取icon
   findGroupPurchasePrimaryCategoryList(){
@@ -96,6 +131,15 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
+        // 保存代理商id
+        this.setData({
+          agentId:res.data.value[0].agentId
+        })
+        app.globalData.agentId=res.data.value[0].agentId;
+        // 此时可以请求其它的
+
+
+
         // 5个分组
         let categoryList=[[]];
         res.data.value.forEach((item,index,arr)=>{

@@ -14,7 +14,9 @@
         <swiper  style="height:160rpx;border-radius:8rpx;" indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
             <block wx:for="{{bannerList}}" wx:key="index">
                 <swiper-item>
-                    <image class="swiper-image" src="{{item.picUrl}}" />
+                    <navigator url="{{item.url}}" open-type="navigate">
+                        <image class="swiper-image" src="{{item.picUrl}}" />
+                    </navigator>
                 </swiper-item>
             </block>
         </swiper>
@@ -25,10 +27,11 @@
         <swiper style="padding-top:40rpx;margin-bottom:40rpx;height:200rpx" indicator-dots="{{true}}"  interval="{{5000}}" duration="{{500}}">
             <block wx:for="{{categoryList}}" wx:for-item="swiperItem" wx:key="index">
                 <swiper-item class="flex">
-                    <view  wx:for="{{swiperItem}}" wx:key="index" style="width:100rpx;text-align:center;{{index==4 ? '':'margin-right:42rpx'}}">
+                    <navigator url="/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId={{item.groupPurchaseCategoryId}}&childGroupPurchaseCategoryId={{item.childGroupPurchaseCategoryId}}"
+                      wx:for="{{swiperItem}}" wx:key="index" style="width:100rpx;text-align:center;{{index==4 ? '':'margin-right:42rpx'}}">
                         <image class="swiper-icon" src="{{item.picUrl || '../../images/merchant/classification_eva@2x.png'}}"  />
                         <text class="font-14">{{item.name}}</text>
-                    </view>
+                    </navigator>
                 </swiper-item>
             </block>
         </swiper>
@@ -65,7 +68,7 @@
     </view>
     <!-- 对应的浮层 -->
     <groupPurchaseSortBar style="{{isSortBarHidden? 'display:none':''}}" 
-        requestObj="{{ {agentId:3} }}" sortActive="{{sortBar.sortActive}}"  catch:outRequestparams="groupPurchaseSortBarParams">
+        requestObj="{{ {agentId,parentCategoryId:0} }}" sortActive="{{sortBar.sortActive}}"  catch:outRequestparams="groupPurchaseSortBarParams">
     </groupPurchaseSortBar>
 
     <!-- 商家列表 -->

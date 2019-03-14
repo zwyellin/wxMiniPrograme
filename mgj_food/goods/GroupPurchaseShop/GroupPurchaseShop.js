@@ -1,11 +1,13 @@
 const app = getApp();
 const { wxRequest } = require('../../utils/util.js');
+const {modify} =require("../GroupPurchaseIndex/groupPurchasePublicJs.js")
 // goods/GroupPurchaseShop/GroupPurchaseShop.js
 Page({
   data: {
     //商家信息请求参数
     latitude:null,
     longitude:null,
+    agentId:null,
     groupPurchaseMerchantId:null,
     // 商家信息
     groupMerchantInfo:null,
@@ -22,11 +24,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let {groupPurchaseMerchantId=748,latitude,longitude}=options;
-    // latitude="39.966128",longitude="116.304782",
+    // 跳商家，需要参数groupPurchaseMerchantId
+    let {groupPurchaseMerchantId,latitude,longitude}=options;
+    if(!latitude){//如果没传经纬度
+      if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取经纬度
 
-    latitude=app.globalData.latitude;
-    longitude=app.globalData.longitude;
+      }else{//app.json中，则赋值
+        latitude=app.globalData.latitude;
+        longitude=app.globalData.longitude;
+      }
+    }
     Object.assign(this.data,{
       groupPurchaseMerchantId,
       longitude,
@@ -57,7 +64,7 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
-        var value=this.GrouopMerchantModify(res.data.value);
+        var value=modify.GrouopMerchantModify(res.data.value);
         this.data.groupMerchantInfo=value;
         this.setData({
           groupMerchantInfo:value
@@ -73,25 +80,7 @@ Page({
         }
         //请求，附近商家
         this.findNearGroupPurchaseMerchant2();
-        // 或者直接组件内部请求
-        // let groupPurchaseItemRequsetObj={merchantId:748,latitude:"39.966128",longitude:"116.304782",size:3};
-        // this.setData({groupPurchaseItemRequsetObj})
       }else {
-        let msg = res.data.value;
-        if (res.data.code === 100000 ) {
-          setTimeout(()=>{
-            wx.navigateTo({
-              url:'/pages/login/login'
-            });
-          },1000);	
-        }
-        if(res.data.code === 500 && res.data.value=="商家未关联代理商"){//返回
-          setTimeout(()=>{
-          wx.navigateBack({ //返回前一页
-            delta: 1
-            })
-          },2000);	
-        }
         wx.showToast({
           title: res.data.value,
           icon:"none",
@@ -100,61 +89,6 @@ Page({
         })
       }
     })
-  },
-  // 商家信息修改
-  GrouopMerchantModify(value){
-    // 修改imgs,字符串转换为数组
-    if(value.imgs){
-        value.imgs=value.imgs.split(";");
-      if(value.imgs.length >= 4){
-        value.showImgs=value.imgs.slice(0,3)
-      }else{
-        value.showImgs=value.imgs;
-      }
-    }else{
-      value.showImgs=[];
-      value.imgs=[];
-    }
-    // 联系方式处理，字符串转换为数组
-    if(value.contacts){
-      value.contacts=value.contacts.split(";");
-    }else{
-      value.contacts=[];
-      }
-    //把商家服务，属性放到一个数组里面去
-    value.merchantServe=[];
-    if(value.hasWifi)  value.merchantServe= value.merchantServe.concat({type:"wifi",text:"无线"});
-    if(value.hasPOSPayment)  value.merchantServe= value.merchantServe.concat({type:"posPayment",text:"刷卡"});
-    if(value.hasRooms)  value.merchantServe= value.merchantServe.concat({type:"rooms",text:"包厢"});
-    if(value.hasDepot)  value.merchantServe= value.merchantServe.concat({type:"depot",text:"停车"});
-    if(value.hasScenerySeat)  value.merchantServe= value.merchantServe.concat({type:"scenerySeat",text:"景观位"});
-    if(value.hasAlfrescoSeat)  value.merchantServe= value.merchantServe.concat({type:"alfrescoSeat",text:"露天位"});
-    if(value.hasNoSmokIngArea)  value.merchantServe= value.merchantServe.concat({type:"noSmokIngArea",text:"无烟区"});
-    // 把评论分类整理到一个数组里面(未做)
-    // 提取出来代金券和团购套餐对象=>对应数组
-    value.voucher=[];//代金券
-    value.groupSetMeal=[];//团购套餐
-    value.groupPurchaseCouponList.forEach((item,index,arr) => {
-        // 处理是否叠加
-        if(item.isCumulate){//是否叠加 0:否,1:是 
-          item.isCumulateText="可叠加"
-        }else{
-        item.isCumulateText="不可叠加"
-        }
-        //处理是否预约  
-        if(item.isBespeak){//0:否,1:是 
-          item.isBespeakText="需预约"
-        }else{
-          item.isBespeakText="免预约"
-        }
-      //提取出来代金券和团购套餐对象=>对应数组
-      if(item.type==1){//代金券
-        value.voucher=value.voucher.concat(item);
-      }else if(item.type==2){//团购套餐
-        value.groupSetMeal= value.groupSetMeal.concat(item);
-      }
-    });
-    return value;
   },
   // 商家评价-请求findGroupPurchaseEvaluateList。在商家信息，返回来之后，发请求
   findGroupPurchaseEvaluateList(){
@@ -185,8 +119,8 @@ Page({
       data:{
         token:app.globalData.token,
         params:{
-          latitude:"39.966128",
-          longitude:"116.304782",
+          latitude:this.data.latitude,
+          longitude:this.data.longitude,
           merchantId:this.data.groupMerchantInfo.id,
           size:this.data.nearGroupPurchaseSize,
           start:0
@@ -240,16 +174,17 @@ Page({
   },
   // 点击代金券 按钮
   serviceCategory1Tap(e){
-    let {item_index}=e.target.dataset;
+    let {id}=e.target.dataset;
     wx.navigateTo({
-      url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?itemIndex="+item_index
+      url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+id
     })
   },
   // 点击团购的 按钮
   serviceCategory2Tap(e){
-    let {item_index}=e.target.dataset;
+    let {id}=e.target.dataset;
+    console.log("id团购点击",e)
     wx.navigateTo({
-      url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?itemIndex="+item_index
+      url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id
     })
   }
 })

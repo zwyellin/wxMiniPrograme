@@ -44,13 +44,13 @@
         <!-- 标题及更多优惠 -->
         <view class="flex flex-spaceBetween flex-row-center">
             <text class="font-size1 font-bold">商家信息</text>
-            <navigator class="flex flex-row-center" open-type="navigateBack" delta="1">
+            <navigator class="flex flex-row-center" url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{voucherItem.merchantId}}">
                 <text class="font-size5">更多优惠</text>
                 <image src="../../image/more.png" style="width:20rpx;height:20rpx;padding-left:15rpx" />
             </navigator>
         </view>
         <!-- 商家信息内容 -->
-        <view class="flex flex-spaceBetween" style="margin-top:40rpx">
+        <navigator class="flex flex-spaceBetween" style="margin-top:40rpx">
             <!-- 左边 -->
             <image src="{{groupMerchantInfo.imgs[0] || '../../../images/merchant/merchantLogo.png'}}" class="flex0"  style="width:195rpx;height:130rpx;margin-right:20rpx;" />
             <!-- 右边 -->
@@ -89,7 +89,7 @@
                     <view style="font-size:28rpx;line-height:3;color:blue;background:white;border-radius:20rpx;margin:20rpx;text-align:center" catch:tap="maskCancelTap">取消</view>
                 </mask>
             </view>
-        </view>
+        </navigator>
     </view>
 
     <!-- 商家评价 -->
@@ -103,7 +103,7 @@
             </navigator>
         </view>
         <!-- 评价内容 -->
-        <groupPurchaseEvalueteItem requestObj="{{ {merchantId,size:3} }}"></groupPurchaseEvalueteItem>
+        <groupPurchaseEvalueteItem requestObj="{{ {merchantId:voucherItem.merchantId,size:3} }}"></groupPurchaseEvalueteItem>
     </view>
     
 
