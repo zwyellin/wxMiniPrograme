@@ -11,7 +11,7 @@
             </navigator>
         </view>
         <!--轮播图-->
-        <swiper  style="height:160rpx;border-radius:8rpx;" indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
+        <swiper  style="height:160rpx;border-radius:8rpx;"  indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
             <block wx:for="{{bannerList}}" wx:key="index">
                 <swiper-item>
                     <navigator url="{{item.url}}" open-type="navigate">
@@ -28,7 +28,8 @@
             <block wx:for="{{categoryList}}" wx:for-item="swiperItem" wx:key="index">
                 <swiper-item class="flex">
                     <navigator url="/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId={{item.groupPurchaseCategoryId}}&childGroupPurchaseCategoryId={{item.childGroupPurchaseCategoryId}}"
-                      wx:for="{{swiperItem}}" wx:key="index" style="width:100rpx;text-align:center;{{index==4 ? '':'margin-right:42rpx'}}">
+                      wx:for="{{swiperItem}}" wx:key="index" style="width:100rpx;text-align:center;{{index==4 ? '':'margin-right:42rpx'}}"
+                      hover-class="none">
                         <image class="swiper-icon" src="{{item.picUrl || '../../images/merchant/classification_eva@2x.png'}}"  />
                         <text class="font-14">{{item.name}}</text>
                     </navigator>

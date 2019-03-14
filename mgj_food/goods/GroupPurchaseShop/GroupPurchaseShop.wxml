@@ -21,7 +21,11 @@
                 </view>
                 <view wx:if="{{groupMerchantInfo.hasTakeaway==1}}" class="merchantMainInfo_type flex flex-row-center">
                     <image src="../image/waimailogo.png"></image>
-                    <navigator open-type="navigate" url="/goods/shop/shop?merchantid={{groupMerchantInfo.id}}" style="display:inline-block;font-size:28rpx;color:#333">外卖  ></navigator>	
+                    <navigator open-type="navigate" url="/goods/shop/shop?merchantid={{groupMerchantInfo.id}}" 
+                    style="display:inline-block;font-size:28rpx;color:#333"  class="flex flex-row-center" hover-class="none">
+                        <text>外卖</text>
+                        <image src="../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
+                    </navigator>	
                 </view>
             </view>
             <!--商家一张图片时布局-->
@@ -44,7 +48,11 @@
                 </view>
                 <view wx:if="{{groupMerchantInfo.hasTakeaway==1}}" class="merchantMainInfo_type flex flex-row-center">
                     <image src="../image/waimailogo.png"></image>
-                    <navigator open-type="navigate" url="/goods/shop/shop?merchantid={{groupMerchantInfo.id}}" style="display:inline-block;font-size:28rpx;color:#333">外卖  ></navigator>	
+                    <navigator open-type="navigate" url="/goods/shop/shop?merchantid={{groupMerchantInfo.id}}" 
+                    style="display:inline-block;font-size:28rpx;color:#333"  class="flex flex-row-center" hover-class="none">
+                        <text>外卖</text>
+                        <image src="../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
+                    </navigator>	
                 </view>
             </view>
 
@@ -62,7 +70,8 @@
                 </view>
                 <view wx:if="{{groupMerchantInfo.hasTakeaway==1}}" class="merchantMainInfo_type flex flex-row-center">
                     <image src="../image/waimailogo.png"></image>
-                    <navigator open-type="navigate" url="/goods/shop/shop?merchantid={{groupMerchantInfo.id}}" class="flex flex-row-center" style="display:inline-block;font-size:28rpx;color:#333">
+                    <navigator open-type="navigate" url="/goods/shop/shop?merchantid={{groupMerchantInfo.id}}" 
+                    hover-class="none"  class="flex flex-row-center" style="display:inline-block;font-size:28rpx;color:#333">
                         <text>外卖</text>
                         <image src="../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
                     </navigator>	
@@ -88,7 +97,7 @@
          <!--merchantMainInfo结束-->
          <!-- 地址、联系方式 -->
         <view class="merchantInfoContactWay flex flex-spaceBetween flex-row-center">
-            <navigator open-type="navigate" class="flex"
+            <navigator open-type="navigate" class="flex" hover-class="none"
             url="/goods/mapview/mapview?latitude={{groupMerchantInfo.latitude}}&longitude={{groupMerchantInfo.longitude}}&name={{groupMerchantInfo.name}}"
             >
                 <image src="../../images/images/map_1.png" style="width:40rpx;height:40rpx"></image>
@@ -133,7 +142,7 @@
             </view>
             <!-- 右边 -->
             <view class="flex flex-all-center serviceCategoryBuyButton">
-                <button catch:tap="serviceCategory0Tap">优惠买单</button>
+                <button catch:tap="serviceCategory0Tap" hover-stop-propagation="{{true}}">优惠买单</button>
             </view>
         </view>
         <!-- 代金券 对应serviceCategory1-->
@@ -159,7 +168,7 @@
                 </view>
                 <!-- 右边 -->
                 <view class="flex flex-all-center serviceCategoryBuyButton">
-                    <button data-id="{{item.id}}" catch:tap="serviceCategory1Tap">购买</button>
+                    <button data-id="{{item.id}}" catch:tap="serviceCategory1Tap"  hover-stop-propagation="{{true}}">购买</button>
                     <text>已售{{item.accumulateSoldCount}}</text>
                 </view>
             </navigator>
@@ -170,7 +179,7 @@
                 <image src="../../images/images/tuan@2x.png"></image>
                 <text>团购套餐</text>
             </view>
-            <navigator class="flex flex-spaceBetween mt20" 
+            <navigator class="flex flex-spaceBetween mt20" hover-class="none"
             wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index"
             url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}">
                 <!-- 左边 -->
@@ -191,7 +200,7 @@
                     </view>
                     <!-- 右边 -->
                     <view class="flex flex-all-center serviceCategoryBuyButton">
-                        <button data-id="{{item.id}}" catch:tap="serviceCategory2Tap">购买</button>
+                        <button data-id="{{item.id}}" catch:tap="serviceCategory2Tap"  hover-stop-propagation="{{true}}">购买</button>
                         <text>已售{{item.accumulateSoldCount}}</text>
                     </view>
                 </view>

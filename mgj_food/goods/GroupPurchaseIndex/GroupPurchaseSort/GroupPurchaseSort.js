@@ -42,7 +42,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let {groupPurchaseCategoryId=1,childGroupPurchaseCategoryId=98}=options;
+    let {groupPurchaseCategoryId,childGroupPurchaseCategoryId}=options;
     let groupPurchaseItemRequsetObjDefault=this.data.groupPurchaseItemRequsetObjDefault;
     // sort的分类请求
     let sort1RequsetObj=this.data.sort1RequsetObj;
@@ -56,12 +56,18 @@ Page({
       longitude:app.globalData.longitude,
       groupPurchaseCategoryId
     })
+    // 默认加载要根据二级id来
+    let groupPurchaseItemRequsetObj=this.data.groupPurchaseItemRequsetObj;
+    groupPurchaseItemRequsetObj=JSON.parse(JSON.stringify(groupPurchaseItemRequsetObjDefault));
+    Object.assign(groupPurchaseItemRequsetObj,{
+      childGroupPurchaseCategoryId
+    })
     this.setData({
       groupPurchaseItemRequsetObjDefault,
       groupPurchaseCategoryId,
       childGroupPurchaseCategoryId,
       sort1RequsetObj,
-      groupPurchaseItemRequsetObj:groupPurchaseItemRequsetObjDefault
+      groupPurchaseItemRequsetObj
     })
     console.log("sort1RequsetObj",sort1RequsetObj)
   },

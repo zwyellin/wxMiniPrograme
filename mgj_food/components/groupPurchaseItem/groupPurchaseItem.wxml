@@ -110,7 +110,7 @@
         <view wx:elif="{{_responseList.length>4}}" class="bottom-info">
             <view class="bottom-text">我是有底线的</view>
         </view>
-        <view wx:else class="bottom-info">
+        <view wx:elif="{{_listLastState &&_responseList.length==0 }}" class="bottom-info">
 	        <view class="color3 font-size4">抱歉，没有搜索到您想要的商家</view>
         </view>
     </view>
