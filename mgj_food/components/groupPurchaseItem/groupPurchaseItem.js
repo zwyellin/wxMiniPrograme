@@ -1,6 +1,7 @@
 
 const app = getApp();
 const { wxRequest } = require('../../utils/util.js');
+const feedbackApi=require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口
 
 Component({
   /**
@@ -137,6 +138,11 @@ Component({
     // 发送请求
     requestData(loadingState,concatState){
       this.data._loadingState=true;	
+      wx.showToast({
+        title: '加载中',
+        icon: 'loading',
+        duration: 20000
+      })
       let _requestObj=this.data._requestObj;
 
       wxRequest({
@@ -162,17 +168,20 @@ Component({
           this.setData({   
             _responseList:value
           });
+          wx.hideToast();
         }else if(res.data.code === 500 ){//返回
+          wx.hideToast();
           wx.showToast({
             title: res.data.value,
             icon: 'none',
             duration: 2000
           })
 					setTimeout(()=>{
+          wx.hideToast();
 					wx.navigateBack({ //返回前一页
 						delta: 1
-					  })
-					},20000);	
+            })
+					},5000);	
         }
       }).finally(()=>{
         this.data._loadingState=false;

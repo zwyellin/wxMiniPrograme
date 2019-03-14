@@ -239,6 +239,11 @@ Page({
         })
       }
   },
-
+  // 触底
+  onReachBottom: function () {
+    this.setData({
+      'groupPurchaseItemConfig.isPageReachBottom':true
+    })
+  },
  
 })
