@@ -1,16 +1,5 @@
-<!--goods/GroupPurchaseChildPage/serviceCategory2/order/order.wxml-->
-<view class="container page" wx:if="{{!loginsuccess}}" >
-  	<view  class="no-order">
-  		<image class="no-order-img" src="../../../images/images/login@2x.png"></image>
-  		<view class="no-order-text">
-  			<text>你还没有登入，请登入</text>
-  		</view>
-  		<view class="button" bindtap="login">
-  			<text>立即登录</text>
-  		</view>
-  	</view>
-</view>
-<view wx:else class="container page">
+
+<view  class="container page">
     <!--板块。 订单内容信息 -->
     <view class="pageItem padding-tb-40 flex flex-spaceBetween">
         <!-- 左边 -->

@@ -104,13 +104,13 @@
     <!-- 消息框 -->
     <view class="padding-tb-20" wx:if="{{_isPageReachBottomState}}"> 
         <view wx:if="{{!_listLastState}}" > <!--还没有加载或加载完数据-->
-            <view wx:if="{{_loadingState}}"  class="loading-info">
+            <view  class="loading-info">
                 <image src="/images/merchant/loading.png" class="img-loading"></image>
 	            <view class="loading-text">正在加载，请稍候</view>
             </view> 
         </view>
-        <view  wx:else> <!--加载完了数据-->
-            <view wx:if="{{_responseList.length==0 }}" class="bottom-info">
+        <view  wx:elif="{{_listLastState}}"> <!--加载完了数据-->
+            <view wx:if="{{_responseList.length==0}}" class="bottom-info">
                 <view class="color3 font-size4">抱歉，没有搜索到您想要的商家</view>
             </view>
             <view wx:elif="{{_responseList.length>4}}" class="bottom-info">

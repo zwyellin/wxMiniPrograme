@@ -1,12 +1,15 @@
 // goods/GroupPurchaseChildPage/serviceCategory0/serviceCategory0.js
+const app = getApp();
+const { wxRequest } = require('../../../utils/util.js');
 const feedbackApi = require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
-
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+   
+
     istotalAmountInputFocues:true,//input焦点控制
    
     totalAmountInputValue:"",//消费总额，实时
@@ -17,19 +20,56 @@ Page({
 
     excludeAmountInputActive:false,//默认不显示,显示时同时用于控制不参与优惠的input焦点
 
-    discount:0.6,//打折
+    discount:null,//这个等于OrderPreviewRequestObj.discountRatio
+    discountText:null,
 
     discountActive:true,//是否开启打折
 
     actuallyAmount:"",//实付金额(totalAmountInputValue,[excludeAmountInputActive,excludeAmountInputValue],[discountActive,discount])
     discountAmount:"",//折扣了多少金额(totalAmountInputValue,[excludeAmountInputActive,excludeAmountInputValue],[discountActive,discount])
+
+    OrderPreviewRequestObj:{//请求参数对象,这些值是本地计算的(减少服务器压力)，提交前要已服务器为准
+      cashDeductionPrice:0,//抵用劵，在线支付这边固定为0
+      quantity:1, //数量，这边固定为1
+      groupPurchaseOrderType:3,// 1, "代金券",2, "团购券",3, "优惠买单"
+
+      merchantId:null,
+      discountRatio:null,
+      hasDiscount:0,//默认0，不开启。是否开启打折 0 false,1 true
+      userId:null,
+      loginToken:null,// app.globalData.token;
+     
+    },
+    groupPurchaseOrderSubmitRequestObj:{},//根据服务器返回。和OrderPreviewRequestObj合并
+
+    
+    originalTotalPrice:null
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // 获得参数
+    let {merchantId,discountRatio}=options;
+    console.log("进来页面",merchantId,discountRatio)
+    //获得用户信息
+    let {token,userId}=app.globalData;
+    let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
+    //赋值给OrderPreviewRequestObj
+    Object.assign(OrderPreviewRequestObj,{
+      merchantId,discountRatio,
+      loginToken:token,userId
+    })
+    let discount=this.data.discount;
+    discount=discountRatio/100;
+    let discountText=(discount*10).toFixed(1)
+    this.setData({
+      OrderPreviewRequestObj,
+      discount,
+      discountText:discountText
+    })
   },
 
   /**
@@ -38,49 +78,92 @@ Page({
   onReady: function () {
 
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  // 提交
+  serverType0Tap(){
+    // url="/goods/pay/pay?merchantId={{groupMerchantInfo.id}}&price={{actuallyAmount}}"; 
+      this.groupPurchaseOrderPreview().then(()=>{//根据服务器返回计算的值
+        this.groupPurchaseOrderSubmit();//获得订单号
+      });
+  
+    },
+  // 订单预览
+  groupPurchaseOrderPreview(){
+    let data=JSON.parse(JSON.stringify(this.data.OrderPreviewRequestObj));
+    let originalPrice=parseFloat(this.data.totalAmountInputValue.substring(1));
+    let excludeAmountInputValue=this.data.excludeAmountInputValue;
+    data.originalPrice=originalPrice;
+    let notJoinDiscountAmount="";
+    if(this.data.discountActive){
+      data.hasDiscount=1;
+    }else{
+      data.hasDiscount=0;
+    }
+    if(this.data.excludeAmountInputActive && excludeAmountInputValue!=null&&excludeAmountInputValue.length>1){
+      notJoinDiscountAmount=parseFloat(this.data.excludeAmountInputValue.substring(1))
+      data.notJoinDiscountAmount=notJoinDiscountAmount;
+    }
+    data=JSON.stringify(data);
+    return wxRequest({
+      url:'/merchant/userClient?m=groupPurchaseOrderPreview',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          data:data
+        }
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        this.data.originalTotalPrice=res.data.value.originalTotalPrice;
+        let {originalTotalPrice,notJoinDiscountAmount,discountAmt,totalPrice}=res.data.value;
+       let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
+        if(this.data.discountActive) {
+          OrderPreviewRequestObj.hasDiscount=1;
+        }else{
+          OrderPreviewRequestObj.hasDiscount=0;
+        }
+        let groupPurchaseOrderSubmitRequestObj=JSON.parse(JSON.stringify(OrderPreviewRequestObj));
+        Object.assign(groupPurchaseOrderSubmitRequestObj,{
+          originalPrice,notJoinDiscountAmount,totalPrice
+        })
+        this.data.groupPurchaseOrderSubmitRequestObj=groupPurchaseOrderSubmitRequestObj;
+      }else if(res.data.code===500){
+        wx.showToast({
+          title:res.data.value,
+          icon:"none",
+          duration:2000
+        })
+      }
+    });
   },
+  // 订单提交预览,获得订单号
+  groupPurchaseOrderSubmit(){
+    let groupPurchaseOrderSubmitRequestObj=JSON.parse(JSON.stringify(this.data.groupPurchaseOrderSubmitRequestObj));
+    if(groupPurchaseOrderSubmitRequestObj.hasDiscount==0) delete groupPurchaseOrderSubmitRequestObj.hasDiscount;
+    if(!this.data.excludeAmountInputActive) delete groupPurchaseOrderSubmitRequestObj.notJoinDiscountAmount;
+    let data=JSON.stringify(groupPurchaseOrderSubmitRequestObj);
+    wxRequest({
+      url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          data:data
+        }
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+       console.log("获得订单号",res.data.value.id)
+      }else if(res.data.code===500){
+        wx.showToast({
+          title:res.data.value,
+          icon:"none",
+          duration:2000
+        })
+      }
+  })
+},
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
-  // 个人方法
   // 消费总额，input输入事件
   totalAmountInput(e){
     let {value,cursor,keyCode}=e.detail;
@@ -150,6 +233,7 @@ Page({
   // 打折switch切换,先要输入消费总额
   discountSwitch(e){
     let {value}=e.detail;
+   
     this.setData({
       discountActive:value
     })
@@ -181,5 +265,7 @@ Page({
       actuallyAmount,
       discountAmount
     })
-  }
+  },
+
+
 })

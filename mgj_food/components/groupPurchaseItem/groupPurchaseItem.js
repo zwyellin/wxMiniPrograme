@@ -94,11 +94,17 @@ Component({
 
   },
   lifetimes: {       //生命周期函数，可以为函数，或一个在methods段中定义的方法名
-    created(){},
-    attached(){},
+    created(){
+     
+    },
+    attached(){
+    
+    },
     ready(){},
     moved(){},
-    detached(){}
+    detached(){
+ 
+    }
   },
   /**
    * 组件的方法列表
@@ -157,9 +163,9 @@ Component({
         if (res.data.code === 0) {
           let value=this._modifyItemObj(res.data.value);
           if(value.length<this.data._requestObj.size){ //说明请求完了
-            this.setData({
-              _listLastState:true
-            })
+              this.setData({
+                _listLastState:true
+              })
           }
           if(concatState){
             value=value.concat(this.data._responseList);
@@ -185,7 +191,7 @@ Component({
 					},5000);	
         }
       }).finally(()=>{
-        this.data._loadingState=false;
+          this.data._loadingState=false;
       });
     }
 

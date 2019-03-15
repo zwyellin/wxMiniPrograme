@@ -8,6 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isLoginsuccess:false,//是否登入
+
     tel_mask_show:false,
     groupMerchantInfo:null,//直接读取上一页的该对象
     merchantId:null,
@@ -15,6 +17,8 @@ Page({
     itemIndex:null,
 
     groupPurchaseCouponId:null,//【必传】
+
+
   },
 
   /**
@@ -39,6 +43,9 @@ Page({
     // 开始请求
     console.log("传过来的参数为",groupPurchaseCouponId)
     this.findGroupPurchaseCouponInfo();
+
+     //  判断是否登入
+     this.isLoginsuccess();
   },
 
   /**
@@ -66,12 +73,31 @@ Page({
       tel_mask_show:false
     })
   },
+  isLoginsuccess(isLoginTo){
+    let loginMessage = wx.getStorageSync('loginMessage');
+    let loginStatus = wx.getStorageSync('loginstatus');
+    //判断是否登入
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+      this.data.isLoginsuccess=true;
+    }else{
+      if(isLoginTo){
+        wx.navigateTo({//跳转到登入
+          url:"/pages/login/login"
+        })
+      }
+    }
+  },
   // 点击代金券 按钮
   serviceCategory1Tap(e){
     let {item_index}=e.target.dataset;
-    wx.navigateTo({
-      url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?itemIndex="+item_index
-    })
+    let isLoginsuccess=this.data.isLoginsuccess;
+    if(isLoginsuccess){
+      wx.navigateTo({
+        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?itemIndex="+item_index
+      })
+    }else{
+      this.isLoginsuccess(true);//跳转到登入
+    }
   },
 
   findGroupPurchaseCouponInfo(){

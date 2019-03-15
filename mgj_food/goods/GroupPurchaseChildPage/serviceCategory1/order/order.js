@@ -23,23 +23,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let loginMessage = wx.getStorageSync('loginMessage');
-    let loginStatus = wx.getStorageSync('loginstatus');
-    //判断是否登入
-    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
-        this.setData({
-            loginsuccess:true,
-        });
-        //  
-      // 获得参数
-      let {groupPurchaseCouponId}=options;
-      this.data.groupPurchaseCouponId=groupPurchaseCouponId;
-      this.findGroupPurchaseCouponInfo();
-    }else{
-        this.setData({
-          loginsuccess:false,
-        });
-    }
+    // 获得参数
+    let {groupPurchaseCouponId}=options;
+    this.data.groupPurchaseCouponId=groupPurchaseCouponId;
+    this.findGroupPurchaseCouponInfo();
+    // 判断是否登入，点购买时会判断
+    this.isLoginsuccess();
   },
 
   /**
@@ -55,6 +44,36 @@ Page({
   onShow: function () {
 
   },
+  isLoginsuccess(isLoginTo){
+    let loginMessage = wx.getStorageSync('loginMessage');
+    let loginStatus = wx.getStorageSync('loginstatus');
+    //判断是否登入
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+        this.setData({
+            loginsuccess:true,
+        });
+    }else{
+      if(isLoginTo){
+        wx.navigateTo({//跳转到登入
+          url:"/pages/login/login"
+        })
+      }
+    }
+  },
+  // 提交订单
+  submitOrderBtnTap(){
+    let loginsuccess=this.data.loginsuccess;
+    let voucherItem=this.data.voucherItem;
+    let realTotalMoney=this.data.realTotalMoney;
+    if(loginsuccess){
+      wx.navigateTo({
+        url:"/goods/pay/pay?merchantId="+voucherItem.merchantId+"&price="+realTotalMoney
+      })
+    }else{
+      this.isLoginsuccess(true);//跳转到登入
+    }
+  },
+
   // 滑块滑动事件
  sliderChanging(e){
     var type;

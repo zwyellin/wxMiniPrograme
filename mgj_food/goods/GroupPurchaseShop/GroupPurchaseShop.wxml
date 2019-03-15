@@ -142,7 +142,7 @@
             </view>
             <!-- 右边 -->
             <view class="flex flex-all-center serviceCategoryBuyButton">
-                <button catch:tap="serviceCategory0Tap" hover-stop-propagation="{{true}}">优惠买单</button>
+                <button data-id="{{groupMerchantInfo.id}}" data-ratio="{{groupMerchantInfo.discountRatio}}" catch:tap="serviceCategory0Tap" hover-stop-propagation="{{true}}">优惠买单</button>
             </view>
         </view>
         <!-- 代金券 对应serviceCategory1-->

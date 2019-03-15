@@ -4,33 +4,34 @@
 
 <!--index.wxml-->
 <View class="container {{maskShow ? 'posi' : ''}} {{isAgentId ? 'no-goods' : ''}}">
-	<view class="page">
-		<!-- 地点 开始 -->
-		<view class="search-view">
-		    <view class="adress-box" bindtap="redirectToAddress">
-		      	<view class="left-img">
-	              <image src="/images/images/map.png" class="icon-adress"></image>
-	            </view>
-	            <view class="adress-content" style="color:#fff;text-align: center">
-	                <text class="adress-text">{{city.cityName}}</text> 
-	            </view>
-	            <view class="right-img">
-	              <image src="/images/images/down_fff.png" class="icon-adress-right"></image>
-	            </view>
-		    </view>
-		    <view class="search-box">
-			    <view class="icon-search">
-			    	<image src="/images/images/search.png" class="icon-adress_search"></image>
-			   	</view>
-			   	<view class="search-input">
-			   		<view class="search-placeholder" bindtap="focusToSearch">想吃啥，搜啥</view>
-			   	</view>
-	    	</view>
-		</view>
-		<!-- 地点 结束 -->
 
-		<!-- 轮播图 开始 -->
-		<swiper 
+	<view class="flex flex-row-center flex-spaceBetween" style="background:white;">
+		<!--地图位置-->
+		<view class="flex0 flex flex-row-center padding-lr-20" bindtap="redirectToAddress">
+			<image class ="flex0" src="/images/images/location.png"  style="width:34rpx;height:38rpx;padding-right:20rpx;margin-top:10rpx;"/>
+			<view class="text-overflow-dots flex1" style="padding-right:10rpx;width:300rpx;">
+				<text style="font-size:26rpx;color:#333">{{city.cityName}}</text> 
+			</view>
+			<image class ="flex0" src="/images/images/down_rotate.png" style="width:20rpx;height:20rpx;margin-top:6rpx;"></image>
+		</view>
+		<view classs="box-sizing-box" style="height:56rpx;border-top-left-radius:30rpx;border-bottom-left-radius:30rpx;background:#ccc">
+			<text style="font-size:26rpx;color:#333;line-height:56rpx;padding:20rpx;">APP体验</text>
+		</view>
+	</view>
+	<!-- 搜索框 -->
+	<view class="padding-tb-20 flex flex-row-center flex-spaceBetween" >
+		<view bindtap="focusToSearch"
+		class="flex flex1 box-sizing-box flex-row-center padding-lr-20" style="margin:0 20rpx;border-radius:30rpx;height:54rpx;line-height:54rpx;background:#f0f0f0"> 
+			<image class="flex0" src="../../images/images/search.png"  style="width:28rpx;height:28rpx;padding-right:20rpx;"/>
+			<text style="font-size:24rpx;color:#999">输入你想搜的内容</text>
+		</view>
+		<navigator url="/goods/userredBag/userredBag" style="position:relative">
+			<image src="../../images/images/wallet.png" style="padding:0rpx 20rpx;width:48rpx;height:41rpx;"/>
+			<text style="color:red;position:absolute;top:-56rpx;left:57rpx;font-size:60rpx;font-weight:bold;">.</text>
+		</navigator>
+	</view>
+	<!-- 轮播图 开始 -->
+	<swiper 
 			wx:if="{{!isAgentId && !isSwipper}}"
 		    class="swiper-banner"
 		    indicator-dots="{{swiper.indicatorDots}}" 
@@ -48,8 +49,12 @@
 		        <image wx:if="{{!swiper.imageShow}}" bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" />
 		      </swiper-item>
 		    </block>
-		</swiper>
-		<!-- 轮播图 结束 -->
+	</swiper>
+	<!-- 轮播图 结束 -->
+
+	<view class="page">
+
+		
 		<view class="swiper-banner" wx:if="{{!isAgentId && isSwipper}}">
 			<block 
 		      wx:for="{{swiper.imgUrls}}" 
@@ -109,16 +114,6 @@
 	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 		</view>
-		<navigator open-type="navigate" url="/goods/GroupPurchaseShop/GroupPurchaseShop">团购入口</navigator>	
-
-		<navigator open-type="navigate" url="/goods/GroupPurchaseIndex/GroupPurchaseIndex">团购首页入口</navigator>	
-		
-		<navigator open-type="navigate" url="/goods/GroupPurchaseIndex/GroupPurchaseSearch/GroupPurchaseSearch">search页面</navigator>	
-
-		<navigator open-type="navigate" url="/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort">二级分类页面</navigator>	
-
-
-
 		<!--优化列表显示，这边放了十个一维数组，最后数据都放到最后一个数组那里-->
 		<template is="merchant" data="{{dataList:dataList1,cartObject,size,linearArrayIndex:1}}"></template>
 		<template is="merchant" data="{{dataList:dataList2,cartObject,size,linearArrayIndex:2}}"></template>

@@ -9,6 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isLoginsuccess:false,//是否登入
+
     tel_mask_show:false,
     groupMerchantInfo:null,//
     merchantId:null,
@@ -37,6 +39,9 @@ Page({
         latitude
       })
      this.findGroupPurchaseCouponInfo();
+     
+    //  判断是否登入
+    this.isLoginsuccess();
   },
 
   /**
@@ -52,6 +57,34 @@ Page({
   onShow: function () {
 
   },
+
+  isLoginsuccess(isLoginTo){
+    let loginMessage = wx.getStorageSync('loginMessage');
+    let loginStatus = wx.getStorageSync('loginstatus');
+    //判断是否登入
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+      this.data.isLoginsuccess=true;
+    }else{
+      if(isLoginTo){
+        wx.navigateTo({//跳转到登入
+          url:"/pages/login/login"
+        })
+      }
+    }
+  },
+  // 点击团购的 按钮。
+  serviceCategory2Tap(e){
+    let {id}=e.target.dataset;
+    let isLoginsuccess=this.data.isLoginsuccess;
+    if(isLoginsuccess){
+      wx.navigateTo({
+        url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id
+      })
+    }else{
+      this.isLoginsuccess(true);//跳转到登入
+    }
+  },
+
   findGroupPurchaseCouponInfo(){
     wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
@@ -183,11 +216,5 @@ Page({
       tel_mask_show:false
     })
   },
-  // 点击团购的 按钮。注意，这里是返回
-  serviceCategory2Tap(e){
-    let {id}=e.target.dataset;
-    wx.navigateTo({
-      url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id
-    })
-  }
+
 })

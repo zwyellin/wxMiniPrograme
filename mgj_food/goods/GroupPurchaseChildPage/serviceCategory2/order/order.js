@@ -10,6 +10,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    loginsuccess:false,//是否登入
+
     groupMerchantInfo:null,
     groupSetMealItem:null,
     merchantId:null,
@@ -29,10 +31,10 @@ Page({
   onLoad: function (options) {
     // 获得参数
     let {groupPurchaseCouponId}=options;
-    // 先判断有没有登入
-    
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
     this.findGroupPurchaseCouponInfo();
+    // 判断是否登入，点购买时会判断
+    this.isLoginsuccess();
   },
 
   /**
@@ -55,7 +57,35 @@ Page({
   onHide: function () {
 
   },
-
+  isLoginsuccess(isLoginTo){
+    let loginMessage = wx.getStorageSync('loginMessage');
+    let loginStatus = wx.getStorageSync('loginstatus');
+    //判断是否登入
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+        this.setData({
+            loginsuccess:true,
+        });
+    }else{
+      if(isLoginTo){
+        wx.navigateTo({//跳转到登入
+          url:"/pages/login/login"
+        })
+      }
+    }
+  },
+  // 提交
+  OrderBtnTap(){
+    let loginsuccess=this.data.loginsuccess;
+    let groupSetMealItem=this.data.groupSetMealItem;
+    let realTotalMoney=this.data.realTotalMoney;
+    if(loginsuccess){
+      wx.navigateTo({
+        url:"/goods/pay/pay?merchantId="+groupSetMealItem.merchantId+"&price="+realTotalMoney
+      })
+    }else{
+      this.isLoginsuccess(true);//跳转到登入
+    }
+  },
   modifygroupSetMealItem(value){
     console.log("显示",value)
     // images,字符串转换为数组
@@ -157,6 +187,8 @@ Page({
       value.createTime=value.createTime.substring(0,value.createTime.indexOf(" "));
     }
     return value;
-  }
+  },
+
+
 
 })

@@ -58,11 +58,15 @@ let merchantObj = {
 	},
 	goToPageType(e) {
 		let { item } = e.currentTarget.dataset;
-		if (item.gotoType === 6) {
+		if (item.gotoType === 6) {//外卖
 			wx.navigateTo({
 				url:"/goods/shop/shop?merchantid=" + item.merchantId,
 			});
-		} else {
+		}else if(item.gotoType === 4){//团购
+			wx.navigateTo({
+				url:"/goods/GroupPurchaseIndex/GroupPurchaseIndex",
+			});
+		}else {
 			wx.navigateTo({
 				url:`/pages/classPage/classPage?id=${item.tagCategoryId}&name=${item.name}`
 			});

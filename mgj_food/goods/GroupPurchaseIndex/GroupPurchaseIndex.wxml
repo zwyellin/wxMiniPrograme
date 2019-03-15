@@ -30,7 +30,8 @@
                     <navigator url="/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId={{item.groupPurchaseCategoryId}}&childGroupPurchaseCategoryId={{item.childGroupPurchaseCategoryId}}"
                       wx:for="{{swiperItem}}" wx:key="index" style="width:100rpx;text-align:center;{{index==4 ? '':'margin-right:42rpx'}}"
                       hover-class="none">
-                        <image class="swiper-icon" src="{{item.picUrl || '../../images/merchant/classification_eva@2x.png'}}"  />
+                        <image  wx:if="{{item.graySwitch === 0}}" class="swiper-icon" src="{{item.picUrl || '../../images/merchant/classification_eva@2x.png'}}"  />
+                        <image  wx:if="{{item.graySwitch === 1}}" class="swiper-icon" src="{{item.grayUrl || '../../images/merchant/classification_eva@2x.png'}}"  />
                         <text class="font-14">{{item.name}}</text>
                     </navigator>
                 </swiper-item>

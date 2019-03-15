@@ -132,11 +132,11 @@ page {
 /* swiper */
 .swiper-banner {
   width: 100%;
-  height: 234rpx;
+  height: 160rpx;
 }
 .slide-image {
   width: 100%;
-  height: 234rpx;
+  height: 160rpx;
 }
 .block {
   width: 100%;

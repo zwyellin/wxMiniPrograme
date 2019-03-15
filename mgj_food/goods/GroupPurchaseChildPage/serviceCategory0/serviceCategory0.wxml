@@ -23,7 +23,7 @@
 
     <!-- 打折 -->
     <view class="mt20 flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40  bg-content-color" style="padding-right:10rpx;">
-        <text class="font-size3 font-bold color1">6.0折</text>
+        <text class="font-size3 font-bold color1">{{discountText}}折</text>
         <view>
             <text class="font-size4" style="color:red">{{discountAmount}}</text>
             <switch type="checkbox" style="transform:scale(0.8);padding:5rpx 20rpx;" color="#ff9900" checked="{{true}}" bindchange="discountSwitch"></switch>
@@ -33,7 +33,7 @@
 
     <!-- 抵用卷及实付金额 -->
     <view class="mt20 bg-content-color" >
-        <view class="flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40 row-line">
+        <view wx:if="{{false}}"class="flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40 row-line">
             <text class="font-size3 color1">抵用卷</text>
             <image src="../../image/more.png"  style="height:30rpx;width:30rpx"/>
         </view>
@@ -45,13 +45,13 @@
     
  
      <!-- 提交 -->
-    <navigator  url="/goods/pay/pay?merchantId={{groupMerchantInfo.id}}&price={{actuallyAmount}}" open-type="navigate" class="mt20 padding-tb-20 padding-lr-40">
+    <view  catch:tap="serverType0Tap" class="mt20 padding-tb-20 padding-lr-40">
         <button class="bg-button-color font-size2" style="color:white">提交订单</button>
-    </navigator>
+    </view>
     <!-- 优惠说明 -->
     <view class="padding-lr-40">
         <navigator url="/goods/GroupPurchaseChildPage/serviceCategory0/discountDescription/disccountDescription"
-            class="font-size2 padding-tb-20 border-radius4" style="text-align:center;color:#ff9900;display:inline-block;width:100%;background:#d7d7d7">优惠说明</navigator>
+            class="font-size2 padding-tb-20 border-radius4" style="text-align:center;color:#333;display:inline-block;width:100%;background:#d7d7d7">优惠说明</navigator>
     </view>
     <view class="padding-lr-40 text-center">
         <text class="font-size5">仅限到店支付，请确认金额后提交</text>

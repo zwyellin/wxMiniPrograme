@@ -22,7 +22,7 @@ Page({
     groupPurchaseItemRequsetObjDefault:{//其实还会加入经纬度
       url:"findGroupPurchaseMerchantBySearch",
       start:0,
-      size:10
+      size:5
     },
     isSortBarHidden:true,//分类，筛选的浮层是否显示。
     sortBar:{//分类，筛选，信息

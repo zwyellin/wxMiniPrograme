@@ -4,6 +4,8 @@ const {modify} =require("../GroupPurchaseIndex/groupPurchasePublicJs.js")
 // goods/GroupPurchaseShop/GroupPurchaseShop.js
 Page({
   data: {
+    isLoginsuccess:false,//是否登入
+
     //商家信息请求参数
     latitude:null,
     longitude:null,
@@ -40,6 +42,9 @@ Page({
       latitude
     })
     this.requestGrouopMerchantInfo();
+
+     //  判断是否登入
+     this.isLoginsuccess();
   },
 
   /**
@@ -47,6 +52,57 @@ Page({
    */
   onReady: function () {
 
+  },
+  isLoginsuccess(isLoginTo){
+    let loginMessage = wx.getStorageSync('loginMessage');
+    let loginStatus = wx.getStorageSync('loginstatus');
+    //判断是否登入
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
+      this.data.isLoginsuccess=true;
+    }else{
+      if(isLoginTo){
+        wx.navigateTo({//跳转到登入
+          url:"/pages/login/login"
+        })
+      }
+    }
+  },
+  // 点击优惠买单 按钮
+  serviceCategory0Tap(e){
+    let {id,ratio}=e.target.dataset;
+    let isLoginsuccess=this.data.isLoginsuccess;
+    if(isLoginsuccess){
+      wx.navigateTo({
+        url:"/goods/GroupPurchaseChildPage/serviceCategory0/serviceCategory0?merchantId="+id+"&discountRatio="+ratio
+      })
+    }else{
+      this.isLoginsuccess(true);//跳转到登入
+    }
+   
+  },
+  // 点击代金券 按钮
+  serviceCategory1Tap(e){
+    let {id}=e.target.dataset;
+    let isLoginsuccess=this.data.isLoginsuccess;
+    if(isLoginsuccess){
+      wx.navigateTo({
+        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+id
+      })
+    }else{
+      this.isLoginsuccess(true);//跳转到登入
+    }
+  },
+  // 点击团购的 按钮
+  serviceCategory2Tap(e){
+    let {id}=e.target.dataset;
+    let isLoginsuccess=this.data.isLoginsuccess;
+    if(isLoginsuccess){
+      wx.navigateTo({
+        url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id
+      })
+    }else{
+      this.isLoginsuccess(true);//跳转到登入
+    }
   },
 
   // 商家信息-请求
@@ -163,28 +219,4 @@ Page({
     })
   },
 
-
-
-  // 业务逻辑
-  // 点击优惠买单
-  serviceCategory0Tap(){
-    wx.navigateTo({
-      url:"/goods/GroupPurchaseChildPage/serviceCategory0/serviceCategory0"
-    })
-  },
-  // 点击代金券 按钮
-  serviceCategory1Tap(e){
-    let {id}=e.target.dataset;
-    wx.navigateTo({
-      url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+id
-    })
-  },
-  // 点击团购的 按钮
-  serviceCategory2Tap(e){
-    let {id}=e.target.dataset;
-    console.log("id团购点击",e)
-    wx.navigateTo({
-      url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id
-    })
-  }
 })
