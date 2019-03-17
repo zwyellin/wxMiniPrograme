@@ -43,8 +43,11 @@ Page({
     groupPurchaseOrderSubmitRequestObj:{},//根据服务器返回。和OrderPreviewRequestObj合并
 
     
-    originalTotalPrice:null
+    originalTotalPrice:null,
 
+    orderId:null,//保存订单提交时候的order订单id
+    orderTitle:null,
+    orderMoney:null,
   },
 
   /**
@@ -52,8 +55,7 @@ Page({
    */
   onLoad: function (options) {
     // 获得参数
-    let {merchantId,discountRatio}=options;
-    console.log("进来页面",merchantId,discountRatio)
+    let {merchantId,discountRatio,merchantName}=options;
     //获得用户信息
     let {token,userId}=app.globalData;
     let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
@@ -65,11 +67,13 @@ Page({
     let discount=this.data.discount;
     discount=discountRatio/100;
     let discountText=(discount*10).toFixed(1)
+    this.data.orderTitle=merchantName;
     this.setData({
       OrderPreviewRequestObj,
       discount,
       discountText:discountText
-    })
+    });
+    this.groupPurchaseOrderPreview();
   },
 
   /**
@@ -82,9 +86,22 @@ Page({
   serverType0Tap(){
     // url="/goods/pay/pay?merchantId={{groupMerchantInfo.id}}&price={{actuallyAmount}}"; 
       this.groupPurchaseOrderPreview().then(()=>{//根据服务器返回计算的值
-        this.groupPurchaseOrderSubmit();//获得订单号
+        this.groupPurchaseOrderSubmit().then(()=>{//获得订单号
+            let orderId=this.data.orderId;
+            if(orderId==null){
+              wx.showToast({
+                title:"提交失败",
+                icon:"none",
+                duration:2000
+              })
+            }else{
+              wx.navigateTo({
+                url:"/goods/GroupPurchasePay/GroupPurchasePay?orderId="+this.data.orderId+"&orderMoney="+
+                this.data.orderMoney+"&orderTitle="+this.data.orderTitle
+              })
+            }
+        });
       });
-  
     },
   // 订单预览
   groupPurchaseOrderPreview(){
@@ -102,6 +119,7 @@ Page({
       notJoinDiscountAmount=parseFloat(this.data.excludeAmountInputValue.substring(1))
       data.notJoinDiscountAmount=notJoinDiscountAmount;
     }
+    this.data.orderMoney=data.originalPrice;
     data=JSON.stringify(data);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderPreview',
@@ -142,7 +160,7 @@ Page({
     if(groupPurchaseOrderSubmitRequestObj.hasDiscount==0) delete groupPurchaseOrderSubmitRequestObj.hasDiscount;
     if(!this.data.excludeAmountInputActive) delete groupPurchaseOrderSubmitRequestObj.notJoinDiscountAmount;
     let data=JSON.stringify(groupPurchaseOrderSubmitRequestObj);
-    wxRequest({
+    return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
       method:'POST',
       data:{
@@ -153,7 +171,8 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
-       console.log("获得订单号",res.data.value.id)
+       console.log("获得订单号",res.data.value.id);
+       this.data.orderId=res.data.value.id;
       }else if(res.data.code===500){
         wx.showToast({
           title:res.data.value,

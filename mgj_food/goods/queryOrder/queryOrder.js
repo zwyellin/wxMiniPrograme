@@ -423,8 +423,8 @@ Page({
 	        			},1000);
 	        		}
 	        	} else {
-	        		let msg = res.data.value;
-	        		feedbackApi.showToast({title:msg});
+	        		let msg = res.data.value||"";
+	        	//	feedbackApi.showToast({title:msg});
 	        	}	
 	        }).finally(()=>{
 	        	wx.hideLoading();

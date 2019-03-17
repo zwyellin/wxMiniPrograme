@@ -1,0 +1,49 @@
+<!--goods/GroupPurchasePay/GroupPurchasePay.wxml-->
+<view class="container page">
+    <!--头部 -->
+    <view class="pageItem text-center font-20 padding-tb-40">
+        <!--多少钱-->
+        <view class="text-center ">￥{{orderMoney}}</view>
+        <!--订单名称等 -->
+        <text >{{orderTitle}}</text>
+    </view>
+    <!-- 余额支付方式 -->
+    <view class="pageItem mt20 flex flex-spaceBetween flex-row-center font-16">
+        <text>余额支付<text>(账户余额:(3242))</text></text>
+        <view class="flex flex-spaceBetween flex-row-center"> 
+            <text>{{333}}</text>
+             <switch type="checkbox" style="transform:scale(0.8);padding:5rpx 0 5rpx 20rpx;" color="#ff9900" 
+             checked="{{payType==0}}" data-payindex="{{0}}" bindchange="payTypeSwitch"></switch>
+        </view>
+    </view>
+    <!-- 其它支付方式 -->
+    <view class="mt20 font-16" style="line-height:3">
+        <!-- 标题 -->
+        <view class="pageItem flex flex-spaceBetween flex-row-center row-line">
+            <text>使用第三方支付平台</text>
+            <text>{{findChargeTypesResData.totalPrice}}</text>
+        </view>
+        <!-- 微信，支付宝 -->
+        <block wx:for="{{findChargeTypesResData.chargeTypes}}">
+            <view class="pageItem flex flex-spaceBetween flex-row-center row-line">
+                <view>
+                    <!-- <image src="" /> -->
+                    <text>{{item.name}}</text>
+                </view>
+                <switch type="checkbox" style="transform:scale(0.8);padding:5rpx 0 5rpx 20rpx;" color="#ff9900" 
+                checked="{{payType==(index+1)}}" bindchange="payTypeSwitch"
+                data-payindex="{{(index+1)}}" data-channel="{{item.channel}}" data-name="{{item.name}}" ></switch>
+            </view>
+        </block>
+        <!-- 其他支付说明 -->
+        <view class="pageItem text-center color3">
+            <text>更多支付方式敬请期待</text>
+        </view>
+    </view>
+
+    <!-- 确认支付 -->
+        <!-- 提交 -->
+    <view  class="mt20 padding-tb-20 padding-lr-40">
+        <button class="bg-button-color font-size2" style="color:white">确认支付</button>
+    </view>
+</view>

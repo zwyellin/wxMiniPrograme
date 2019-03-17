@@ -78,6 +78,7 @@
         "GroupPurchaseChildPage/serviceCategory2/serviceCategory2",
         "GroupPurchaseChildPage/serviceCategory2/order/order",
         "GroupPurchaseChildPage/evaluateListPage/evaluateListPage",
+        "GroupPurchasePay/GroupPurchasePay",
         "mapview/mapview",
         "queryOrder/queryOrder",
         "pay/pay",
