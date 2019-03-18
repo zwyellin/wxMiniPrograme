@@ -106,6 +106,7 @@ Component({
         duration: 20000
       })
       let _requestObj=this.data._requestObj;
+      _requestObj.start=this.data._start;
       console.log("_requestObj:",_requestObj)
       wxRequest({
         url:'/merchant/userClient?m=findGroupPurchaseEvaluateList',
@@ -123,7 +124,7 @@ Component({
             })
           }
           if(concatState){
-            value=value.concat(this.data._evaluateList);
+            value=this.data._evaluateList.concat(value);
           }
           this.setData({
             _evaluateList:value,

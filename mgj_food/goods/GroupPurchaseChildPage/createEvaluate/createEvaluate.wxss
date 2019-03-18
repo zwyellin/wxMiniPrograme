@@ -1,7 +1,8 @@
 .headImage{
-    width:60rpx;
-    height: 60rpx;
-    border-radius: 30rpx
+    width:70rpx;
+    height:70rpx;
+    border-radius:35rpx;
+    margin-right:8px;
 }
 .evaluateIcon{
     width: 100rpx;
@@ -57,6 +58,8 @@
     position:fixed;
     top:0;
     bottom: 0;
+    left:0;
+    right:0;
     width: 100%;
     background-color:rgba(50, 50,50, 0.5);
     z-index:5000;
@@ -64,6 +67,7 @@
 .chooseImageFixed{
     position: fixed;
     bottom: 0;
+   
     width: 100%;
     z-index:99999;
   }

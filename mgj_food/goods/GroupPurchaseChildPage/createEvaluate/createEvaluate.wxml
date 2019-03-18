@@ -13,7 +13,8 @@
              </view>
              <view>
                  <label class="flex flex-row-center"  catch:tap="">
-                     <checkbox color="#ff9900" />匿名评价
+                     <checkbox color="#ff9900" style="transform:scale(0.8);padding:6rpx;"/>
+                     <text style=" font-size: 24rpx;color:#999999;">匿名评价</text>
                  </label>
              </view>
          </view>
@@ -52,7 +53,7 @@
     <!-- 评价，textarea 照片 -->
     <view class="pageItem mt20 padding-tb-40">
         <textarea placeholder="亲，产品如何，环境怎么样，服务满意吗" placeholder-style="font-size:26rpx"
-        class="textarea" maxlength="800"></textarea>
+        class="textarea" maxlength="800" disabled="{{chooseImage}}"></textarea>
 
         <view class="addImage flex " >
             <view wx:for="{{imageList}}" wx:key="index" style="position: relative;margin-right:{{(index+1)%4===0 ? '' : '24rpx'}};margin-top:{{index>=4? '20rpx' : ''}}">
