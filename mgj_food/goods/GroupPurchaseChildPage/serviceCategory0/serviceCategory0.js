@@ -96,8 +96,7 @@ Page({
               })
             }else{
               wx.navigateTo({
-                url:"/goods/GroupPurchasePay/GroupPurchasePay?orderId="+this.data.orderId+"&orderMoney="+
-                this.data.orderMoney+"&orderTitle="+this.data.orderTitle
+                url:"/goods/pay/pay?price="+this.data.orderMoney+"&orderId="+this.data.orderId
               })
             }
         });

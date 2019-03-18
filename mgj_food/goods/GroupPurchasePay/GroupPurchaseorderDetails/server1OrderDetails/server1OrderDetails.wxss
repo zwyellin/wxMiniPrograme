@@ -1,0 +1,22 @@
+/* goods/GroupPurchasePay/GroupPurchaseorderDetails/server1OrderDetails/server1OrderDetails.wxss */
+@import "../../../../components/star/star.wxss";
+.attr-items{
+    padding:10rpx 0 40rpx;
+}
+.attr-item{
+    padding-top:30rpx;
+    font-size: 28rpx;
+}
+.attr-item .item-title{
+    color:#333;
+    font-weight: bold;
+    display: block;
+}
+.attr-item .item-content{
+   color:#666;
+}
+.textBlock text{
+    display: block;
+    font-size: 24rpx;
+    color:#666;
+}

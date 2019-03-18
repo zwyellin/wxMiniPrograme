@@ -11,7 +11,7 @@
             </navigator>
         </view>
         <!--轮播图-->
-        <swiper  style="height:160rpx;border-radius:8rpx;"  indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
+        <swiper  style="height:240rpx;"  indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
             <block wx:for="{{bannerList}}" wx:key="index">
                 <swiper-item>
                     <navigator url="{{item.url}}" open-type="navigate">

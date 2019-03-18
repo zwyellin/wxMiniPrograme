@@ -94,13 +94,25 @@ Page({
       let isCloseTimer = false;
       orderList.forEach(function(val,key){
         if(val.orderFlowStatus === 1){
-          isCloseTimer = true;
-          val.timestamp = me.timer({
-            paymentExpireTime: val.paymentExpireTime,
-            createTime: val.modifyTime    // 订单未支付时，此时间等于订单创建时间
-          });
-          if(val.timestamp === '' ){
-            val.orderFlowStatus = -1;
+          // 外卖
+          if(val.type==1){
+            isCloseTimer = true;
+            val.timestamp = me.timer({
+              paymentExpireTime: val.paymentExpireTime,
+              createTime: val.modifyTime    // 订单未支付时，此时间等于订单创建时间
+            });
+            if(val.timestamp === '' ){
+              val.orderFlowStatus = -1;
+            }
+          }else if(val.type==6){//团购
+            isCloseTimer = true;
+            val.timestamp = me.timer({
+              paymentExpireTime: val.groupPurchaseOrder.paymentExpireTime,
+              createTime: val.groupPurchaseOrder.modifyTime    // 订单未支付时，此时间等于订单创建时间
+            });
+            if(val.timestamp === '' ){
+              val.orderFlowStatus = -1;
+            }
           }
         } 
       });
@@ -122,23 +134,55 @@ Page({
         item.refundDetail = false;
       }
       item.createTime = refundTime(item.createTime);
+      // 修改团购的信息
+      if(item.type==6){
+        let orderType=undefined ;
+        if(item.groupPurchaseOrder){
+          orderType=item.groupPurchaseOrder.orderType
+        }else if(item.orderType){
+          orderType=item.orderType;
+        }
+        let orderTypeText="";
+        // orderType:。 1, "代金券",2, "团购券",3, "优惠买单" 
+        switch(orderType){
+          case 1:orderTypeText="代金券";break;
+          case 2:orderTypeText="团购券";break;
+          case 3:orderTypeText="优惠买单";break;
+          default:
+        }
+        if(item.groupPurchaseOrder==undefined){//说明时团购tag点击时是该对象
+          item.orderTypeText=orderTypeText;
+          item.groupPurchaseOrder=JSON.parse(JSON.stringify(item));
+        }else{
+          item.groupPurchaseOrder.orderTypeText=orderTypeText;
+        }
+      }
       return item;
     },
-    findNewUserTOrders(status){
-      if (!status) {//status false表示要展示加载小图标
+    findNewUserTOrders(status,reqObj){//reqObj只是在切换列表tag时会传
+      if (!status) {//status false表示要展示加载小图标且是不是列表合并
         wx.showLoading({
           title: '加载中',
           mask: true
         });
       }
+      if(reqObj==undefined){
+        reqObj={};
+        reqObj.params={};
+        reqObj.url="findNewUserTOrders";
+      }else{
+        if(reqObj.url==undefined)  reqObj.url="findNewUserTOrders";
+      }
+      reqObj.params=Object.assign({},{
+        size:20,
+        start:this.data.start,
+        type: reqObj.type
+      });
       wxRequest({
-        url:'/merchant/userClient?m=findNewUserTOrders',
+        url:'/merchant/userClient?m='+reqObj.url,
         method:'POST',
         data:{
-          params:{
-            size:20,
-            start:this.data.start
-          },
+          params:reqObj.params,
           token:app.globalData.token  
         },
       }).then(res=>{
@@ -149,6 +193,9 @@ Page({
               let orderList = this.data.orderList;
               console.log(orderList)
               valueArr.map((item)=>{
+                if( reqObj.url!="findNewUserTOrders"){
+                  item.type=6;
+                }
                 item = this.changeRefundButton(item);
                 orderList.push(item);
               });
@@ -163,7 +210,10 @@ Page({
             } 
           } else {
             valueArr.map((item)=>{
-                item = this.changeRefundButton(item);
+              if( reqObj.url!="findNewUserTOrders"){
+                item.type=6;
+              }
+              item = this.changeRefundButton(item);
             });
             this.data.orderList  = valueArr;
             this.setData({
@@ -193,6 +243,8 @@ Page({
       }).finally(res=>{
         wx.stopPullDownRefresh();
         this.data.iscartDetailBack=false;//重置
+        console.log("orderList",this.data.orderList);
+        console.log(this.data.orderList[0].type,this.data.orderList[0].type==6)
       });
     },
     //再来一单
@@ -269,6 +321,32 @@ Page({
         url:'/pages/goods/refundDetail/refundDetail?orderid=' + food.id
       });
     },
+
+    orderListTagSwitch(e){
+      let {tag}=e.target.dataset;
+      let reqObj={};
+      switch(tag){
+        case undefined:break;
+        case "1":{
+          reqObj.type=1;
+          break;
+        }
+        case "6":{
+          reqObj.url="findGroupPurchaseOrderList";
+          break;
+        }
+        default:{
+
+        }
+      }
+      console.log(reqObj)
+      this.findNewUserTOrders(false,reqObj);
+
+    },
+
+
+
+
     //下拉刷新
     onPullDownRefresh:function() {
       this.data.start = 0;

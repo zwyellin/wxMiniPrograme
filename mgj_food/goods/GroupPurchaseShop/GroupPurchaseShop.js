@@ -73,7 +73,7 @@ Page({
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
       wx.navigateTo({
-        url:"/goods/GroupPurchaseChildPage/serviceCategory0/serviceCategory0?merchantId="+id+"&discountRatio="+ratio+
+        url:"/goods/GroupPurchaseChildPage/serviceCategory0/serviceCategory0?merchantId="+this.data.groupMerchantInfo.id+"&discountRatio="+ratio+
         "&merchantName="+this.data.groupMerchantInfo.name
       })
     }else{
@@ -87,7 +87,7 @@ Page({
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
       wx.navigateTo({
-        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+id
+        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?&groupPurchaseCouponId="+id
       })
     }else{
       this.isLoginsuccess(true);//跳转到登入

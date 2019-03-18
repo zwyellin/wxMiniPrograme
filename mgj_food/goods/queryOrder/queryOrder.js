@@ -380,8 +380,8 @@ Page({
 				redBags:orderUseRedBagList.length === 0 ? null : orderUseRedBagList
 			};
 			data.orderItems = this.data.orderMessage.orderItems;
-			data.sharedUserId=this.data.sharedUserId;
-			console.log("下单请求，提交分享者id",this.data.sharerUserId)
+			// data.sharedUserId=this.data.sharedUserId;
+			// console.log("下单请求，提交分享者id",this.data.sharerUserId)
 			wxRequest({
 	        	url:'/merchant/userClient?m=orderSubmit2',
 	        	method:'POST',

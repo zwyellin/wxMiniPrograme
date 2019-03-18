@@ -7,8 +7,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    loginsuccess:false,//是否登入
-
     voucherItem:null,
 
     sliderValue:1,//滑块选择的数量
@@ -17,6 +15,14 @@ Page({
     realTotalMoney:"",//实付总额
 
     redPacketDeduction:"",//红包抵扣的金额
+    
+    OrderSubmitReqObj:{//固定的参数
+      merchantId:null,//从voucherItem可以获取
+      groupPurchaseCouponId:null,
+      loginToken:null,
+      userId:null
+    },
+    orderId:null,//返回来的orderId
   },
 
   /**
@@ -27,8 +33,16 @@ Page({
     let {groupPurchaseCouponId}=options;
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
     this.findGroupPurchaseCouponInfo();
-    // 判断是否登入，点购买时会判断
-    this.isLoginsuccess();
+    
+    //获得用户信息
+    let {token,userId}=app.globalData;
+    let OrderSubmitReqObj=this.data.OrderSubmitReqObj;
+    Object.assign(OrderSubmitReqObj,{
+      groupPurchaseCouponId,
+      userId,
+      loginToken:token
+    })
+
   },
 
   /**
@@ -44,34 +58,51 @@ Page({
   onShow: function () {
 
   },
-  isLoginsuccess(isLoginTo){
-    let loginMessage = wx.getStorageSync('loginMessage');
-    let loginStatus = wx.getStorageSync('loginstatus');
-    //判断是否登入
-    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
-        this.setData({
-            loginsuccess:true,
-        });
-    }else{
-      if(isLoginTo){
-        wx.navigateTo({//跳转到登入
-          url:"/pages/login/login"
-        })
-      }
-    }
+    // 订单提交预览,获得订单号
+    groupPurchaseOrderSubmit(){
+      let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));
+      Object.assign(OrderSubmitReqObj,{
+        merchantId:this.data.voucherItem.merchantId,
+        groupPurchaseOrderType:1,//   1, "代金券",2, "团购券",3, "优惠买单"
+        groupPurchaseCouponType:1,//  1代金券，2团购
+        originalPrice:this.data.voucherItem.originPrice,
+        price:this.data.voucherItem.price,
+        quantity:this.data.sliderValue,
+        totalOriginalPrice:this.data.voucherItem.originPrice*this.data.sliderValue,
+        totalPrice:this.data.realTotalMoney
+      })
+      let data=JSON.stringify(OrderSubmitReqObj);
+      return wxRequest({
+        url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
+        method:'POST',
+        data:{
+          token:app.globalData.token,
+          params:{
+            data:data
+          }
+        },
+      }).then(res=>{
+        if (res.data.code === 0) {
+         console.log("获得订单号",res.data.value.id);
+         this.data.orderId=res.data.value.id;
+        }else if(res.data.code===500){
+          wx.showToast({
+            title:res.data.value || "未知错误",
+            icon:"none",
+            duration:2000
+          })
+        }
+    })
   },
+
+
   // 提交订单
   submitOrderBtnTap(){
-    let loginsuccess=this.data.loginsuccess;
-    let voucherItem=this.data.voucherItem;
-    let realTotalMoney=this.data.realTotalMoney;
-    if(loginsuccess){
+    this.groupPurchaseOrderSubmit().then(()=>{
       wx.navigateTo({
-        url:"/goods/pay/pay?merchantId="+voucherItem.merchantId+"&price="+realTotalMoney
+        url:"/goods/pay/pay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
       })
-    }else{
-      this.isLoginsuccess(true);//跳转到登入
-    }
+    })
   },
 
   // 滑块滑动事件
@@ -117,6 +148,8 @@ findGroupPurchaseCouponInfo(){
     }else {}
   });
 },
+
+
 voucherItemModify(item){
   // 处理是否叠加
   if(item.isCumulate){//是否叠加 0:否,1:是 

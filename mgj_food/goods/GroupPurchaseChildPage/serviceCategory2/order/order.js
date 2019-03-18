@@ -23,6 +23,15 @@ Page({
     realTotalMoney:"",//实付总额
 
     redPacketDeduction:"",//红包抵扣的金额
+
+
+    OrderSubmitReqObj:{//固定的参数
+      merchantId:null,//可以从groupSetMealItem可以获取
+      groupPurchaseCouponId:null,
+      loginToken:null,
+      userId:null
+    },
+    orderId:null,//返回来的orderId
   },
 
   /**
@@ -33,59 +42,65 @@ Page({
     let {groupPurchaseCouponId}=options;
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
     this.findGroupPurchaseCouponInfo();
-    // 判断是否登入，点购买时会判断
-    this.isLoginsuccess();
+   
+   //获得用户信息
+   let {token,userId}=app.globalData;
+   let OrderSubmitReqObj=this.data.OrderSubmitReqObj;
+   Object.assign(OrderSubmitReqObj,{
+     groupPurchaseCouponId,
+     userId,
+     loginToken:token
+   })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
 
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-  isLoginsuccess(isLoginTo){
-    let loginMessage = wx.getStorageSync('loginMessage');
-    let loginStatus = wx.getStorageSync('loginstatus');
-    //判断是否登入
-    if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
-        this.setData({
-            loginsuccess:true,
-        });
-    }else{
-      if(isLoginTo){
-        wx.navigateTo({//跳转到登入
-          url:"/pages/login/login"
-        })
-      }
-    }
-  },
-  // 提交
-  OrderBtnTap(){
-    let loginsuccess=this.data.loginsuccess;
-    let groupSetMealItem=this.data.groupSetMealItem;
-    let realTotalMoney=this.data.realTotalMoney;
-    if(loginsuccess){
+   // 提交订单
+   submitOrderBtnTap(){
+    this.groupPurchaseOrderSubmit().then(()=>{
       wx.navigateTo({
-        url:"/goods/pay/pay?merchantId="+groupSetMealItem.merchantId+"&price="+realTotalMoney
+        url:"/goods/pay/pay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
       })
-    }else{
-      this.isLoginsuccess(true);//跳转到登入
-    }
+    })
   },
+
+    // 订单提交预览,获得订单号
+    groupPurchaseOrderSubmit(){
+      let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));
+      Object.assign(OrderSubmitReqObj,{
+        merchantId:this.data.groupSetMealItem.merchantId,
+        groupPurchaseOrderType:2,//   1, "代金券",2, "团购券",3, "优惠买单"
+        groupPurchaseCouponType:2,//  1代金券，2团购
+        originalPrice:this.data.groupSetMealItem.packageOriginalPrice,
+        price:this.data.groupSetMealItem.price,
+        quantity:this.data.sliderValue,
+        totalOriginalPrice:this.data.groupSetMealItem.packageOriginalPrice*this.data.sliderValue,
+        totalPrice:this.data.realTotalMoney
+      })
+      let data=JSON.stringify(OrderSubmitReqObj);
+      return wxRequest({
+        url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
+        method:'POST',
+        data:{
+          token:app.globalData.token,
+          params:{
+            data:data
+          }
+        },
+      }).then(res=>{
+        if (res.data.code === 0) {
+         console.log("获得订单号",res.data.value.id);
+         this.data.orderId=res.data.value.id;
+        }else if(res.data.code===500){
+          wx.showToast({
+            title:res.data.value || "未知错误",
+            icon:"none",
+            duration:2000
+          })
+        }
+    })
+  },
+
+
   modifygroupSetMealItem(value){
     console.log("显示",value)
     // images,字符串转换为数组
