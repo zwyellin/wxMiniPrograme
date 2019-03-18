@@ -78,6 +78,7 @@
         "GroupPurchaseChildPage/serviceCategory2/serviceCategory2",
         "GroupPurchaseChildPage/serviceCategory2/order/order",
         "GroupPurchaseChildPage/evaluateListPage/evaluateListPage",
+        "GroupPurchaseChildPage/createEvaluate/createEvaluate",
         "GroupPurchasePay/GroupPurchasePay",
         "GroupPurchasePay/GroupPurchaseorderDetails/server0OrderDetails/serverOOrderDetails",
         "GroupPurchasePay/GroupPurchaseorderDetails/server1OrderDetails/server1OrderDetails",

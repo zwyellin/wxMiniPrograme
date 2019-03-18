@@ -1,0 +1,91 @@
+<!--goods/GroupPurchaseChildPage/createEvaluate/createEvaluate.wxml-->
+
+<import src="../../../components/star/star.wxml" />
+<import src="../../../components/showToast/showToast.wxml" />
+
+
+<view class="container page">
+	<view class="pageItem padding-tb-20" style="background:#ccc">
+         <view class="flex flex-spaceBetween flex-row-center">
+             <view class="flex flex-row-center">
+                 <image class="flex1 headImage" src="{{initInfo.merchant.logo!=null ? initInfo.merchant.logo : '/images/merchant/merchantLogo.png'}}"></image>
+                 <text>店铺名字</text>
+             </view>
+             <view>
+                 <label class="flex flex-row-center"  catch:tap="">
+                     <checkbox color="#ff9900" />匿名评价
+                 </label>
+             </view>
+         </view>
+    </view>
+    <view class="pageItem padding-tb-40">
+        <view class="flex" style="justify-content:space-around">
+            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="deliveryImageTap" data-id='0'>
+                <image src="../../../images/images/bad-face{{deliveryImageActiveNum===0 ? '-active':''}}.png" ></image>
+                <text style="color:{{deliveryImageActiveNum===0 ? '#ff9900':''}}">非常差</text>
+            </view>
+            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="deliveryImageTap" data-id='1'>
+                <image src="../../../images/images/soso-face{{deliveryImageActiveNum===1 ? '-active':''}}.png" ></image>
+                <text style="color:{{deliveryImageActiveNum===1 ? '#ff9900':''}}">一般</text>
+            </view>
+            <view class="evaluateIcon flex flex-column-center flex-row-center" catch:tap="deliveryImageTap" data-id='2'>
+                <image src="../../../images/images/good-face{{deliveryImageActiveNum===2 ? '-active':''}}.png" ></image>
+                <text style="color:{{deliveryImageActiveNum===2 ? '#ff9900':''}}">超赞</text>
+            </view>
+            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="deliveryImageTap" data-id='4'>
+                <image src="../../../images/images/soso-face{{deliveryImageActiveNum===1 ? '-active':''}}.png" ></image>
+                <text style="color:{{deliveryImageActiveNum===1 ? '#ff9900':''}}">一般</text>
+            </view>
+            <view class="evaluateIcon flex flex-column-center flex-row-center" catch:tap="deliveryImageTap" data-id='5'>
+                <image src="../../../images/images/good-face{{deliveryImageActiveNum===2 ? '-active':''}}.png" ></image>
+                <text style="color:{{deliveryImageActiveNum===2 ? '#ff9900':''}}">超赞</text>
+            </view>
+        </view>
+        <view  class="flex" style="flex-wrap:wrap;justify-content:center;padding-top:60rpx;">
+            <view wx:for="{{evaluateComments}}" wx:key="index"
+            class="box-sizing-box border-radius4 evaluateCommentItem"
+            >
+                {{item}}
+            </view>
+        </view>      
+    </view>
+    <!-- 评价，textarea 照片 -->
+    <view class="pageItem mt20 padding-tb-40">
+        <textarea placeholder="亲，产品如何，环境怎么样，服务满意吗" placeholder-style="font-size:26rpx"
+        class="textarea" maxlength="800"></textarea>
+
+        <view class="addImage flex " >
+            <view wx:for="{{imageList}}" wx:key="index" style="position: relative;margin-right:{{(index+1)%4===0 ? '' : '24rpx'}};margin-top:{{index>=4? '20rpx' : ''}}">
+                <image  mode="aspectFit" src="{{item}}"  style="border:1px solid grey;box-sizing:border-box;padding:5rpx;" catch:tap="imageTap" data-imgs="{{imageList}}" data-current="{{item}}"></image> 
+                <text  catch:tap="deleteImage" data-index="{{index}}">X</text>
+            </view>
+            <image src="../../../images/images/addImage.png" catch:tap="addImageTap" style="margin-top:{{imageList.length>=4 ? '20rpx' : ''}}"></image>
+        </view>
+       <!--选择相册或照相悬浮窗 灰色背景罩-->
+        <view class="bgCover"  wx:if="{{chooseImage}}">
+            <view class="chooseImageFixed" catch:tap="chooseImage">
+                <view class="flex chooseImageFixed-top chooseImageItem">
+                    <text style="color:#9a9a9a;font-size:25rpx;border-bottom:1px solid #9a9a9a" >请选择文件来源</text>
+                    <text style="color:#0368fe;font-size:40rpx;border-bottom:1px solid #9a9a9a"  data-id='camera'>照相机</text>
+                    <text  style="color:#0368fe;font-size:40rpx"  data-id='album'>本地相册</text>
+                </view>
+                <view class="chooseImageFixed-bottom chooseImageItem">
+                    <text  style="color:#0368fe;font-size:40rpx" data-id="cancel">取消</text>
+                </view>
+            </view>
+        </view> 
+        <!-- 人均 -->
+        <view class="padding-tb-40 flex flex-row-center moneyInput">
+            <text >人均:</text>
+            <input class="flex1 moneyInput" type="digit" placeholder="￥ 请输入金额"/>
+        </view>
+        <!-- 发表评论 -->
+        <view class="mt20">
+            <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2">发表评论</button>
+        </view>
+    </view>
+
+
+   <template is="showToast" data="{{showToast: showToast}}" />
+</view>
+

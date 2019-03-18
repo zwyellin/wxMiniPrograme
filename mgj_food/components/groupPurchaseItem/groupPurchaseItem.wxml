@@ -5,7 +5,7 @@
 
 <!-- 单个的布局,此时要传入单个对象-->
 <navigator class="flex flex-spaceBetween purchaseItem rrr" wx:if="{{_requestObj==null}}"
-    url="/goods/GroupPurchaseShop/GroupPurchaseShop?latitude={{_itemObj.latitude}}&longitude={{_itemObj.longitude}}&groupPurchaseMerchantId={{_itemObj.id}}">
+    url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{_itemObj.id}}">
     <!-- 左边，图片 -->  
     <image src="{{_itemObj.imgs[0] || '../../images/merchant/merchantLogo.png'}}" class="flex0 purchaseImage"/>
     <!-- 右边内容 -->

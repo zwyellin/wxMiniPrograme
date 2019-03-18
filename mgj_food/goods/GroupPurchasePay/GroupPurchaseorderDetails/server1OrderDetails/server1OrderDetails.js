@@ -9,8 +9,7 @@ Page({
    */
   data: {
     orderId:null,//订单号,用于请求findNewTOrderById
-    groupPurchaseMerchantId:null,//商家id。来源于用于请求findNewTOrderById。用于请求findGroupPurchaseMerchantInfo
-
+   
 
     groupPurchaseOrder:null,
     groupMerchantInfo:null,
@@ -41,12 +40,12 @@ Page({
     }).then(res=>{
       if (res.data.code === 0) {
         let value=res.data.value;
-        this.data.groupPurchaseMerchantId=value.groupPurchaseOrder.merchantId;
         // 处理代金券
         let vouchers=this.voucherItemModify(value.groupPurchaseOrder.groupPurchaseOrderCouponCodeList);
         //处理商家信息
         let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseOrder.groupPurchaseMerchant);
         this.setData({
+          groupPurchaseOrder:value.groupPurchaseOrder,
           groupMerchantInfo:groupMerchantInfo,
           groupPurchaseOrderCouponCodeList:vouchers
         })
@@ -60,7 +59,7 @@ Page({
       data:{
         token:app.globalData.token,
         params:{
-          groupPurchaseMerchantId:this.data.groupPurchaseMerchantId,
+          groupPurchaseMerchantId:this.data.groupPurchaseOrder.groupPurchaseMerchantId,
           latitude:app.globalData.latitude,
           longitude:app.globalData.longitude
         }
@@ -103,5 +102,32 @@ Page({
     }
    
     return item;
-  }
+  },
+  // 点击商家图片事件
+  merchantInfoImageTap(e){
+    let {index=0,images}=e.target.dataset;
+    console.log(images,index)
+    wx.previewImage({
+			current: images[index], // 当前显示图片的http链接
+			urls:images // 需要预览的图片http链接列表
+		  })
+  },
+  //点击电话图标事件
+  callPhoneTap(e){
+    this.setData({
+      tel_mask_show:true
+    })
+  },
+  telphoneTap(e){
+    let {telphone}=e.target.dataset;
+    wx.makePhoneCall({
+      phoneNumber: telphone  //电话号码
+    })
+  },
+  // 电话弹窗 点击取消
+  maskCancelTap(e){
+    this.setData({
+      tel_mask_show:false
+    })
+  },
 })

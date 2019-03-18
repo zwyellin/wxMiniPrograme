@@ -1,0 +1,98 @@
+.headImage{
+    width:60rpx;
+    height: 60rpx;
+    border-radius: 30rpx
+}
+.evaluateIcon{
+    width: 100rpx;
+}
+.evaluateIcon image{
+    width:80rpx;
+    height: 80rpx;
+    border-radius: 40rpx
+}
+.evaluateIcon text{
+    font-size: 28rpx;
+}
+
+.evaluateCommentItem{
+    height:54rpx;
+    line-height: 54rpx;
+    color:#333;
+    font-size:26rpx;
+    margin:0 30rpx 30rpx 0;
+    background:#f3f3f3;
+    padding:0 20rpx;
+    border-radius:30rpx;
+}
+.textarea{
+    padding:20rpx;
+    font-size: 28rpx;
+    width: auto;
+    height: 250rpx;
+    border:1px solid #ccc;
+
+}
+
+/* 增加图片 点击 */
+.addImage{
+    margin-top: 30rpx;
+    width: 100%;/*white-space: nowrap;元素不换行，否则会在下一行显示，不会出现滚动条*/
+    flex-wrap: wrap;
+}
+.addImage image{
+    width: 150rpx;
+    height: 150rpx;
+}
+.addImage text{
+    position:absolute;
+    top:0;
+    right:0;
+    display:inline-block;
+    padding:0 15rpx;
+    background-color:grey;
+}
+/*选择相册，fixed窗口*/
+.bgCover{
+    position:fixed;
+    top:0;
+    bottom: 0;
+    width: 100%;
+    background-color:rgba(50, 50,50, 0.5);
+    z-index:5000;
+}
+.chooseImageFixed{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index:99999;
+  }
+  .chooseImageFixed view text{
+    display: block;
+    text-align: center;
+    line-height: 2
+  }
+  .chooseImageItem{
+      background-color: #fff;
+      border-radius: 15rpx;
+      margin: 0 15rpx;
+  }
+  .chooseImageFixed-top{
+     flex-direction: column;
+   
+   
+  }
+  .chooseImageFixed-bottom{
+      margin-top: 20rpx;
+      margin-bottom: 20rpx;
+  }
+
+  /*  */
+  .moneyInput{
+    font-size: 30rpx;  
+  }
+  .moneyInput input{
+    margin-left:40rpx;
+    border:1px solid #ccc;
+    padding:10rpx 20rpx ;  
+  }

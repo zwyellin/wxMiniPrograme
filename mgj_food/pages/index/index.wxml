@@ -14,9 +14,7 @@
 			</view>
 			<image class ="flex0" src="/images/images/down_rotate.png" style="width:20rpx;height:20rpx;margin-top:6rpx;"></image>
 		</view>
-		<view classs="box-sizing-box" style="height:56rpx;border-top-left-radius:30rpx;border-bottom-left-radius:30rpx;background:#ccc">
-			<text style="font-size:26rpx;color:#333;line-height:56rpx;padding:20rpx;">APP体验</text>
-		</view>
+		<view classs="box-sizing-box" style="border-top-left-radius:30rpx;border-bottom-left-radius:30rpx;background:#ccc;font-size:26rpx;color:#333;padding:10rpx 20rpx;">APP体验</view>
 	</view>
 	<!-- 搜索框 -->
 	<view class="padding-tb-20 flex flex-row-center flex-spaceBetween" >
@@ -114,6 +112,10 @@
 	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 		</view>
+		 <navigator url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate">
+            <button class="bg-button-color font-size2" style="color:white;margin:0 20rpx;line-height:2" >反馈</button>
+        </navigator>
+		
 		<!--优化列表显示，这边放了十个一维数组，最后数据都放到最后一个数组那里-->
 		<template is="merchant" data="{{dataList:dataList1,cartObject,size,linearArrayIndex:1}}"></template>
 		<template is="merchant" data="{{dataList:dataList2,cartObject,size,linearArrayIndex:2}}"></template>
