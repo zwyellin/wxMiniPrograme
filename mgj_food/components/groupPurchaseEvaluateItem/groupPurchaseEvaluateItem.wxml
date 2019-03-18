@@ -58,7 +58,7 @@
                     <text style="font-size:28rpx;line-height:1.5">{{evaluateItem.content? evaluateItem.content :'客户未作出评价'}}</text>
                     <!-- 图片 -->
                     <view class="contentImages flex mt20">
-                        <image wx:for="{{evaluateItem.images}}"
+                        <imageLoader wx:for="{{evaluateItem.images}}"
                             wx:for-index="imgIndex"
                             wx:for-item="imgItem"
                             wx:key="imgIndex"
@@ -67,7 +67,7 @@
                             data-images="{{evaluateItem.images}}"
                             catch:tap="imageTap"
                             lazy-load="{{true}}"
-                            class="contentImage" style="{{imgIndex==2 ? 'margin-right:0rpx':''}}" />
+                            my-class="contentImage" style="{{imgIndex==2 ? 'margin-right:0rpx':''}}" />
                     </view>
                 </view>
             </view>

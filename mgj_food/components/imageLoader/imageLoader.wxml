@@ -1,0 +1,3 @@
+<!--components/imageLoader/imageLoader.wxml-->
+<image hidden='{{finishLoadFlag}}' mode='{{mode}}' src='{{defaultSrc}}' class="my-class"/>
+<image hidden="{{!finishLoadFlag}}" mode='{{mode}}'  src='{{src}}' bindload='finishLoad' class="my-class" />
