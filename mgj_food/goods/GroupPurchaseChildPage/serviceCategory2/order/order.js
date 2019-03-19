@@ -52,8 +52,6 @@ Page({
      loginToken:token
    })
   },
-
-
    // 提交订单
    submitOrderBtnTap(){
     this.groupPurchaseOrderSubmit().then(()=>{
@@ -62,7 +60,6 @@ Page({
       })
     })
   },
-
     // 订单提交预览,获得订单号
     groupPurchaseOrderSubmit(){
       let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));

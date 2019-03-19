@@ -7,7 +7,8 @@ Page({
    */
   data: {
     evaluateComments:["热情服务","环境优雅","干净卫生","价格实惠","性价比高"],
-
+    imageActiveNum:null,//评价icon激活的index
+    evaluateTagActiveArr:[false,false,false,false,false,false,false],//评价tag激活的数组
     // 增加图片
     imgListMaxLength:8,
     remainImageLength:8,
@@ -20,6 +21,30 @@ Page({
   onLoad: function (options) {
 
   },
+  evaluateImageTap(e){
+    let {index}=e.currentTarget.dataset;
+    let imageActiveNum=this.data.imageActiveNum;
+    if(imageActiveNum==index) imageActiveNum=null;//归零
+    else imageActiveNum=index;
+    this.setData({
+        imageActiveNum
+    })
+  },
+  evaluateTagTap(e){
+    let {index}=e.target.dataset;
+    let evaluateTagActiveArr=this.data.evaluateTagActiveArr;
+    //没有则置为true
+    if(evaluateTagActiveArr[index]){
+        evaluateTagActiveArr[index]=false;
+    }else{
+        evaluateTagActiveArr[index]=true;
+    }
+    console.log(evaluateTagActiveArr)
+    this.setData({
+        evaluateTagActiveArr
+    })
+  },
+    //增加图片及以下功能   
   addImageTap:function(e){
     //
     var imgListMaxLength=this.data.imgListMaxLength;

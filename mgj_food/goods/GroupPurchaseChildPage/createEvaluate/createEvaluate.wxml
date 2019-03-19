@@ -21,30 +21,31 @@
     </view>
     <view class="pageItem padding-tb-40">
         <view class="flex" style="justify-content:space-around">
-            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="deliveryImageTap" data-id='0'>
-                <image src="../../../images/images/bad-face{{deliveryImageActiveNum===0 ? '-active':''}}.png" ></image>
-                <text style="color:{{deliveryImageActiveNum===0 ? '#ff9900':''}}">非常差</text>
+            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="evaluateImageTap" data-index='0'>
+                <image src="../../../images/images/face1{{imageActiveNum===0 ? '-active':''}}.png" ></image>
+                <text style="color:{{imageActiveNum==0 ? '#ff9900':''}}">差</text>
             </view>
-            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="deliveryImageTap" data-id='1'>
-                <image src="../../../images/images/soso-face{{deliveryImageActiveNum===1 ? '-active':''}}.png" ></image>
-                <text style="color:{{deliveryImageActiveNum===1 ? '#ff9900':''}}">一般</text>
+            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="evaluateImageTap" data-index='1'>
+                <image src="../../../images/images/face2{{imageActiveNum==1 ? '-active':''}}.png" ></image>
+                <text style="color:{{imageActiveNum==1 ? '#ff9900':''}}">失望</text>
             </view>
-            <view class="evaluateIcon flex flex-column-center flex-row-center" catch:tap="deliveryImageTap" data-id='2'>
-                <image src="../../../images/images/good-face{{deliveryImageActiveNum===2 ? '-active':''}}.png" ></image>
-                <text style="color:{{deliveryImageActiveNum===2 ? '#ff9900':''}}">超赞</text>
+            <view class="evaluateIcon flex flex-column-center flex-row-center" catch:tap="evaluateImageTap" data-index='2'>
+                <image src="../../../images/images/face3{{imageActiveNum==2 ? '-active':''}}.png" ></image>
+                <text style="color:{{imageActiveNum==2 ? '#ff9900':''}}">不错</text>
             </view>
-            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="deliveryImageTap" data-id='4'>
-                <image src="../../../images/images/soso-face{{deliveryImageActiveNum===1 ? '-active':''}}.png" ></image>
-                <text style="color:{{deliveryImageActiveNum===1 ? '#ff9900':''}}">一般</text>
+            <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="evaluateImageTap" data-index='3'>
+                <image src="../../../images/images/face4{{imageActiveNum==3 ? '-active':''}}.png" ></image>
+                <text style="color:{{imageActiveNum==3 ? '#ff9900':''}}">满意</text>
             </view>
-            <view class="evaluateIcon flex flex-column-center flex-row-center" catch:tap="deliveryImageTap" data-id='5'>
-                <image src="../../../images/images/good-face{{deliveryImageActiveNum===2 ? '-active':''}}.png" ></image>
-                <text style="color:{{deliveryImageActiveNum===2 ? '#ff9900':''}}">超赞</text>
+            <view class="evaluateIcon flex flex-column-center flex-row-center" catch:tap="evaluateImageTap" data-index='4'>
+                <image src="../../../images/images/face5{{imageActiveNum==4 ? '-active':''}}.png" ></image>
+                <text style="color:{{imageActiveNum==4 ? '#ff9900':''}}">推荐</text>
             </view>
         </view>
         <view  class="flex" style="flex-wrap:wrap;justify-content:center;padding-top:60rpx;">
             <view wx:for="{{evaluateComments}}" wx:key="index"
-            class="box-sizing-box border-radius4 evaluateCommentItem"
+            class="box-sizing-box border-radius4 evaluateCommentItem {{evaluateTagActiveArr[index] ? 'evaluateCommentItemActive':''}}"
+            catch:tap="evaluateTagTap" data-index="{{index}}"
             >
                 {{item}}
             </view>

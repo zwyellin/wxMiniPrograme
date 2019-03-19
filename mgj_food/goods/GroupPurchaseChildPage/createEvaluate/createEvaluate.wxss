@@ -26,6 +26,10 @@
     padding:0 20rpx;
     border-radius:30rpx;
 }
+.evaluateCommentItemActive{
+    color:#ff9900;
+    
+}
 .textarea{
     padding:20rpx;
     font-size: 28rpx;

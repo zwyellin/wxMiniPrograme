@@ -12,6 +12,7 @@
     "pages/goods/refundDetail/refundDetail",
     "pages/searchGoods/searchGoods",
     "pages/webView/webView"
+   
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -83,6 +84,7 @@
         "GroupPurchasePay/GroupPurchaseorderDetails/server0OrderDetails/serverOOrderDetails",
         "GroupPurchasePay/GroupPurchaseorderDetails/server1OrderDetails/server1OrderDetails",
         "GroupPurchasePay/GroupPurchaseorderDetails/server2OrderDetails/server2OrderDetails",
+        "GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse",
         "mapview/mapview",
         "queryOrder/queryOrder",
         "pay/pay",

@@ -12,7 +12,9 @@
                 <text class="font-size1 font-bold color1 mt20" style="display:block">{{groupPurchaseOrderCouponCodeList[0].price}}元 代金券</text>
                 <text class="font-size4 font-bold color1 mt20" >￥{{groupPurchaseOrderCouponCodeList[0].originPrice}}</text>
             </view>
-            <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >立即使用</button>
+            <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}">
+                  <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >立即使用</button>
+            </navigator>
         </view>
         <!-- 代金券属性 -->
         <view class="mt20  font-size5">
@@ -41,7 +43,7 @@
 
     <view class="pageItem padding-tb-20 mt20" >
         <!-- 商家信息内容 -->
-        <text style="color:#333;font-size:28rpx;font-weight:bold">商家信息:</text>
+        <text style="color:#333;font-size:32rpx;font-weight:bold">商家信息</text>
         <navigator class="flex flex-spaceBetween" style="background:white"
          url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{groupMerchantInfo.id}}">
             <!-- 左边 -->
