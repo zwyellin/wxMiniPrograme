@@ -10,7 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    loginsuccess:false,//是否登入
+    isPayPageBack:false,//是否支付页面返回来的，如果是，则再次返回时直接退回到团购首页
 
     groupMerchantInfo:null,
     groupSetMealItem:null,
@@ -63,7 +63,6 @@ Page({
       this.queryPlatformRedBagList();
       this.filterUsableRedBagList();
     });
-   
    //获得用户信息
    let {token,userId}=app.globalData;
    let OrderSubmitReqObj=this.data.OrderSubmitReqObj;
@@ -93,24 +92,33 @@ Page({
               platformRedBagMoney:platformRedBagMoney
           });
       }
+      this.setData({
+        realTotalMoney:this.data.totalMoney-redBagMoney-platformRedBagMoney
+      })
 		}
-	},
+  },
+  onUnload(){
+   if(this.data.isPayPageBack){
+     wx.redirectTo({
+       url:'/goods/GroupPurchaseIndex/GroupPurchaseIndex'
+     })
+    }
+ },
    // 提交订单
    submitOrderBtnTap(){
     this.groupPurchaseOrderSubmit().then(res=>{
       if (res.data.code === 0) {
-       console.log("获得订单号",res.data.value.id);
-       this.data.orderId=res.data.value.id;
-       wx.showToast({
-        title:"下单成功",
-        icon:"none",
-        duration:1000
-      })
-      setTimeout(()=>{
-        wx.navigateTo({
-          url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
+        this.data.orderId=res.data.value.id;
+        wx.showToast({
+          title:"下单成功",
+          icon:"none",
+          duration:1000
         })
-      },1000)
+        setTimeout(()=>{
+          wx.navigateTo({
+            url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
+          })
+        },1000)
       }else if(res.data.code===500){
         wx.showToast({
           title:res.data.value || "未知错误",
@@ -119,33 +127,67 @@ Page({
         })
       }
     }).then((res)=>{
-     
+      this.data.isDisable=false;
     })
   },
     // 订单提交预览,获得订单号
     groupPurchaseOrderSubmit(){
-      let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));
-      Object.assign(OrderSubmitReqObj,{
-        merchantId:this.data.groupSetMealItem.merchantId,
-        groupPurchaseOrderType:2,//   1, "代金券",2, "团购券",3, "优惠买单"
-        groupPurchaseCouponType:2,//  1代金券，2团购
-        originalPrice:this.data.groupSetMealItem.packageOriginalPrice,
-        price:this.data.groupSetMealItem.price,
-        quantity:this.data.sliderValue,
-        totalOriginalPrice:this.data.groupSetMealItem.packageOriginalPrice*this.data.sliderValue,
-        totalPrice:this.data.realTotalMoney
-      })
-      let data=JSON.stringify(OrderSubmitReqObj);
-      return wxRequest({
-        url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
-        method:'POST',
-        data:{
-          token:app.globalData.token,
-          params:{
-            data:data
-          }
-        },
-      })
+      if (!this.data.isDisable) {
+        let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));
+        wx.showLoading({
+              title: '正在提交订单',
+              mask: true
+          });
+        this.data.isDisable = true;
+        let orderUseRedBagList = [];
+        if (this.data.useRedBagList) {
+          this.data.useRedBagList.map(item=>{
+            let json = {}
+            json.id = item.id;
+            json.amt = item.amt;
+            json.name = item.name;
+            json.promotionType = item.promotionType
+            orderUseRedBagList.push(json)
+          })
+        }
+        if (this.data.usePlatformRedBagList) {
+          this.data.usePlatformRedBagList.map(item=>{
+            let json = {}
+            json.id = item.id;
+            json.amt = item.amt;
+            json.name = item.name;
+            json.promotionType = item.promotionType
+            orderUseRedBagList.push(json)
+          })
+        }
+        let redBags=orderUseRedBagList.length === 0 ? null : orderUseRedBagList;
+        Object.assign(OrderSubmitReqObj,{
+          merchantId:this.data.groupSetMealItem.merchantId,
+          groupPurchaseOrderType:2,//   1, "代金券",2, "团购券",3, "优惠买单"
+          groupPurchaseCouponType:2,//  1代金券，2团购
+          originalPrice:this.data.groupSetMealItem.packageOriginalPrice,//原价格
+          price:this.data.groupSetMealItem.price,//要出的价格
+          quantity:this.data.sliderValue,//数量
+          totalOriginalPrice:this.data.groupSetMealItem.packageOriginalPrice*this.data.sliderValue,//原价格*数量
+          totalPrice:this.data.realTotalMoney
+        })
+        if(redBags!==null){
+          Object.assign(OrderSubmitReqObj,{
+            redBags
+          })
+        }
+        let data=JSON.stringify(OrderSubmitReqObj);
+        return wxRequest({
+          url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
+          method:'POST',
+          data:{
+            token:app.globalData.token,
+            params:{
+              data:data
+            }
+          },
+        })
+      }
   },
 
   modifygroupSetMealItem(value){

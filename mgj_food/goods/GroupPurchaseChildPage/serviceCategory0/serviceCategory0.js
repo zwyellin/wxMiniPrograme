@@ -105,9 +105,9 @@ Page({
   // 订单预览
   groupPurchaseOrderPreview(){
     let data=JSON.parse(JSON.stringify(this.data.OrderPreviewRequestObj));
-    let originalPrice=parseFloat(this.data.totalAmountInputValue.substring(1));
+    let totalPrice=parseFloat(this.data.totalAmountInputValue.substring(1));
     let excludeAmountInputValue=this.data.excludeAmountInputValue;
-    data.originalPrice=originalPrice;
+    data.totalPrice=totalPrice;
     let notJoinDiscountAmount="";
     if(this.data.discountActive){
       data.hasDiscount=1;
@@ -118,7 +118,8 @@ Page({
       notJoinDiscountAmount=parseFloat(this.data.excludeAmountInputValue.substring(1))
       data.notJoinDiscountAmount=notJoinDiscountAmount;
     }
-    this.data.orderMoney=data.originalPrice;
+    this.data.orderMoney=data.totalPrice;
+    data.originalPrice=totalPrice;
     data=JSON.stringify(data);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderPreview',

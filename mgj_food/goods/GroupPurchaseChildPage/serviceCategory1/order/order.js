@@ -7,8 +7,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    voucherItem:null,
+    isPayPageBack:false,//是否支付页面返回来的，如果是，则再次返回时直接退回到团购首页
 
+    voucherItem:null,
     sliderValue:1,//滑块选择的数量
 
     totalMoney:"",//小计
@@ -38,6 +39,8 @@ Page({
 		platformRedBagMoney:0,       //平台红包使用金额
 		platformRedBagCount:0,  //可使用的平台红包个数
 		platformRedText:'无可用红包',
+    
+    isDisable:false,//是否可以不提交
   },
 
   /**
@@ -64,47 +67,113 @@ Page({
     })
 
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onShow(){
+		if (this.data.useRedBagList != null || this.data.addressInfoId != null || this.data.usePlatformRedBagList != null) {
+			let redBagMoney = 0;
+			let platformRedBagMoney = 0;
+	    if (this.data.useRedBagList != null) {
+          this.data.useRedBagList.map(item=>{
+            redBagMoney += item.amt;
+          });
+          this.setData({
+              redBagMoney:redBagMoney
+          });
+	    }
+	    if (this.data.usePlatformRedBagList != null) {
+	        this.data.usePlatformRedBagList.map(item=>{
+					  platformRedBagMoney += item.amt;
+		    	});
+          this.setData({
+              platformRedBagMoney:platformRedBagMoney
+          });
+      }
+      this.setData({
+        realTotalMoney:this.data.totalMoney-redBagMoney-platformRedBagMoney
+      })
+		}
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
+  onUnload(){
+    console.log("isPayPageBack",this.data.isPayPageBack)
+    if(this.data.isPayPageBack){
+     wx.redirectTo({
+       url:'/goods/GroupPurchaseIndex/GroupPurchaseIndex'
+     })
+    }
+ },
     // 订单提交预览,获得订单号
     groupPurchaseOrderSubmit(){
       let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));
-      Object.assign(OrderSubmitReqObj,{
-        merchantId:this.data.voucherItem.merchantId,
-        groupPurchaseOrderType:1,//   1, "代金券",2, "团购券",3, "优惠买单"
-        groupPurchaseCouponType:1,//  1代金券，2团购
-        originalPrice:this.data.voucherItem.originPrice,
-        price:this.data.voucherItem.price,
-        quantity:this.data.sliderValue,
-        totalOriginalPrice:this.data.voucherItem.originPrice*this.data.sliderValue,
-        totalPrice:this.data.realTotalMoney
-      })
-      let data=JSON.stringify(OrderSubmitReqObj);
-      return wxRequest({
-        url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
-        method:'POST',
-        data:{
-          token:app.globalData.token,
-          params:{
-            data:data
-          }
-        },
-      }).then(res=>{
+      if (!this.data.isDisable) {
+        wx.showLoading({
+              title: '正在提交订单',
+              mask: true
+          });
+        this.data.isDisable = true;
+        let orderUseRedBagList = [];
+        if (this.data.useRedBagList) {
+          this.data.useRedBagList.map(item=>{
+            let json = {}
+            json.id = item.id;
+            json.amt = item.amt;
+            json.name = item.name;
+            json.promotionType = item.promotionType
+            orderUseRedBagList.push(json)
+          })
+        }
+        if (this.data.usePlatformRedBagList) {
+          this.data.usePlatformRedBagList.map(item=>{
+            let json = {}
+            json.id = item.id;
+            json.amt = item.amt;
+            json.name = item.name;
+            json.promotionType = item.promotionType
+            orderUseRedBagList.push(json)
+          })
+        }
+        let redBags=orderUseRedBagList.length === 0 ? null : orderUseRedBagList;
+        Object.assign(OrderSubmitReqObj,{
+          merchantId:this.data.voucherItem.merchantId,
+          groupPurchaseOrderType:1,//   1, "代金券",2, "团购券",3, "优惠买单"
+          groupPurchaseCouponType:1,//  1代金券，2团购
+          originalPrice:this.data.voucherItem.originPrice,//原价格
+          price:this.data.voucherItem.price,//要出的价格
+          quantity:this.data.sliderValue,//数量
+          totalOriginalPrice:this.data.voucherItem.originPrice*this.data.sliderValue,//原价格*数量
+          totalPrice:this.data.realTotalMoney
+        })
+        if(redBags!==null){
+          Object.assign(OrderSubmitReqObj,{
+            redBags
+          })
+        }
+        let data=JSON.stringify(OrderSubmitReqObj);
+        return wxRequest({
+          url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
+          method:'POST',
+          data:{
+            token:app.globalData.token,
+            params:{
+              data:data
+            }
+          },
+        })
+    }
+  },
+  // 提交订单
+  submitOrderBtnTap(){
+    this.groupPurchaseOrderSubmit().then((res)=>{
         if (res.data.code === 0) {
-         console.log("获得订单号",res.data.value.id);
-         this.data.orderId=res.data.value.id;
+          this.data.orderId=res.data.value.id;
+          wx.showToast({
+            title:"下单成功",
+            icon:"none",
+            duration:1000
+          })
+          setTimeout(()=>{
+            wx.navigateTo({
+              url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
+            })
+          },1000)
         }else if(res.data.code===500){
           wx.showToast({
             title:res.data.value || "未知错误",
@@ -112,17 +181,9 @@ Page({
             duration:2000
           })
         }
-    })
-  },
-
-
-  // 提交订单
-  submitOrderBtnTap(){
-    this.groupPurchaseOrderSubmit().then(()=>{
-      wx.navigateTo({
-        url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
+      }).then((res)=>{
+        this.data.isDisable=false;
       })
-    })
   },
 
   // 滑块滑动事件
@@ -137,7 +198,7 @@ Page({
     //计算小计：
     let totalMoney=sliderValue*this.data.voucherItem.price;
     // 计算实际付款：
-    let realTotalMoney=totalMoney-this.data.redPacketDeduction;
+    let realTotalMoney=totalMoney-this.data.redPacketDeduction-this.data.redBagMoney-this.data.platformRedBagMoney;
     this.setData({
       sliderValue,
       totalMoney,

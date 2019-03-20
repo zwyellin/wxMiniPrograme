@@ -19,7 +19,7 @@ Page({
     orderId:null
   },
   onLoad(options){
-    let { orderId, price, merchantId,sharerUserId} = options;
+    let { orderId, price, merchantId=null,sharerUserId=null} = options;
     this.setData({
       price:price,
       channelPrice:price,
@@ -28,6 +28,11 @@ Page({
       sharerUserId:sharerUserId
     });
     this.findUserCenter();
+  },
+  onUnload(){
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2];
+    prevPage.data.isPayPageBack=true;
   },
   payWx(e) {
     if (this.data.channelCost < this.data.price && this.data.channelCost != 0) {
@@ -336,7 +341,4 @@ Page({
        maskAnimation: animation.export()  
     }); 
   },
-  onUnload(){
-		wx.setStorageSync('isPayPageRoute',true);
-	}
 });
