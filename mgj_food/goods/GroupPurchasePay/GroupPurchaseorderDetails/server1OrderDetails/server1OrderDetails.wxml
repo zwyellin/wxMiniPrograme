@@ -12,7 +12,7 @@
                 <text class="font-size1 font-bold color1 mt20" style="display:block">{{groupPurchaseOrderCouponCodeList[0].price}}元 代金券</text>
                 <text class="font-size4 font-bold color1 mt20" >￥{{groupPurchaseOrderCouponCodeList[0].originPrice}}</text>
             </view>
-            <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}">
+            <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}&merchantId={{groupMerchantInfo.id}}">
                   <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >立即使用</button>
             </navigator>
         </view>

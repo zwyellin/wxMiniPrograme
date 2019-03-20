@@ -1,6 +1,10 @@
 let modify={
     // 商家信息修改
   GrouopMerchantModify:function(value){
+    //修改代金券的文字为6.0折
+    if(value.discountRatio){
+      value.discountRatioText= (value.discountRatio/10).toFixed(1)
+    }
     // 修改imgs,字符串转换为数组
     if(value.imgs){
         value.imgs=value.imgs.split(";");

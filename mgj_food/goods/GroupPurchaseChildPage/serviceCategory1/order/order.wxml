@@ -6,7 +6,7 @@
     <view class="pageItem" style="padding-bottom:30rpx;">
         <view class="padding-40" style="background:#fffbf4;border:1px solid #feddab;"> 
             <text class="font-size5 color1" style="display:block">{{groupMerchantInfo.name}}</text>
-            <text class="font-size1 font-bold color1 mt20" >￥{{voucherItem.price}}代{{voucherItem.originPrice}}元 券</text>
+            <text class="font-size1 font-bold color1 mt20" >￥{{voucherItem.originPrice}}元 代金券</text>
         </view>
     </view>
     <!-- 数量，小计 -->
@@ -18,7 +18,7 @@
                 <image wx:if="{{sliderValue>1}}" src="../../../image/icon_reduceYes.png" style="width:40rpx;height:40rpx;padding:0 10rpx;" data-type="-1" catch:tap="sliderChanging"/>
                 <image wx:else src="../../../image/icon_reduceNo.png" style="width:40rpx;height:40rpx;padding:0 10rpx;"/>
                 <text class="font-size3 color1" style="display:inline-block;width:60rpx;padding:0 30rpx;text-align:center">{{sliderValue}}</text>
-                <image wx:if="{{sliderValue<20}}" src="../../../image/icon_addYes.png" style="width:40rpx;height:40rpx;padding:0 10rpx;" data-type="1" catch:tap="sliderChanging"/>
+                <image wx:if="{{true}}" src="../../../image/icon_addYes.png" style="width:40rpx;height:40rpx;padding:0 10rpx;" data-type="1" catch:tap="sliderChanging"/>
                 <image  wx:else src="../../../image/icon_addNo.png" style="width:40rpx;height:40rpx;padding:0 10rpx;"/>
             </view>
         </view>
@@ -28,18 +28,29 @@
            <text style="font-size:30rpx;color:#f95046">{{totalMoney}}</text>
         </view>
     </view>
-    <!-- 红包，实付金额 -->
-    <view class="pageItem mt20"> 
-        <!-- 红包 -->
-        <view class="flex flex-spaceBetween flex-row-center row-line " style="padding:30rpx 0">
-            <text class="font-size3 color2">红包</text>
-            <view class="flex  flex-row-center">
-                <text style="font-size:30rpx;color:#bbb">无可用红包</text>
+    <!--板块，红包，实付金额  -->
+    <view class="pageItem mt20">
+        <!--商家红包-->
+        <view wx:if="{{true}}" class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line" bindtap="platformRedPage">
+			<text class="font-size3 color1">平台红包</text>
+			<view class="flex  flex-row-center">
+				<text wx:if="{{platformRedBagCount===0}}" style="color:#999">{{platformRedText}}</text>
+				<text wx:if="{{platformRedBagCount && platformRedBagMoney === 0}}" style="color:#ff9595">有{{platformRedBagCount}}个红包可用</text>
+				<text wx:if="{{platformRedBagMoney != 0}}" style="color:#ff9595">-￥{{platformRedBagMoney}}</text>
                 <image src="../../../image/more.png" style="width:30rpx;height:30rpx;padding-left:20rpx;"/>
             </view>
-        </view>
+		</view>
+        <!-- 商家代金券 -->
+		<view wx:if="{{true}}"class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line" bindtap="merchantRedPage">
+			<text class="font-size3 color1">商家代金券</text>
+			<view class="flex  flex-row-center">
+				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个代金券可用</text>
+				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">代金券金额为{{redBagMoney}}元</text>
+                <image src="../../../image/more.png" style="width:30rpx;height:30rpx;padding-left:20rpx;"/>
+			</view>
+		</view>
         <!-- 实付金额 -->
-        <view class="flex flex-spaceBetween flex-row-center row-line " style="padding:30rpx 0">
+        <view class="flex flex-spaceBetween flex-row-center padding-tb-40">
              <text class="font-size3 color1">实付金额</text>
              <text style="fong-size:30rpx;color:#f95046">{{realTotalMoney==="" ? '':'￥'+realTotalMoney}}</text>
         </view>

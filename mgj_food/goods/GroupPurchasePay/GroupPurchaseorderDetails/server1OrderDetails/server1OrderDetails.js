@@ -21,10 +21,12 @@ Page({
    */
   onLoad: function (options) {
     let {orderId}=options;
-    this.data.orderId=orderId;
-    console.log(orderId)
-    this.findNewTOrderById().then(()=>{
-      //this.findGroupPurchaseMerchantInfo()
+    this.setData({
+      orderId
+    },()=>{
+      this.findNewTOrderById().then(()=>{
+        //this.findGroupPurchaseMerchantInfo()
+      })
     })
   },
   findNewTOrderById(){

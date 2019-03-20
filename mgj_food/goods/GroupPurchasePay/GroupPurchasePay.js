@@ -1,62 +1,126 @@
-// goods/GroupPurchasePay/GroupPurchasePay.js
 const app = getApp();
-const { wxRequest } = require('../../utils/util.js');
-
+const { wxRequest, getNetworkType } = require('../../utils/util.js');
+const Pingpp = require('../../utils/pingpp.js');
+const feedbackApi=require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    orderId:null,//订单号
-    orderMoney:null,
-    orderTitle:null,
-    findChargeTypesResData:null,//返回来的数据
-
-
-    payType:0,//支付方式，0，1，2对应余额，微信，支付宝
+    sharerUserId:null,
+    maskAnimation:null,
+    maskShow:false,
+    selectPay:false,
+    isPayStatus:false,
+    payWxColor:false,
+    payChannelColor:false,
+    isChannel:false,
+    channelCost:0,
+    price:0,
+    merchantId:null,
+    channelPrice:0,
+    orderId:null
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    let {orderId,orderMoney,orderTitle}=options;
-    console.log(orderId,orderMoney,orderTitle)
-    this.data.orderId=orderId;
+  onLoad(options){
+    let { orderId, price, merchantId,sharerUserId} = options;
     this.setData({
-      orderMoney,
-      orderTitle,
-    })
-    this.findChargeTypes();
+      price:price,
+      channelPrice:price,
+      merchantId:merchantId,
+      orderId:orderId,
+      sharerUserId:sharerUserId
+    });
+    this.findUserCenter();
   },
-
-  findChargeTypes(){
-    wxRequest({
-      url:'/merchant/userClient?m=findChargeTypes',
-      method:'POST',
-      data:{
-        token:app.globalData.token,
-        params:{
-          orderId:this.data.orderId
-        }
-      },
-    }).then(res=>{
-      if (res.data.code === 0) {
-        console.log(res.data.value);
-        this.setData({
-          findChargeTypesResData:res.data.value
-        })
-      }else if(res.data.code===500){
-      
+  payWx(e) {
+    if (this.data.channelCost < this.data.price && this.data.channelCost != 0) {
+      this.setData({
+        payWxColor:true
+      });
+    } else {
+      this.setData({
+        payWxColor:true,
+        payChannelColor:false,
+      });
+    }
+  },
+  payChannel(){
+    if (this.data.channelCost === 0 && this.data.price != 0) {
+      if (!this.data.isChannel) {
+        feedbackApi.showToast({title:'余额不足'});
+        this.data.isChannel = true;
       }
-    })
+      return;
+    }
+    if (this.data.channelCost < this.data.price) {
+      if (this.data.payWxColor) {
+        this.setData({
+          payWxColor:true,
+        });
+      }
+      if (this.data.payChannelColor) {
+        let channelPrice = this.data.price;
+        this.setData({
+          payChannelColor:false,
+          channelPrice:channelPrice
+        });
+      } else {
+        let price = this.data.price;
+        let channelPrice = this.data.price - this.data.channelCost;
+        channelPrice = Math.round(channelPrice * 100) / 100;
+        this.setData({
+          payChannelColor:true,
+          channelPrice:channelPrice
+        });
+      }
+    } else {
+      this.setData({
+        payChannelColor:!this.data.payChannelColor,
+        payWxColor:false,
+        selectPay:!this.data.selectPay
+      });
+    } 
   },
-  payTypeSwitch(e){
-    let {payindex,channel,name}=e.target.dataset;
-    this.setData({
-      payType:payindex
-    })
+  getOpenId() {
+    var that = this;
+    if (!this.data.payWxColor && !this.data.payChannelColor) {
+      feedbackApi.showToast({title:'请选择支付方式'});
+      return;
+    }
+    getNetworkType().then(res=>{
+      if (res.networkType != 'none') {
+        // 微信支付
+        if (this.data.payWxColor && !this.data.isPayStatus) {
+          if (this.data.channelCost < this.data.price && this.data.payChannelColor) {
+            this.wxLogin(this.data.channelCost);
+          } else {
+            this.wxLogin();
+          }
+          this.setData({
+            isPayStatus:true
+          });
+        }
+        // 余额支付
+        if (this.data.payChannelColor && !this.data.isPayStatus) {
+          if (this.data.channelCost < this.data.price) {
+            feedbackApi.showToast({title:'请选择支付方式'});
+            return;
+          }
+          this.maskShowAnimation();
+          this.setData({
+            maskShow:true,
+            isPayStatus:true
+          });
+          this.balancePay();
+        }    
+      } else {
+        wx.showToast({
+          title: '请检查你的网络',
+          icon: 'loading',
+          mask:true
+        });
+        setTimeout(()=>{
+          wx.hideToast();
+        },1000);
+      }
+    });
   },
   wxLogin(channel = 0){
     wx.showLoading({
@@ -112,53 +176,7 @@ Page({
         }
     });
   },
-    //余额支付接口
-    balancePay(){
-      let that = this;
-      wx.showLoading({
-          title: '正在支付',
-          mask: true
-      });
-      wxRequest({
-        url:'/merchant/userClient?m=balancePay',
-        method:'POST',
-        data:{
-          token: app.globalData.token,
-          params:{
-            orderId:this.data.orderId
-          }
-        },
-      }).then(res=>{
-        if (res.data.code === 0) {
-          let merchantId = res.data.value.merchantId
-          let isRedBag = true;
-          setTimeout(()=>{
-            wx.redirectTo({
-              url: '/pages/goods/cartDetail/cartDetail?orderid='+this.data.orderId + '&isredbag='+isRedBag,
-              complete: function(){
-                that.data.isPayStatus = false;
-              }
-            });
-          }, 1000);
-        } else {
-          let msg = res.data.value;
-          if (res.data.code === 100000) {
-            setTimeout(()=>{
-              wx.navigateTo({
-                url:'/pages/login/login'
-              });
-            },1000)
-          }
-          feedbackApi.showToast({title: msg});
-          that.data.isPayStatus = false;
-        }
-      }).finally(()=> {
-        wx.hideLoading();
-        that.data.isPayStatus = false;
-      });
-    },
-
-     //支付
+  //支付
   payMoney(open_id,channel){
     let that = this;
     let params= {
@@ -186,7 +204,7 @@ Page({
                 let isRedBag = true;
                 setTimeout(()=>{
                   wx.redirectTo({
-                    url: '/pages/goods/cartDetail/cartDetail?orderid='+that.data.orderId + '&isredbag='+isRedBag,
+                    url: '/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult',
                     complete: function(){
                       that.data.isPayStatus = false;
                     }
@@ -214,4 +232,111 @@ Page({
       wx.hideLoading();
     });
   },
-})
+  //获取用户中心数据
+  findUserCenter(){
+    wxRequest({
+      url:'/merchant/userClient?m=findUserCenter',
+      method:'POST',
+      data:{
+        token: app.globalData.token
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        this.setData({
+          channelCost:res.data.value.balance
+        });
+      }
+    });
+  },
+  //余额支付接口
+  balancePay(){
+    let that = this;
+    wx.showLoading({
+        title: '正在支付',
+        mask: true
+    });
+    wxRequest({
+      url:'/merchant/userClient?m=balancePay',
+      method:'POST',
+      data:{
+        token: app.globalData.token,
+        params:{
+          orderId:this.data.orderId
+        }
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        let merchantId = res.data.value.merchantId
+        let isRedBag = true;
+        setTimeout(()=>{
+          wx.redirectTo({
+            url: '/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult',
+            complete: function(){
+              that.data.isPayStatus = false;
+            }
+          });
+        }, 1000);
+      } else {
+        let msg = res.data.value;
+        if (res.data.code === 100000) {
+          setTimeout(()=>{
+            wx.navigateTo({
+              url:'/pages/login/login'
+            });
+          },1000)
+        }
+        feedbackApi.showToast({title: msg});
+        that.data.isPayStatus = false;
+      }
+    }).finally(()=> {
+      wx.hideLoading();
+      that.data.isPayStatus = false;
+    });
+  },
+  close(){
+    this.setData({
+      maskShow:false
+    });
+  },
+  maskShowAnimation(){
+    let animation = wx.createAnimation({  
+      duration: 1000,
+      timingFunction: "ease",
+    });
+    setTimeout(()=> {
+          animation.opacity(0.5).step();
+          this.setData({
+            maskAnimation: animation.export(),
+          });
+      }, 200);
+    animation.opacity(0).step();//修改透明度,放大  
+    this.setData({  
+       maskAnimation: animation.export()  
+    }); 
+  },
+  maskHideAnimation(){
+    let animation = wx.createAnimation({  
+        duration: 500,  
+    });
+    setTimeout(()=> {
+          animation.opacity(0).step();
+          setTimeout(()=>{
+            this.setData({
+              choice:false,
+              detailShow:false,
+              merchantRedBagList:[]
+            });
+          },500);
+          this.setData({
+            maskAnimation: animation.export(),  
+          }); 
+      }, 20);
+    animation.opacity(0).step();//修改透明度,放大  
+    this.setData({  
+       maskAnimation: animation.export()  
+    }); 
+  },
+  onUnload(){
+		wx.setStorageSync('isPayPageRoute',true);
+	}
+});

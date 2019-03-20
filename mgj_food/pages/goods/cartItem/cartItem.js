@@ -14,7 +14,8 @@ Page({
       start:0,
       show:false,
       firstRefresh:false,
-      iscartDetailBack:false//判断是否cartDetail返回,在该页面unload会修改这个字段。如果从该页面返回。则不再刷新这个页面 
+      iscartDetailBack:false,//判断是否cartDetail返回,在该页面unload会修改这个字段。如果从该页面返回。则不再刷新这个页面 
+      orderListTag:0,//全部，外卖，团购
     },
     onPageScroll(e){//保存滚动
       scrollHeight=e.scrollTop;
@@ -159,19 +160,30 @@ Page({
       }
       return item;
     },
-    findNewUserTOrders(status,reqObj){//reqObj只是在切换列表tag时会传
+    orderListTagSwitch(e){
+      let {tag}=e.target.dataset;
+      this.setData({
+        orderListTag:tag
+      },()=>{
+        this.findNewUserTOrders(false);
+      })
+    },
+    findNewUserTOrders(status){
       if (!status) {//status false表示要展示加载小图标且是不是列表合并
         wx.showLoading({
           title: '加载中',
           mask: true
         });
       }
-      if(reqObj==undefined){
-        reqObj={};
-        reqObj.params={};
-        reqObj.url="findNewUserTOrders";
-      }else{
-        if(reqObj.url==undefined)  reqObj.url="findNewUserTOrders";
+      let orderListTag=this.data.orderListTag;
+      let reqObj={};
+      reqObj.params={};
+      reqObj.url="findNewUserTOrders";
+      switch(orderListTag){
+        case "0":break;
+        case "1":{ reqObj.type=1;break;}
+        case "2":{reqObj.url="findGroupPurchaseOrderList";break;}
+        default:{}
       }
       reqObj.params=Object.assign({},{
         size:20,
@@ -322,27 +334,7 @@ Page({
       });
     },
 
-    orderListTagSwitch(e){
-      let {tag}=e.target.dataset;
-      let reqObj={};
-      switch(tag){
-        case undefined:break;
-        case "1":{
-          reqObj.type=1;
-          break;
-        }
-        case "6":{
-          reqObj.url="findGroupPurchaseOrderList";
-          break;
-        }
-        default:{
 
-        }
-      }
-      console.log(reqObj)
-      this.findNewUserTOrders(false,reqObj);
-
-    },
 
 
 

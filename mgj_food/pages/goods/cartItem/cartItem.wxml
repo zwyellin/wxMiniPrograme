@@ -20,9 +20,9 @@
 	  	<!-- 分类搜索 -->
 		<view class="pageItem padding-tb-20" style="border-top:1px solid #e5e5e5">
 			<view class="flex flex-spaceBetween flex-row-center">
-				<text class="searchTag" catch:tap="orderListTagSwitch">全部订单</text>
-				<text class="searchTag" data-tag="1" catch:tap="orderListTagSwitch">外卖</text>
-				<text class="searchTag" data-tag="6"  catch:tap="orderListTagSwitch">团购</text>
+				<text class="searchTag {{orderListTag=='0'?'searchTagActive':''}}" data-tag="0" catch:tap="orderListTagSwitch">全部订单</text>
+				<text class="searchTag  {{orderListTag=='1'?'searchTagActive':''}}" data-tag="1" catch:tap="orderListTagSwitch">外卖</text>
+				<text class="searchTag  {{orderListTag=='2'?'searchTagActive':''}}" data-tag="2"  catch:tap="orderListTagSwitch">团购</text>
 			</view>
 		</view>
 	  	<view class="order" 

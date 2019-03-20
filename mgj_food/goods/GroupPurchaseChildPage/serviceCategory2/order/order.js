@@ -1,8 +1,8 @@
 // goods/GroupPurchaseChildPage/serviceCategory2/order/order.js
 const app = getApp();
-const { wxRequest } = require('../../../../utils/util.js');
+const {getTime, wxRequest } = require('../../../../utils/util.js');
 const {modify} =require("../../../GroupPurchaseIndex/groupPurchasePublicJs.js")
-
+const feedbackApi=require('../../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口
 
 Page({
 
@@ -22,6 +22,7 @@ Page({
     totalMoney:"",//小计
     realTotalMoney:"",//实付总额
 
+    platformRedBagCount:null,//红包数量
     redPacketDeduction:"",//红包抵扣的金额
 
 
@@ -32,6 +33,22 @@ Page({
       userId:null
     },
     orderId:null,//返回来的orderId
+    maxNum:null, //最多购买数量
+
+    redBagUsableCount:0,    //可用商家红包个数
+		redBagList:[],          //可用的商家红包列表
+		useRedBagList:null,       //本次订单使用的商家红包列表
+		select:true,                //商家红包使用状态
+		redBagMoney:0,               //商家红包使用金额
+		redText:'暂无可用红包',      
+
+		platformRedBagList:[],  //可用的平台红包列表  
+		disabledPlatformRedBagList:[], //不可用的平台红包列表   
+		usePlatformRedBagList:null,       //本次订单使用的平台红包列表
+		platformSelect:true,        //平台红包使用状态
+		platformRedBagMoney:0,       //平台红包使用金额
+		platformRedBagCount:0,  //可使用的平台红包个数
+		platformRedText:'无可用红包',
   },
 
   /**
@@ -41,7 +58,11 @@ Page({
     // 获得参数
     let {groupPurchaseCouponId}=options;
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
-    this.findGroupPurchaseCouponInfo();
+    this.findGroupPurchaseCouponInfo().then(()=>{
+      this.redBagSetting();
+      this.queryPlatformRedBagList();
+      this.filterUsableRedBagList();
+    });
    
    //获得用户信息
    let {token,userId}=app.globalData;
@@ -52,12 +73,53 @@ Page({
      loginToken:token
    })
   },
+  onShow(){
+		if (this.data.useRedBagList != null || this.data.addressInfoId != null || this.data.usePlatformRedBagList != null) {
+			let redBagMoney = 0;
+			let platformRedBagMoney = 0;
+	    if (this.data.useRedBagList != null) {
+          this.data.useRedBagList.map(item=>{
+            redBagMoney += item.amt;
+          });
+          this.setData({
+              redBagMoney:redBagMoney
+          });
+	    }
+	    if (this.data.usePlatformRedBagList != null) {
+	        this.data.usePlatformRedBagList.map(item=>{
+					  platformRedBagMoney += item.amt;
+		    	});
+          this.setData({
+              platformRedBagMoney:platformRedBagMoney
+          });
+      }
+		}
+	},
    // 提交订单
    submitOrderBtnTap(){
-    this.groupPurchaseOrderSubmit().then(()=>{
-      wx.navigateTo({
-        url:"/goods/pay/pay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
+    this.groupPurchaseOrderSubmit().then(res=>{
+      if (res.data.code === 0) {
+       console.log("获得订单号",res.data.value.id);
+       this.data.orderId=res.data.value.id;
+       wx.showToast({
+        title:"下单成功",
+        icon:"none",
+        duration:1000
       })
+      setTimeout(()=>{
+        wx.navigateTo({
+          url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
+        })
+      },1000)
+      }else if(res.data.code===500){
+        wx.showToast({
+          title:res.data.value || "未知错误",
+          icon:"none",
+          duration:2000
+        })
+      }
+    }).then((res)=>{
+     
     })
   },
     // 订单提交预览,获得订单号
@@ -83,20 +145,8 @@ Page({
             data:data
           }
         },
-      }).then(res=>{
-        if (res.data.code === 0) {
-         console.log("获得订单号",res.data.value.id);
-         this.data.orderId=res.data.value.id;
-        }else if(res.data.code===500){
-          wx.showToast({
-            title:res.data.value || "未知错误",
-            icon:"none",
-            duration:2000
-          })
-        }
-    })
+      })
   },
-
 
   modifygroupSetMealItem(value){
     console.log("显示",value)
@@ -119,6 +169,106 @@ Page({
     }
     return value;
   },
+  redBagSetting(){
+    let params={
+      agentId:app.globalData.agentId,
+      businessType:6,//团购6
+      itemPrice:this.data.groupSetMealItem.price,
+      quantity:1,
+      redBags:"[]"
+    }
+    return wxRequest({
+      url:'/merchant/userClient?m=redBagSetting',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:params
+      },
+    }).then((res)=>{
+      if (res.data.code === 0) {
+        this.setData({
+          platformRedBagCount:res.data.value.platformRedBagCount
+        })
+        
+      }
+    })
+  },
+  	//获取平台可用红包
+	queryPlatformRedBagList(){
+		wxRequest({
+        	url:'/merchant/userClient?m=queryPlatformRedBagList',
+        	method:'POST',
+        	data:{
+        		token:app.globalData.token,
+        		params:{
+              agentId:app.globalData.agentId,
+		          businessType: 6,
+		          itemsPrice: this.data.groupSetMealItem.price
+        		}	
+        	},
+        }).then(res=>{
+        	console.log(res);
+			if (res.data.code === 0) {
+				console.log(res);
+				let platformRedBagAvailableList = res.data.value.platformRedBagAvailableList;    //不可使用的平台红包
+				let platformRedBagList = res.data.value.platformRedBagList;      //可使用的平台红包
+				let platformRedBagCount = res.data.value.platformRedBagCount;      //可使用的平台红包个数
+				platformRedBagAvailableList.map(item=>{
+					item.lookReason = false;
+				});
+				this.setData({
+					disabledPlatformRedBagList:platformRedBagAvailableList,
+					platformRedBagCount:platformRedBagCount,
+					platformRedBagList:platformRedBagList
+				});
+			} else {
+				let msg = res.data.value;
+				feedbackApi.showToast({title: msg});
+			}
+        });
+  },
+
+  	//获取商家可用红包
+	filterUsableRedBagList(){
+		wxRequest({
+        	url:'/merchant/userClient?m=filterUsableRedBagList',
+        	method:'POST',
+        	data:{
+        		token:app.globalData.token,
+        		params:{
+        		  agentId:app.globalData.agentId,
+		          businessType: 6,
+		          itemsPrice: this.data.groupSetMealItem.price
+        		}	
+        	},
+        }).then(res=>{
+        	console.log(res);
+			if (res.data.code === 0) {
+				let valueList = res.data.value;
+				valueList.map(item=>{
+					item.selectStatus = false;
+					item.expirationTime = format(item.expirationTime,'-'); 
+				});
+				this.setData({
+					redBagList:valueList
+				});	
+			} else {
+				let msg = res.data.value;
+				feedbackApi.showToast({title: msg});
+			}
+        });
+	},
+
+  platformRedPage(){
+		wx.navigateTo({
+  			url: '/goods/redbag/platformRedbag/platformRedbag?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.totalPrice
+		});
+  },
+  merchantRedPage(){
+		wx.navigateTo({
+  			url: '/goods/redbag/merchantRedbag/merchantRedbag?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.totalPrice
+		});
+	},
   // 日期选择事件
   pickerDateChange(e){
     this.setData({
@@ -127,13 +277,14 @@ Page({
   },
   // 滑块滑动事件
   sliderChanging(e){
-    var type;
+    var type;//-1为减。1为加
     try{
       type=e.target.dataset.type;
     }catch(err){
       type=0;
     }
-    let sliderValue=this.data.sliderValue+parseInt(type);
+    type=parseInt(type);
+    let sliderValue=this.data.sliderValue+type;
      //计算小计：
     let totalMoney=sliderValue*this.data.groupSetMealItem.price;
     // 计算实际付款：
@@ -146,7 +297,7 @@ Page({
   },
 
   findGroupPurchaseCouponInfo(){
-    wxRequest({
+    return wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
       method:'POST',
       data:{
@@ -161,9 +312,57 @@ Page({
       if (res.data.code === 0) {
         let value=res.data.value;
         let groupSetMealItem=this.modifygroupSetMealItem(value)
+
+          /** 库存类型 0:库存无限，1：库存有限 */
+          //private Integer stockType;
+          /** 库存 */
+          //private Integer stock;
+          /** 剩余库存 */
+          //private Integer surplusStock;
+          /** 是否限购 1:限购，2：不限购， 3：新用户限购（这个前端不用做限制，提交后台会校验）*/
+          //private Integer isPurchaseRestriction;
+          /** 每单限量数 */
+          //private Integer orderLimit = 0;
+          let {stockType,stock,surplusStock,orderLimit}=groupSetMealItem;
+          let maxNum=999;//默认较大的值
+          if(surplusStock==1 && stockType==1){//都有限制，取小值
+          maxNum=Math.min(stock,orderLimit)
+          }else if(surplusStock==1){//库存有限制
+          maxNum=stock;
+          }else if(stockType==1){
+            maxNum=orderLimit;
+          }
+          this.data.groupSetMealItem=groupSetMealItem;
+          this.setData({
+            groupSetMealItem,
+            maxNum
+         });
+        //  设置预约时间
+       //是否需要预约
+      //@property (nonatomic, assign) BOOL isBespeak; 0 false。
+       //预约天数
+      //@property (nonatomic, assign) NSInteger bespeakDayCount;
+      /** 核销时间 **/
+      //@property (nonatomic, copy) NSString *cancelAfterVerificationTime;
+
+        if(groupSetMealItem.isBespeak==1){
+          
+        }
+      
+        // 格式为"YYYY-MM-DD"
+        let Y=new Date().getFullYear();
+        let M = new Date().getMonth() + 1;
+        if(M<10) M='0'+M.toString();
+        let D= new Date().getDate();
+        if(D<10) D="0"+D.toString()
+        let pickerDataStart=Y+'-'+M+'-'+D;
+        console.log("pickerDataStart",pickerDataStart);
+    
         this.setData({
-           groupSetMealItem
-        });
+          pickerDataStart,
+          
+        })
+      
         // 计算总额和小计
        this.sliderChanging();
       }else {}

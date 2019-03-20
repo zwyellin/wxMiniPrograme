@@ -4,7 +4,9 @@
     <view class="quanma" style="margin:20rpx 40rpx;position:relative">
         <image  src="../../../image/quanma.png" style="width:100%;height:300px;"></image>
         <view style="position:absolute">
-
+            <view>
+                <canvas style="width: 200px; height: 200px" canvas-id="qrcode"></canvas>
+            </view>
         </view>
     </view>
 

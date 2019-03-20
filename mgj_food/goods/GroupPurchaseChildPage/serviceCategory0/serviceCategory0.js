@@ -96,7 +96,7 @@ Page({
               })
             }else{
               wx.navigateTo({
-                url:"/goods/pay/pay?price="+this.data.orderMoney+"&orderId="+this.data.orderId
+                url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.orderMoney+"&orderId="+this.data.orderId
               })
             }
         });
@@ -131,7 +131,6 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
-        this.data.originalTotalPrice=res.data.value.originalTotalPrice;
         let {originalTotalPrice,notJoinDiscountAmount,discountAmt,totalPrice}=res.data.value;
        let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
         if(this.data.discountActive) {
@@ -141,7 +140,7 @@ Page({
         }
         let groupPurchaseOrderSubmitRequestObj=JSON.parse(JSON.stringify(OrderPreviewRequestObj));
         Object.assign(groupPurchaseOrderSubmitRequestObj,{
-          originalPrice,notJoinDiscountAmount,totalPrice
+          originalTotalPrice,notJoinDiscountAmount,totalPrice
         })
         this.data.groupPurchaseOrderSubmitRequestObj=groupPurchaseOrderSubmitRequestObj;
       }else if(res.data.code===500){

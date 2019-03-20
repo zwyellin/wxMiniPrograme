@@ -248,6 +248,34 @@ const bd09togcj02 = function (lng, lat){
   let latitude = z * Math.sin(theta);
   return {longitude, latitude}
 }
+const base64src = function(arraybuffer) {
+  
+  return new Promise((resolve, reject) => {
+      // const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
+      // console.log(format);
+      // if (!format) {
+      //     reject(new Error('ERROR_BASE64SRC_PARSE'));
+      // }
+      console.log("base64src")
+      console.log(wx.env.USER_DATA_PATH)
+      console.log(FILE_BASE_NAME)
+      const FILE_BASE_NAME = 'tmp_base64src';
+      const filePath = `${wx.env.USER_DATA_PATH}/${FILE_BASE_NAME}.png`;
+      console.log("filePath",filePath)
+      // const buffer = wx.base64ToArrayBuffer(bodyData);
+      wx.getFileSystemManager().writeFile({
+          filePath,
+          data: arraybuffer,
+          encoding: 'binary',
+          success() {
+              resolve(filePath);
+          },
+          fail(err) {
+              reject(err);
+          },
+      });
+  });
+};
 module.exports = {
   format,
   formatNumber,
@@ -267,4 +295,5 @@ module.exports = {
   wxGetLocation,
   trackTime,
   refundTime,
+  base64src
 };

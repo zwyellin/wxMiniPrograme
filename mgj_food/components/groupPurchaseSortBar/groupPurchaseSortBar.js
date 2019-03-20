@@ -269,13 +269,17 @@ Component({
       let {value}=e.detail;
       let sliderValue=this.data.sliderValue;
       sliderValue.min=value;
-      this.data.sliderValue=sliderValue;
+      this.setData({
+        sliderValue
+      })
     },
     sliderMaxChange(e){
       let {value}=e.detail;
       let sliderValue=this.data.sliderValue;
       sliderValue.max=value;
-      this.data.sliderValue=sliderValue;
+      this.setData({
+        sliderValue
+      })
     },
     // 筛选，取消按钮
     sort2CancelBtnTap(e){

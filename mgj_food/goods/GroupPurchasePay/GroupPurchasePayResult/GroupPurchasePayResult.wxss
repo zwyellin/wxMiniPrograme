@@ -1,0 +1,11 @@
+/* goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult.wxss */
+.orderMsg{
+    position: fixed;
+    top:100rpx;
+    left:60rpx;
+    right:60rpx;
+    background: white;
+    box-shadow:0 0 1px 3px #e5e5e5;
+    border-radius:5rpx;
+    line-height: 2;
+}
