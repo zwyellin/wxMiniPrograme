@@ -3,5 +3,7 @@
     "mask":"../../../components/mask/mask",
     "groupPurchaseEvalueteItem":"../../../components/groupPurchaseEvaluateItem/groupPurchaseEvaluateItem"
   },
-  "navigationBarTitleText":"详情"
+  "navigationBarTitleText": "代金券详情",
+  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#482a1a"
 }

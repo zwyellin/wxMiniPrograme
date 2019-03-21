@@ -93,7 +93,7 @@ Page({
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
       wx.navigateTo({
-        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+voucherItem.id
+        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+this.data.voucherItem.id
       })
     }else{
       this.isLoginsuccess(true);//跳转到登入

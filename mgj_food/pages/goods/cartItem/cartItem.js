@@ -160,6 +160,25 @@ Page({
       }
       return item;
     },
+    type6Tap(e){
+      //url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/server1OrderDetails/
+      //server1OrderDetails?orderId={{item.groupPurchaseOrder.id}}"
+      //<!-- orderType:。 1, "代金券",2, "团购券",3, "优惠买单" -->
+      let {item}=e.currentTarget.dataset;
+      let orderType=item.groupPurchaseOrder.orderType;
+      let url="/goods/GroupPurchasePay/GroupPurchaseorderDetails";
+      if(orderType===1){
+        url+="/server1OrderDetails/server1OrderDetails";
+      }else if(orderType===2){
+        url+="/server2OrderDetails/server2OrderDetails";
+      }else if(orderType===3){
+        url+="/server0OrderDetails/server0OrderDetails";
+      }
+      url+=`?orderId=${item.groupPurchaseOrder.id}`
+      wx.navigateTo({
+        url:url
+      })
+    },
     orderListTagSwitch(e){
       let {tag}=e.target.dataset;
       this.setData({

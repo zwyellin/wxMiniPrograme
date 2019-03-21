@@ -42,14 +42,14 @@ Page({
     }).then(res=>{
       if (res.data.code === 0) {
         let value=res.data.value;
-        // 处理代金券
-        let vouchers=this.voucherItemModify(value.groupPurchaseOrder.groupPurchaseOrderCouponCodeList);
+        // 处理码券
+        let groupPurchaseOrderCouponCodeList=this.codeListItemModify(value.groupPurchaseOrder.groupPurchaseOrderCouponCodeList);
         //处理商家信息
         let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseOrder.groupPurchaseMerchant);
         this.setData({
           groupPurchaseOrder:value.groupPurchaseOrder,
           groupMerchantInfo:groupMerchantInfo,
-          groupPurchaseOrderCouponCodeList:vouchers
+          groupPurchaseOrderCouponCodeList
         })
       }
     })
@@ -74,7 +74,7 @@ Page({
       }
     })
   },
-  voucherItemModify(item){
+  codeListItemModify(item){
     if(item instanceof Array){
       item.forEach((_item,_index)=>{
         _item=_modify(_item);

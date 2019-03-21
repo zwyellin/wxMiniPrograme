@@ -94,7 +94,7 @@ Page({
     value.forEach((_item,_index)=>{
       switch(_item.bannerType){
         case 1:{//外部链接
-          _item.url="/"+_item.url;
+          _item.url=`/pages/webView/webView?src=${_item.url}`;
           break;//
         }
         case 2:{//代金券
@@ -102,11 +102,11 @@ Page({
           break;
         }
         case 3:{//团购商家
-
+          _item.url=`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${_item.groupPurchaseMerchantId}`
           break;
         }
-        case 4:{//团购分类
-          _item.url
+        case 4:{//团购套餐
+          _item.url=`/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${_item.groupPurchaseCouponId}`
           brack;
         }
         default:{
@@ -137,14 +137,11 @@ Page({
         })
         app.globalData.agentId=res.data.value[0].agentId;
         // 此时可以请求其它的
-
-
-
         // 5个分组
         let categoryList=[[]];
         res.data.value.forEach((item,index,arr)=>{
-          if(categoryList[categoryList.length-1].length>4){
-            categoryList.push([[]]);
+          if(categoryList[categoryList.length-1].length>4){   
+            categoryList.push([item]);
           }else{
             categoryList[categoryList.length-1].push(item);
           }
@@ -154,6 +151,25 @@ Page({
         })
       }
     })
+  },
+  // 主分类的跳转
+  //url="/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId={{item.groupPurchaseCategoryId}}&childGroupPurchaseCategoryId={{item.childGroupPurchaseCategoryId}}"
+  findGroupPurchasePrimaryCategoryListTap(e){
+    let {item}=e.currentTarget.dataset;
+    let {gotoType,gotoUrl,groupPurchaseCategoryId,childGroupPurchaseCategoryId,name}=item;
+    // name是作为跳到分类页面的标题
+    //@gotoType :2跳分类。1跳链接。3
+    //@gotoUrl跳分类的链接
+    //groupPurchaseCategoryId一级分类的id。 childGroupPurchaseCategoryId二级分类的id如果为Null则跳一级分类
+    if(gotoType===1){
+      wx.navigateTo({
+        url:`/pages/webView/webView?src=${gotoUrl}`
+      })
+    }else if(gotoType===2){
+      wx.navigateTo({
+        url:`/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId=${groupPurchaseCategoryId}&childGroupPurchaseCategoryId=${childGroupPurchaseCategoryId}&name=${name}`
+      })
+    }
   },
   // 广告位
   findGroupPurchasePrimaryPublicityList(){
@@ -176,6 +192,31 @@ Page({
         console.log("publicityList",publicityList)
       }
     })
+  },
+  // 广告位的跳转
+  primaryPublicityListTap(e){
+    let {item}=e.currentTarget.dataset;
+    let {gotoType,groupPurchaseMerchantId,groupPurchaseCouponId}=item;
+    //@gotoType :1跳链接。2跳代金券。3跳团购商家。4跳团购套餐
+    //@linkUrl跳链接的地址
+    if(gotoType===1){
+      wx.navigateTo({
+        url:`/pages/webView/webView?src=${gotoUrl}`
+      })
+    }else if(gotoType===2){
+      wx.navigateTo({
+        url:`/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId=${groupPurchaseCouponId}`
+      })
+    }else if(gotoType===3){    
+      wx.navigateTo({
+        url:`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${groupPurchaseMerchantId}`
+      })
+    }else if(gotoType===4){
+      wx.navigateTo({
+        url:`/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${groupPurchaseCouponId}`
+      })
+    }
+
   },
   //分类筛选点击
   sortTap(e){

@@ -46,7 +46,6 @@ Page({
     originalTotalPrice:null,
 
     orderId:null,//保存订单提交时候的order订单id
-    orderTitle:null,
     orderMoney:null,
   },
 
@@ -56,6 +55,10 @@ Page({
   onLoad: function (options) {
     // 获得参数
     let {merchantId,discountRatio,merchantName}=options;
+    //设置标题
+    wx.setNavigationBarTitle({
+      title:merchantName
+    })
     //获得用户信息
     let {token,userId}=app.globalData;
     let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
@@ -67,7 +70,6 @@ Page({
     let discount=this.data.discount;
     discount=discountRatio/100;
     let discountText=(discount*10).toFixed(1)
-    this.data.orderTitle=merchantName;
     this.setData({
       OrderPreviewRequestObj,
       discount,

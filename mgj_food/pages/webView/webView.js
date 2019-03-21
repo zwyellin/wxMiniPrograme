@@ -13,6 +13,7 @@ Page({
    */
   onLoad: function (options) {
     let {src}=options;
+    console.log("现在在网页page",src)
     this.setData({
       webViewSrc:src
     })

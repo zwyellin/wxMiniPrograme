@@ -77,7 +77,7 @@
 			</block>
 			<!--type:6 为团购-->
 			<block wx:if="{{item.type==6}}">
-				<navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/server1OrderDetails/server1OrderDetails?orderId={{item.groupPurchaseOrder.id}}">
+				<view data-item="{{item}}" catch:tap="type6Tap">
 					<view class="order-header">
 						<view class="header-text flex">
 							<image wx:if="{{item.groupPurchaseOrder.groupPurchaseCouponImages}}" class="header-img" src="{{item.groupPurchaseOrder.groupPurchaseCouponImages}}" ></image>
@@ -102,7 +102,7 @@
 							<text class="fr" style="color:#aaaaaa">共{{item.groupPurchaseOrder.quantity}}件商品: ￥{{item.groupPurchaseOrder.totalPrice}}</text>
 						</view>
 					</view>
-				</navigator>
+				</view>
 				<view class="order-food flex">
 					<view class="flex1">
 						<text class="orderTypeIcon">团购</text>

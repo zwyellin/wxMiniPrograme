@@ -2,5 +2,8 @@
   "usingComponents": {
     "mask":"../../../components/mask/mask",
     "groupPurchaseEvalueteItem":"../../../components/groupPurchaseEvaluateItem/groupPurchaseEvaluateItem"
-  }
+  },
+  "navigationBarTitleText": "团购套餐详情",
+  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#482a1a"
 }

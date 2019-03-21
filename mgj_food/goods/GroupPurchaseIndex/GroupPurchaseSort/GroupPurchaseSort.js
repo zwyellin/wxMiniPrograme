@@ -1,6 +1,6 @@
 // goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort.js
 const app = getApp();
-
+// 有可能打开一级，也可能是二级分类。根据childGroupPurchaseCategoryId是否为空
 Page({
 
   /**
@@ -42,8 +42,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let {groupPurchaseCategoryId,childGroupPurchaseCategoryId}=options;
+    let {groupPurchaseCategoryId,childGroupPurchaseCategoryId,name}=options;
     let groupPurchaseItemRequsetObjDefault=this.data.groupPurchaseItemRequsetObjDefault;
+    // 设置标题
+    wx.setNavigationBarTitle({//修改标题
+      title: name||'分类'
+    })
     // sort的分类请求
     let sort1RequsetObj=this.data.sort1RequsetObj;
     Object.assign(sort1RequsetObj,{
@@ -56,12 +60,14 @@ Page({
       longitude:app.globalData.longitude,
       groupPurchaseCategoryId
     })
-    // 默认加载要根据二级id来
+    // 默认加载要根据二级id来，如果不是为null
     let groupPurchaseItemRequsetObj=this.data.groupPurchaseItemRequsetObj;
     groupPurchaseItemRequsetObj=JSON.parse(JSON.stringify(groupPurchaseItemRequsetObjDefault));
-    Object.assign(groupPurchaseItemRequsetObj,{
-      childGroupPurchaseCategoryId
-    })
+    if(childGroupPurchaseCategoryId!=='null'){
+      Object.assign(groupPurchaseItemRequsetObj,{
+        childGroupPurchaseCategoryId
+      })
+    }
     this.setData({
       groupPurchaseItemRequsetObjDefault,
       groupPurchaseCategoryId,

@@ -22,7 +22,7 @@ Component({
       if(newVal===oldVal || newVal==null) return;
       if(newVal.agentId==null || newVal.agentId==undefined) return ;
       newVal=Object.assign({//初始值
-        parentCategoryId:0,//除了二级分类，该值为0
+        parentCategoryId:0,//除了一级分类，该值为0。即顶级是0
       },newVal)
       this.data._requestObj=newVal;
       this.requestData();
@@ -36,7 +36,9 @@ Component({
       // 先保存起来。分类数据请求完之后。再Active并通知父级获得text
      let _sort0ActiveRowId=newVal;
      console.log("传的rowID",newVal,_sort0ActiveRowId)
-     this.data._sort0ActiveRowId=_sort0ActiveRowId;
+     if(_sort0ActiveRowId!==null){//如果二级分类为空，则不显示具体分类
+      this.data._sort0ActiveRowId=_sort0ActiveRowId;
+     }
     }
   },
   /**
@@ -96,7 +98,7 @@ Component({
         if (res.data.code === 0) {
           let value=this._modifyrequestData(res.data.value);
           let _sort0ActiveRowId=this.data._sort0ActiveRowId;
-          if(_sort0ActiveRowId!=null){
+          if(_sort0ActiveRowId!=null && _sort0ActiveRowId!='null'){
             value.forEach((_item,_index)=>{
                 if(_item.id==_sort0ActiveRowId){
                   this.setData({
