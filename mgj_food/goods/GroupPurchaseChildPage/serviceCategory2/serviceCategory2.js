@@ -190,7 +190,7 @@ Page({
 
   // 点击图片事件
   merchantInfoImageTap(e){
-    let {index=0,images}=e.target.dataset;
+    let {index=0,images}=e.currentTarget.dataset;
     console.log(images,index)
     wx.previewImage({
       current: images[index], // 当前显示图片的http链接

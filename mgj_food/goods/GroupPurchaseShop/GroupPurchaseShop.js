@@ -1,10 +1,12 @@
 const app = getApp();
 const { wxRequest } = require('../../utils/util.js');
-const {modify} =require("../GroupPurchaseIndex/groupPurchasePublicJs.js")
+const {modify} =require("../GroupPurchaseIndex/groupPurchasePublicJs.js");
+const feedbackApi = require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 // goods/GroupPurchaseShop/GroupPurchaseShop.js
 Page({
   data: {
     isLoginsuccess:false,//是否登入
+    isredbagShow:true,//默认要显示，有没有是另外一回事。点击领取后就不显示了
 
     //商家信息请求参数
     latitude:null,
@@ -116,7 +118,8 @@ Page({
         params:{
           latitude:this.data.latitude,
           longitude:this.data.longitude,
-          groupPurchaseMerchantId:this.data.groupPurchaseMerchantId
+          groupPurchaseMerchantId:this.data.groupPurchaseMerchantId,
+          userId:app.globalData.userId
         }	
       },
     }).then(res=>{
@@ -191,10 +194,46 @@ Page({
       }else {}
     });
   }, 
-    
+  // 进店红包
+  redbagBtnTap(e){
+    let {index}=e.target.dataset;
+    let redbagItem=this.data.groupMerchantInfo.merchantRedBagList[index];
+    console.log("redbagItem",redbagItem);
+    wxRequest({
+      url:'/merchant/userClient?m=getMerchantRedBag',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          bizType:6,
+          id:redbagItem.id,
+          merchantId:this.data.groupMerchantInfo.id
+        }	
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        let that=this;
+        wx.showModal({
+          title:"提示",
+          content:'恭喜您已成功领取'+redbagItem.amt+"元红包，可在[个人执行]->[我的红包]查看",
+          confirmText:'我知道了',
+          showCancel:false,
+          confirmColor:"#314bec",
+          success:function(res){
+            if(res.confirm){
+              that.setData({
+                isredbagShow:false
+              })
+            }
+          }
+        });
+      }else {}
+    });
+
+  },
   // 点击商家图片事件
   merchantInfoImageTap(e){
-    let {index=0,images}=e.target.dataset;
+    let {index=0,images}=e.currentTarget.dataset;
     console.log(images,index)
     wx.previewImage({
 			current: images[index], // 当前显示图片的http链接

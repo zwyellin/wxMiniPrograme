@@ -15,7 +15,7 @@ Page({
 	onLoad(){
 		let pages = getCurrentPages();
 	    let prevPage = pages[pages.length - 2];
-	    console.log(prevPage.data.platformRedBagList);
+	    console.log("prevPage.data.redBagList",prevPage.data.redBagList);
 		this.setData({
 			redBagList:prevPage.data.redBagList,
 			disabledPlatformRedBagList:prevPage.data.disabledPlatformRedBagList,

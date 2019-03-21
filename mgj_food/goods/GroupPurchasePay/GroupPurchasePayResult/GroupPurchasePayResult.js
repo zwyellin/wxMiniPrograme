@@ -1,4 +1,5 @@
 // goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult.js
+const { wxRequest } = require('../../../utils/util.js');
 const app = getApp();
 Page({
 
@@ -8,10 +9,13 @@ Page({
   data: {
     scrollHeight:null,
     orderId:null,
+    // 订单信息
+    groupPurchaseMerchantName:null,
+    id:null,//订单编号
+    totalPrice:null,//实付金额
 
-
-    groupPurchaseItemRequsetObjDefault:{//其实还会加入经纬度
-      url:"findGroupPurchaseMerchantBySearch",
+    // 附近商家
+    groupPurchaseItemRequsetObjDefault:{//其实还会加入经纬
       start:0,
       size:5
     },
@@ -23,6 +27,7 @@ Page({
    */
   onLoad: function (options) {
     let {orderId}=options;
+    this.data.orderId=orderId;
     wx.getSystemInfo({
 			success: (res)=> {
 				this.setData({
@@ -43,30 +48,45 @@ Page({
     this.setData({
       groupPurchaseItemRequsetObj:this.data.groupPurchaseItemRequsetObjDefault
     })
+
+    // 根据orderId请求数据
+    this.findNewTOrderById();
   },
   onUnload(){
       wx.redirectTo({
         url:'/goods/GroupPurchaseIndex/GroupPurchaseIndex'
       })
   },
-  // findGroupPurchaseCouponInfo(){
-  //   return wxRequest({
-  //     url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
-  //     method:'POST',
-  //     data:{
-  //       token:app.globalData.token,
-  //       params:{
-  //         groupPurchaseCouponId:this.data.groupPurchaseCouponId,
-  //         size:20,
-  //         start:0
-  //       }	
-  //     },
-  //   }).then(res=>{
-  //     if (res.data.code === 0) {
-  //       let value=res.data.value;
-
-  //     }
-  //   })
-  // }
+  findNewTOrderById(){
+		wx.showLoading({
+	        title: '加载中',
+	        mask: true
+	    });
+		wxRequest({
+	        url:'/merchant/userClient?m=findNewTOrderById',
+	        method:'POST',
+	        data:{
+	          	params:{
+	            	orderId: this.data.orderId
+	          	}
+	        },
+	      }).then(res=>{
+	        if (res.data.code === 0) {
+          let groupPurchaseOrder=res.data.value.groupPurchaseOrder;
+          let groupPurchaseMerchantName=groupPurchaseOrder.groupPurchaseMerchantName;
+          let id=groupPurchaseOrder.id;
+          let totalPrice=groupPurchaseOrder.totalPrice;
+          this.setData({
+            groupPurchaseMerchantName,
+            id,
+            totalPrice
+          })
+	        } else {
+	          	let msg = res.data.msg;
+	        } 
+	    }).finally(()=>{
+	    	wx.hideLoading();
+	    });
+	},
 
 })

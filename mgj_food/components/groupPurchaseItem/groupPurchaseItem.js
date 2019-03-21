@@ -170,7 +170,7 @@ Component({
               })
           }
           if(concatState){
-            value=value.concat(this.data._responseList);
+            value=this.data._responseList.concat(value);
           }
        
           this.data._requestObj.start=value.length;

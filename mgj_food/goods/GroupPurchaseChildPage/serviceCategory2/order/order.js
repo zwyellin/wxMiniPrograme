@@ -59,7 +59,7 @@ Page({
     let {groupPurchaseCouponId}=options;
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
     this.findGroupPurchaseCouponInfo().then(()=>{
-      this.redBagSetting();
+      this.promotionPreSetting();
       this.queryPlatformRedBagList();
       this.filterUsableRedBagList();
     });
@@ -73,7 +73,7 @@ Page({
    })
   },
   onShow(){
-		if (this.data.useRedBagList != null || this.data.addressInfoId != null || this.data.usePlatformRedBagList != null) {
+		if (this.data.useRedBagList != null ||  this.data.usePlatformRedBagList != null) {
 			let redBagMoney = 0;
 			let platformRedBagMoney = 0;
 	    if (this.data.useRedBagList != null) {
@@ -122,6 +122,12 @@ Page({
       }else if(res.data.code===500){
         wx.showToast({
           title:res.data.value || "未知错误",
+          icon:"none",
+          duration:2000
+        })
+      }else if(res.data.code==501 && res.data.value=="该团购券为商家新用户专享"){//针对新用户专享
+        wx.showToast({
+          title:res.data.value,
           icon:"none",
           duration:2000
         })
@@ -211,7 +217,7 @@ Page({
     }
     return value;
   },
-  redBagSetting(){
+  promotionPreSetting(){
     let params={
       agentId:app.globalData.agentId,
       businessType:6,//团购6
@@ -220,7 +226,7 @@ Page({
       redBags:"[]"
     }
     return wxRequest({
-      url:'/merchant/userClient?m=redBagSetting',
+      url:'/merchant/userClient?m=promotionPreSetting',
       method:'POST',
       data:{
         token:app.globalData.token,
@@ -280,7 +286,8 @@ Page({
         		params:{
         		  agentId:app.globalData.agentId,
 		          businessType: 6,
-		          itemsPrice: this.data.groupSetMealItem.price
+              itemsPrice: this.data.groupSetMealItem.price,
+              merchantId:this.data.merchantId
         		}	
         	},
         }).then(res=>{
@@ -349,7 +356,7 @@ Page({
           size:20,
           start:0
         }	
-      },
+      }
     }).then(res=>{
       if (res.data.code === 0) {
         let value=res.data.value;
@@ -365,18 +372,19 @@ Page({
           //private Integer isPurchaseRestriction;
           /** 每单限量数 */
           //private Integer orderLimit = 0;
-          let {stockType,stock,surplusStock,orderLimit}=groupSetMealItem;
+          let {stockType,isPurchaseRestriction,stock,surplusStock,orderLimit}=groupSetMealItem;
           let maxNum=999;//默认较大的值
-          if(surplusStock==1 && stockType==1){//都有限制，取小值
-          maxNum=Math.min(stock,orderLimit)
-          }else if(surplusStock==1){//库存有限制
-          maxNum=stock;
+          if(isPurchaseRestriction==1 && stockType==1){//都有限制，取小值
+            maxNum=Math.min(surplusStock,orderLimit)
+          }else if(isPurchaseRestriction==1){//库存有限制
+             maxNum=surplusStock;
           }else if(stockType==1){
             maxNum=orderLimit;
           }
           this.data.groupSetMealItem=groupSetMealItem;
           this.setData({
             groupSetMealItem,
+            merchantId:groupSetMealItem.merchantId,
             maxNum
          });
         //  设置预约时间
@@ -388,23 +396,28 @@ Page({
       //@property (nonatomic, copy) NSString *cancelAfterVerificationTime;
 
         if(groupSetMealItem.isBespeak==1){
-          
+          // 格式为"YYYY-MM-DD"
+          let Y=new Date().getFullYear();
+          let M = new Date().getMonth() + 1;
+          if(M<10) M='0'+M.toString();
+          let D= new Date().getDate();
+          if(D<10) D="0"+D.toString()
+          let pickerDataStart=Y+'-'+M+'-'+D;
+          console.log("pickerDataStart",pickerDataStart);
+          let bespeakDays=groupSetMealItem.bespeakDays;
+          var DateEnd=new Date(new Date().setDate(new Date().getDate()+bespeakDays));
+          let Y1=DateEnd.getFullYear();
+          let M1 = DateEnd.getMonth() + 1;
+          if(M1<10) M1='0'+M1.toString();
+          let D1= DateEnd.getDate();
+          if(D1<10) D1="0"+D1.toString()
+          let pickerDataEnd=Y1+'-'+M1+'-'+D1;
+          console.log("pickerDataEnd",pickerDataEnd);
+          this.setData({
+            pickerDataStart,
+            pickerDataEnd
+          })
         }
-      
-        // 格式为"YYYY-MM-DD"
-        let Y=new Date().getFullYear();
-        let M = new Date().getMonth() + 1;
-        if(M<10) M='0'+M.toString();
-        let D= new Date().getDate();
-        if(D<10) D="0"+D.toString()
-        let pickerDataStart=Y+'-'+M+'-'+D;
-        console.log("pickerDataStart",pickerDataStart);
-    
-        this.setData({
-          pickerDataStart,
-          
-        })
-      
         // 计算总额和小计
        this.sliderChanging();
       }else {}

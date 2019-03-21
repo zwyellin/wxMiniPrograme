@@ -3,18 +3,13 @@
 
 .merchantMainInfo_image{
     position: relative;
-    margin-top: 30rpx;
-}
-.merchantMainInfo_image image{
-    width: 240rpx;
-    height: 203rpx;
-    border-radius: 8rpx;
-    margin-right: 20rpx;
+    padding-bottom: 20rpx;
+    background:white;
 }
 .merchantMainInfo_image_TotalIcon{
     position: absolute;
     bottom: 10%;
-    left:20%;
+    right:30rpx;
     padding: 4rpx 20rpx;
     border-radius: 20rpx;
     background: rgba(0,0,0,0.4);

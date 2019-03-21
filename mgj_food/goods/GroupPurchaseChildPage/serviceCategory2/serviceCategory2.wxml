@@ -5,71 +5,42 @@
 <wxs module="fixed" src="../../../utils/star.wxs"></wxs>
 
 <view class="container page" style="padding-bottom:110rpx;">
+    <view wx:if="{{groupSetMealItem.showImgs.length!=0}}" class="merchantMainInfo_image">
+        <view class="flex flex-spaceBetween">                
+            <image src="{{groupSetMealItem.showImgs[0]}}" 
+            style="height:300rpx;border-radius:0;width:100%;" data-index="0" data-images="{{groupSetMealItem.images}}" catch:tap="merchantInfoImageTap"></image>
+        </view>
+        <view class="merchantMainInfo_image_TotalIcon" data-images="{{groupSetMealItem.images}}" catch:tap="merchantInfoImageTap" style="color:white;font-size:28rpx;">
+            <image src="../../image/imagesIcon.png" style="width:28rpx;height:28rpx;"></image>
+            {{groupSetMealItem.images.length}}
+        </view>
+    </view>
     <!-- 基本信息 -->
-    <view class="pageItem" style="padding-bottom:40rpx">
-        
-        <block wx:if="{{groupSetMealItem.images.length==1}}">
-            <!-- 一个图片时布局 -->
-            <view class="flex flex-spaceBetween">
-                <!-- 左边 -->
-                <view>
-                    <!-- 商家名称 -->
-                    <view class="flex flex-row-center"> 
-                        <image src="../../../images/images/server.png" class="flex0" style="width:30rpx;height:30rpx;padding-right:10rpx" />
-                        <text class="font-size5 color2">{{groupMerchantInfo.name}}</text>
-                    </view>
-                    <!-- 套餐名字-->
-                    <view class="mt20 font-size1 font-bold">
-                        <text>{{groupSetMealItem.groupPurchaseName}}</text>
-                    </view>
-                    <!-- 预约信息-->
-                    <view class="mt20 font-size5">{{groupSetMealItem.isBespeakText}}<text class="column-line">|</text>{{groupSetMealItem.isCumulateText}}</view>
-                    <!--已售 -->
-                    <text class="font-size5 color3">已售{{groupSetMealItem.accumulateSoldCount}}</text>
-                </view>
-                <!-- 右边 显示图片 -->
-                <view  style="margin-top:0">                
-                    <image src="{{groupSetMealItem.images[0]}}" data-index="0" data-images="{{groupSetMealItem.images}}" catch:tap="merchantInfoImageTap"
-                    class="border-radius4" style="width:180rpx;height:152rpx;"></image>
-                </view>
-
-            </view>
-        </block>
-        <block wx:else>
-            <!-- 多个图片时布局 -->
-            <!-- 商家名称 -->
-            <view class="flex flex-row-center"> 
-                <image src="../../../images/images/server.png" class="flex0" style="width:30rpx;height:30rpx;padding-right:10rpx" />
-                <text class="font-size5 color2">{{groupMerchantInfo.name}}</text>
-            </view>
-            <!-- 套餐名字-->
-            <view class="mt20 font-size1 font-bold">
+    <view class="pageItem row-line" style="padding-bottom:40rpx">
+        <!-- 套餐名字-->
+        <view class="font-size1 font-bold  flex flex-spaceBetween flex-row-center" style="padding-bottom:20rpx;">
+            <view>  
                 <text>{{groupSetMealItem.groupPurchaseName}}</text>
-            </view>
-            <!-- 预约信息，已售-->
-            <view class="flex flex-spaceBetween mt20">
-                <!--左边-->
-                <view class="font-size5">{{groupSetMealItem.isBespeakText}}<text class="column-line">|</text>{{groupSetMealItem.isCumulateText}}</view>
-                <!-- 右边，已售 -->
-                <text class="font-size5 color3">已售{{groupSetMealItem.accumulateSoldCount}}</text>
-            </view>
-            <!-- 图片展示 -->
-            <view class="mt30 flex flex-spaceBetween merchantMainInfo_image">              
-                <block
-                    wx:for="{{groupSetMealItem.showImgs}}"
-                    wx:for-index="index"
-                    wx:for-item="item"
-                    wx:key="index"
-                >
-                    <image src="{{item}}" style="{{index==2?'margin-right:0;':''}}" data-index="{{index}}" data-images="{{groupSetMealItem.images}}" catch:tap="merchantInfoImageTap"></image>
+                <block wx:if="{{groupSetMealItem.isPurchaseRestriction==3}}">
+                    <image src="../../image/newManUse.png" style="height:34rpx;width:126rpx;margin-top:-9rpx;vertical-align:middle;margin-left:20rpx;"/>
                 </block>
-                <view class="merchantMainInfo_image_TotalIcon" data-images="{{groupSetMealItem.images}}" catch:tap="merchantInfoImageTap">
-                    <image src="../../image/imagesIcon.png" style="width:30rpx;height:30rpx;"></image>
-                    {{groupSetMealItem.images.length}}
-                </view>
             </view>
-        </block>
-        
+            <image src="../../image/QRcodeIcon.png" style="width:50rpx;height:50rpx;padding:5rpx 20rpx;"/>
+        </view>
+        <!-- 商家名称 -->
+        <view class="flex flex-row-center"> 
+            <image src="../../../images/images/server.png" class="flex0" style="width:30rpx;height:30rpx;padding-right:10rpx" />
+            <text class="font-size5 color2">{{groupMerchantInfo.name}}</text>
+        </view>
+        <!-- 预约信息，已售-->
+        <view class="flex flex-spaceBetween mt20">
+            <!--左边-->
+            <view class="font-size5">{{groupSetMealItem.isBespeakText}}<text class="column-line">|</text>{{groupSetMealItem.isCumulateText}}</view>
+            <!-- 右边，已售 -->
+            <text class="font-size5 color3">已售{{groupSetMealItem.accumulateSoldCount}}</text>
+        </view>
+    </view>
+    <view class="pageItem" style="padding-bottom:20rpx;">     
         <!-- 类别 -->
         <view wx:for="{{groupSetMealItem.groupPurchaseCouponGoodsTypeList}}" wx:for-item="typeItem" wx:for-index="typeIndex" wx:key="typeIndex">
             <view class="mt30" class="categoryType">
@@ -109,7 +80,7 @@
             <text class="font-size4 color2">{{groupSetMealItem.useRule}}</text>
         </view>
         <!-- 规则提醒 -->
-        <view class="ticketMsgItem mt30" wx:if="groupSetMealItem.useRule"> 
+        <view wx:if="{{false}}" class="ticketMsgItem mt30" wx:if="groupSetMealItem.useRule"> 
             <text class="font-size4 color1 font-bold" style="display:block">规则提醒:</text>
             <!-- 内容 -->
             <text class="font-size4 color2">{{groupSetMealItem.useRule}}</text>
@@ -201,8 +172,13 @@
                     <view><text style="font-size:34rpx; color:#333;font-weight:bold;">{{item.groupPurchaseName}}</text>
                         <view style="margin-top:16rpx;font-size:22rpx;color:#666;">
                             <text>{{item.isBespeakText}}</text>
-                            <text style="padding:0 14rpx;color:#ccc">|</text>
-                            <text>{{item.isCumulateText}}</text>
+                            <block wx:if="{{item.isPurchaseRestriction==3}}">
+                                <image src="../image/newManUse.png" style="height:34rpx;width:126rpx;margin-top:-9rpx;vertical-align:middle;margin-left:20rpx;"/>
+                            </block>
+                            <block wx:else>
+                                <text style="padding:0 14rpx;color:#ccc">|</text>
+                                <text>{{item.isCumulateText}}</text>
+                            </block> 
                         </view>
                         <view style="margin-top:16rpx;" class="flex flex-row-center">
                             <text style="font-size:30rpx;color:#fd5952">￥{{item.price}}</text>

@@ -33,9 +33,19 @@
 
     <!-- 抵用卷及实付金额 -->
     <view class="mt20 bg-content-color" >
-        <view wx:if="{{false}}"class="flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40 row-line">
-            <text class="font-size3 color1">抵用卷</text>
-            <image src="../../image/more.png"  style="height:30rpx;width:30rpx"/>
+        <view wx:if="{{true}}"class="flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40 row-line">
+            <text class="font-size3 color1">抵用券</text>
+            <view>
+                <text wx:if="{{true}}">hhh</text>
+                <image wx:else src="../../image/more.png"  style="height:30rpx;width:30rpx"/>
+            </view>
+        </view>
+        <view wx:if="{{true}}"class="flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40 row-line">
+            <text class="font-size3 color1">马管家券</text>
+            <view>
+                <text wx:if="{{true}}">hhh</text>
+                <image wx:else src="../../image/more.png"  style="height:30rpx;width:30rpx"/>
+            </view>
         </view>
         <view class="flex flex-spaceBetween flex-row-center padding-tb-20 padding-lr-40">
             <text class="font-size3 color1">实付金额</text>

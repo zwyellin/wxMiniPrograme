@@ -73,7 +73,7 @@ Page({
       discount,
       discountText:discountText
     });
-    this.groupPurchaseOrderPreview();
+    this.groupPurchaseOrderPreview0();
   },
 
   /**
@@ -103,6 +103,23 @@ Page({
       });
     },
   // 订单预览
+  groupPurchaseOrderPreview0(){
+    let data=this.data.OrderPreviewRequestObj;
+    data=JSON.stringify(data);
+    wxRequest({
+      url:'/merchant/userClient?m=groupPurchaseOrderPreview',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          data:data
+        }
+      }
+    }).then(()=>{
+      if (res.data.code === 0) {
+      }
+    })
+  },
   groupPurchaseOrderPreview(){
     let data=JSON.parse(JSON.stringify(this.data.OrderPreviewRequestObj));
     let totalPrice=parseFloat(this.data.totalAmountInputValue.substring(1));
@@ -120,6 +137,7 @@ Page({
     }
     this.data.orderMoney=data.totalPrice;
     data.originalPrice=totalPrice;
+   
     data=JSON.stringify(data);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderPreview',
@@ -132,14 +150,18 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
-        let {originalTotalPrice,notJoinDiscountAmount,discountAmt,totalPrice}=res.data.value;
-       let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
+        let {originalTotalPrice,notJoinDiscountAmount,discountAmt,totalPrice,promotionCouponsDiscountTotalAmt}=res.data.value;
+        
+        let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
         if(this.data.discountActive) {
           OrderPreviewRequestObj.hasDiscount=1;
         }else{
           OrderPreviewRequestObj.hasDiscount=0;
         }
         let groupPurchaseOrderSubmitRequestObj=JSON.parse(JSON.stringify(OrderPreviewRequestObj));
+        if(promotionCouponsDiscountTotalAmt!==null){
+          groupPurchaseOrderSubmitRequestObj.promotionCouponsDiscountTotalAmt=promotionCouponsDiscountTotalAmt;
+        };
         Object.assign(groupPurchaseOrderSubmitRequestObj,{
           originalTotalPrice,notJoinDiscountAmount,totalPrice
         })

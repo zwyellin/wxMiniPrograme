@@ -93,7 +93,7 @@ Page({
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
       wx.navigateTo({
-        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?itemIndex="+item_index
+        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+voucherItem.id
       })
     }else{
       this.isLoginsuccess(true);//跳转到登入
@@ -126,6 +126,9 @@ Page({
     });
   },
   voucherItemModify(item){
+    if(item.createTime && item.createTime.indexOf(" ")!=-1){
+      item.createTime=item.createTime.substring(0,item.createTime.indexOf(" "));
+    }
     // 处理是否叠加
     if(item.isCumulate){//是否叠加 0:否,1:是 
       item.isCumulateText="可叠加"

@@ -209,7 +209,7 @@ Page({
                 let isRedBag = true;
                 setTimeout(()=>{
                   wx.redirectTo({
-                    url: '/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult',
+                    url: '/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult?orderId='+that.data.orderId,
                     complete: function(){
                       that.data.isPayStatus = false;
                     }
@@ -275,7 +275,7 @@ Page({
         let isRedBag = true;
         setTimeout(()=>{
           wx.redirectTo({
-            url: '/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult',
+            url: '/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult?orderId='+that.data.orderId,
             complete: function(){
               that.data.isPayStatus = false;
             }

@@ -2,64 +2,23 @@
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
 
 
-<view class="container"> 
+<view class="container">
+    <view wx:if="{{groupMerchantInfo.imgs.length!=0}}"  class="merchantMainInfo_image">
+        <view class="flex flex-spaceBetween">                
+            <image src="{{groupMerchantInfo.imgs[0]}}" style="height:300rpx;border-radius:0;width:100%;" data-index="0" data-images="{{groupMerchantInfo.imgs}}" catch:tap="merchantInfoImageTap"></image>
+        </view>
+        <view class="merchantMainInfo_image_TotalIcon" data-images="{{groupMerchantInfo.imgs}}" catch:tap="merchantInfoImageTap" style="color:white;font-size:28rpx;">
+            <image src="../image/imagesIcon.png" style="width:28rpx;height:28rpx;"></image>
+            {{groupMerchantInfo.imgs.length}}
+        </view>
+    </view>
     <view class="merchantInfo">
         <view class="merchantMainInfo">
-            <!-- 没有图片时布局 -->
-            <view wx:if="{{groupMerchantInfo.imgs.length==0}}" >
                 <view class="merchantMainInfo_license">
-                    <text class="merchantName">{{groupMerchantInfo.name}}</text>
-                    <view class="flex flex-spaceBetween">
-                        <view class="merchantStar flex flex-row-center"> 
-                            <template is="star-AttrScore" data="{{size:36,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
-                            <text>人均￥{{groupMerchantInfo.evaluateAvgPersonPrice || groupMerchantInfo.avgPersonPrice}}</text>
-                        </view>
-                        <view class="businessHours">
-                            <text class="merchantWorkTime">营业时间:{{groupMerchantInfo.workingTime}}</text>
-                        </view>
-                    </view>
-                </view>
-                <view wx:if="{{groupMerchantInfo.hasTakeaway==1}}" class="merchantMainInfo_type flex flex-row-center">
-                    <image src="../image/waimailogo.png"></image>
-                    <navigator open-type="navigate" url="/goods/shop/shop?merchantid={{groupMerchantInfo.id}}" 
-                    style="display:inline-block;font-size:28rpx;color:#333"  class="flex flex-row-center" hover-class="none">
-                        <text>外卖</text>
-                        <image src="../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
-                    </navigator>	
-                </view>
-            </view>
-            <!--商家一张图片时布局-->
-            <view wx:elif="{{groupMerchantInfo.imgs.length==1}}" >
-                <view class="flex flex-spaceBetween">
-                    <view class="merchantMainInfo_license">
+                    <view class="flex flex-spaceBetween flex-row-center">
                         <text class="merchantName">{{groupMerchantInfo.name}}</text>
-                        <view class="merchantStar flex flex-row-center">
-                            <template is="star-AttrScore" data="{{size:36,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
-                            <text>人均￥{{groupMerchantInfo.evaluateAvgPersonPrice || groupMerchantInfo.avgPersonPrice}}</text>
-                        </view>
-                        <view class="businessHours">
-                            <text class="merchantWorkTime">营业时间:{{groupMerchantInfo.workingTime}}</text>
-                        </view>
+                        <image src="../image/QRcodeIcon.png" style="width:50rpx;height:50rpx;padding:5rpx 20rpx;"/>
                     </view>
-                    <view  style="margin-top:0">                
-                        <image src="{{groupMerchantInfo.imgs[0]}}" data-index="0" data-images="{{groupMerchantInfo.imgs}}" catch:tap="merchantInfoImageTap"
-                        class="border-radius4" style="width:180rpx;height:152rpx;"></image>
-                    </view>
-                </view>
-                <view wx:if="{{groupMerchantInfo.hasTakeaway==1}}" class="merchantMainInfo_type flex flex-row-center">
-                    <image src="../image/waimailogo.png"></image>
-                    <navigator open-type="navigate" url="/goods/shop/shop?merchantid={{groupMerchantInfo.id}}" 
-                    style="display:inline-block;font-size:28rpx;color:#333"  class="flex flex-row-center" hover-class="none">
-                        <text>外卖</text>
-                        <image src="../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
-                    </navigator>	
-                </view>
-            </view>
-
-             <!--商家多张图片时布局-->
-            <view wx:else>
-                <view class="merchantMainInfo_license">
-                    <text class="merchantName">{{groupMerchantInfo.name}}</text>
                     <view class="merchantStar flex flex-spaceBetween flex-row-center">
                         <view class="flex flex-row-center">
                             <template is="star-AttrScore" data="{{size:36,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
@@ -76,23 +35,6 @@
                         <image src="../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
                     </navigator>	
                 </view>
-                <view wx:if="{{groupMerchantInfo.imgs.length!=0}}"  class="merchantMainInfo_image">
-                    <view class="flex flex-spaceBetween">                
-                        <block
-                            wx:for="{{groupMerchantInfo.showImgs}}"
-                            wx:for-index="index"
-                            wx:for-item="item"
-                            wx:key="index"
-                        >
-                            <image src="{{item}}" style="{{index==2?'margin-right:0;':''}}" data-index="{{index}}" data-images="{{groupMerchantInfo.imgs}}" catch:tap="merchantInfoImageTap"></image>
-                        </block>
-                    </view>
-                    <view class="merchantMainInfo_image_TotalIcon" data-images="{{groupMerchantInfo.imgs}}" catch:tap="merchantInfoImageTap">
-                        <image src="../image/imagesIcon.png" style="width:30rpx;height:30rpx;"></image>
-                        {{groupMerchantInfo.imgs.length}}
-                    </view>
-                </view>
-            </view>
         </view>
          <!--merchantMainInfo结束-->
          <!-- 地址、联系方式 -->
@@ -129,9 +71,9 @@
         </view>
     </view><!--merchantInfo商家信息头部布局完毕-->
     <!--服务类别部分开始布局-->
-    <view class="serviceCategory mt20"> 
+    
         <!-- 在线支付 对应serviceCategory0-->
-        <view wx:if="{{groupMerchantInfo.discountRatio}}" class="flex flex-spaceBetween serviceCategoryItem  flex-row-center">
+        <view wx:if="{{groupMerchantInfo.discountRatio}}" class="flex flex-spaceBetween serviceCategoryItem  flex-row-center padding-lr-40 mt20" style="background:white;padding-bottom:40rpx;">
             <!-- 左边 -->
             <view>     
                 <view class="serviceCategory_typeIcon flex flex-row-center">
@@ -145,68 +87,94 @@
                 <button data-id="{{groupMerchantInfo.id}}" data-ratio="{{groupMerchantInfo.discountRatio}}" catch:tap="serviceCategory0Tap" hover-stop-propagation="{{true}}">优惠买单</button>
             </view>
         </view>
-        <!-- 代金券 对应serviceCategory1-->
-        <view wx:if="{{groupMerchantInfo.voucher.length!=0}}" class="serviceCategoryItem">
-            <view class="serviceCategory_typeIcon flex flex-row-center">
-                <image src="../../images/images/dai@2x.png"></image>
-                <text>代金券</text>
-            </view>
-            <!-- 可能有多个代金券 -->
-            <navigator class="flex flex-spaceBetween mt20" style="padding:30rpx;border:1px solid #feddab;background:#fffbf4"
-            wx:for="{{groupMerchantInfo.voucher}}"
-            wx:key="index"
-            url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId={{item.id}}">
-                <!-- 左边 -->
-                <view > 
-                    <text style="font-size:34rpx; color:#333;font-weight:bold;">{{item.originPrice}}元 代金券</text>
-                    <view style="margin-top:20rpx;font-size:22rpx;color:#666;">
-                        <text >{{item.isBespeakText}}</text>
-                        <text style="padding:0 14rpx;color:#ccc">|</text>
-                        <text>{{item.isCumulateText}}</text>
-                    </view>
-                    <text style="margin-top:20rpx;font-size:34rpx;color:#fd5952">￥{{item.price}}</text>
-                </view>
-                <!-- 右边 -->
-                <view class="flex flex-all-center serviceCategoryBuyButton">
-                    <button data-id="{{item.id}}" catch:tap="serviceCategory1Tap"  hover-stop-propagation="{{true}}">购买</button>
-                    <text>已售{{item.accumulateSoldCount}}</text>
-                </view>
-            </navigator>
-        </view>
-        <!-- 团购套餐 对应serviceCategory2-->
-        <view wx:if="{{groupMerchantInfo.groupSetMeal.length!=0}}" class="serviceCategoryItem">
-            <view class="serviceCategory_typeIcon flex flex-row-center">
-                <image src="../../images/images/tuan@2x.png"></image>
-                <text>团购套餐</text>
-            </view>
-            <navigator class="flex flex-spaceBetween mt20" hover-class="none"
-            wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index"
-            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}">
-                <!-- 左边 -->
-                <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
-                <!-- 右边 -->
-                <view class="flex flex-spaceBetween" style="flex:1;margin-top:-10rpx;">
+        <!-- 进店红包 -->
+        <view wx:if="{{groupMerchantInfo.merchantRedBagList.length>0 && isredbagShow}}" style="margin-top:40rpx;background:white;" class="padding-lr-40">
+            <view style="position:relative;padding-top:20rpx" wx:for="{{groupMerchantInfo.merchantRedBagList}}" wx:key="index">
+                <image src="../image/redbag.png" style="width:100%;height:150rpx;"/>
+                <!-- 文字 -->
+                <view style="position:absolute;top:20rpx;left:0;right:0;height:150rpx;color:white;" class="flex flex-spaceBetween flex-row-center">
                     <!-- 左边 -->
-                    <view><text style="font-size:34rpx; color:#333;font-weight:bold;">{{item.groupPurchaseName}}</text>
-                        <view style="margin-top:16rpx;font-size:22rpx;color:#666;">
-                            <text>{{item.isBespeakText}}</text>
+                    <view class="flex flex-row-center">
+                        <view style="font-size:24rpx;padding:0 54rpx">￥<text style="font-size:40rpx;">{{item.amt}}</text></view>
+                        <view style="padding:0 40rpx;">
+                            <view style="font-size:32rpx;">{{item.name}}</view>
+                            <text style="font-size:24rpx">{{item.useRule}}</text>
+                        </view>
+                    </view>
+                    <!-- 右边领取 -->
+                    <button catch:tap="redbagBtnTap" data-index="{{index}}"
+                    style="margin:0;line-height:2;font-size:28rpx;background:transparent;border:1px solid white;color:white;margin-right:20rpx;border-radius:50rpx;" >领取</button>
+                </view>
+            </view>
+        </view>
+        <view class="serviceCategory">
+            <!-- 代金券 对应serviceCategory1-->
+            <view wx:if="{{groupMerchantInfo.voucher.length!=0}}" class="serviceCategoryItem">
+                <view class="serviceCategory_typeIcon flex flex-row-center">
+                    <image src="../../images/images/dai@2x.png"></image>
+                    <text>代金券</text>
+                </view>
+                <!-- 可能有多个代金券 -->
+                <navigator class="flex flex-spaceBetween mt20" style="padding:30rpx;border:1px solid #feddab;background:#fffbf4"
+                wx:for="{{groupMerchantInfo.voucher}}"
+                wx:key="index"
+                url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId={{item.id}}">
+                    <!-- 左边 -->
+                    <view > 
+                        <text style="font-size:34rpx; color:#333;font-weight:bold;">{{item.originPrice}}元 代金券</text>
+                        <view style="margin-top:20rpx;font-size:22rpx;color:#666;">
+                            <text >{{item.isBespeakText}}</text>
                             <text style="padding:0 14rpx;color:#ccc">|</text>
                             <text>{{item.isCumulateText}}</text>
                         </view>
-                        <view style="margin-top:16rpx;" class="flex flex-row-center">
-                            <text style="font-size:30rpx;color:#fd5952">￥{{item.price}}</text>
-                            <text style="margin-left:20rpx;font-size:22rpx;color:#333">门市价￥{{item.packageOriginalPrice}}</text>
-                        </view>
+                        <text style="margin-top:20rpx;font-size:34rpx;color:#fd5952">￥{{item.price}}</text>
                     </view>
                     <!-- 右边 -->
                     <view class="flex flex-all-center serviceCategoryBuyButton">
-                        <button data-id="{{item.id}}" catch:tap="serviceCategory2Tap"  hover-stop-propagation="{{true}}">购买</button>
+                        <button data-id="{{item.id}}" catch:tap="serviceCategory1Tap"  hover-stop-propagation="{{true}}">购买</button>
                         <text>已售{{item.accumulateSoldCount}}</text>
                     </view>
+                </navigator>
+            </view>
+            <!-- 团购套餐 对应serviceCategory2-->
+            <view wx:if="{{groupMerchantInfo.groupSetMeal.length!=0}}" class="serviceCategoryItem">
+                <view class="serviceCategory_typeIcon flex flex-row-center">
+                    <image src="../../images/images/tuan@2x.png"></image>
+                    <text>团购套餐</text>
                 </view>
-            </navigator>
+                <navigator class="flex flex-spaceBetween mt20" hover-class="none"
+                wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index"
+                url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}">
+                    <!-- 左边 -->
+                    <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
+                    <!-- 右边 -->
+                    <view class="flex flex-spaceBetween" style="flex:1;margin-top:-10rpx;">
+                        <!-- 左边 -->
+                        <view><text style="font-size:34rpx; color:#333;font-weight:bold;">{{item.groupPurchaseName}}</text>
+                            <view style="margin-top:16rpx;font-size:22rpx;color:#666;">
+                                <text>{{item.isBespeakText}}</text>
+                                <block wx:if="{{item.isPurchaseRestriction==3}}">
+                                    <image src="../image/newManUse.png" style="height:34rpx;width:126rpx;margin-top:-9rpx;vertical-align:middle;margin-left:20rpx;"/>
+                                </block>
+                                <block wx:else>
+                                    <text style="padding:0 14rpx;color:#ccc">|</text>
+                                    <text>{{item.isCumulateText}}</text>
+                                </block> 
+                            </view>
+                            <view style="margin-top:16rpx;" class="flex flex-row-center">
+                                <text style="font-size:30rpx;color:#fd5952">￥{{item.price}}</text>
+                                <text style="margin-left:20rpx;font-size:22rpx;color:#333">门市价￥{{item.packageOriginalPrice}}</text>
+                            </view>
+                        </view>
+                        <!-- 右边 -->
+                        <view class="flex flex-all-center serviceCategoryBuyButton">
+                            <button data-id="{{item.id}}" catch:tap="serviceCategory2Tap"  hover-stop-propagation="{{true}}">购买</button>
+                            <text>已售{{item.accumulateSoldCount}}</text>
+                        </view>
+                    </view>
+                </navigator>
+            </view>
         </view>
-    </view>
     <!--服务种类布局完毕-->
     <!-- 商家其它卡片信息 -->
     <view class="merchantCardBox mt20">

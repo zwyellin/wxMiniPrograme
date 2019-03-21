@@ -16,7 +16,8 @@ Page({
     realTotalMoney:"",//实付总额
 
     redPacketDeduction:"",//红包抵扣的金额
-    
+    merchantId:null,
+
     OrderSubmitReqObj:{//固定的参数
       merchantId:null,//从voucherItem可以获取
       groupPurchaseCouponId:null,
@@ -52,7 +53,7 @@ Page({
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
     this.findGroupPurchaseCouponInfo().then(()=>{
       console.log("then")
-      this.redBagSetting();
+      this.promotionPreSetting();
       this.queryPlatformRedBagList();
       this.filterUsableRedBagList();
     });
@@ -68,7 +69,7 @@ Page({
 
   },
   onShow(){
-		if (this.data.useRedBagList != null || this.data.addressInfoId != null || this.data.usePlatformRedBagList != null) {
+		if (this.data.useRedBagList != null ||  this.data.usePlatformRedBagList != null) {
 			let redBagMoney = 0;
 			let platformRedBagMoney = 0;
 	    if (this.data.useRedBagList != null) {
@@ -222,7 +223,8 @@ findGroupPurchaseCouponInfo(){
       let value=res.data.value;
       let voucherItem=this.voucherItemModify(value)
       this.setData({
-        voucherItem
+        voucherItem,
+        merchantId:voucherItem.merchantId
       });
        // 自动设置小计及总额
        this.sliderChanging();
@@ -248,7 +250,7 @@ voucherItemModify(item){
 },
 
 
-redBagSetting(){
+promotionPreSetting(){
   let params={
     agentId:app.globalData.agentId,
     businessType:6,//团购6
@@ -257,7 +259,7 @@ redBagSetting(){
     redBags:"[]"
   }
   return wxRequest({
-    url:'/merchant/userClient?m=redBagSetting',
+    url:'/merchant/userClient?m=promotionPreSetting',
     method:'POST',
     data:{
       token:app.globalData.token,
@@ -318,6 +320,7 @@ filterUsableRedBagList(){
             agentId:app.globalData.agentId,
             businessType: 6,
             itemsPrice: this.data.voucherItem.originPrice,
+            merchantId:this.data.merchantId
           }	
         },
       }).then(res=>{

@@ -40,12 +40,12 @@
                 <image src="../../../image/more.png" style="width:30rpx;height:30rpx;padding-left:20rpx;"/>
             </view>
 		</view>
-        <!-- 商家代金券 -->
+        <!-- 商家红包 -->
 		<view wx:if="{{true}}"class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line" bindtap="merchantRedPage">
-			<text class="font-size3 color1">商家代金券</text>
+			<text class="font-size3 color1">商家红包</text>
 			<view class="flex  flex-row-center">
-				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个代金券可用</text>
-				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">代金券金额为{{redBagMoney}}元</text>
+				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个商家红包可用</text>
+				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">-￥{{redBagMoney}}</text>
                 <image src="../../../image/more.png" style="width:30rpx;height:30rpx;padding-left:20rpx;"/>
 			</view>
 		</view>

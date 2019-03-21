@@ -7,7 +7,7 @@
         <!-- 代金券展示 -->
         <view class="padding-40" style="background:#fffbf4;border:1px solid #feddab;"> 
             <text class="font-size5 color1" style="display:block">{{groupMerchantInfo.name}}</text>
-            <text class="font-size1 font-bold color1 mt20" >￥{{voucherItem.price}}代{{voucherItem.originPrice}}元 券</text>
+            <text class="font-size1 font-bold color1 mt20" >{{voucherItem.originPrice}}元 代金券</text>
         </view>
         <!-- 代金券属性 -->
         <view class="mt20 flex flex-spaceBetween font-size5">
@@ -23,7 +23,7 @@
         <view class="attr-items">
             <view class="attr-item">
                 <text class="item-title">有效期</text>
-                <text class="item-content">{{voucherItem.endTime}}</text>
+                <text class="item-content">{{voucherItem.createTime}} 至 {{voucherItem.endTime}}</text>
             </view>
             <view class="attr-item">
                 <text class="item-title">使用时间</text>
