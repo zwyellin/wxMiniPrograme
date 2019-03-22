@@ -112,9 +112,7 @@
 	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 		</view>
-		 <navigator url="/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult">
-            <button class="bg-button-color font-size2" style="color:white;margin:0 20rpx;line-height:2" >反馈</button>
-        </navigator>
+
 		
 		<!--优化列表显示，这边放了十个一维数组，最后数据都放到最后一个数组那里-->
 		<template is="merchant" data="{{dataList:dataList1,cartObject,size,linearArrayIndex:1}}"></template>

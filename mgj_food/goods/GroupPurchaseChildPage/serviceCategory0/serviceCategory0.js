@@ -49,6 +49,9 @@ Page({
     orderMoney:null,
 
     enableGroupPurchaseOrderCouponCodeCount:null,//抵用券数量
+
+    coupons:null, //马管家券
+    promotionCouponsDiscountTotalAmt:null,//马管家券金额
   },
 
   /**
@@ -100,7 +103,7 @@ Page({
               })
             }else{
               wx.navigateTo({
-                url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.orderMoney+"&orderId="+this.data.orderId
+                url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.actuallyAmount+"&orderId="+this.data.orderId
               })
             }
         });
@@ -121,11 +124,13 @@ Page({
       }
     }).then((res)=>{
       if (res.data.code === 0) {
-        console.log(res.data.value)
+        let value=res.data.value;
         this.setData({
-          enableGroupPurchaseOrderCouponCodeCount:res.data.value.enableGroupPurchaseOrderCouponCodeCount
+          enableGroupPurchaseOrderCouponCodeCount:value.enableGroupPurchaseOrderCouponCodeCount,
+          coupons:value.coupons,
+          promotionCouponsDiscountTotalAmt:value.promotionCouponsDiscountTotalAmt,
         },()=>{
-          console.log("enableGroupPurchaseOrderCouponCodeCount",this.data.enableGroupPurchaseOrderCouponCodeCount)
+          
         })
       }
     })
@@ -147,7 +152,10 @@ Page({
     }
     this.data.orderMoney=data.totalPrice;
     data.originalPrice=totalPrice;
-   
+    let coupons=this.data.coupons;
+    if(coupons!=null){
+      data.coupons=coupons;
+    }
     data=JSON.stringify(data);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderPreview',
@@ -160,7 +168,7 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
-        let {originalTotalPrice,notJoinDiscountAmount,discountAmt,totalPrice,promotionCouponsDiscountTotalAmt}=res.data.value;
+        let {originalPrice,notJoinDiscountAmount,discountAmt,totalPrice,promotionCouponsDiscountTotalAmt}=res.data.value;
         
         let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
         if(this.data.discountActive) {
@@ -173,7 +181,12 @@ Page({
           groupPurchaseOrderSubmitRequestObj.promotionCouponsDiscountTotalAmt=promotionCouponsDiscountTotalAmt;
         };
         Object.assign(groupPurchaseOrderSubmitRequestObj,{
-          originalTotalPrice,notJoinDiscountAmount,totalPrice
+          originalPrice,notJoinDiscountAmount,totalPrice
+        })
+        // 更新总提交价格
+        this.data.actuallyAmount=totalPrice;
+        this.setData({
+          actuallyAmount:totalPrice
         })
         this.data.groupPurchaseOrderSubmitRequestObj=groupPurchaseOrderSubmitRequestObj;
       }else if(res.data.code===500){
@@ -190,6 +203,10 @@ Page({
     let groupPurchaseOrderSubmitRequestObj=JSON.parse(JSON.stringify(this.data.groupPurchaseOrderSubmitRequestObj));
     if(groupPurchaseOrderSubmitRequestObj.hasDiscount==0) delete groupPurchaseOrderSubmitRequestObj.hasDiscount;
     if(!this.data.excludeAmountInputActive) delete groupPurchaseOrderSubmitRequestObj.notJoinDiscountAmount;
+    let coupons=this.data.coupons;
+    if(coupons!=null){
+      groupPurchaseOrderSubmitRequestObj.coupons=coupons;
+    }
     let data=JSON.stringify(groupPurchaseOrderSubmitRequestObj);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
@@ -202,6 +219,7 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
+
        console.log("获得订单号",res.data.value.id);
        this.data.orderId=res.data.value.id;
       }else if(res.data.code===500){
@@ -231,7 +249,6 @@ Page({
     this.setData({
       totalAmountInputValue:value,//如果为空，则不能点击优惠金额
     });
-
      //计算实付金额
      this.actuallyAmount();
   },
@@ -296,6 +313,7 @@ Page({
     let totalAmountInputValue=parseFloat(this.data.totalAmountInputValue.substring(1));
     let discountAmount="";
     let actuallyAmount=totalAmountInputValue;
+    let promotionCouponsDiscountTotalAmt=this.data.promotionCouponsDiscountTotalAmt;
     if(this.data.discountActive){//优惠了多少金额,及实付金额 
       discountAmount=totalAmountInputValue*(1-this.data.discount);
       actuallyAmount=totalAmountInputValue-discountAmount;
@@ -307,8 +325,15 @@ Page({
       //处理好discountAmount
       discountAmount="-￥"+parseInt(discountAmount*10)/10;//保留一位小数
       //处理好actuallyAmount
+      if(promotionCouponsDiscountTotalAmt!=null){
+        actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt
+      }
       actuallyAmount="￥"+parseInt(actuallyAmount*10)/10;//保留一位小数
     }else{
+      //处理好actuallyAmount
+      if(promotionCouponsDiscountTotalAmt!=null){
+        actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt
+      }
       actuallyAmount="￥"+parseInt(actuallyAmount*10)/10;//保留一位小数
     }
     this.setData({

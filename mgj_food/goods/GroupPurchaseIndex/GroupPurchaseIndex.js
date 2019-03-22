@@ -117,6 +117,45 @@ Page({
     console.log("返回value",value)
     return value;
   },
+  // banner的跳转
+  findGroupPurchaseBannerListTap(e){
+    let {item}=e.currentTarget.dataset;
+    let {bannerType,url,groupPurchaseMerchantId,groupPurchaseCouponId}=item;
+    //@bannerType :1跳链接。2跳代金券和团购套餐。3跳团购商家。4团购分类
+    //@url跳链接的地址
+    if(bannerType===1){
+      wx.navigateTo({
+        url:`/pages/webView/webView?src=${url}`
+      })
+    }else if(bannerType===2){
+      this.findGroupPurchaseCouponInfo(groupPurchaseCouponId).then((res)=>{
+        if(res.data.code === 0){
+          if(res.data.value.type===1){//区别是type。1：代金券，2：团购套餐
+            wx.navigateTo({
+              url:`/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId=${groupPurchaseCouponId}`
+            })
+          }else{
+            wx.navigateTo({
+              url:`/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${groupPurchaseCouponId}`
+            })
+          }
+        }else{
+          wx.showToast({
+            title: "跳转失败",
+            icon:"none",
+            mask:true,
+            duration: 2000
+          })
+        }
+      })
+    }else if(bannerType===3){    
+      wx.navigateTo({
+        url:`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${groupPurchaseMerchantId}`
+      })
+    }else if(bannerType===4){
+
+    }
+  },
   // 获取icon
   findGroupPurchasePrimaryCategoryList(){
     wxRequest({
@@ -204,15 +243,48 @@ Page({
         url:`/pages/webView/webView?src=${gotoUrl}`
       })
     }else if(gotoType===2){
-      wx.navigateTo({
-        url:`/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId=${groupPurchaseCouponId}`
+      this.findGroupPurchaseCouponInfo(groupPurchaseCouponId).then((res)=>{
+        if(res.data.code === 0){
+          if(res.data.value.type===1){//区别是type。1：代金券，2：团购套餐
+            wx.navigateTo({
+              url:`/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId=${groupPurchaseCouponId}`
+            })
+          }else{
+            wx.navigateTo({
+              url:`/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${groupPurchaseCouponId}`
+            })
+          }
+        }else{
+          wx.showToast({
+            title: "跳转失败",
+            icon:"none",
+            mask:true,
+            duration: 2000
+          })
+        }
       })
     }else if(gotoType===3){    
       wx.navigateTo({
         url:`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${groupPurchaseMerchantId}`
       })
     }
-
+  },
+  // 这个接口用于加载代金券或团购套餐详情。
+  // 在这里通过返回的type来区分
+  //区别是type。1：代金券，2：团购套餐
+  findGroupPurchaseCouponInfo(groupPurchaseCouponId){
+    return wxRequest({
+      url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          latitude:app.globalData.latitude,
+          longitude:app.globalData.longitude,
+          groupPurchaseCouponId:groupPurchaseCouponId,
+        }	
+      },
+    })
   },
   //分类筛选点击
   sortTap(e){

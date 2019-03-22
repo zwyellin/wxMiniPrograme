@@ -8,8 +8,8 @@
 	<view class="pageItem padding-tb-20" style="background:#ccc">
          <view class="flex flex-spaceBetween flex-row-center">
              <view class="flex flex-row-center">
-                 <image class="flex1 headImage" src="{{initInfo.merchant.logo!=null ? initInfo.merchant.logo : '/images/merchant/merchantLogo.png'}}"></image>
-                 <text>店铺名字</text>
+                 <image class="flex1 headImage" src="{{groupMerchantInfo.logo || '/images/merchant/merchantLogo.png'}}"></image>
+                 <text>{{groupMerchantInfo.name}}</text>
              </view>
              <view>
                  <label class="flex flex-row-center"  catch:tap="">
@@ -22,7 +22,7 @@
     <view class="pageItem padding-tb-40">
         <view class="flex" style="justify-content:space-around">
             <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="evaluateImageTap" data-index='0'>
-                <image src="../../../images/images/face1{{imageActiveNum===0 ? '-active':''}}.png" ></image>
+                <image src="../../../images/images/face1{{imageActiveNum==0 ? '-active':''}}.png" ></image>
                 <text style="color:{{imageActiveNum==0 ? '#ff9900':''}}">差</text>
             </view>
             <view class="evaluateIcon flex flex-column-center flex-row-center"  catch:tap="evaluateImageTap" data-index='1'>
@@ -43,11 +43,11 @@
             </view>
         </view>
         <view  class="flex" style="flex-wrap:wrap;justify-content:center;padding-top:60rpx;">
-            <view wx:for="{{evaluateComments}}" wx:key="index"
-            class="box-sizing-box border-radius4 evaluateCommentItem {{evaluateTagActiveArr[index] ? 'evaluateCommentItemActive':''}}"
+            <view wx:for="{{groupMerchantInfo.evaluateStatistics}}" wx:key="index"
+            class="box-sizing-box border-radius4 evaluateCommentItem {{groupMerchantInfo.evaluateStatistics[index].value===1 ? 'evaluateCommentItemActive':''}}"
             catch:tap="evaluateTagTap" data-index="{{index}}"
             >
-                {{item}}
+                {{item.title}}
             </view>
         </view>      
     </view>

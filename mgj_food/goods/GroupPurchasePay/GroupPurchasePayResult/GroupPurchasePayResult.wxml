@@ -1,7 +1,7 @@
 <!--goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult.wxml-->
 <view class="container page">
     <!--  支付成功-->
-    <view class="pageItem" style="padding:20rpx 40rpx 176rpx;text-align:center">
+    <view class="pageItem flex flex-row-center" style="padding:20rpx 40rpx 176rpx;text-align:center">
          <icon type="success" size="14" style="margin-right:20rpx" />
          <text class="font-14 color1">支付成功</text>
     </view>
@@ -16,7 +16,9 @@
                 <view style="font-size:24rpx;color:#666;line-height:3">实付金额:{{totalPrice}}元</view>
                 <view style="font-size:24rpx;color:#666;line-height:3">订单编号:{{id}}</view>
             </view>
-           <button style="margin:0;border:1px solid #ccc;padding:0 18rpx;line-height:2.5;font-size:26rpx;">立即使用</button>
+            <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}">
+                <button style="margin:0;border:1px solid #ccc;padding:0 18rpx;line-height:2.5;font-size:26rpx;">立即使用</button>
+            </navigator>
         </view>
     </view>
     <!-- 附近商家 -->

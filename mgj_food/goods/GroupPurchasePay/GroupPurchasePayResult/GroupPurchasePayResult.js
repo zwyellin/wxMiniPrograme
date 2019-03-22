@@ -31,6 +31,9 @@ Page({
   onLoad: function (options) {
     let {orderId}=options;
     this.data.orderId=orderId;
+    this.setData({
+      orderId
+    })
     wx.getSystemInfo({
 			success: (res)=> {
 				this.setData({

@@ -14,7 +14,9 @@
                     <view>{{groupPurchaseOrder.groupPurchaseName}}</view>
                     <text>￥{{groupPurchaseOrder.totalPrice}}</text>
                 </view>
-                <button>立即使用</button>
+                <navigator wx:if="{{hasUnuseCouponCode}}" url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}">
+                    <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >立即使用</button>
+                </navigator>
             </view>
         </view>
         <!-- 预约信息，已售-->
@@ -121,7 +123,7 @@
                 <!-- -->
                 <view>
                     <text>{{groupPurchaseOrder.id || groupPurchaseOrder.transactionId}}</text>
-                    <text>{{groupPurchaseOrder.paymentExpireTime}}</text>
+                    <text>{{groupPurchaseOrder.payDoneTime}}</text>
                     <text>{{groupPurchaseOrderCouponCodeList.length}}</text>
                     <text>{{groupPurchaseOrder.totalPrice}}</text>
                 </view>
@@ -129,14 +131,16 @@
         </view>
     </view>
 
-    <!-- 反馈，退款 -->
+    <!-- 反馈，退款，评价-->
     <view class="pageItem mt20 flex padding-tb-20" style="justify-content:flex-end;">
         <navigator url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate">
-            <button class="bg-button-color font-size2" style="color:white;margin:0 20rpx;line-height:2" >反馈</button>
+            <button class="bg-button-color font-size2" style="color:white;margin-left:20rpx;line-height:2" >反馈</button>
         </navigator>
-        <navigator url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate">
-            <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >退款</button>
+        <navigator wx:if="{{hasUnuseCouponCode}}" url="">
+            <button class="bg-button-color font-size2" style="color:white;margin-left:20rpx;line-height:2" >退款</button>
         </navigator>
-       
+        <navigator wx:if="{{hasuseCouponCode||true}}" url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate?orderId={{orderId}}">
+            <button class="bg-button-color font-size2" style="color:white;margin-left:20rpx;line-height:2" >评价</button>
+        </navigator>
     </view>
 </view>

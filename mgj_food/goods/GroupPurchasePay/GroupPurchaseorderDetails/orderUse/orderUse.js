@@ -9,33 +9,33 @@ Page({
    */
   data: {
     orderId:null,
-    merchantId:null,
    
     groupPurchaseOrder:null,
     groupMerchantInfo:null,
     groupPurchaseOrderCouponCodeList:null,
 
     //返回来的二维码Image数组
-    couponCodeImageSrcList:[]
+    couponCodeImageSrcList:[],
+    //显示的标题
+    couponCodeImageSrcListItemTitle:{
+      title:null,
+      endTime:null,
+      url:null,//点标题>部分的跳转
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let {couponItem,orderId,merchantId}=options;
+    let {orderId}=options;
     console.log("orderId",orderId)
     this.data.orderId=orderId;
-    this.data.merchantId=merchantId;
     this.findNewTOrderById().then(()=>{
-      let createQRImageAll=[];
       this.data.groupPurchaseOrderCouponCodeList.forEach((_item)=>{
          this.createQRImage(_item.couponCode);
       })
     })
-
-  
-    
   },
 
   createQRImage(_item){
@@ -72,15 +72,36 @@ Page({
     }).then(res=>{
       if (res.data.code === 0) {
         let value=res.data.value;
+        let groupPurchaseOrder=value.groupPurchaseOrder;
         // 处理券码
-        let groupPurchaseOrderCouponCodeList=this.voucherItemModify(value.groupPurchaseOrder.groupPurchaseOrderCouponCodeList);
+        let groupPurchaseOrderCouponCodeList=this.voucherItemModify(groupPurchaseOrder.groupPurchaseOrderCouponCodeList);
         this.data.groupPurchaseOrderCouponCodeList=groupPurchaseOrderCouponCodeList;
         //处理商家信息
-        let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseOrder.groupPurchaseMerchant);
+        let groupMerchantInfo=modify.GrouopMerchantModify(groupPurchaseOrder.groupPurchaseMerchant);
         this.setData({
-          groupPurchaseOrder:value.groupPurchaseOrder,
-          groupMerchantInfo:groupMerchantInfo,
-          groupPurchaseOrderCouponCodeList:groupPurchaseOrderCouponCodeList
+          groupPurchaseOrder,
+          groupMerchantInfo,
+          groupPurchaseOrderCouponCodeList,
+          groupPurchaseOrderCouponGoodsList:groupPurchaseOrder.groupPurchaseOrderCouponGoodsList//针对团购
+        })
+        //groupPurchaseOrder:<!-- orderType:。 1, "代金券",2, "团购券",3, "优惠买单" -->
+        let couponCodeImageSrcListItemTitle=this.data.couponCodeImageSrcListItemTitle;
+        let url="/goods/GroupPurchasePay/GroupPurchaseorderDetails";
+        if(groupPurchaseOrder.orderType===1){
+          Object.assign(couponCodeImageSrcListItemTitle,{
+            title:groupPurchaseOrder.groupPurchaseMerchantName+"代金券",
+            endTime:groupPurchaseOrder.groupPurchaseCouponEndTime,
+            url:url+"/server1OrderDetails/server1OrderDetails?orderId="+this.data.orderId
+          })
+        }else if(groupPurchaseOrder.orderType===2){
+          Object.assign(couponCodeImageSrcListItemTitle,{
+            title:groupPurchaseOrder.groupPurchaseName,
+            endTime:groupPurchaseOrder.groupPurchaseCouponEndTime,
+            url:url+"/server2OrderDetails/server2OrderDetails?orderId="+this.data.orderId
+          })
+        }
+        this.setData({
+          couponCodeImageSrcListItemTitle
         })
       }
     })

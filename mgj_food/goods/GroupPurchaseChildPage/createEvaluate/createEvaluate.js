@@ -1,14 +1,19 @@
 // goods/GroupPurchaseChildPage/createEvaluate/createEvaluate.js
 const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口
+const app = getApp();
+const { wxRequest } = require('../../../utils/util.js');
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    evaluateComments:["热情服务","环境优雅","干净卫生","价格实惠","性价比高"],
+    orderId:null,
+    groupPurchaseOrder:null,
+    groupMerchantInfo:null,
+
+
     imageActiveNum:null,//评价icon激活的index
-    evaluateTagActiveArr:[false,false,false,false,false,false,false],//评价tag激活的数组
     // 增加图片
     imgListMaxLength:8,
     remainImageLength:8,
@@ -19,7 +24,56 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let {orderId}=options;
+    this.data.orderId=orderId;
+    this.findNewTOrderById().then(()=>{
 
+    })
+
+  },
+  findNewTOrderById(){
+    return wxRequest({
+      url:'/merchant/userClient?m=findNewTOrderById',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          orderId:this.data.orderId
+        }
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+            let value=res.data.value;
+            let groupPurchaseOrder=value.groupPurchaseOrder;
+            let groupMerchantInfo=groupPurchaseOrder.groupPurchaseMerchant;
+            // 处理evaluateStatistics
+            let evaluateStatistics=groupMerchantInfo.evaluateStatistics;
+            groupMerchantInfo.evaluateStatistics=JSON.parse(evaluateStatistics)
+            this.setData({
+            groupPurchaseOrder,
+            groupMerchantInfo
+            })
+        }
+    })
+},
+
+  createGroupPurchaseEvaluate(){
+    let data={
+    agentId: null,
+    merchantId:null
+    }
+    wxRequest({
+        url:'/merchant/userClient?m=createGroupPurchaseEvaluate',
+        method:'POST',
+        data:{
+          token:app.globalData.token,
+          params:{
+            data:data
+          }
+        }
+      }).then((res)=>{
+
+      })
   },
   evaluateImageTap(e){
     let {index}=e.currentTarget.dataset;
@@ -32,16 +86,15 @@ Page({
   },
   evaluateTagTap(e){
     let {index}=e.target.dataset;
-    let evaluateTagActiveArr=this.data.evaluateTagActiveArr;
-    //没有则置为true
-    if(evaluateTagActiveArr[index]){
-        evaluateTagActiveArr[index]=false;
+    let evaluateStatistics=this.data.groupMerchantInfo.evaluateStatistics;
+    console.log(evaluateStatistics[index].value,evaluateStatistics[index].value===0,evaluateStatistics[index].value==0)
+    if(evaluateStatistics[index].value===0){
+        evaluateStatistics[index].value=1;
     }else{
-        evaluateTagActiveArr[index]=true;
+        evaluateStatistics[index].value=0;
     }
-    console.log(evaluateTagActiveArr)
     this.setData({
-        evaluateTagActiveArr
+        'groupMerchantInfo.evaluateStatistics':evaluateStatistics
     })
   },
     //增加图片及以下功能   

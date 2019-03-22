@@ -14,9 +14,9 @@
         <swiper  style="height:240rpx;"  indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
             <block wx:for="{{bannerList}}" wx:key="index">
                 <swiper-item>
-                    <navigator url="{{item.url}}" open-type="navigate">
+                    <view data-item="{{item}}" catch:tap="findGroupPurchaseBannerListTap">
                         <image class="swiper-image" src="{{item.picUrl}}" />
-                    </navigator>
+                    </view>
                 </swiper-item>
             </block>
         </swiper>
@@ -42,7 +42,7 @@
             <view class="primaryPublicityListItem" wx:for="{{publicityList}}" wx:key="index" style="{{(index+1)%2==1 ? 'margin-right:10rpx;':''}}"
             data-item="{{item}}" catch:tap="primaryPublicityListTap"> 
                 <image  src="../image/gg{{index+1}}.png" style="width:330rpx;height:180rpx;" />
-                <text class="color1 text-overflow-dots primaryPublicityListItem-text-absolute" style="font-size:24rpx;">{{item.groupPurchaseMerchantName}}</text>
+                <text class="color1 text-overflow-dots primaryPublicityListItem-text-absolute" style="font-size:24rpx;">{{item.groupPurchaseMerchantName || ''}}</text>
                 <view style="position:absolute;bottom:0;right:0;width:200rpx;height:100rpx;overflow:hidden">
                     <image src="{{item.img}}" class="primaryPublicityListItem-img-absolute"/> 
                 </view>

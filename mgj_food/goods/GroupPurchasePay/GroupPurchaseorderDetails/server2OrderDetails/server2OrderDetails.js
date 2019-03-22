@@ -14,7 +14,10 @@ Page({
     groupPurchaseOrder:null,
     groupMerchantInfo:null,
     groupPurchaseOrderCouponCodeList:null,//团购券列表
-    groupPurchaseOrderCouponGoodsList:null//这个是团购券套餐内容
+    groupPurchaseOrderCouponGoodsList:null,//这个是团购券套餐内容
+
+    hasUnuseCouponCode:false,//所有券码中是否有未使用的，如果有则显示立即使用和退款按钮
+    hasuseCouponCode:false,//所有券码中是有使用的，如果有则显示评价按钮
   },
 
   /**
@@ -78,6 +81,7 @@ Page({
     })
   },
   codeListItemModify(item){
+    let that=this;
     if(item instanceof Array){
       item.forEach((_item,_index)=>{
         _item=_modify(_item);
@@ -98,11 +102,21 @@ Page({
       }else{
         item.isBespeakText="免预约"
       }
-      // 处理劵码情况
+      // 处理劵码情况 
+      //  并收集券码信息。【有未使用的，则显示立即使用按钮和退款按钮】
       // 0：未使用；1：已使用；2：已退款；
-      if(item.status==0) item.statusText="未使用";
-      else if(item.status==1) item.statusText="已使用";
-      else if(item.status==2) item.statusText="已退款";
+      if(item.status==0) {
+        item.statusText="未使用";
+        that.setData({
+          hasUnuseCouponCode:true
+        })
+      }else if(item.status==1){
+        item.statusText="已使用";
+        that.setData({
+          hasuseCouponCode:true
+        })
+      }else if(item.status==2) item.statusText="已退款";
+      else if(item.status==3) item.statusText="已锁定";
       return item;
     }
    

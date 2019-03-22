@@ -3,10 +3,31 @@
     <block wx:for="{{couponCodeImageSrcList}}" wx:key="index">
         <view class="quanma" style="margin:0 20rpx 40rpx 20rpx;position:relative">
             <image  src="../../../image/quanma.png" style="width:100%;height:300px;"></image>
-            <view style="position:absolute;position:absolute;top:132rpx;left:0;bottom:0;right:0;" class="flex flex-all-center">
-                <view >
-                    <image src="data:image/png;base64,{{item.qrCode}}" style="width:300rpx;height:300rpx;"/>
+            <view style="position:absolute;top:0;bottom:0;left:0;right:0;" >
+                <!-- 标题 -->
+                <view class="flex flex-spaceBetween flex-row-center" style="padding:20rpx 40rpx;">
+                    <view style="line-height:1">
+                        <view style="font-size:34rpx;color:#222;font-weight:bold;">{{couponCodeImageSrcListItemTitle.title}}</view>
+                        <text style="font-size:26rpx;color:#666">有效期至:{{couponCodeImageSrcListItemTitle.endTime}}</text>
+                    </view>
+                    <navigator url="{{couponCodeImageSrcListItemTitle.url}}">
+                        <image src="../../../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
+                    </navigator>
+                </view>
+                <view class="flex flex-all-center" style="margin-top:40rpx;height:500rpx;">
+                    <image src="data:image/png;base64,{{item.qrCode}}" style="width:300rpx;height:300rpx;margin-bottom:20rpx;"/>
                     <view style="font-size:26rpx;text-align:center">券码:{{item.content}}</view>
+                </view>
+            </view>
+            <!-- 针对团购券，显示套餐信息 -->
+            <view wx:if="{{groupPurchaseOrderCouponGoodsList!==null}}" style="background:white;margin-top:-20rpx;padding-bottom:40rpx">
+                <view style="font-size:30rpx;text-align:center;background:#999;padding:20rpx;">套餐</view>
+                <view style="font-size:26rpx;color:#666;padding:0 20rpx;">
+                    <view wx:for="{{groupPurchaseOrderCouponGoodsList}}"  wx:key="index"
+                    class="flex flex-spaceBetween font-size4 color2" style="padding-top:16rpx;">
+                        <text class="categoryTypeItem">{{item.name}}({{item.quantity}}份)</text>
+                        <text>￥{{item.originPrice}}</text>
+                    </view>
                 </view>
             </view>
         </view>
