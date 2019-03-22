@@ -29,11 +29,6 @@ Page({
     });
     this.findUserCenter();
   },
-  onUnload(){
-    let pages = getCurrentPages();
-    let prevPage = pages[pages.length - 2];
-    prevPage.data.isPayPageBack=true;
-  },
   payWx(e) {
     if (this.data.channelCost < this.data.price && this.data.channelCost != 0) {
       this.setData({

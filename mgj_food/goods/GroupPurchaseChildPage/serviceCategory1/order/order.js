@@ -1,6 +1,6 @@
 // goods/GroupPurchaseChildPage/serviceCategory1/order/order.js
 const app = getApp();
-const { wxRequest } = require('../../../../utils/util.js');
+const { wxRequest,format} = require('../../../../utils/util.js');
 Page({
 
   /**
@@ -42,6 +42,9 @@ Page({
 		platformRedText:'无可用红包',
     
     isDisable:false,//是否可以不提交
+
+    coupons:null, //马管家券
+    promotionCouponsDiscountTotalAmt:null,//马管家券金额
   },
 
   /**
@@ -76,31 +79,57 @@ Page({
           this.data.useRedBagList.map(item=>{
             redBagMoney += item.amt;
           });
-          this.setData({
-              redBagMoney:redBagMoney
-          });
+          this.promotionPreSetting().then((res)=>{
+            console.log("show时候的",res)
+            if(res==undefined){
+              this.setData({
+                redBagMoney:redBagMoney
+              });
+            }else{
+              wx.showToast({
+                title:res.data.value,
+                icon:"none",
+                duration:2000,
+                mask:true
+              })
+              // 并且清除设置的值
+              this.data.useRedBagList=null;
+              this.setData({
+                redBagMoney:0
+              });
+              //再次请求，重新赋值
+              this.promotionPreSetting();
+            }
+          })
 	    }
 	    if (this.data.usePlatformRedBagList != null) {
 	        this.data.usePlatformRedBagList.map(item=>{
 					  platformRedBagMoney += item.amt;
-		    	});
-          this.setData({
-              platformRedBagMoney:platformRedBagMoney
           });
+          this.promotionPreSetting().then((res)=>{
+            if(res==undefined){
+              this.setData({
+                platformRedBagMoney:platformRedBagMoney
+              });
+            }else{
+              wx.showToast({
+                title:res.data.value,
+                icon:"none",
+                duration:2000,
+                mask:true
+              })
+              // 并且清除设置的值
+              this.data.usePlatformRedBagList=null;
+              this.setData({
+                platformRedBagMoney:0
+              });
+              //再次请求，重新赋值
+              this.promotionPreSetting();
+            }
+          })
       }
-      this.setData({
-        realTotalMoney:this.data.totalMoney-redBagMoney-platformRedBagMoney
-      })
 		}
   },
-  onUnload(){
-    console.log("isPayPageBack",this.data.isPayPageBack)
-    if(this.data.isPayPageBack){
-     wx.redirectTo({
-       url:'/goods/GroupPurchaseIndex/GroupPurchaseIndex'
-     })
-    }
- },
     // 订单提交预览,获得订单号
     groupPurchaseOrderSubmit(){
       let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));
@@ -145,6 +174,13 @@ Page({
         if(redBags!==null){
           Object.assign(OrderSubmitReqObj,{
             redBags
+          })
+        }
+        let coupons=this.data.coupons;
+        coupons=JSON.parse(coupons)
+        if(coupons!=null){
+          Object.assign(OrderSubmitReqObj,{
+            coupons
           })
         }
         let data=JSON.stringify(OrderSubmitReqObj);
@@ -202,9 +238,10 @@ Page({
     let realTotalMoney=totalMoney-this.data.redPacketDeduction-this.data.redBagMoney-this.data.platformRedBagMoney;
     this.setData({
       sliderValue,
-      totalMoney,
-      realTotalMoney
+      totalMoney
     })
+    // 
+    this.promotionPreSetting();
 },
 findGroupPurchaseCouponInfo(){
   return wxRequest({
@@ -249,14 +286,41 @@ voucherItemModify(item){
   return item;
 },
 
-
+  // 更新订单
 promotionPreSetting(){
+  let orderUseRedBagList = [];
+  if (this.data.useRedBagList) {
+    this.data.useRedBagList.map(item=>{
+      let json = {}
+      json.id = item.id;
+      json.amt = item.amt;
+      json.name = item.name;
+      json.promotionType = item.promotionType
+      orderUseRedBagList.push(json)
+    })
+  }
+  if (this.data.usePlatformRedBagList) {
+    this.data.usePlatformRedBagList.map(item=>{
+      let json = {}
+      json.id = item.id;
+      json.amt = item.amt;
+      json.name = item.name;
+      json.promotionType = item.promotionType
+      orderUseRedBagList.push(json)
+    })
+  }
   let params={
     agentId:app.globalData.agentId,
     businessType:6,//团购6
-    itemPrice:this.data.voucherItem.originPrice,
-    quantity:1,
-    redBags:"[]"
+    itemPrice:this.data.voucherItem.price,
+    quantity:this.data.sliderValue,
+  }
+  let redBags=orderUseRedBagList.length === 0 ? null : orderUseRedBagList;
+  if(redBags!==null){
+    redBags=JSON.stringify(redBags);
+    Object.assign(params,{
+      redBags
+    })
   }
   return wxRequest({
     url:'/merchant/userClient?m=promotionPreSetting',
@@ -267,9 +331,15 @@ promotionPreSetting(){
     },
   }).then((res)=>{
     if (res.data.code === 0) {
-      this.setData({
-        platformRedBagCount:res.data.value.platformRedBagCount
-      })
+        this.data.coupons=res.data.value.coupons;//马管家券
+        this.setData({
+          realTotalMoney:res.data.value.totalPrice,
+          promotionCouponsDiscountTotalAmt:res.data.value.promotionCouponsDiscountTotalAmt,//马管家券金额
+        })
+    }else if(res.data.code===502){
+        return new Promise((resolve, reject) => {
+            resolve(res);
+        });
       
     }
   })
@@ -318,7 +388,7 @@ filterUsableRedBagList(){
           token:app.globalData.token,
           params:{
             agentId:app.globalData.agentId,
-            businessType: 6,
+            bizType: 6,
             itemsPrice: this.data.voucherItem.originPrice,
             merchantId:this.data.merchantId
           }	
@@ -332,7 +402,8 @@ filterUsableRedBagList(){
         item.expirationTime = format(item.expirationTime,'-'); 
       });
       this.setData({
-        redBagList:valueList
+        redBagList:valueList,
+        redBagUsableCount:valueList.length
       });	
     } else {
       let msg = res.data.value;
@@ -351,5 +422,4 @@ merchantRedPage(){
       url: '/goods/redbag/merchantRedbag/merchantRedbag?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.totalPrice
   });
 },
-
 })

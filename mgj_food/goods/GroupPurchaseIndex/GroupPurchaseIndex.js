@@ -97,7 +97,7 @@ Page({
           _item.url=`/pages/webView/webView?src=${_item.url}`;
           break;//
         }
-        case 2:{//代金券
+        case 2:{//代金券或团购券。
           _item.url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseMerchantId="+ _item.groupPurchaseMerchantId+"&groupPurchaseCouponId="+_item.groupPurchaseCouponId
           break;
         }
@@ -105,7 +105,7 @@ Page({
           _item.url=`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${_item.groupPurchaseMerchantId}`
           break;
         }
-        case 4:{//团购套餐
+        case 4:{//团购分类
           _item.url=`/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${_item.groupPurchaseCouponId}`
           brack;
         }
@@ -157,8 +157,8 @@ Page({
   findGroupPurchasePrimaryCategoryListTap(e){
     let {item}=e.currentTarget.dataset;
     let {gotoType,gotoUrl,groupPurchaseCategoryId,childGroupPurchaseCategoryId,name}=item;
-    // name是作为跳到分类页面的标题
-    //@gotoType :2跳分类。1跳链接。3
+    //name是作为跳到分类页面的标题
+    //@gotoType :2跳分类。1跳链接。
     //@gotoUrl跳分类的链接
     //groupPurchaseCategoryId一级分类的id。 childGroupPurchaseCategoryId二级分类的id如果为Null则跳一级分类
     if(gotoType===1){
@@ -197,7 +197,7 @@ Page({
   primaryPublicityListTap(e){
     let {item}=e.currentTarget.dataset;
     let {gotoType,groupPurchaseMerchantId,groupPurchaseCouponId}=item;
-    //@gotoType :1跳链接。2跳代金券。3跳团购商家。4跳团购套餐
+    //@gotoType :1跳链接。2跳代金券和团购套餐。3跳团购商家。
     //@linkUrl跳链接的地址
     if(gotoType===1){
       wx.navigateTo({
@@ -210,10 +210,6 @@ Page({
     }else if(gotoType===3){    
       wx.navigateTo({
         url:`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${groupPurchaseMerchantId}`
-      })
-    }else if(gotoType===4){
-      wx.navigateTo({
-        url:`/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${groupPurchaseCouponId}`
       })
     }
 

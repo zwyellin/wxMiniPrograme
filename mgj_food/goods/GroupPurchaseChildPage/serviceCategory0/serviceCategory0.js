@@ -47,6 +47,8 @@ Page({
 
     orderId:null,//保存订单提交时候的order订单id
     orderMoney:null,
+
+    enableGroupPurchaseOrderCouponCodeCount:null,//抵用券数量
   },
 
   /**
@@ -117,8 +119,14 @@ Page({
           data:data
         }
       }
-    }).then(()=>{
+    }).then((res)=>{
       if (res.data.code === 0) {
+        console.log(res.data.value)
+        this.setData({
+          enableGroupPurchaseOrderCouponCodeCount:res.data.value.enableGroupPurchaseOrderCouponCodeCount
+        },()=>{
+          console.log("enableGroupPurchaseOrderCouponCodeCount",this.data.enableGroupPurchaseOrderCouponCodeCount)
+        })
       }
     })
   },

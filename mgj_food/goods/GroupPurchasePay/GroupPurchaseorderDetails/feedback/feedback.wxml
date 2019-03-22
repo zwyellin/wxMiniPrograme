@@ -1,0 +1,12 @@
+<!--goods/GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback.wxml-->
+
+<view class="container page">
+    <view class="pageItem padding-tb-20">
+         <textarea placeholder="亲，产品如何，环境怎么样，服务满意吗" placeholder-style="font-size:26rpx"
+        class="textarea" maxlength="800" bindinput="textareaInput"></textarea>
+        <view class="mt20" catch:tap="submitBtnTap">
+            <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2">提交</button>
+        </view>
+    </view>
+
+</view>

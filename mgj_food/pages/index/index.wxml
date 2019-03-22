@@ -112,7 +112,7 @@
 	            <image src="/images/images/down_1.png" class="arrow_down" />
 	        </view>
 		</view>
-		 <navigator url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate">
+		 <navigator url="/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult">
             <button class="bg-button-color font-size2" style="color:white;margin:0 20rpx;line-height:2" >反馈</button>
         </navigator>
 		

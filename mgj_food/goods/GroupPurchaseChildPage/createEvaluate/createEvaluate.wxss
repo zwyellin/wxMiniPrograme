@@ -36,7 +36,6 @@
     width: auto;
     height: 250rpx;
     border:1px solid #ccc;
-
 }
 
 /* 增加图片 点击 */

@@ -3,7 +3,7 @@
 <wxs module="fixed" src="../../../utils/star.wxs"></wxs>
 
 <view class="container page" style="padding-bottom:110rpx;">
-    <view class="pageItem bg-content-color" >
+    <view class="pageItem bg-content-color"  style="padding-bottom:30rpx;padding-top:30rpx;">
         <!-- 代金券展示 -->
         <view class="padding-40" style="background:#fffbf4;border:1px solid #feddab;"> 
             <text class="font-size5 color1" style="display:block">{{groupMerchantInfo.name}}</text>

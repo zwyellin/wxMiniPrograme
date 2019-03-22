@@ -1,0 +1,8 @@
+/* goods/GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback.wxss */
+.textarea{
+    padding:20rpx;
+    font-size: 28rpx;
+    width: auto;
+    height: 250rpx;
+    border:1px solid #ccc;
+}

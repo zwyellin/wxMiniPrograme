@@ -15,11 +15,14 @@ Page({
     totalPrice:null,//实付金额
 
     // 附近商家
-    groupPurchaseItemRequsetObjDefault:{//其实还会加入经纬
+    groupPurchaseItemRequsetObjDefault:{//其实还会加入经纬度
       start:0,
       size:5
     },
     groupPurchaseItemRequsetObj:null,
+
+    promotionList:null,//下单后的马管家券,红包等整体的对象
+    promotionListShow:true,//点X后置为false
   },
 
   /**
@@ -50,7 +53,9 @@ Page({
     })
 
     // 根据orderId请求数据
-    this.findNewTOrderById();
+    this.findNewTOrderById().then(()=>{//再去请求代金券红包列表
+      this.getPromotionListByOrderId();
+    });
   },
   onUnload(){
       wx.redirectTo({
@@ -62,7 +67,7 @@ Page({
 	        title: '加载中',
 	        mask: true
 	    });
-		wxRequest({
+		return wxRequest({
 	        url:'/merchant/userClient?m=findNewTOrderById',
 	        method:'POST',
 	        data:{
@@ -83,10 +88,53 @@ Page({
           })
 	        } else {
 	          	let msg = res.data.msg;
-	        } 
-	    }).finally(()=>{
-	    	wx.hideLoading();
-	    });
-	},
+          } 
+        wx.hideLoading();
+	    })
+  },
+  getPromotionListByOrderId(){
+    wxRequest({
+      url:'/merchant/userClient?m=getPromotionListByOrderId',
+      method:'POST',
+      data:{
+          params:{
+            orderId: this.data.orderId
+          }
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        let promotionList=res.data.value;
+        promotionList.hascoupons=true;
+        if(promotionList.coupons.couponsAmt==undefined){
+          promotionList.hascoupons=false;
+        }
+        promotionList.hasmerchantRedBags=true;
+        if(promotionList.merchantRedBags.length==0){
+          promotionList.hasmerchantRedBags=false;
+        }
+        this.setData({
+          promotionList:res.data.value
+        })
+      } else {
+        
+      }
+   })
+  },
+  promotionListLook(e){
+    // 点查看红包，则先关闭再跳转。避免回来还展示
+    this.setData({
+      promotionListShow:false
+    },()=>{
+      wx.navigateTo({
+        url:"/goods/userredBag/userredBag"
+      })
+    })
+  },
+  promotionListClose(e){
+    this.setData({
+      promotionListShow:false
+    })
+  }
+
 
 })

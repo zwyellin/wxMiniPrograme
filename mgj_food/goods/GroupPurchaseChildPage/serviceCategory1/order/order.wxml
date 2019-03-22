@@ -3,7 +3,7 @@
 
 <view  class="container page">
     <!-- 代金券显示 -->
-    <view class="pageItem" style="padding-bottom:30rpx;">
+    <view class="pageItem" style="padding-bottom:30rpx;padding-top:30rpx;">
         <view class="padding-40" style="background:#fffbf4;border:1px solid #feddab;"> 
             <text class="font-size5 color1" style="display:block">{{groupMerchantInfo.name}}</text>
             <text class="font-size1 font-bold color1 mt20" >￥{{voucherItem.originPrice}}元 代金券</text>
@@ -30,10 +30,10 @@
     </view>
     <!--板块，红包，实付金额  -->
     <view class="pageItem mt20">
-        <!--商家红包-->
+         <!--商家红包-->
         <view wx:if="{{true}}" class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line" bindtap="platformRedPage">
 			<text class="font-size3 color1">平台红包</text>
-			<view class="flex  flex-row-center">
+			<view class="flex  flex-row-center" style="font-size:28rpx;">
 				<text wx:if="{{platformRedBagCount===0}}" style="color:#999">{{platformRedText}}</text>
 				<text wx:if="{{platformRedBagCount && platformRedBagMoney === 0}}" style="color:#ff9595">有{{platformRedBagCount}}个红包可用</text>
 				<text wx:if="{{platformRedBagMoney != 0}}" style="color:#ff9595">-￥{{platformRedBagMoney}}</text>
@@ -43,10 +43,18 @@
         <!-- 商家红包 -->
 		<view wx:if="{{true}}"class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line" bindtap="merchantRedPage">
 			<text class="font-size3 color1">商家红包</text>
-			<view class="flex  flex-row-center">
+			<view class="flex  flex-row-center" style="font-size:28rpx;">
+            	<text wx:if="{{redBagUsableCount===0}}" style="color:#999">{{redText}}</text>
 				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个商家红包可用</text>
 				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">-￥{{redBagMoney}}</text>
                 <image src="../../../image/more.png" style="width:30rpx;height:30rpx;padding-left:20rpx;"/>
+			</view>
+		</view>
+        <!-- 马管家券 -->
+        <view wx:if="{{promotionCouponsDiscountTotalAmt}}"class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line">
+			<text class="font-size3 color1">马管家券</text>
+			<view class="flex  flex-row-center" style="font-size:28rpx;">
+            	<text style="color:#ff9595">-￥{{promotionCouponsDiscountTotalAmt}}</text>
 			</view>
 		</view>
         <!-- 实付金额 -->

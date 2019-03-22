@@ -9,8 +9,8 @@
         <view class="padding-40 flex flex-spaceBetween flex-row-center" style="background:#fffbf4;border:1px solid #feddab;"> 
             <view>
                 <text class="font-size5 color1" >{{groupMerchantInfo.name}}</text>
-                <text class="font-size1 font-bold color1 mt20" style="display:block">{{groupPurchaseOrderCouponCodeList[0].price}}元 代金券</text>
-                <text class="font-size4 font-bold color1 mt20" >￥{{groupPurchaseOrderCouponCodeList[0].originPrice}}</text>
+                <text class="font-size1 font-bold color1 mt20" style="display:block">{{groupPurchaseOrderCouponCodeList[0].originPrice}}元 代金券</text>
+                <text class="font-size4 font-bold color1 mt20" >￥{{groupPurchaseOrderCouponCodeList[0].price}}</text>
             </view>
             <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}&merchantId={{groupMerchantInfo.id}}">
                   <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >立即使用</button>
@@ -111,12 +111,11 @@
 
     <!-- 反馈，退款 -->
     <view class="pageItem mt20 flex padding-tb-20" style="justify-content:flex-end;">
-        <navigator url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate">
+        <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback?merchantId={{groupMerchantInfo.id}}&groupPurchaseCouponType={{groupPurchaseOrder.groupPurchaseCouponType}}">
             <button class="bg-button-color font-size2" style="color:white;margin:0 20rpx;line-height:2" >反馈</button>
         </navigator>
         <navigator url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate">
             <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >退款</button>
         </navigator>
-       
     </view>
 </view>

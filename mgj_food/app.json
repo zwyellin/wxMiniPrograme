@@ -86,6 +86,7 @@
         "GroupPurchasePay/GroupPurchaseorderDetails/server2OrderDetails/server2OrderDetails",
         "GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse",
         "GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult",
+        "GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback",
         "mapview/mapview",
         "queryOrder/queryOrder",
         "pay/pay",

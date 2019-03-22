@@ -14,6 +14,9 @@ Page({
     groupPurchaseOrder:null,
     groupMerchantInfo:null,
     groupPurchaseOrderCouponCodeList:null,
+
+    //返回来的二维码Image数组
+    couponCodeImageSrcList:[]
   },
 
   /**
@@ -25,13 +28,13 @@ Page({
     this.data.orderId=orderId;
     this.data.merchantId=merchantId;
     this.findNewTOrderById().then(()=>{
+      let createQRImageAll=[];
       this.data.groupPurchaseOrderCouponCodeList.forEach((_item)=>{
-         // this.createQRImage(_item.couponCode)
+         this.createQRImage(_item.couponCode);
       })
     })
 
-    // 
-    this.getQrCode();
+  
     
   },
 
@@ -44,8 +47,16 @@ Page({
          content:_item
         }
       },
-    }).then(res=>{
-        this.loadQrCode(res.data);   
+    }).then((res)=>{
+      let item={
+        content:res.data.value.content,
+        qrCode:res.data.value.qrCode
+      }
+      let couponCodeImageSrcList=this.data.couponCodeImageSrcList;
+      couponCodeImageSrcList.push(item);
+      this.setData({
+        couponCodeImageSrcList
+      })
     })
   },
   findNewTOrderById(){
@@ -103,103 +114,6 @@ Page({
       return item;
     }
     return item;
-  },
-
-
-
-
-
-
-
-
-  // 
-  findGroupPurchaseOrderCouponCodeIDListByOrderId(){
-    return wxRequest({
-      url:'/merchant/userClient?m=findGroupPurchaseOrderCouponCodeIDListByOrderId',
-      method:'POST',
-      data:{
-        params:{
-          orderId:this.data.orderId
-        }
-      },
-    }).then(res=>{
-      if (res.data.code === 0) {
-        this.data.codeIdList=res.data.value;
-        console.log( this.data.codeIdList)
-      }
-    })
-  },
-
-
-  loadQrCode(qrCodeUrl){
-    this.setData({
-      qrcodeShow:true
-    },()=>{
-      
-      base64src(qrCodeUrl).then(filepath=>{
-        wx.getImageInfo({
-          src: `${wx.env.USER_DATA_PATH}/tmp_base64src.png`,
-          success (res) {
-            console.log("成功",res.path)
-            let ctx = wx.createCanvasContext('qrcode')
-            ctx.drawImage(res.path, 0, 0, 200, 200)
-            ctx.draw()
-          },
-          fail(){
-            console.log("失败")
-          }
-        })
-      }).catch(err=>{
-          wx.showToast({
-            title: '二维码生成失败',
-            icon: 'loading',
-            duration: 1000
-          })
-          setTimeout(()=>{
-            wx.hideToast()
-          },1000);
-      }) 
-    })
-  },
-  saveQRCode(){
-    wx.canvasToTempFilePath({
-      canvasId: 'qrcode',
-      destWidth:this.data.canvasqrCode.destWidth,
-      destHeight:this.data.canvasqrCode.destHeight,
-      success: (res)=> {
-        wx.saveImageToPhotosAlbum({
-          filePath: res.tempFilePath,
-          success:(result)=> {
-            wx.showToast({
-              title: '图片保存成功',
-              icon: 'success',
-              duration: 1000
-            })
-            setTimeout(()=>{
-              wx.hideToast()
-            },1000);
-          }
-        })
-      }
-    })
-  },
-  // 获取二维码不采用之前的请求配置，返回参数结构不一样
-  getQrCode(){
-    console.log("getQrCode",this.data.merchantId)
-    wxRequest({
-      responseType:'arraybuffer',
-      method:'post',
-      url:'/merchant/appletClient?m=getBuildingMaterialsGoodsWXQRImage',
-      data:{
-        token:app.globalData.token,
-        params:{
-          id:122,
-        }
-      }
-    }).then(res=>{ 
-        //this.data.QrCodeList.push(res.data);
-      this.loadQrCode(res.data)
-    })
   },
 
 })
