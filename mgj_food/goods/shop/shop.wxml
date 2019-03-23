@@ -744,7 +744,7 @@
 		</view>
 		<view class="selectdetail-desc" style="padding-bottom: 20rpx;">
 			<text class="detail-name" style="color:#f01414">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
-			<text detail-old>￥{{selectedFood.now}}</text>
+			<text class="detail-old">￥{{selectedFood.now}}</text>
 		</view>
 		<view class="cartcontrol-wrapper cartcontrol-button" style="background: #fff">
 			<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
@@ -762,8 +762,6 @@
 					<text>选规格</text>
 				</view>
 			</view>  
-			//
-			
 		</view>
 	</view>
 	<!--底下遮罩-->

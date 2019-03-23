@@ -688,8 +688,8 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	},
 	//点击查看商品详情
 	selectefood(e){
-		this.maskShowAnimation();
-		this.choiceShowAnimation();
+		// this.maskShowAnimation();
+		// this.choiceShowAnimation();
 		let { food, parentIndex } = e.currentTarget.dataset;
 		if(this.data.isSearchWrapperShow){//如果是商店页面
 			food.parentRelationCategoryId = food.relationCategoryId;
@@ -701,9 +701,14 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			}
 		}
 		this.setData({
-	        selectedFood:food,
-			detailShow:true,
-	    });
+					selectedFood:food,
+		
+					// detailShow:true,
+	  },()=>{//设置成功后，跳转到商品页面
+				wx.navigateTo({
+					url:'/goods/shop/Takeaway/Takeaway'
+				})
+		});
 	},
 	//关闭查看商品详情
 	close(){

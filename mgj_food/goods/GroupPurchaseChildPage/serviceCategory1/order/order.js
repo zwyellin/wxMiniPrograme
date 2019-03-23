@@ -7,6 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    sharedUserId:null,
+
     isPayPageBack:false,//是否支付页面返回来的，如果是，则再次返回时直接退回到团购首页
 
     voucherItem:null,
@@ -52,8 +54,9 @@ Page({
    */
   onLoad: function (options) {
     // 获得参数
-    let {groupPurchaseCouponId}=options;
+    let {groupPurchaseCouponId,sharedUserId}=options;
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
+    this.data.sharedUserId=sharedUserId;
     this.findGroupPurchaseCouponInfo().then(()=>{
       console.log("then")
       this.promotionPreSetting();
@@ -183,6 +186,7 @@ Page({
             coupons
           })
         }
+        OrderSubmitReqObj.sharedUserId=this.data.OrderSubmitReqObj;
         let data=JSON.stringify(OrderSubmitReqObj);
         return wxRequest({
           url:'/merchant/userClient?m=groupPurchaseOrderSubmit',

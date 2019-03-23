@@ -11,37 +11,36 @@ Page({
   data: {
     isLoginsuccess:false,//是否登入
 
+
+    groupPurchaseCouponId:null,
+    sharedUserId:null,
+
     tel_mask_show:false,
     groupMerchantInfo:null,//
-    merchantId:null,
     groupSetMealItem:null,//上一页团购套餐Item。以及加上请求回来的套餐具体内容
     groupSetMealexcludeItem:null,//本店优惠
 
+    WXQRImage:"data:image/png;base64,",//店家二维码
+    QRcode_mask_show:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+      //  判断是否登入
+      this.isLoginsuccess();
       // 获得参数@groupPurchaseCouponId为其id
-      let {groupPurchaseCouponId,latitude,longitude}=options;
-      if(!latitude){//如果没传经纬度
-        if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取经纬度
-  
-        }else{//app.json中，则赋值
-          latitude=app.globalData.latitude;
-          longitude=app.globalData.longitude;
-        }
-      }
+      let {groupPurchaseCouponId,sharedUserId}=options;
       Object.assign(this.data,{
         groupPurchaseCouponId,
-        longitude,
-        latitude
+        sharedUserId
       })
-     this.findGroupPurchaseCouponInfo();
-     
-    //  判断是否登入
-    this.isLoginsuccess();
+      if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取经纬度
+  
+      }
+    //加载数据
+    this.findGroupPurchaseCouponInfo();
   },
 
   /**
@@ -78,7 +77,7 @@ Page({
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
       wx.navigateTo({
-        url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id
+        url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id+"&sharedUserId="+this.data.sharedUserId
       })
     }else{
       this.isLoginsuccess(true);//跳转到登入
@@ -101,13 +100,16 @@ Page({
       if (res.data.code === 0) {
         let value=res.data.value;
         let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseMerchant)
-        let groupSetMealItem=this.modifygroupSetMealItem(value)
+        let groupSetMealItem=this.modifygroupSetMealItem(value);
+        app.globalData.agentId=groupMerchantInfo.agentId;
         this.setData({
            groupSetMealItem,
            groupMerchantInfo
         });
         // 加载本店优惠
         this.findGroupPurchaseCouponList(groupSetMealItem.merchantId);
+        // 加载二维码
+        this.getMGJGoodsWXQRImage(groupSetMealItem.id);
       }else {}
     });
   },
@@ -187,6 +189,46 @@ Page({
     });
   },
 
+  // 商品二维码
+  getMGJGoodsWXQRImage(id){
+    wxRequest({
+      url:'/merchant/userClient?m=getMGJGoodsWXQRImage',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:{
+          bizType:1,
+          goodsId:id
+        }	
+      },
+    }).then(res=>{
+      let WXQRImage=this.data.WXQRImage;
+      WXQRImage+=res.data.value;
+      this.setData({
+        WXQRImage
+      })
+    })
+  },
+  //QRcodeIconTap
+  QRcodeIconTap(){
+    this.setData({
+      QRcode_mask_show:true
+    })
+  },
+  // 保存二维码
+  saveQRCode(e){
+    let {images}=e.currentTarget.dataset;
+    let that=this;
+    wx.previewImage({
+			current: images, // 当前显示图片的http链接
+      urls:[images],// 需要预览的图片http链接列表
+      success:function(){
+        that.setData({
+          QRcode_mask_show:false
+        })
+      }
+		})
+  },
 
   // 点击图片事件
   merchantInfoImageTap(e){
@@ -213,8 +255,16 @@ Page({
   // 电话弹窗 点击取消
   maskCancelTap(e){
     this.setData({
-      tel_mask_show:false
+      tel_mask_show:false,
+      QRcode_mask_show:false
     })
   },
-
+  // 分享
+	onShareAppMessage(res) {
+		console.log(app.globalData.userId);
+    	return {
+      		title: '马管家',
+      		path: '/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId='+ this.data.groupPurchaseCouponId+'&sharedUserId='+app.globalData.userId,
+    	};
+  	},
 })

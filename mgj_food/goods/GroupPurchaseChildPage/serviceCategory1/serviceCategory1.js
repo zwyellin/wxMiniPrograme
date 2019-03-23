@@ -17,7 +17,9 @@ Page({
     voucherItem:null,
     itemIndex:null,
 
-    groupPurchaseCouponId:null,//【必传】
+
+    groupPurchaseCouponId:null,
+    sharedUserId:null,
 
 
   },
@@ -26,27 +28,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    //  判断是否登入
+    this.isLoginsuccess();
     // 获得参数@groupPurchaseCouponId为其id
-    let {groupPurchaseCouponId,latitude,longitude}=options;
-    if(!latitude){//如果没传经纬度
-      if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取经纬度
+    let {groupPurchaseCouponId,sharedUserId}=options;
+    if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取自己的经纬度。及设置商家对应的代理商
 
-      }else{//app.json中，则赋值
-        latitude=app.globalData.latitude;
-        longitude=app.globalData.longitude;
-      }
     }
     Object.assign(this.data,{
       groupPurchaseCouponId,
-      longitude,
-      latitude
     })
     // 开始请求
     console.log("传过来的参数为",groupPurchaseCouponId)
     this.findGroupPurchaseCouponInfo();
 
-     //  判断是否登入
-     this.isLoginsuccess();
+
   },
 
   /**
@@ -94,7 +90,7 @@ Page({
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
       wx.navigateTo({
-        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+this.data.voucherItem.id
+        url:"/goods/GroupPurchaseChildPage/serviceCategory1/order/order?groupPurchaseCouponId="+this.data.voucherItem.id+"&sharedUserId="+this.data.sharedUserId
       })
     }else{
       this.isLoginsuccess(true);//跳转到登入
@@ -108,8 +104,8 @@ Page({
       data:{
         token:app.globalData.token,
         params:{
-          latitude:this.data.latitude,
-          longitude:this.data.longitude,
+          latitude:app.globalData.latitude,
+          longitude:app.globalData.longitude,
           groupPurchaseCouponId:this.data.groupPurchaseCouponId,
         }	
       },
@@ -117,7 +113,8 @@ Page({
       if (res.data.code === 0) {
         let value=res.data.value;
         let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseMerchant)
-        let voucherItem=this.voucherItemModify(value)
+        let voucherItem=this.voucherItemModify(value);
+        app.globalData.agentId=groupMerchantInfo.agentId;
         this.setData({
           groupMerchantInfo,
           voucherItem,
@@ -143,6 +140,13 @@ Page({
       item.isBespeakText="免预约"
     }
     return item;
-  }
-
+  },
+  // 分享
+	onShareAppMessage(res) {
+		console.log(app.globalData.userId);
+    	return {
+      		title: '马管家',
+      		path: '/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId='+ this.data.groupPurchaseCouponId+'&sharedUserId='+app.globalData.userId,
+    	};
+  	},
 })

@@ -111,7 +111,7 @@
 
     <!-- 反馈，退款，评价-->
     <view class="pageItem mt20 flex padding-tb-20" style="justify-content:flex-end;">
-        <navigator url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate">
+        <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback?groupPurchaseCouponType={{groupPurchaseOrder.groupPurchaseCouponType}}&&merchantId={{groupMerchantInfo.id}}">
             <button class="bg-button-color font-size2" style="color:white;margin-left:20rpx;line-height:2" >反馈</button>
         </navigator>
         <navigator wx:if="{{hasUnuseCouponCode}}" url="">

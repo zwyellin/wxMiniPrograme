@@ -24,6 +24,7 @@ Component({
    */
   methods: {
     maskclick(e) {
+      console.log("mask click")
       this.triggerEvent('maskclick')
     },
     move(e){

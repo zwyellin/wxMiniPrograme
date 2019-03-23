@@ -17,7 +17,15 @@
                 <view class="merchantMainInfo_license">
                     <view class="flex flex-spaceBetween flex-row-center">
                         <text class="merchantName">{{groupMerchantInfo.name}}</text>
-                        <image src="../image/QRcodeIcon.png" style="width:50rpx;height:50rpx;padding:5rpx 20rpx;"/>
+                        <!-- 店家二维码icon -->
+                        <image src="../image/QRcodeIcon.png" style="width:50rpx;height:50rpx;padding:5rpx 20rpx;" catch:tap="QRcodeIconTap"/>
+                        <!-- 悬浮框 -->
+                         <mask position="center" wx:if="{{QRcode_mask_show}}" catch:maskclick="maskCancelTap">
+                            <view  style="background:white;border-radius:20rpx;margin:200rpx 80rpx 0 80rpx;text-align:center;padding:60rpx;">
+                                <image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" catch:tap="saveQRCode"/>
+                                <view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行识别及保存</view>
+                            </view>
+                         </mask>
                     </view>
                     <view class="merchantStar flex flex-spaceBetween flex-row-center">
                         <view class="flex flex-row-center">
@@ -118,7 +126,7 @@
                 <navigator class="flex flex-spaceBetween mt20" style="padding:30rpx;border:1px solid #feddab;background:#fffbf4"
                 wx:for="{{groupMerchantInfo.voucher}}"
                 wx:key="index"
-                url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId={{item.id}}">
+                url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId={{item.id}}&sharedUserId={{sharedUserId}}">
                     <!-- 左边 -->
                     <view > 
                         <text style="font-size:34rpx; color:#333;font-weight:bold;">{{item.originPrice}}元 代金券</text>
@@ -144,7 +152,7 @@
                 </view>
                 <navigator class="flex flex-spaceBetween mt20" hover-class="none"
                 wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index"
-                url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}">
+                url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}&&sharedUserId={{sharedUserId}}">
                     <!-- 左边 -->
                     <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
                     <!-- 右边 -->

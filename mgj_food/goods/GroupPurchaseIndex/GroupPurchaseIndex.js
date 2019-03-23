@@ -191,11 +191,14 @@ Page({
       }
     })
   },
+  primaryCategoryListImageErr(){
+    
+  },
   // 主分类的跳转
   //url="/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId={{item.groupPurchaseCategoryId}}&childGroupPurchaseCategoryId={{item.childGroupPurchaseCategoryId}}"
   findGroupPurchasePrimaryCategoryListTap(e){
     let {item}=e.currentTarget.dataset;
-    let {gotoType,gotoUrl,groupPurchaseCategoryId,childGroupPurchaseCategoryId,name}=item;
+    let {gotoType,linkUrl,groupPurchaseCategoryId,childGroupPurchaseCategoryId,name}=item;
     //name是作为跳到分类页面的标题
     //@gotoType :2跳分类。1跳链接。
     //@gotoUrl跳分类的链接
@@ -235,12 +238,12 @@ Page({
   // 广告位的跳转
   primaryPublicityListTap(e){
     let {item}=e.currentTarget.dataset;
-    let {gotoType,groupPurchaseMerchantId,groupPurchaseCouponId}=item;
+    let {gotoType,groupPurchaseMerchantId,groupPurchaseCouponId,linkUrl}=item;
     //@gotoType :1跳链接。2跳代金券和团购套餐。3跳团购商家。
     //@linkUrl跳链接的地址
     if(gotoType===1){
       wx.navigateTo({
-        url:`/pages/webView/webView?src=${gotoUrl}`
+        url:`/pages/webView/webView?src=${linkUrl}`
       })
     }else if(gotoType===2){
       this.findGroupPurchaseCouponInfo(groupPurchaseCouponId).then((res)=>{

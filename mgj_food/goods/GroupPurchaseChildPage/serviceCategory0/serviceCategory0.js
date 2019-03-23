@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-   
+    sharedUserId:null,//分享者id
 
     istotalAmountInputFocues:true,//input焦点控制
    
@@ -59,7 +59,8 @@ Page({
    */
   onLoad: function (options) {
     // 获得参数
-    let {merchantId,discountRatio,merchantName}=options;
+    let {merchantId,discountRatio,merchantName,sharedUserId}=options;
+    this.data.sharedUserId=sharedUserId;
     //设置标题
     wx.setNavigationBarTitle({
       title:merchantName
@@ -102,8 +103,12 @@ Page({
                 duration:2000
               })
             }else{
+             let actuallyAmount=this.data.actuallyAmount;
+             if((typeof actuallyAmount)=="string" && actuallyAmount.indexOf('￥')!=-1){
+              actuallyAmount=parseFloat(this.data.totalAmountInputValue.substring(1))
+             }
               wx.navigateTo({
-                url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.actuallyAmount+"&orderId="+this.data.orderId
+                url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+actuallyAmount+"&orderId="+this.data.orderId
               })
             }
         });
@@ -112,6 +117,7 @@ Page({
   // 订单预览
   groupPurchaseOrderPreview0(){
     let data=this.data.OrderPreviewRequestObj;
+    data.sharedUserId=this.data.sharedUserId;
     data=JSON.stringify(data);
     wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderPreview',
@@ -156,6 +162,7 @@ Page({
     if(coupons!=null){
       data.coupons=coupons;
     }
+    data.sharedUserId=this.data.sharedUserId;
     data=JSON.stringify(data);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderPreview',
@@ -207,6 +214,7 @@ Page({
     if(coupons!=null){
       groupPurchaseOrderSubmitRequestObj.coupons=coupons;
     }
+    data.sharedUserId=this.data.sharedUserId;
     let data=JSON.stringify(groupPurchaseOrderSubmitRequestObj);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
@@ -323,18 +331,18 @@ Page({
         actuallyAmount=totalAmountInputValue-discountAmount;
       }
       //处理好discountAmount
-      discountAmount="-￥"+parseInt(discountAmount*10)/10;//保留一位小数
+      discountAmount="-￥"+parseInt(discountAmount*100)/100;//保留两位小数
       //处理好actuallyAmount
       if(promotionCouponsDiscountTotalAmt!=null){
         actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt
       }
-      actuallyAmount="￥"+parseInt(actuallyAmount*10)/10;//保留一位小数
+      actuallyAmount="￥"+parseInt(actuallyAmount*100)/100;//保留两位小数
     }else{
       //处理好actuallyAmount
       if(promotionCouponsDiscountTotalAmt!=null){
         actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt
       }
-      actuallyAmount="￥"+parseInt(actuallyAmount*10)/10;//保留一位小数
+      actuallyAmount="￥"+parseInt(actuallyAmount*100)/100;//保留两位小数
     }
     this.setData({
       actuallyAmount,

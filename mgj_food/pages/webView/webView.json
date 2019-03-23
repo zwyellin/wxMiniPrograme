@@ -1,3 +1,8 @@
 {
-  "usingComponents": {}
+  "usingComponents": {},
+  "navigationBarTitleText": "外部链接",
+  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#482a1a",
+  "backgroundColor": "#f5f5f5",
+  "onReachBottomDistance":300
 }

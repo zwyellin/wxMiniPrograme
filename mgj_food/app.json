@@ -67,6 +67,7 @@
       "root": "goods",
       "pages": [
         "shop/shop",
+        "shop/Takeaway/Takeaway",
         "GroupPurchaseIndex/GroupPurchaseIndex",
         "GroupPurchaseIndex/GroupPurchaseSearch/GroupPurchaseSearch",
         "GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort",

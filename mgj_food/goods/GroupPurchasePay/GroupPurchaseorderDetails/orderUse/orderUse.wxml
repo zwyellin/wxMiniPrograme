@@ -11,10 +11,10 @@
                         <text style="font-size:26rpx;color:#666">有效期至:{{couponCodeImageSrcListItemTitle.endTime}}</text>
                     </view>
                     <navigator url="{{couponCodeImageSrcListItemTitle.url}}">
-                        <image src="../../../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
+                        <image src="../../../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;padding:20rpx 40rpx"  />
                     </navigator>
                 </view>
-                <view class="flex flex-all-center" style="margin-top:40rpx;height:500rpx;">
+                <view class="flex flex-all-center" style="margin-top:40rpx;height:400rpx;">
                     <image src="data:image/png;base64,{{item.qrCode}}" style="width:300rpx;height:300rpx;margin-bottom:20rpx;"/>
                     <view style="font-size:26rpx;text-align:center">券码:{{item.content}}</view>
                 </view>
