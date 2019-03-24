@@ -1,0 +1,46 @@
+<!--goods/GroupPurchasePay/GroupPurchaseorderDetails/refund/refund.wxml-->
+<view class="container page">
+    <!--退款提醒-->
+    <view class="flex flex-row-center padding-tb-20" style="justify-content:center;background:rgb(253,248,219)">
+        <image src="../../../image/message.png" style="width:30rpx;height:30rpx;padding:10rpx"/>
+        <text style="font-size:28rpx;color:rgb(215,120,49)">申请退款后将无法取消操作，请谨慎申请</text>
+    </view>
+    <view class="pageItem padding-tb-20 row-line" style="font-size:28rpx;color:#333">
+        <view wx:for="{{groupPurchaseOrderCouponCodeList}}" wx:key="index" class="flex flex-row-center padding-tb-20">
+             <switch type="checkbox" style="transform:scale(0.7);padding:5rpx 20rpx;" color="#ff9900"
+              data-index="{{index}}" bindchange="couponCodeItemTap"></switch>
+             <text>{{orderTypeText}}:</text>
+             <text>{{item.couponCode}}</text>
+        </view>
+    </view>
+    <!-- 退款总额 -->
+    <view class="pageItem flex flex-spaceBetween flex-row-center padding-tb-40" style="font-size:32rpx;color:#333">
+        <view>
+            <text>退款总额:</text>
+            <text style="color:red;padding:0 20rpx">￥{{refundMoney}}</text>
+        </view>
+        <text style="font-size:28rpx;color:#999">将退至您的支付账号</text>
+    </view>
+    <!-- 退款原因 -->
+    <view class="pageItem padding-tb-40 mt20">
+        <view style="font-size:32rpx;color:#333">
+            <text>退款原因</text>
+            <text style="color:#999">(请至少选择一项)</text>
+        </view>
+        <view class="padding-tb-40">
+            <view wx:for="{{refundReasonList}}" wx:key="index" style="font-size:24rpx;color:#333">
+                <switch type="checkbox" style="transform:scale(0.7);padding:5rpx 20rpx;" color="#ff9900" 
+                data-index="{{index}}" bindchange="refundReasonItemTap"></switch>
+                <text>{{item.text}}</text>
+            </view>
+        </view>
+        <textarea placeholder="其它不爽，告诉我们" placeholder-style="font-size:26rpx"
+        class="textarea" maxlength="800" bindinput="textareaInput"></textarea>
+    </view>
+
+     <!-- 提交 -->
+    <view class="pageItem mt20 padding-tb-40">
+        <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" catch:tap="submitBtnTap">提交申请</button>
+    </view>
+
+</view>

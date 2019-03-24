@@ -16,7 +16,12 @@ Page({
     groupPurchaseOrderCouponCodeList:null,
 
     hasUnuseCouponCode:false,//所有券码中是否有未使用的，如果有则显示立即使用和退款按钮
-    hasuseCouponCode:false,//所有券码中是有使用的，如果有则显示评价按钮
+    hasuseCouponCode:false,//所有券码中是有使用的
+    hastkCouponCode:false,//所有券码中是有退款的 
+    hassdCouponCode:false,//所有券码中是有锁定的
+    //如果没有还可以消费的且使用过。即没有未使用的，没有已锁定的，且有使用的，则显示评价按钮
+
+    isReloadData:false,//是否重新加载数据，用于退款页面返回申请退款成功后时重新加载数据
   },
 
   /**
@@ -31,6 +36,15 @@ Page({
         //this.findGroupPurchaseMerchantInfo()
       })
     })
+  },
+  onShow(){//如果是退款页面返回来的，则重新加载数据
+    let isReloadData=this.data.isReloadData;
+    if(isReloadData){
+      this.findNewTOrderById().then(()=>{
+        //this.findGroupPurchaseMerchantInfo()
+      })
+    }
+    this.data.isReloadData=false;
   },
   findNewTOrderById(){
     return wxRequest({
@@ -101,6 +115,7 @@ Page({
       }
       // 处理劵码情况 
       //  并收集券码信息。【有未使用的，则显示立即使用按钮和退款按钮】
+      // 如果没有还可以消费的且使用过。即没有未使用的，没有已锁定的，且有使用的，则显示评价按钮
       // 0：未使用；1：已使用；2：已退款；
       if(item.status==0) {
         item.statusText="未使用";
@@ -112,8 +127,18 @@ Page({
         that.setData({
           hasuseCouponCode:true
         })
-      }else if(item.status==2) item.statusText="已退款";
-      else if(item.status==3) item.statusText="已锁定";
+      }else if(item.status==2) {
+        item.statusText="退款详情";
+        that.setData({
+          hastkCouponCode:true
+        })
+      }
+      else if(item.status==3) {
+        item.statusText="已锁定";
+        that.setData({
+          hassdCouponCode:true
+        })
+      }
       return item;
     }
     return item;

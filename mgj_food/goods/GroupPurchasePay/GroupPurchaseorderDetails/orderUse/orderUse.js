@@ -1,5 +1,5 @@
 // goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse.js
-const { base64src, wxRequest } = require('../../../../utils/util.js');
+const { wxRequest } = require('../../../../utils/util.js');
 const {modify} =require("../../../GroupPurchaseIndex/groupPurchasePublicJs.js")
 const app = getApp();
 Page({
@@ -31,31 +31,36 @@ Page({
     let {orderId}=options;
     console.log("orderId",orderId)
     this.data.orderId=orderId;
+    
     this.findNewTOrderById().then(()=>{
+      let promiseAll=[];
       this.data.groupPurchaseOrderCouponCodeList.forEach((_item)=>{
-         this.createQRImage(_item.couponCode);
-      })
-    })
-  },
-
-  createQRImage(_item){
-    wxRequest({
-      url:'/merchant/userClient?m=createQRImage',
-      method:'POST',
-      data:{
-        params:{
-         content:_item
+        // item.status。0：未使用；1：已使用；2：已退款；3已锁定
+        //只显示未使用的券码
+        if(_item.status===0){//this.createQRImage(_item.couponCode)
+          promiseAll.push(wxRequest({
+            url:'/merchant/userClient?m=createQRImage',
+            method:'POST',
+            data:{
+              params:{
+               content:_item.couponCode
+              }
+            },
+          }));
         }
-      },
-    }).then((res)=>{
-      let item={
-        content:res.data.value.content,
-        qrCode:res.data.value.qrCode
-      }
-      let couponCodeImageSrcList=this.data.couponCodeImageSrcList;
-      couponCodeImageSrcList.push(item);
-      this.setData({
-        couponCodeImageSrcList
+      })
+      Promise.all(promiseAll).then(res=>{
+        let couponCodeImageSrcList=this.data.couponCodeImageSrcList;
+        res.forEach((_item,_index)=>{
+          let item={
+            content:_item.data.value.content,
+            qrCode:_item.data.value.qrCode
+          }
+          couponCodeImageSrcList.push(item);
+        })
+        this.setData({
+          couponCodeImageSrcList
+        })
       })
     })
   },

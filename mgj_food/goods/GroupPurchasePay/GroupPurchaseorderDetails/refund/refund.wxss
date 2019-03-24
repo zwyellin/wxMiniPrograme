@@ -1,0 +1,8 @@
+/* goods/GroupPurchasePay/GroupPurchaseorderDetails/refund/refund.wxss */
+.textarea{
+    padding:20rpx;
+    font-size: 28rpx;
+    width: auto;
+    height: 150rpx;
+    border:1px solid #ccc;
+}

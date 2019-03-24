@@ -18,12 +18,30 @@
     color:#333;
     font-weight: bold;
     display: block;
+    font-size:32rpx;
+    padding-bottom:20rpx
 }
 .attr-item .item-content{
    color:#666;
 }
-.textBlock text{
-    display: block;
-    font-size: 24rpx;
+.codeList{
+    font-size: 24rpx;   
+}
+.codeListItem{
+    padding:8rpx 0;
+}
+.codeList text{
     color:#666;
+}
+.footerBtns{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.footerBtn{
+    background: transparent;
+    line-height:2;
+    padding:0 60rpx;
+    border-radius:40rpx;
 }
