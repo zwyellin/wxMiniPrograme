@@ -131,15 +131,18 @@
     </view>
 
     <!-- 反馈，退款，评价-->
-    <view class="pageItem flex padding-tb-20 footerBtns" style="justify-content:flex-end;">
-        <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback?groupPurchaseCouponType={{groupPurchaseOrder.groupPurchaseCouponType}}&&merchantId={{groupMerchantInfo.id}}">
-            <button class="font-size2 footerBtn" style="border:1px solid #999;color:#666" >反馈</button>
+    <view class="pageItem  flex padding-tb-20 footerBtns" style="justify-content:flex-end;">
+        <navigator hover-class="none"
+        url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback?groupPurchaseCouponType={{groupPurchaseOrder.groupPurchaseCouponType}}&&merchantId={{groupMerchantInfo.id}}">
+            <button class="font-size2 footerBtn"  style="border:1px solid #999;color:#666" >反馈</button>
         </navigator>
-        <navigator wx:if="{{hasUnuseCouponCode}}" url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/refund/refund">
-            <button class="font-size2 footerBtn" style="border:1px solid #ff9900;color:#ff9900;margin-left:40rpx;">退款</button>
+        <navigator wx:if="{{hasUnuseCouponCode}}" hover-class="none"
+        url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/refund/refund">
+            <button class="font-size2 footerBtn"  style="border:1px solid #ff9900;color:#ff9900;margin-left:40rpx;">退款</button>
         </navigator>
         <!-- 如果没有还可以消费的且使用过。即没有未使用的，没有已锁定的，且有使用的，则显示评价按钮 -->
-        <navigator wx:if="{{!hasUnuseCouponCode && !hassdCouponCode && hasuseCouponCode }}" url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate?orderId={{orderId}}">
+        <navigator wx:if="{{!hasUnuseCouponCode && !hassdCouponCode && hasuseCouponCode }}" hover-class="none"
+        url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate?orderId={{orderId}}">
             <button class="font-size2 footerBtn" style="border:1px solid #ff9900;color:#ff9900;margin-left:40rpx;">评价</button>
         </navigator>
     </view>
