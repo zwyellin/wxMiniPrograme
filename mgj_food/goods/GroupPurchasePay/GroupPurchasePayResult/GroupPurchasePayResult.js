@@ -82,12 +82,8 @@ Page({
 	        if (res.data.code === 0) {
           let groupPurchaseOrder=res.data.value.groupPurchaseOrder;
           let groupPurchaseMerchantName=groupPurchaseOrder.groupPurchaseMerchantName;
-          let id=groupPurchaseOrder.id;
-          let totalPrice=groupPurchaseOrder.totalPrice;
           this.setData({
-            groupPurchaseMerchantName,
-            id,
-            totalPrice
+            groupPurchaseOrder,
           })
 	        } else {
 	          	let msg = res.data.msg;

@@ -1,7 +1,17 @@
 // goods/GroupPurchaseChildPage/createEvaluate/createEvaluate.js
 const feedbackApi=require('../../../components/showToast/showToast.js');  //引入消息提醒暴露的接口
+var qiniuUploader = require("../../../utils/qiniuUploader.js");
 const app = getApp();
 const { wxRequest } = require('../../../utils/util.js');
+// 初始化七牛相关参数
+function initQiniu(domain) {
+  var options = {
+    region: 'ECN', // 华北区
+    uptokenURL: 'https://up-z1.qbox.me/api/uptoken',
+    domain,
+  };
+  qiniuUploader.init(options);
+}
 Page({
 
   /**
@@ -14,10 +24,14 @@ Page({
 
 
     imageActiveNum:null,//评价icon激活的index
+    // groupMerchantInfo.evaluateStatistics.value 默认0，若选中为1。//评价tag点击
+    textareaValue:"",//textarea文本内容
+    moneyInputValue:null,//人均消费
     // 增加图片
     imgListMaxLength:8,
     remainImageLength:8,
     imageList:[],
+    imagesSrc:[],//上传后获得的图片src
   },
 
   /**
@@ -57,24 +71,8 @@ Page({
     })
 },
 
-  createGroupPurchaseEvaluate(){
-    let data={
-    agentId: null,
-    merchantId:null
-    }
-    wxRequest({
-        url:'/merchant/userClient?m=createGroupPurchaseEvaluate',
-        method:'POST',
-        data:{
-          token:app.globalData.token,
-          params:{
-            data:data
-          }
-        }
-      }).then((res)=>{
 
-      })
-  },
+  // 评价图标点击事件
   evaluateImageTap(e){
     let {index}=e.currentTarget.dataset;
     let imageActiveNum=this.data.imageActiveNum;
@@ -84,6 +82,8 @@ Page({
         imageActiveNum
     })
   },
+
+  // 评价tag点击事件
   evaluateTagTap(e){
     let {index}=e.target.dataset;
     let evaluateStatistics=this.data.groupMerchantInfo.evaluateStatistics;
@@ -97,7 +97,16 @@ Page({
         'groupMerchantInfo.evaluateStatistics':evaluateStatistics
     })
   },
-    //增加图片及以下功能   
+
+  // textarea输入事件
+  textareaInput(e){
+    this.data.textareaValue=e.detail.value;
+  },
+  //人均消费输入事件
+  moneyInput(e){
+    this.data.moneyInputValue=e.detail.value;
+  },
+  //增加图片及以下功能   
   addImageTap:function(e){
     //
     var imgListMaxLength=this.data.imgListMaxLength;
@@ -170,5 +179,120 @@ chooseImage:function(e){
     this.setData({
         imageList:imageList
     })
+  },
+
+  //提交
+  submitForm(){
+    let msgTitle="评价不完整";
+    if(this.data.imageActiveNum===null){//必传
+        feedbackApi.showToast({title:msgTitle+"，请为商家评价"});
+        return;
+    }
+   //准备提交
+    wx.showLoading({
+      title: '正在提交评价',
+      icon: 'loading',
+      duration: 20000,
+      mask: true
+    });
+    //先上传图片，获取ImgUrl
+    //先判断有没有图片
+    if(this.data.imageList.length==0){//没有图片要提交，则直接最终提交
+        this.data.imagesSrc=null;
+        this.submitEvaluate();
+    }else{//否则，先提交照片，再最终提交
+        wxRequest({
+            url:'/merchant/appletClient?m=getUploadImgParams',
+            method:'POST',
+            data:{
+                token:app.globalData.token,
+                params:{}	
+            },
+            }).then(res=>{
+                let {domain, key,uploadToken} = res.data.value
+                initQiniu(domain);
+                let imageList=this.data.imageList;//根据用户选择的图片列表
+               imageList.map(val=>{
+                    qiniuUploader.upload(val, (data) => {
+                        console.log("上传",data.imageURL);//获取返回来的imagesSrc
+                        this.data.imagesSrc.push(data.imageURL);
+                        if(this.data.imagesSrc.length==this.data.imageList.length){
+                            if(this.data.imagesSrc.length>=2){
+                                this.data.imagesSrc=this.data.imagesSrc.join(';')
+                            }else{
+                                this.data.imagesSrc= this.data.imagesSrc.toString();
+                            }
+                            console.log(this.data.imagesSrc)
+                           //发送最终请求
+                          this.submitEvaluate();
+                        }
+                        }, (error) => {
+                          console.log('error: ' + JSON.stringify(error));
+                          wx.hideLoading();
+                          wx.showToast({
+                            title:"图片上传失败",
+                            icon:"none"
+                          })
+                        }, {
+                            key: key.slice(0, 17) + parseInt(Math.random() * (9999 - 1000 + 1) + 1000)+'.png',
+                            uptoken: uploadToken,
+                            region: 'ECN', // 华北区
+                        });
+                    }) 
+                })
+    }
+
+},
+
+submitEvaluate(){ 
+  // 因为是新界面，旧接口
+  // 部分字段要从新界面，转化成对应的值
+  // imageActiveNum(0,1,2,3,4)=>服务分(1,2,3,4,5)
+  // tasteScore和totalScore采用和服务分一样的值。
+  // 暂没用到。groupMerchantInfo.evaluateStatistics.value 默认0，若选中为1。//评价tag点击
+  let imageActiveNum=parseInt(this.data.imageActiveNum);
+  if(imageActiveNum!==null) imageActiveNum+=1;
+  let params={
+    agentId: app.globalData.agentId,
+    content:this.data.textareaValue,
+    groupPurchaseCouponType: this.data.groupPurchaseOrder.groupPurchaseCouponType||0,//优惠买单取不到，则为0,
+    groupPurchaseOrderId: this.data.orderId,
+    images: this.data.imagesSrc,
+    merchantId: this.data.groupMerchantInfo.id,
+    perCapitaConsumptionAmt: this.data.moneyInputValue,
+    serviceScore: imageActiveNum,
+    environmentScore: imageActiveNum,
+    tasteScore: imageActiveNum,
+    totalScore: imageActiveNum
+  }
+  wxRequest({
+      url:'/merchant/userClient?m=createGroupPurchaseEvaluate',
+      method:'POST',
+      data:{
+        token:app.globalData.token,
+        params:params
+      }
+    }).then((res)=>{
+            if (res.data.code === 0) {
+                wx.hideLoading();
+                wx.showToast({
+                  title:"评价成功",
+                  icon:"success",
+                  mask:true,
+                  success:()=>{
+                    setTimeout(() => {
+                      wx.navigateBack({
+                        delta:1
+                      })
+                    }, 2000);
+                  }
+                })
+            } else {
+                let msg = res.data.value;
+                feedbackApi.showToast({title: msg});
+            }
+        }).finally(()=>{
+            wx.hideLoading();
+        });   
   },
 })

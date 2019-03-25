@@ -35,8 +35,8 @@ Page({
    */
   onLoad: function (options) {
     // 跳商家，需要参数groupPurchaseMerchantId
-    let {groupPurchaseMerchantId,sharedUserId}=options;
-
+    let {groupPurchaseMerchantId,sharedUserId=null}=options;
+    if(sharedUserId==undefined) sharedUserId=null
     const scene = decodeURIComponent(options.scene)
     Object.assign(this.data,{
       groupPurchaseMerchantId,

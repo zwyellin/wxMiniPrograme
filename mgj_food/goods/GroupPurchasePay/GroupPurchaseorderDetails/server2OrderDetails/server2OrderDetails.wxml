@@ -115,13 +115,13 @@
         </navigator>
     </view>
     <!-- 订单信息 -->
-    <view class="pageItem mt20 padding-tb-20">
+    <view class="pageItem mt20 padding-tb-20" style="padding-bottom:120rpx">
         <view style="font-size:28rpx;">
-            <text class="item-title">订单信息:</text>
+            <text class="item-title">订单信息</text>
             <view class="codeList">
                 <view class="codeListItem">
                      <view style="width:220rpx;display:inline-block">订单编号：</view>
-                     <text>{{groupPurchaseOrder.id || groupPurchaseOrder.transactionId}}</text>
+                     <text>{{groupPurchaseOrder.id }}</text>
                 </view>
                 <view class="codeListItem">
                      <view style="width:220rpx;display:inline-block">付款时间：</view>
@@ -144,16 +144,15 @@
                      <text style="color:red;margin-left:-4rpx">-￥{{groupPurchaseOrder.couponsTotalAmt}}</text>
                 </view>
                 <view class="codeListItem">
-                     <view style="width:220rpx;display:inline-block">总价：</view>
-                     <!-- 还是totalPrice -->
-                     <text style="margin-left:-4rpx">￥{{groupPurchaseOrder.hasPayed}}</text>
+                     <view style="width:220rpx;display:inline-block">实付款：</view>
+                     <text style="margin-left:-4rpx">￥{{groupPurchaseOrder.totalPrice}}</text>
                 </view>
             </view>
         </view>
     </view>
 
     <!-- 反馈，退款，评价-->
-    <view class="pageItem  flex padding-tb-20 footerBtns" style="justify-content:flex-end;">
+    <view class="pageItem  flex padding-tb-20 footerBtns" style="justify-content:flex-end;border-top:1px solid #e5e5e5">
         <navigator hover-class="none"
         url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback?groupPurchaseCouponType={{groupPurchaseOrder.groupPurchaseCouponType}}&&merchantId={{groupMerchantInfo.id}}">
             <button class="font-size2 footerBtn"  style="border:1px solid #999;color:#666" >反馈</button>
@@ -162,8 +161,9 @@
         url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/refund/refund">
             <button class="font-size2 footerBtn"  style="border:1px solid #ff9900;color:#ff9900;margin-left:40rpx;">退款</button>
         </navigator>
-        <!-- 如果没有还可以消费的且使用过。即没有未使用的，没有已锁定的，且有使用的，则显示评价按钮 -->
-        <navigator wx:if="{{!hasUnuseCouponCode && !hassdCouponCode && hasuseCouponCode }}" hover-class="none"
+        <!-- 如果没有还可以消费的且使用过。即没有未使用的，没有已锁定的，且有使用的，且评价状态为未评价。则显示评价按钮 -->
+        <!-- hasComments:0,待评价；1，已评价 -->
+        <navigator wx:if="{{groupPurchaseOrder.hasComments===0 && !hasUnuseCouponCode && !hassdCouponCode && hasuseCouponCode}}" hover-class="none"
         url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate?orderId={{orderId}}">
             <button class="font-size2 footerBtn" style="border:1px solid #ff9900;color:#ff9900;margin-left:40rpx;">评价</button>
         </navigator>

@@ -60,6 +60,7 @@ Page({
   onLoad: function (options) {
     // 获得参数
     let {merchantId,discountRatio,merchantName,sharedUserId}=options;
+    if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
     this.data.sharedUserId=sharedUserId;
     //设置标题
     wx.setNavigationBarTitle({
@@ -78,6 +79,7 @@ Page({
     let discountText=(discount*10).toFixed(1)
     this.setData({
       OrderPreviewRequestObj,
+      merchantId,
       discount,
       discountText:discountText
     });
@@ -117,7 +119,9 @@ Page({
   // 订单预览
   groupPurchaseOrderPreview0(){
     let data=this.data.OrderPreviewRequestObj;
-    data.sharedUserId=this.data.sharedUserId;
+    if(this.data.sharedUserId!==null){
+      data.sharedUserId=this.data.sharedUserId;
+    }
     data=JSON.stringify(data);
     wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderPreview',
@@ -162,7 +166,9 @@ Page({
     if(coupons!=null){
       data.coupons=coupons;
     }
-    data.sharedUserId=this.data.sharedUserId;
+    if(this.data.sharedUserId!=null){
+      data.sharedUserId=this.data.sharedUserId;
+    }
     data=JSON.stringify(data);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderPreview',
@@ -214,7 +220,9 @@ Page({
     if(coupons!=null){
       groupPurchaseOrderSubmitRequestObj.coupons=coupons;
     }
-    data.sharedUserId=this.data.sharedUserId;
+    if(this.data.sharedUserId!=null){
+      groupPurchaseOrderSubmitRequestObj.sharedUserId=this.data.sharedUserId;
+    }
     let data=JSON.stringify(groupPurchaseOrderSubmitRequestObj);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderSubmit',

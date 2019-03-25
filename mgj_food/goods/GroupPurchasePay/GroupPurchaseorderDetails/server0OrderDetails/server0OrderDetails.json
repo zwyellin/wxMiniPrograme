@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "mask":"../../../../components/mask/mask"
+  },
   "navigationBarTitleText": "订单详情",
   "navigationBarTextStyle":"black",
   "navigationBarBackgroundColor": "#fff",

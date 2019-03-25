@@ -62,6 +62,7 @@ Page({
     // 获得参数
     let {groupPurchaseCouponId, sharedUserId}=options;
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
+    if(sharedUserId=="undefined") sharedUserId=null;//避免参数页面传输过程中转为字符串
     this.data.sharedUserId=sharedUserId;
     this.findGroupPurchaseCouponInfo().then(()=>{
       this.promotionPreSetting();
@@ -229,7 +230,9 @@ Page({
             coupons
           })
         }
-        OrderSubmitReqObj.sharedUserId=this.data.sharedUserId;
+        if(this.data.sharedUserId!=null){
+          OrderSubmitReqObj.sharedUserId=this.data.sharedUserId;
+        }
         let data=JSON.stringify(OrderSubmitReqObj);
         return wxRequest({
           url:'/merchant/userClient?m=groupPurchaseOrderSubmit',

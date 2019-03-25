@@ -1,7 +1,7 @@
 <!--goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult.wxml-->
 <view class="container page">
     <!--  支付成功-->
-    <view class="pageItem flex flex-row-center" style="padding:20rpx 40rpx 176rpx;text-align:center">
+    <view class="pageItem flex flex-row-center" style="padding:20rpx 40rpx 176rpx;justify-content:center;">
          <icon type="success" size="14" style="margin-right:20rpx" />
          <text class="font-14 color1">支付成功</text>
     </view>
@@ -9,16 +9,24 @@
     <view class="orderMsg padding-lr-20">
         <!-- 店家 -->
         <view class="font-16" style="line-height:4;border-bottom:1px dashed #e5e5e5;font-size:36rpx;">
-            {{groupPurchaseMerchantName}}
+            {{groupPurchaseOrder.groupPurchaseMerchantName}}
         </view>
         <view class="flex flex-spaceBetween flex-row-center">
             <view>
-                <view style="font-size:24rpx;color:#666;line-height:3">实付金额:{{totalPrice}}元</view>
-                <view style="font-size:24rpx;color:#666;line-height:3">订单编号:{{id}}</view>
+                <view style="font-size:24rpx;color:#666;line-height:3">实付金额:{{groupPurchaseOrder.totalPrice}}元</view>
+                <view style="font-size:24rpx;color:#666;line-height:3">订单编号:{{groupPurchaseOrder.id}}</view>
             </view>
-            <navigator url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}">
-                <button style="margin:0;border:1px solid #ccc;padding:0 18rpx;line-height:2.5;font-size:26rpx;">立即使用</button>
-            </navigator>
+            <!-- 优惠买单为立即评价 -->
+            <!-- 代金券及团购券为立即使用 -->
+            <!-- groupPurchaseOrder:orderType:。 1, "代金券",2, "团购券",3, "优惠买单" --> 
+            <block class="flex1">
+                <navigator wx:if="{{groupPurchaseOrder.orderType===3}}" url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate?orderId={{orderId}}">
+                    <button style="margin:0;border:1px solid #ccc;padding:0 18rpx;line-height:2.5;font-size:26rpx;">立即评价</button>
+                </navigator>
+                <navigator wx:else url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}">
+                    <button style="margin:0;border:1px solid #ccc;padding:0 18rpx;line-height:2.5;font-size:26rpx;">立即使用</button>
+                </navigator>
+            </block>
         </view>
     </view>
     <!-- 附近商家 -->

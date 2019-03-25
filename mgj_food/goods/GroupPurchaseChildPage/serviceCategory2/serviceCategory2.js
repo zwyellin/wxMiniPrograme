@@ -32,6 +32,7 @@ Page({
       this.isLoginsuccess();
       // 获得参数@groupPurchaseCouponId为其id
       let {groupPurchaseCouponId,sharedUserId}=options;
+      if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
       Object.assign(this.data,{
         groupPurchaseCouponId,
         sharedUserId

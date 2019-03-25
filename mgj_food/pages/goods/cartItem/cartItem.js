@@ -129,16 +129,16 @@ Page({
     changeRefundButton(item){
       item.createTime = item.createTime.replace(/-/g,'/');
       let time = new Date(item.createTime).getTime();
-      if (time > this.data.time) {
-        item.refundDetail = true;
+      if (time > this.data.time) {//如果创建订单的时间比2018.5还早，则？
+        item.refundDetail = true;//退款详情
       } else {
         item.refundDetail = false;
       }
       item.createTime = refundTime(item.createTime);
-      // 修改团购的信息
+      // 修改团购的信息,有两个接口，所以处理要先判断是否有该值
       if(item.type==6){
         let orderType=undefined ;
-        if(item.groupPurchaseOrder){
+        if(item.groupPurchaseOrder){//说明是外卖接口统一的接口返回来的对象
           orderType=item.groupPurchaseOrder.orderType
         }else if(item.orderType){
           orderType=item.orderType;
@@ -151,11 +151,44 @@ Page({
           case 3:orderTypeText="优惠买单";break;
           default:
         }
-        if(item.groupPurchaseOrder==undefined){//说明时团购tag点击时是该对象
+        if(item.groupPurchaseOrder==undefined){//说明是团购独有的接口返回来的对象
           item.orderTypeText=orderTypeText;
           item.groupPurchaseOrder=JSON.parse(JSON.stringify(item));
         }else{
           item.groupPurchaseOrder.orderTypeText=orderTypeText;
+        }
+
+        // 处理订单状态,以上已处理完不同接口导致的差异。以下统一使用item即可
+        // 修改显示的时间格式
+        item.groupPurchaseOrder.createTime = refundTime(item.groupPurchaseOrder.createTime);
+        // @status:-1,取消订单；0，订单创建；1，等待付款；2，购买完成；3，已退款；4，等待接单；
+        let status=item.groupPurchaseOrder.status;
+        item.groupPurchaseOrder.childStatus=null;
+     
+        if(status==2){//已完成。则会有三种子状态｛待评价，待消费，待付款｝这个要自己来计算
+          let usableQuantity=item.groupPurchaseOrder.usableQuantity;//还可以消费的券码数量｛未使用，锁定｝
+          let useQuantity=item.groupPurchaseOrder.useQuantity;//用了的券码数量
+          let hasComments=item.groupPurchaseOrder.hasComments;//是否已评价。<!-- hasComments:0,待评价；1，已评价 -->
+          if(usableQuantity>0){
+            item.statusText="待消费";
+            item.groupPurchaseOrder.childStatus=0;
+          }else if(usableQuantity==0 && useQuantity>0 && hasComments==0){
+            item.statusText="待评价";
+            item.groupPurchaseOrder.childStatus=1;
+          }else{
+            item.statusText="已完成";
+            item.groupPurchaseOrder.childStatus=2;
+          }
+        }else if(status==-1){//取消订单
+          item.statusText="已取消"
+        }else if(status==0){
+          item.statusText="创建订单"
+        }else if(status==1){
+          item.statusText="等待付款"
+        }else if(status==3){
+          item.statusText="已退款"
+        }else if(status==4){
+          item.statusText="等待接单"
         }
       }
       return item;
@@ -333,31 +366,53 @@ Page({
   	},
     //去支付
     payMoney(e){
-      let { food } = e.currentTarget.dataset
-      wx.navigateTo({
+      let { food,type=1} = e.currentTarget.dataset;
+      if(type==1){
+        wx.navigateTo({
           url: '/goods/pay/pay?orderId=' + food.id + '&price=' + food.totalPrice,
-      });
+        });
+      }else if(type==6){
+        wx.navigateTo({
+          url: '/goods/GroupPurchasePay/GroupPurchasePay?orderId=' + food.id + '&price=' + food.totalPrice,
+        });
+      }
     },
     //评价
     evaluateOrder(e){
-      let { food } = e.currentTarget.dataset;
+      let { food,type=1} = e.currentTarget.dataset;
       this.data.orderDetail = food;
-      wx.navigateTo({
-        url: '/goods/createComments/createComments?orderid=' + food.id
-      });
+      if(type==1){
+        wx.navigateTo({
+          url: '/goods/createComments/createComments?orderid=' + food.id
+        });
+      }else if(type==6){
+        wx.navigateTo({
+          url: '/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate?orderId=' + food.id
+        });
+      }
     },
     refundDetail(e){
-      let { food } = e.currentTarget.dataset;
-      wx.navigateTo({
-        url:'/pages/goods/refundDetail/refundDetail?orderid=' + food.id
-      });
+      let { food,type=1} = e.currentTarget.dataset;
+      if(type==1){
+        wx.navigateTo({
+          url:'/pages/goods/refundDetail/refundDetail?orderid=' + food.id
+        });
+      }else if(type==6){//未添加点击事件
+        // /pages/goods/refundDetail/refundDetail?orderid={{orderId}}&type=6&groupPurchaseOrderCouponCodeId={{item.id}}
+        wx.navigateTo({
+          url:'/pages/goods/refundDetail/refundDetail?orderid=' + food.id+"&type=6&groupPurchaseOrderCouponCodeId="+""
+        });
+      }
     },
-
-
-
-
-
-
+    // 查看券码点击事件
+    lookCouponCode(e){
+      let { food,type} = e.currentTarget.dataset;
+      if(type==6){
+        wx.navigateTo({
+          url:'/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId=' + food.id
+        });
+      }
+    },
     //下拉刷新
     onPullDownRefresh:function() {
       this.data.start = 0;

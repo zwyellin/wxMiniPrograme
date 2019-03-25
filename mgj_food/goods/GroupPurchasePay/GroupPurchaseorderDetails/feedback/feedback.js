@@ -10,7 +10,7 @@ Page({
     merchantId:null,
     groupPurchaseCouponType:null,
 
-    textareaText:null,
+    textareaText:"",
 
   },
 
@@ -47,6 +47,7 @@ Page({
           mask: false,
           success: (result)=>{
               setTimeout(()=>{//返回
+                wx.hideToast();
                 wx.navigateBack({
                   delta: 1
                 });
@@ -55,6 +56,13 @@ Page({
           fail: ()=>{},
           complete: ()=>{}
         });
+      }else{
+        wx.showToast({
+          title: res.data.value,
+          icon: 'success',
+          image: '',
+          duration: 1500,
+        })
       }
     })
   },
@@ -62,6 +70,15 @@ Page({
     this.data.textareaText=e.detail.value
   },
   submitBtnTap(){
+    if(this.data.textareaText==""){
+      wx.showToast({
+        title: '请输入反馈内容',
+        icon: 'none',
+        image: '',
+        duration: 1500,
+      })
+      return 
+    }
     this.createGroupPurchaseComplain();
   }
 

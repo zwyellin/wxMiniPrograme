@@ -1,7 +1,9 @@
 
 <view   catchtouchmove="move" >
   <view class="mask" catch:tap="maskclick"></view>
-  <view class="{{position}}" >
-       <slot ></slot>
+  <!--内容延迟出现，避免混插-->
+  <view class="{{position}}" wx:if="{{contentShow}}">
+      
+       <slot></slot>
   </view>
 </view>

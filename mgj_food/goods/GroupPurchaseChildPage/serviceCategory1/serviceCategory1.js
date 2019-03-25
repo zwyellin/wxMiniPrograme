@@ -35,8 +35,10 @@ Page({
     if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取自己的经纬度。及设置商家对应的代理商
 
     }
+    if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
     Object.assign(this.data,{
       groupPurchaseCouponId,
+      sharedUserId
     })
     // 开始请求
     console.log("传过来的参数为",groupPurchaseCouponId)

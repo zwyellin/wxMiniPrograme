@@ -82,14 +82,7 @@
 						<view class="header-text flex">
 							<image wx:if="{{item.groupPurchaseOrder.groupPurchaseCouponImages}}" class="header-img" src="{{item.groupPurchaseOrder.groupPurchaseCouponImages}}" ></image>
 							<text class="header-txt font-16">{{item.groupPurchaseOrder.groupPurchaseMerchantName}}</text>
-							<text wx:if="{{item.orderFlowStatus === -1}}" class="fr header-status">已取消</text>
-							<text wx:if="{{item.orderFlowStatus === 1}}" class="fr header-status">等待支付</text>
-							<text wx:if="{{item.orderFlowStatus === 2}}" class="fr header-status">待消费</text>
-							<text wx:if="{{item.orderFlowStatus === 3}}" class="fr header-status">商家已接单</text>
-							<text wx:if="{{item.orderFlowStatus === 4}}" class="fr header-status">配送员取货中</text>
-							<text wx:if="{{item.orderFlowStatus === 5}}" class="fr header-status">配送员已取货</text>
-							<text wx:if="{{item.orderFlowStatus === 6}}" class="fr header-status">骑手配送中</text>
-							<text wx:if="{{item.orderFlowStatus === 7}}" class="fr header-status">已完成</text>
+							<text class="fr header-status">{{item.statusText}}</text>
 						</view>
 					</view>
 					<view class="order-content">
@@ -109,10 +102,15 @@
 						<text class="food-date">{{item.groupPurchaseOrder.createTime}}</text>
 					</view>
 					<view class="flex food-right">
-						<text wx:if="{{item.orderFlowStatus === 1}}" class="food-pay fr" style="margin-left: 20rpx;color:#fd483f" data-food="{{item}}" bindtap="payMoney">去支付 ({{item.timestamp}})</text>
-						<text wx:if="{{item.orderFlowStatus === 7 && item.hasComments === 0}}" style="margin-left: 20rpx;color:#fd483f" class="food-txt fr" data-food="{{item}}" bindtap="evaluateOrder">立即评价</text>
-						<text wx:if="{{item.paymentState === 1 && item.orderFlowStatus === -1 && item.refundDetail && item.totalPrice}}" style="color:#333;border-color: #cccccc;margin-left: 20rpx" class="food-txt fr" data-food="{{item}}" bindtap="refundDetail">退款详情</text>
-						<text wx:if="{{item.orderFlowStatus != 1 }}" style="color:#333;border-color: #cccccc" class="food-txt fr" data-food="{{item}}" bindtap="nextOrder">再来一单</text>
+						<!-- 待消费时,显示查看券码;待评价，显示评价。待付款，显示倒计时；已退款，显示退款 -->
+						<!-- 待付款： status==1-->
+						<text wx:if="{{item.groupPurchaseOrder.status == 1}}" class="food-pay fr" style="margin-left: 20rpx;color:#fd483f" data-food="{{item}}" data-type="6" bindtap="payMoney">去支付 ({{item.timestamp}})</text>
+						<!-- 待评价： status==2 &&  item.groupPurchaseOrder.childStatus==1 -->
+						<text wx:if="{{item.groupPurchaseOrder.status == 2 && item.groupPurchaseOrder.childStatus==1}}" style="margin-left: 20rpx;color:#fd483f" class="food-txt fr" data-food="{{item}}" data-type="6" bindtap="evaluateOrder">立即评价</text>
+						<!-- 待消费  status==2 &&  item.groupPurchaseOrder.childStatus==0 -->
+						<text wx:if="{{item.groupPurchaseOrder.status == 2 && item.groupPurchaseOrder.childStatus==0}}" style="color:#333;border-color: #cccccc" class="food-txt fr" data-food="{{item}}" data-type="6" bindtap="lookCouponCode">查看券码</text>
+						<!-- 已退款：status==3 -->
+						<!-- <text wx:if="{{item.groupPurchaseOrder.status==3}}" style="color:#333;border-color: #cccccc;margin-left: 20rpx" class="food-txt fr" data-food="{{item}}" data-type="6" bindtap="refundDetail">退款详情</text> -->
 					</view>
 				</view>
 			</block>
