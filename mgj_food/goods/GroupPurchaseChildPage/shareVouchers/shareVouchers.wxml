@@ -1,15 +1,15 @@
 <!-- 优惠买单，点抵用券进来 -->
-
 <view class="container page" wx:if="{{!ischangeToHistoryPage}}">
     <!--提醒-->
     <view class="flex flex-row-center padding-tb-20" style="justify-content:center;background:rgb(253,248,219)">
-        <image src="../../../image/message.png" style="width:30rpx;height:30rpx;padding:10rpx"/>
-        <text style="font-size:24rpx;color:rgb(215,120,49)">代金券使用说明:不可体现，买卖，转赠他人，且不找零</text>
+        <image src="../../image/message.png" style="width:30rpx;height:30rpx;padding:10rpx"/>
+        <text style="font-size:24rpx;color:rgb(215,120,49)">代金券使用说明:不可提现，买卖，转赠他人，且不找零</text>
     </view>
     <!-- 代金券列表 -->
-    <view class="pageItem" style="padding-bottom:120rpx;">
+    <view class="pageItem" style="padding-bottom:140rpx;">
         <!-- item -->
-        <view  wx:for="{{couponCodeList}}" style="margin-top:20rpx;position:relative" data-index="{{index}}" catch:tap="checkTap">
+        <view  wx:for="{{couponCodeList}}" wx:key="index"
+        style="margin-top:20rpx;position:relative" data-index="{{index}}" catch:tap="checkTap">
             <view style="{{item.checkType?'background:green;':'background:#999;'}}height:200rpx"></view>
             <view style="position:absolute;top:0;left:0;width:100%;height:100%;padding:0 40rpx;" class="flex flex-spaceBetween flex-row-center box-sizing-box">
                 <!-- 左边 -->

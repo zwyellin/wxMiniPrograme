@@ -51,7 +51,7 @@
 			</view>
 		</view>
         <!-- 马管家券 -->
-        <view wx:if="{{promotionCouponsDiscountTotalAmt}}"class="flex flex-spaceBetween flex-row-center padding-tb-40  row-line">
+        <view wx:if="{{promotionCouponsDiscountTotalAmt}}" class="flex flex-spaceBetween flex-row-center padding-tb-40  row-line">
 			<text class="font-size3 color1">马管家券</text>
 			<view class="flex  flex-row-center" style="font-size:28rpx;">
             	<text style="color:#ff9595">-￥{{promotionCouponsDiscountTotalAmt}}</text>

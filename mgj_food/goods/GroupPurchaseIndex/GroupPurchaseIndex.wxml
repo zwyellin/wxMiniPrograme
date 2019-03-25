@@ -25,13 +25,15 @@
     <view class="pageItem">
         <!--分类轮播图-->
         <swiper style="padding-top:40rpx;margin-bottom:40rpx;height:200rpx" indicator-dots="{{true}}"  interval="{{5000}}" duration="{{500}}">
-            <block wx:for="{{categoryList}}" wx:for-item="swiperItem" wx:key="index">
+            <block wx:for="{{categoryList}}" wx:for-item="swiperItem" wx:for-index="index1" wx:key="index1">
                 <swiper-item class="flex">
                     <view data-item="{{item}}" catch:tap="findGroupPurchasePrimaryCategoryListTap"
                       wx:for="{{swiperItem}}" wx:key="index" style="width:100rpx;text-align:center;{{index==4 ? '':'margin-right:42rpx'}}"
                       hover-class="none">
-                        <image  wx:if="{{item.graySwitch === 0}}" class="swiper-icon" src="{{item.picUrl || '../../images/merchant/classification_eva@2x.png'}}"  />
-                        <image  wx:if="{{item.graySwitch === 1}}" class="swiper-icon" src="{{item.grayUrl || '../../images/merchant/classification_eva@2x.png'}}"  />
+                        <image  wx:if="{{item.graySwitch === 0}}" class="swiper-icon" src="{{item.picUrl || '../../images/merchant/classification_eva@2x.png'}}" 
+                        data-index1="{{index1}}" data-index="{{index}}" binderror="categoryListSrcErr" />
+                        <image  wx:if="{{item.graySwitch === 1}}" class="swiper-icon" src="{{item.grayUrl || '../../images/merchant/classification_eva@2x.png'}}"  
+                        data-index1="{{index1}}" data-index="{{index}}" binderror="categoryListSrcErr"/>
                         <text class="font-14">{{item.name}}</text>
                     </view>
                 </swiper-item>

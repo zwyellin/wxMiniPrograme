@@ -61,8 +61,8 @@ Page({
     });
   },
   onUnload(){
-      wx.redirectTo({
-        url:'/goods/GroupPurchaseIndex/GroupPurchaseIndex'
+    wx.reLaunch({
+        url:'/pages/index/index'
       })
   },
   findNewTOrderById(){

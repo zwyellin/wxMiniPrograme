@@ -31,14 +31,15 @@
        
     </view>
 
-    <!-- 抵用卷及实付金额 -->
+    <!-- 实付金额 -->
     <view class="mt20 bg-content-color" >
-        <view class="flex flex-spaceBetween flex-row-center padding-tb-40 padding-lr-40 row-line">
+        <!--抵用卷-->
+        <view wx:if="{{enableGroupPurchaseOrderCouponCodeCount}}" class="flex flex-spaceBetween flex-row-center padding-tb-40 padding-lr-40 row-line">
             <text class="font-size3 color1">抵用券</text>
-            <navigator url="/goods/GroupPurchaseChildPage/shareVouchers/shareVouchers?merchantId={{merchantId}}">
+            <view catch:tap="couponCodeTap" class="flex flex-row-center">
                 <text style="color:#999;font-size:28rpx;">有{{enableGroupPurchaseOrderCouponCodeCount}}个抵用券可用</text>
-                <!-- <image wx:else src="../../image/more.png"  style="height:30rpx;width:30rpx"/> -->
-            </navigator>
+                <image class="flex1" src="../../image/more.png"  style="height:30rpx;width:30rpx"/>
+            </view>
         </view>
         <!-- 马管家券 -->
         <view wx:if="{{promotionCouponsDiscountTotalAmt}}"class="flex flex-spaceBetween flex-row-center padding-tb-40 padding-lr-40 row-line">

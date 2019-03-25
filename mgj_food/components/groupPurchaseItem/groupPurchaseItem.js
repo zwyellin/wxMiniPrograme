@@ -35,7 +35,6 @@ Component({
       })
     },
     "requestObj":function(newVal,oldVal){
-      console.log("列表接收到了请求对象，进来了")
       let requestUrl="";
       if(newVal===oldVal || newVal==null) return;
       else{
@@ -55,7 +54,6 @@ Component({
         _requestUrl:requestUrl,
         _listLastState:false//组件会复用，所以在数据加载前就false。避免显示之前的消息
       })
-      console.log("列表接收到了请求对象，开始调用")
       this.requestData();
     },
     "config.isPageReachBottom":function(newVal,oldVal){

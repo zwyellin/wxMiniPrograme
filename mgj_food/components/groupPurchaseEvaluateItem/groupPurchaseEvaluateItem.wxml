@@ -80,9 +80,10 @@
 	        <image src="/images/merchant/loading.png" class="img-loading"></image>
 	        <view class="loading-text">正在加载，请稍候</view>
         </view>
-        <view wx:elif="{{_evaluateList.length}}" class="bottom-info">
+        <view wx:elif="{{_evaluateList.length>5}}" class="bottom-info">
             <view class="bottom-text">我是有底线的</view>
         </view>
+        <view wx:elif="{{_evaluateList.length>0}}" class="bottom-info"></view>
         <view wx:else>
 	        <view class="no-result mt30">抱歉，没有搜索到您想要的商家</view>
         </view>

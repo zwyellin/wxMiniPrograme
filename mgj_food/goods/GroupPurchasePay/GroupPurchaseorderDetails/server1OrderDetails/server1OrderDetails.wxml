@@ -19,17 +19,17 @@
         <!-- 代金券属性 -->
         <view class="mt20  font-size5">
             <!-- 预约叠加信息 -->
-            <text >{{groupPurchaseOrderCouponCodeList[0].isBespeakText}}</text>
+            <text >{{groupPurchaseOrder.isBespeakText}}</text>
             <text class="column-line" style="padding:0 14rpx;">|</text>
-            <text>{{groupPurchaseOrderCouponCodeList[0].isCumulateText}}</text>
+            <text>{{groupPurchaseOrder.isCumulateText}}</text>
         </view>
         <!-- 代金券其它属性-->
         <view class="attr-items" style="padding-bottom:0">
             <view class="attr-item">
                 <text class="item-title">有效期:</text>
-                <text class="item-content">有效期至：{{groupPurchaseOrderCouponCodeList[0].endTime}}</text>
+                <text class="item-content">有效期至：{{groupPurchaseOrder.groupPurchaseCouponEndTime}}</text>
             </view>
-            <view class="attr-item">
+            <view class="attr-item" wx:if="{{groupPurchaseOrder.status!=-1}}">
                 <text class="item-title" style="padding-bottom:0">劵码:</text>
                 <view wx:for="{{groupPurchaseOrderCouponCodeList}}" wx:key="index" 
                 class="flex flex-spaceBetween flex-row-center item-content padding-tb-20 {{index!=(groupPurchaseOrderCouponCodeList.length-1) ? 'row-line':''}} ">
@@ -101,13 +101,13 @@
                      <view style="width:220rpx;display:inline-block">订单编号：</view>
                      <text>{{groupPurchaseOrder.id}}</text>
                 </view>
-                <view class="codeListItem">
+                <view class="codeListItem" wx:if="{{groupPurchaseOrder.payDoneTime}}">
                      <view style="width:220rpx;display:inline-block">付款时间：</view>
                      <text>{{groupPurchaseOrder.payDoneTime}}</text>
                 </view>
                 <view class="codeListItem">
                      <view style="width:220rpx;display:inline-block">数量：</view>
-                     <text>{{groupPurchaseOrderCouponCodeList.length}}</text>
+                     <text>{{groupPurchaseOrder.quantity}}</text>
                 </view>
                 <view class="codeListItem">
                      <view style="width:220rpx;display:inline-block">总价：</view>
@@ -121,9 +121,9 @@
                      <view style="width:220rpx;display:inline-block">马管家优惠券：</view>
                      <text style="color:red;margin-left:-4rpx">-￥{{groupPurchaseOrder.couponsTotalAmt}}</text>
                 </view>
-                <view class="codeListItem">
+                <view class="codeListItem"  wx:if="{{groupPurchaseOrder.hasPayed}}">
                      <view style="width:220rpx;display:inline-block">实付款：</view>
-                     <text style="margin-left:-4rpx">￥{{groupPurchaseOrder.totalPrice}}</text>
+                     <text style="margin-left:-4rpx">￥{{groupPurchaseOrder.hasPayed}}</text>
                 </view>
             </view>
         </view>

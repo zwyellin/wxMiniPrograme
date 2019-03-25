@@ -24,7 +24,7 @@ Page({
       orderId
     },()=>{
       this.findNewTOrderById().then(()=>{
-        //this.findGroupPurchaseMerchantInfo()
+        this.findGroupPurchaseMerchantInfo()
       })
     })
   },
@@ -41,13 +41,10 @@ Page({
     }).then(res=>{
       if (res.data.code === 0) {
         let value=res.data.value;     
-        //处理商家信息
-        let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseOrder.groupPurchaseMerchant);
         //处理订单
         let groupPurchaseOrder=this.modifygroupPurchaseOrder(value.groupPurchaseOrder)
         this.setData({
           groupPurchaseOrder,//订单号
-          groupMerchantInfo//商家信息
         });
       }else{
         wx.wx.showToast({
@@ -90,16 +87,18 @@ Page({
       data:{
         token:app.globalData.token,
         params:{
-          groupPurchaseMerchantId:this.data.groupPurchaseOrder.groupPurchaseMerchantId,
+          groupPurchaseMerchantId:this.data.groupPurchaseOrder.merchantId,
           latitude:app.globalData.latitude,
           longitude:app.globalData.longitude
         }
       },
     }).then(res=>{
       if (res.data.code === 0) {
-        this.setData({
-          groupMerchantInfo:res.data.value.groupPurchaseOrder.groupPurchaseMerchant
-        })
+         //处理商家信息
+         let groupMerchantInfo=modify.GrouopMerchantModify(res.data.value);
+         this.setData({
+           groupMerchantInfo:groupMerchantInfo
+         })
       }
     })
   },

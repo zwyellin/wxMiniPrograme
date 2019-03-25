@@ -247,7 +247,19 @@ Page({
       }
   })
 },
-
+  // 点击抵用券事件
+  couponCodeTap(e){
+    if(this.data.totalAmountInputValue.length==0){
+      wx.showToast({
+        title:"请先输入消费金额",
+        icon:"none"
+      })
+      return;
+    }
+    wx.navigateTo({
+      url:`/goods/GroupPurchaseChildPage/shareVouchers/shareVouchers?merchantId=${this.data.merchantId}`
+    })
+  },
   // 消费总额，input输入事件
   totalAmountInput(e){
     let {value,cursor,keyCode}=e.detail;
@@ -325,7 +337,14 @@ Page({
   },
   // 计算实付金额及折扣了多少金额
   actuallyAmount(){
-    if(this.data.totalAmountInputValue.length<=1) return;
+    if(this.data.totalAmountInputValue.length<1) return;
+    else if(this.data.totalAmountInputValue.length==1){//￥符号，则
+      this.setData({
+        actuallyAmount:0,
+        discountAmount:0
+      })
+      return ;
+    }
     let totalAmountInputValue=parseFloat(this.data.totalAmountInputValue.substring(1));
     let discountAmount="";
     let actuallyAmount=totalAmountInputValue;

@@ -7,12 +7,16 @@ Page({
    * 页面的初始数据
    */
   data: {
-    couponCodeList:null,
     merchantId:null,
-
-    ischangeToHistoryPage:false,
+    couponCodeList:null,//请求下来的代金券
+  
+    ischangeToHistoryPage:false,//是否切入到了历史代金券的本页面
    
     hasisCumulate0:false,//是否有不可叠加的被选中了
+
+    prevPage:null,
+    shareVouchersData:null,//本页面要保存的数据，同时也会保存到上个页面【共享】
+    // 如果上个页面没有该值，则会重新加载本页，否则说明是本页面返回再进来这页面的，则根据data重新渲染
   },
 
   /**
@@ -20,19 +24,43 @@ Page({
    */
   onLoad: function (options) {
     let {merchantId,isExpire=0}=options;
-    if(isExpire==1){
-        this.setData({
-          ischangeToHistoryPage:true
-        })
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2];
+    this.data.prevPage=prevPage;
+    if(isExpire==1){//说明是点击历史代金券进去的本页面
+      this.setData({
+        ischangeToHistoryPage:true
+      })
+      // 设置标题
+			wx.setNavigationBarTitle({
+				title:"我的代金券"
+		  })
+    }else{
+      // 设置标题
+			wx.setNavigationBarTitle({
+				title: "历史代金券"
+		  })
     }
-    this.setData({
-      merchantId,
-    },()=>{
-      this.findGroupPurchaseOrderCouponCodeList(isExpire);
-    })
-    
+    if(this.data.prevPage.data.shareVouchersData===undefined || isExpire==1){
+      this.setData({
+        merchantId,
+      },()=>{
+        this.findGroupPurchaseOrderCouponCodeList(isExpire);
+      })
+    }else{
+      console.log("读取上个页面数据，重新渲染")
+      let couponCodeList=this.data.prevPage.data.shareVouchersData.couponCodeList;
+      this.setData({
+        couponCodeList:couponCodeList
+      })
+    }
   },
-
+  // 页面返回时，保存本页面要保存的数据
+  onUnload(){
+    let shareVouchersData={};
+    shareVouchersData.couponCodeList=this.data.couponCodeList;
+    this.data.prevPage.data.shareVouchersData=shareVouchersData;
+  },
   findGroupPurchaseOrderCouponCodeList(isExpire){
     let params={
       isExpire: isExpire,//0为可用券。1为历史券。ui底部可以点击查看历史券
@@ -71,7 +99,6 @@ Page({
     }else{
       List=_modify(List);
     }
-
     function _modify(_item){
       // 处理叠加状态item.isCumulate//是否叠加 0:否,1:是 
       // isCumulateText
@@ -88,9 +115,7 @@ Page({
     let couponCodeList=this.data.couponCodeList;
     let hasisCumulate0=this.data.hasisCumulate0;
     let index=parseInt(e.currentTarget.dataset.index);
-
     let item=couponCodeList[index];
-
     let num=0;
     couponCodeList.forEach((_item)=>{
       if(_item.checkType) num+=1;

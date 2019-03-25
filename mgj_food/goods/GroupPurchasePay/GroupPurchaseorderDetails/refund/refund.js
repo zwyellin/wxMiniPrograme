@@ -107,7 +107,7 @@ Page({
         mask:true,
       })
       return 
-    }else if(groupPurchaseOrderCouponCodeIds.length=1){
+    }else if(groupPurchaseOrderCouponCodeIds.length==1){
       groupPurchaseOrderCouponCodeIds=groupPurchaseOrderCouponCodeIds[0].toString();
     }else{
       groupPurchaseOrderCouponCodeIds=groupPurchaseOrderCouponCodeIds.join(",");//英文分隔
@@ -174,6 +174,7 @@ Page({
           icon:"success",
           mask:true,
           success:()=>{
+            let prevPage=this.data.prevPage;
             prevPage.data.isReloadData=true;
             setTimeout(() => {
               wx.navigateBack({

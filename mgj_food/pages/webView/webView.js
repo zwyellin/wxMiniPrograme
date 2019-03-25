@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    webViewSrc:""
+    webViewSrc:"",
+    webViewErr:false,
   },
 
   /**
@@ -21,8 +22,10 @@ Page({
   getMsg(){
 
   },
-  webViewLoad(){
-
+  webViewErr(){
+    this.setData({
+      webViewErr:true
+    })
   }
  
 })

@@ -191,14 +191,11 @@ Page({
       }
     })
   },
-  primaryCategoryListImageErr(){
-    
-  },
   // 主分类的跳转
   //url="/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId={{item.groupPurchaseCategoryId}}&childGroupPurchaseCategoryId={{item.childGroupPurchaseCategoryId}}"
   findGroupPurchasePrimaryCategoryListTap(e){
     let {item}=e.currentTarget.dataset;
-    let {gotoType,linkUrl,groupPurchaseCategoryId,childGroupPurchaseCategoryId,name}=item;
+    let {gotoType,gotoUrl,groupPurchaseCategoryId,childGroupPurchaseCategoryId,name}=item;
     //name是作为跳到分类页面的标题
     //@gotoType :2跳分类。1跳链接。
     //@gotoUrl跳分类的链接
@@ -212,6 +209,17 @@ Page({
         url:`/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId=${groupPurchaseCategoryId}&childGroupPurchaseCategoryId=${childGroupPurchaseCategoryId}&name=${name}`
       })
     }
+  },
+  // 主分类图片加载失败事件
+  categoryListSrcErr(e){
+    let {index,index1}=e.target.dataset;
+    let categoryList=this.data.categoryList;
+    let item= categoryList[index1][index];
+    item.picUrl="../../images/merchant/classification_eva@2x.png";
+    item.picUrl="../../images/merchant/classification_eva@2x.png";
+    this.setData({
+      categoryList:categoryList
+    })
   },
   // 广告位
   findGroupPurchasePrimaryPublicityList(){
