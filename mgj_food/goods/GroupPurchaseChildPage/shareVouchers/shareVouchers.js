@@ -33,25 +33,37 @@ Page({
       })
       // 设置标题
 			wx.setNavigationBarTitle({
-				title:"我的代金券"
+				title:"历史代金券"
 		  })
     }else{
       // 设置标题
 			wx.setNavigationBarTitle({
-				title: "历史代金券"
+				title: "我的代金券"
 		  })
     }
     if(this.data.prevPage.data.shareVouchersData===undefined || isExpire==1){
       this.setData({
         merchantId,
       },()=>{
-        this.findGroupPurchaseOrderCouponCodeList(isExpire);
+        wx.showToast({
+          title:"加载中",
+          icon:"loading"
+        })
+        this.findGroupPurchaseOrderCouponCodeList(isExpire).then(()=>{
+          wx.hideToast();
+        });
       })
     }else{
-      console.log("读取上个页面数据，重新渲染")
+      console.log("读取上个页面数据，重新渲染");
+      wx.showToast({
+        title:"加载中",
+        icon:"loading"
+      })
       let couponCodeList=this.data.prevPage.data.shareVouchersData.couponCodeList;
       this.setData({
         couponCodeList:couponCodeList
+      },()=>{
+        wx.hideToast();
       })
     }
   },

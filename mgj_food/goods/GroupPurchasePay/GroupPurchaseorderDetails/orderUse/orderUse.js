@@ -31,7 +31,11 @@ Page({
     let {orderId}=options;
     console.log("orderId",orderId)
     this.data.orderId=orderId;
-    
+    wx.showToast({
+      title:"加载中",
+      icon:"loading",
+      duration: 20000
+    })
     this.findNewTOrderById().then(()=>{
       let promiseAll=[];
       this.data.groupPurchaseOrderCouponCodeList.forEach((_item)=>{
@@ -61,6 +65,8 @@ Page({
         this.setData({
           couponCodeImageSrcList
         })
+      }).then(()=>{
+        wx.hideToast();
       })
     })
   },

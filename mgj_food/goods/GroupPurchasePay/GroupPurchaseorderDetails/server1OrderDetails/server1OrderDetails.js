@@ -35,8 +35,15 @@ Page({
     this.setData({
       orderId
     },()=>{
+      wx.showToast({
+        title:"加载中",
+        icon:"loading",
+        duration: 20000
+      })
       this.findNewTOrderById().then(()=>{
-        this.findGroupPurchaseMerchantInfo();//findNewTOrderById也返回商店对象，但没有传地理位置，显示距离为0
+        this.findGroupPurchaseMerchantInfo().then(()=>{//findNewTOrderById也返回商店对象，但没有传地理位置，显示距离为0
+          wx.hideToast();
+        });
       })
     })
   },
@@ -49,8 +56,14 @@ Page({
         hastkCouponCode:false,//所有券码中是有退款的 
         hassdCouponCode:false,//所有券码中是有锁定的
       },()=>{
+        wx.showToast({
+          title:"加载中",
+          icon:"loading",
+          duration: 20000
+        })
         this.findNewTOrderById().then(()=>{
          // this.findGroupPurchaseMerchantInfo();
+         wx.hideToast();
         })
       })
     }

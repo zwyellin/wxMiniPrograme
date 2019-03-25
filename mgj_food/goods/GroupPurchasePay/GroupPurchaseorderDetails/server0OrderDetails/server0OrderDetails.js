@@ -23,8 +23,15 @@ Page({
     this.setData({
       orderId
     },()=>{
+      wx.showToast({
+        title:"加载中",
+        icon:"loading",
+        duration: 20000
+      })
       this.findNewTOrderById().then(()=>{
-        this.findGroupPurchaseMerchantInfo()
+        this.findGroupPurchaseMerchantInfo().then(()=>{
+          wx.hideToast();
+        })
       })
     })
   },
