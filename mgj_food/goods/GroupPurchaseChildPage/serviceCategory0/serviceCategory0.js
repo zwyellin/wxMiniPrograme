@@ -337,8 +337,7 @@ Page({
   },
   // 计算实付金额及折扣了多少金额
   actuallyAmount(){
-    if(this.data.totalAmountInputValue.length<1) return;
-    else if(this.data.totalAmountInputValue.length==1){//￥符号，则
+    if(this.data.totalAmountInputValue.length<=1){//￥符号，则
       this.setData({
         actuallyAmount:0,
         discountAmount:0

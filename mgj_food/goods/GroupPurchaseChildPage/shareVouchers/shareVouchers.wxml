@@ -32,7 +32,7 @@
         </navigator>
     </view>
     <!-- 固定的btn -->
-    <view class="pageItem  padding-tb-40" style="position:fixed;bottom:0;left:0;right:0">
+    <view class="pageItem  padding-tb-40" style="position:fixed;bottom:0;left:0;right:0" catch:tap="btnTap">
         <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" catch:tap="submitBtnTap">去使用</button>
     </view>
 </view>

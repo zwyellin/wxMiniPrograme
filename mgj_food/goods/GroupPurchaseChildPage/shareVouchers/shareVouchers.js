@@ -80,7 +80,7 @@ Page({
       size: 20,
       start: 0
     }
-    wxRequest({
+    return wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseOrderCouponCodeList',
       method:'POST',
       data:{
@@ -155,6 +155,12 @@ Page({
     couponCodeList[index]=item;
     this.setData({
       couponCodeList
+    })
+  },
+  // 按钮点击事件
+  btnTap(){
+    wx.navigateBack({
+      delta:1
     })
   }
 })
