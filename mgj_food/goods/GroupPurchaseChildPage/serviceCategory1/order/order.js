@@ -211,7 +211,7 @@ Page({
   submitOrderBtnTap(){
     wx.showToast({
       title:"正在提交",
-      icon:"none",
+      icon:"loading",
       mask:true,
       duration:20000
     })

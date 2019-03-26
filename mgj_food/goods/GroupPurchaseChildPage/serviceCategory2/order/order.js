@@ -198,10 +198,6 @@ Page({
     groupPurchaseOrderSubmit(){
       if (!this.data.isDisable) {
         let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));
-        wx.showLoading({
-              title: '正在提交订单',
-              mask: true
-          });
         this.data.isDisable = true;
         let orderUseRedBagList = [];
         if (this.data.useRedBagList) {
