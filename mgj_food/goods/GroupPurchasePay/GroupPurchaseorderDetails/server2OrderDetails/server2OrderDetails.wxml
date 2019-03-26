@@ -8,7 +8,7 @@
     <view class="pageItem row-line" style="padding-bottom:40rpx">
         <!-- 套餐名字-->
         <view class="font-size1 font-bold  flex flex-spaceBetween flex-row-center" style="padding:20rpx 0">
-            <image src="{{groupPurchaseOrder.groupPurchaseCouponImages}}" class="serviceCategoryItem_tuangouImage"/>
+            <image src="{{groupPurchaseOrder.groupPurchaseCouponImages[0] || './../../../images/merchant/merchantLogo.png'}}" class="serviceCategoryItem_tuangouImage"/>
             <view class="flex1 flex flex-row-center flex-spaceBetween">
                 <view>
                     <view>{{groupPurchaseOrder.groupPurchaseName}}</view>
@@ -54,7 +54,10 @@
                 <text class="item-content">有效期至：{{groupPurchaseOrder.groupPurchaseCouponEndTime}}</text>
             </view>
             <!-- 券码 -->
-            <view class="attr-item" wx:if="{{groupPurchaseOrder.status!=-1}}">
+            <!-- @status:-1,取消订单；0，订单创建；1，等待付款；2，购买完成；3，已退款；4，等待接单； -->
+            <!-- 已完成。则会有三种子状态｛待评价，待消费，已完成｝ -->
+            <!-- 只有购买完成及已退款才显示券码 -->
+            <view class="attr-item" wx:if="{{groupPurchaseOrder.status==2 || groupPurchaseOrder.status==3}}">
                 <text class="item-title" style="padding-bottom:0">劵码:</text>
                 <view wx:for="{{groupPurchaseOrderCouponCodeList}}" wx:key="index" 
                 class="flex flex-spaceBetween flex-row-center item-content padding-tb-20 {{index!=(groupPurchaseOrderCouponCodeList.length-1) ? 'row-line':''}} ">

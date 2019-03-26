@@ -127,9 +127,16 @@ Page({
       wx.navigateTo({
         url:`/pages/webView/webView?src=${url}`
       })
-    }else if(bannerType===2){
+    }else if(bannerType===2){//需要请求判断，loading提示
+      wx.showToast({
+        title:"正在跳转",
+        icon:"loading",
+        mask:true,
+        duration: 20000
+      })
       this.findGroupPurchaseCouponInfo(groupPurchaseCouponId).then((res)=>{
         if(res.data.code === 0){
+          wx.hideToast();
           if(res.data.value.type===1){//区别是type。1：代金券，2：团购套餐
             wx.navigateTo({
               url:`/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId=${groupPurchaseCouponId}`
@@ -140,6 +147,7 @@ Page({
             })
           }
         }else{
+          wx.hideToast();
           wx.showToast({
             title: "跳转失败",
             icon:"none",
@@ -253,9 +261,16 @@ Page({
       wx.navigateTo({
         url:`/pages/webView/webView?src=${linkUrl}`
       })
-    }else if(gotoType===2){
+    }else if(gotoType===2){//需要请求判断，loading提示
+      wx.showToast({
+        title:"正在跳转",
+        icon:"loading",
+        mask:true,
+        duration: 20000
+      })
       this.findGroupPurchaseCouponInfo(groupPurchaseCouponId).then((res)=>{
         if(res.data.code === 0){
+          wx.hideToast();
           if(res.data.value.type===1){//区别是type。1：代金券，2：团购套餐
             wx.navigateTo({
               url:`/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseCouponId=${groupPurchaseCouponId}`
@@ -266,6 +281,7 @@ Page({
             })
           }
         }else{
+          wx.hideToast();
           wx.showToast({
             title: "跳转失败",
             icon:"none",

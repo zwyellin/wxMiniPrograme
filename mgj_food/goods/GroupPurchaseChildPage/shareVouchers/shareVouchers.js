@@ -47,7 +47,8 @@ Page({
       },()=>{
         wx.showToast({
           title:"加载中",
-          icon:"loading"
+          icon:"loading",
+          duration:20000
         })
         this.findGroupPurchaseOrderCouponCodeList(isExpire).then(()=>{
           wx.hideToast();
@@ -57,7 +58,8 @@ Page({
       console.log("读取上个页面数据，重新渲染");
       wx.showToast({
         title:"加载中",
-        icon:"loading"
+        icon:"loading",
+        duration:20000
       })
       let couponCodeList=this.data.prevPage.data.shareVouchersData.couponCodeList;
       this.setData({
@@ -129,25 +131,29 @@ Page({
     let index=parseInt(e.currentTarget.dataset.index);
     let item=couponCodeList[index];
     let num=0;
-    couponCodeList.forEach((_item)=>{
+    couponCodeList.forEach((_item,_index)=>{
       if(_item.checkType) num+=1;
     })
     if(num==0){//第一个
+      item.checkType=true;//同时标记选中状态
       if(item.isCumulate==0) hasisCumulate0=true;//第一个选的就是不可叠加的。做好已有不可叠加的标记
-      item.checkType=!item.checkType;//同时标记选中状态
     }else{//后续只能添加可叠加的，不可叠加的只能是第一个
       if(item.isCumulate==0){//不可叠加
-        wx.showToast({
-          title:"你不能再选择不可叠加的代金券",
-          icon:"none"
-        })
+        if(item.checkType){//如果已经被选中了，则取消选中
+          item.checkType=false;
+        }else{//否则提示
+          wx.showToast({
+            title:"你不能再选择不可叠加的代金券",
+            icon:"none"
+          })
+        }
       }else{//可叠加
         if(hasisCumulate0){//如果第一个有选不可叠加的
           wx.showToast({
             title:"你已选择不可叠加的代金券",
             icon:"none"
           })
-        }else{//第一个不是不可叠加的
+        }else{//第一个是可叠加的
           item.checkType=!item.checkType;//同时标记选中状态
         }
       }

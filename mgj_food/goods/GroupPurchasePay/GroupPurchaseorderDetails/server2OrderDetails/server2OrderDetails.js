@@ -157,6 +157,16 @@ Page({
     return item;
   },
   modifygroupPurchaseOrder(item){
+    // 处理图片
+    if(item.groupPurchaseCouponImages.indexOf(";")!=-1){
+      item.groupPurchaseCouponImages=item.groupPurchaseCouponImages.split(";");
+    }else{
+      if(item.groupPurchaseCouponImages!=null){
+        item.groupPurchaseCouponImages=[item.groupPurchaseCouponImages]
+      }else{
+        item.groupPurchaseCouponImages=[];
+      }
+    }
     // 处理是否叠加
     if(item.isCumulate){//是否叠加 0:否,1:是 
       item.isCumulateText="可叠加"

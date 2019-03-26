@@ -45,7 +45,8 @@
     <!-- 代金券列表 -->
     <view class="pageItem" style="background:none">
         <!-- item -->
-        <view  wx:for="{{couponCodeList}}" style="margin-top:20rpx;position:relative">
+        <view  wx:for="{{couponCodeList}}" wx:key="index"
+        style="margin-top:20rpx;position:relative">
             <image src="../../image/normal_redbag_bg.png" style="width:680rpx;height:220rpx;"/>
             <view style="position:absolute;top:0;left:0;width:100%;height:100%;padding:0 40rpx;" class="flex flex-spaceBetween flex-row-center box-sizing-box">
                 <!-- 左边 -->

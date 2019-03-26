@@ -17,7 +17,7 @@ Page({
     // 附近商家
     groupPurchaseItemRequsetObjDefault:{//其实还会加入经纬度
       start:0,
-      size:5
+      size:10
     },
     groupPurchaseItemRequsetObj:null,
 
@@ -40,7 +40,12 @@ Page({
 					scrollHeight: res.windowHeight - 219*2*(app.globalData.windowWidth/750)
 				});
 			}
-		});
+    });
+    // 设置支付页面是否触发onUnload事件
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2];
+    prevPage.data.triggeronUnload=false;
+
     if(app.globalData.latitude){
       this.data.latitude=app.globalData.latitude;
       this.data.longitude=app.globalData.longitude;
@@ -61,9 +66,9 @@ Page({
     });
   },
   onUnload(){
-    wx.reLaunch({
-        url:'/pages/index/index'
-      })
+    wx.switchTab({
+      url:'/pages/index/index'
+    })
   },
   findNewTOrderById(){
 		wx.showLoading({
@@ -133,7 +138,22 @@ Page({
     this.setData({
       promotionListShow:false
     })
-  }
-
-
+  },
+  // 完成按钮点击事件
+  finishBtnTap(e){
+    // <!-- groupPurchaseOrder:orderType:。 1, "代金券",2, "团购券",3, "优惠买单" --> 
+    let orderType=this.data.groupPurchaseOrder.orderType;
+    let url="/goods/GroupPurchasePay/GroupPurchaseorderDetails";
+    if(orderType===1){
+      url+="/server1OrderDetails/server1OrderDetails";
+    }else if(orderType===2){
+      url+="/server2OrderDetails/server2OrderDetails";
+    }else if(orderType===3){
+      url+="/server0OrderDetails/server0OrderDetails";
+    }
+    url+=`?orderId=${this.data.groupPurchaseOrder.id}`;
+    wx.navigateTo({
+      url:url
+    })
+  },
 })

@@ -29,6 +29,13 @@ Page({
     });
     this.findUserCenter();
   },
+  onUnload(){
+    if(this.data.triggeronUnload===undefined){//支付结果页面会设置该值为true，避免触发这里的onunload事件
+      wx.switchTab({
+        url:'/pages/index/index'
+      })
+    }
+  },
   payWx(e) {
     if (this.data.channelCost < this.data.price && this.data.channelCost != 0) {
       this.setData({
@@ -203,7 +210,7 @@ Page({
                 let merchantId = that.data.merchantId
                 let isRedBag = true;
                 setTimeout(()=>{
-                  wx.redirectTo({
+                  wx.navigateTo({
                     url: '/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult?orderId='+that.data.orderId,
                     complete: function(){
                       that.data.isPayStatus = false;
@@ -269,7 +276,7 @@ Page({
         let merchantId = res.data.value.merchantId
         let isRedBag = true;
         setTimeout(()=>{
-          wx.redirectTo({
+          wx.navigateTo({
             url: '/goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult?orderId='+that.data.orderId,
             complete: function(){
               that.data.isPayStatus = false;

@@ -29,15 +29,17 @@ Page({
     orderId:null,//返回来的orderId
 
     redBagUsableCount:0,    //可用商家红包个数
-		redBagList:[],          //可用的商家红包列表
-		useRedBagList:null,       //本次订单使用的商家红包列表
+    redBagList:[],          //可用的商家红包列表
+    defaultredBagList:null,//备份
+    useRedBagList:null,       //本次订单使用的商家红包列表
 		select:true,                //商家红包使用状态
 		redBagMoney:0,               //商家红包使用金额
 		redText:'暂无可用红包',      
 
-		platformRedBagList:[],  //可用的平台红包列表  
+    platformRedBagList:[],  //可用的平台红包列表  
+    defaulplatformRedBagList:null,      //备份
 		disabledPlatformRedBagList:[], //不可用的平台红包列表   
-		usePlatformRedBagList:null,       //本次订单使用的平台红包列表
+    usePlatformRedBagList:null,       //本次订单使用的平台红包列表
 		platformSelect:true,        //平台红包使用状态
 		platformRedBagMoney:0,       //平台红包使用金额
 		platformRedBagCount:0,  //可使用的平台红包个数
@@ -47,6 +49,9 @@ Page({
 
     coupons:null, //马管家券
     promotionCouponsDiscountTotalAmt:null,//马管家券金额
+
+    clickRedBagType:null,//记录点击的是平台红包0还是商家红包1
+    submitType:false,//是否 下单，解决微信下个页面返回bug
   },
 
   /**
@@ -59,10 +64,10 @@ Page({
     if(sharedUserId=="undefined") sharedUserId=null;//避免参数页面传输过程中转为字符串
     this.data.sharedUserId=sharedUserId;
     this.findGroupPurchaseCouponInfo().then(()=>{
-      console.log("then")
-      this.promotionPreSetting();
-      this.queryPlatformRedBagList();
-      this.filterUsableRedBagList();
+      this.promotionPreSetting().then(()=>{
+        this.queryPlatformRedBagList();
+        this.filterUsableRedBagList();
+      });
     });
     
     //获得用户信息
@@ -75,17 +80,18 @@ Page({
     })
 
   },
-  onShow(){
+  onShow(){//注意：微信switchBar,下个页面返回也会触发这里
+    if(this.data.submitType) return;
 		if (this.data.useRedBagList != null ||  this.data.usePlatformRedBagList != null) {
 			let redBagMoney = 0;
-			let platformRedBagMoney = 0;
-	    if (this.data.useRedBagList != null) {
+      let platformRedBagMoney = 0;
+      let clickRedBagType=this.data.clickRedBagType;//区分刚才点击的是商家红包还是平台红包
+	    if (this.data.useRedBagList != null && clickRedBagType==1) {
           this.data.useRedBagList.map(item=>{
             redBagMoney += item.amt;
           });
           this.promotionPreSetting().then((res)=>{
-            console.log("show时候的",res)
-            if(res==undefined){
+            if(res==undefined){//成功状态
               this.setData({
                 redBagMoney:redBagMoney
               });
@@ -98,6 +104,7 @@ Page({
               })
               // 并且清除设置的值
               this.data.useRedBagList=null;
+              this.data.redBagList=this.data.defaultredBagList
               this.setData({
                 redBagMoney:0
               });
@@ -106,7 +113,7 @@ Page({
             }
           })
 	    }
-	    if (this.data.usePlatformRedBagList != null) {
+	    if (this.data.usePlatformRedBagList != null  && clickRedBagType==0) {
 	        this.data.usePlatformRedBagList.map(item=>{
 					  platformRedBagMoney += item.amt;
           });
@@ -124,6 +131,7 @@ Page({
               })
               // 并且清除设置的值
               this.data.usePlatformRedBagList=null;
+              this.data.platformRedBagList=this.data.defaultplatformRedBagList
               this.setData({
                 platformRedBagMoney:0
               });
@@ -138,10 +146,6 @@ Page({
     groupPurchaseOrderSubmit(){
       let OrderSubmitReqObj=JSON.parse(JSON.stringify(this.data.OrderSubmitReqObj));
       if (!this.data.isDisable) {
-        wx.showLoading({
-              title: '正在提交订单',
-              mask: true
-          });
         this.data.isDisable = true;
         let orderUseRedBagList = [];
         if (this.data.useRedBagList) {
@@ -205,29 +209,32 @@ Page({
   },
   // 提交订单
   submitOrderBtnTap(){
+    wx.showToast({
+      title:"正在提交",
+      icon:"none",
+      mask:true,
+      duration:20000
+    })
     this.groupPurchaseOrderSubmit().then((res)=>{
-        if (res.data.code === 0) {
-          this.data.orderId=res.data.value.id;
-          wx.showToast({
-            title:"下单成功",
-            icon:"none",
-            duration:1000
+      wx.hideToast();
+      if (res.data.code === 0) {
+        this.data.orderId=res.data.value.id;
+        this.data.submitType=true;
+        setTimeout(()=>{
+          wx.navigateTo({
+            url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
           })
-          setTimeout(()=>{
-            wx.navigateTo({
-              url:"/goods/GroupPurchasePay/GroupPurchasePay?price="+this.data.realTotalMoney+"&orderId="+this.data.orderId
-            })
-          },1000)
-        }else if(res.data.code===500){
-          wx.showToast({
-            title:res.data.value || "未知错误",
-            icon:"none",
-            duration:2000
-          })
-        }
-      }).then((res)=>{
-        this.data.isDisable=false;
-      })
+        },1000)
+      }else{
+        wx.showToast({
+          title:res.data.value || "未知错误",
+          icon:"none",
+          duration:2000
+        })
+      }
+    }).then((res)=>{
+      this.data.isDisable=false;
+    })
   },
 
   // 滑块滑动事件
@@ -347,7 +354,6 @@ promotionPreSetting(){
         return new Promise((resolve, reject) => {
             resolve(res);
         });
-      
     }
   })
 },
@@ -361,7 +367,7 @@ queryPlatformRedBagList(){
           params:{
             agentId:app.globalData.agentId,
             businessType: 6,
-            itemsPrice: this.data.voucherItem.originPrice,
+            itemsPrice: this.data.voucherItem.price,
           }	
         },
       }).then(res=>{
@@ -377,7 +383,8 @@ queryPlatformRedBagList(){
       this.setData({
         disabledPlatformRedBagList:platformRedBagAvailableList,
         platformRedBagCount:platformRedBagCount,
-        platformRedBagList:platformRedBagList
+        platformRedBagList:platformRedBagList,
+        defaultplatformRedBagList:platformRedBagList
       });
     } else {
       let msg = res.data.value;
@@ -396,7 +403,8 @@ filterUsableRedBagList(){
           params:{
             agentId:app.globalData.agentId,
             bizType: 6,
-            itemsPrice: this.data.voucherItem.originPrice,
+            discountGoodsDiscountAmt:this.data.promotionCouponsDiscountTotalAmt,
+            itemsPrice: this.data.voucherItem.price,
             merchantId:this.data.merchantId
           }	
         },
@@ -410,6 +418,7 @@ filterUsableRedBagList(){
       });
       this.setData({
         redBagList:valueList,
+        defaultredBagList:valueList,
         redBagUsableCount:valueList.length
       });	
     } else {
@@ -420,11 +429,13 @@ filterUsableRedBagList(){
 },
 
 platformRedPage(){
+  this.data.clickRedBagType=0;
   wx.navigateTo({
       url: '/goods/redbag/platformRedbag/platformRedbag?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.totalPrice
   });
 },
 merchantRedPage(){
+  this.data.clickRedBagType=1;
   wx.navigateTo({
       url: '/goods/redbag/merchantRedbag/merchantRedbag?merchantId='+this.data.merchantId+'&itemsPrice=' +this.data.totalPrice
   });

@@ -165,7 +165,7 @@ Page({
         let status=item.groupPurchaseOrder.status;
         item.groupPurchaseOrder.childStatus=null;
      
-        if(status==2){//已完成。则会有三种子状态｛待评价，待消费，待付款｝这个要自己来计算
+        if(status==2){//已完成。则会有三种子状态｛待评价，待消费，已完成｝这个要自己来计算
           let usableQuantity=item.groupPurchaseOrder.usableQuantity;//还可以消费的券码数量｛未使用，锁定｝
           let useQuantity=item.groupPurchaseOrder.useQuantity;//用了的券码数量
           let hasComments=item.groupPurchaseOrder.hasComments;//是否已评价。<!-- hasComments:0,待评价；1，已评价 -->
