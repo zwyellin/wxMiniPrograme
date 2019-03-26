@@ -133,8 +133,8 @@ Page({
       if(_item.checkType) num+=1;
     })
     if(num==0){//第一个
-      item.checkType=!item.checkType;//同时标记选中状态
       if(item.isCumulate==0) hasisCumulate0=true;//第一个选的就是不可叠加的。做好已有不可叠加的标记
+      item.checkType=!item.checkType;//同时标记选中状态
     }else{//后续只能添加可叠加的，不可叠加的只能是第一个
       if(item.isCumulate==0){//不可叠加
         wx.showToast({
@@ -147,7 +147,7 @@ Page({
             title:"你已选择不可叠加的代金券",
             icon:"none"
           })
-        }else{//第一个不能不可叠加的
+        }else{//第一个不是不可叠加的
           item.checkType=!item.checkType;//同时标记选中状态
         }
       }

@@ -18,7 +18,7 @@
         <!-- 星星及平均消费 -->
         <view class="purchaseStar flex flex-row-center" style="margin-top:18rpx;">
              <template is="star-AttrScore" data="{{size:36,item:_itemObj,AttrName:'averageScore'}}"></template>
-             <text style="font-size:22rpx;color:#666">￥{{_itemObj.evaluateAvgPersonPrice ||_itemObj.avgPersonPrice }}/人</text>
+             <text style="font-size:22rpx;color:#666">￥{{_itemObj.avgPersonPrice}}/人</text>
         </view>
         <!-- 商家推荐及距离 -->
         <view class="flex flex-spaceBetween flex-row-center purchaseRecommend">
@@ -68,7 +68,7 @@
                 <!-- 星星及平均消费 -->
                 <view class="purchaseStar flex flex-row-center" style="margin-top:18rpx;">
                     <template is="star-AttrScore" data="{{size:36,item:_itemObj,AttrName:'averageScore'}}"></template>
-                    <text style="font-size:22rpx;color:#666">￥{{_itemObj.evaluateAvgPersonPrice ||_itemObj.avgPersonPrice }}/人</text>
+                    <text style="font-size:22rpx;color:#666">￥{{_itemObj.avgPersonPrice }}/人</text>
                 </view>
                 <!-- 商家推荐及距离 -->
                 <view class="flex flex-spaceBetween flex-row-center purchaseRecommend">

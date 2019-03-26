@@ -18,19 +18,19 @@
         </view>
         <view class="flex flex-spaceBetween padding-tb-20 row-line">
             <text>优惠</text>
-            <text style="color:red">￥{{groupPurchaseOrder.totalOriginalPrice}}</text>
+            <text style="color:red">-￥{{groupPurchaseOrder.totalOriginalPrice}}</text>
         </view>
         <view class="flex flex-spaceBetween padding-tb-20 row-line">
             <text>抵用券</text>
-            <text style="color:red">￥500</text>
+            <text style="color:red">-￥{{groupPurchaseOrder.cashDeductionPrice}}</text>
         </view>
         <view class="flex flex-spaceBetween padding-tb-20 row-line">
             <text>红包</text>
-            <text>￥{{groupPurchaseOrder.redBagDiscountTotalAmt}}</text>
+            <text style="color:red">-￥{{groupPurchaseOrder.redBagDiscountTotalAmt}}</text>
         </view>
         <view class="flex flex-spaceBetween padding-tb-20">
             <text>马管家券优惠</text>
-            <text style="color:red">￥{{groupPurchaseOrder.couponsTotalAmt}}</text>
+            <text style="color:red">-￥{{groupPurchaseOrder.couponsTotalAmt}}</text>
         </view>
     </view>
     <!-- 订单状态 -->

@@ -5,14 +5,14 @@ let  ActivityListHeight = 149;
 const merchantShop = {
 	//获取商家详情
 	findMerchantInfo(){
-		wxRequest({
+		return wxRequest({
         	url:'/merchant/userClient?m=findMerchantInfo2',
         	method:'POST',
         	data:{
         		token:app.globalData.token,
         		params:{
         			latitude:app.globalData.latitude,
-    				longitude:app.globalData.longitude,
+    					longitude:app.globalData.longitude,
         			agentId:app.globalData.agentId,
         			merchantId:this.data.merchantId
         		}	
@@ -132,9 +132,9 @@ const merchantShop = {
 	        	data:{
 	        		params:{
 	        			merchantId:this.data.merchantId,
-						isHaveContent:this.data.isHaveContent,  //
-						queryType: this.data.evaluateType,
-						size: this.data.evaluateSize,
+								isHaveContent:this.data.isHaveContent,  //
+								queryType: this.data.evaluateType,
+								size: this.data.evaluateSize,
 	        			start:this.data.evaluateStart
 	        		}	
 	        	}
@@ -162,9 +162,46 @@ const merchantShop = {
 	        });
 		}
 	},
+	// 获取商品评论
+	queryGoodsComments(isLoadMore){
+		wxRequest({
+			url:'/merchant/userClient?m=queryGoodsComments',
+			method:'POST',
+			data:{
+				params:{
+					goodsId: this.data.selectedFood.id,
+					isHaveContent:this.data.isHaveContent,
+					queryType: this.data.evaluateType,
+					size: this.data.evaluateSize,
+	        start:this.data.evaluateStart
+				}	
+			}
+		}).then(res=>{
+			if (res.data.code === 0) {
+				let resValue = res.data.value;
+				let evaluate = this.data.evaluate;
+				if (isLoadMore) {//下拉加载
+					if (resValue.list.length === 0) {//无返回值了
+						this.setData({
+							loading:true,
+						});
+					}
+					evaluate.list= evaluate.list.concat(resValue.list);
+				} else {//第一次加载
+					evaluate = resValue;
+				}
+				this.setData({
+					evaluate:evaluate,
+				});
+				}
+			this.data.isEvaluate = false;
+		})
+	},
 	//评论区，点击不同按钮加载不同数据，全部0，好评1，差评2，有图3
 	evaluateBtnSwitch(e){
-		  var btnNum=parseInt(e.target.dataset.id);
+			var btnNum=parseInt(e.target.dataset.id);
+			let {type=0}=e.target.dataset;
+			//@type区分是商品还是商店的点击，进而请求不一样
 		  var evaluate=this.data.evaluate;
 		  if(btnNum!=this.data.selestEvaluateStatus){	//如果是一样，则不重复加载
 			evaluate.list=[];//清空评论列表
@@ -178,7 +215,11 @@ const merchantShop = {
 				isEvaluate:false,
 				loading:false
 			},function(){
-				that.getevaluate(false);//加载
+				if(type==0){//商品
+					that.getevaluate(false);//加载商家评价
+				}else{
+					that.queryGoodsComments(false);//加载商家评价
+				}
 			})	
 		  }		
 	},

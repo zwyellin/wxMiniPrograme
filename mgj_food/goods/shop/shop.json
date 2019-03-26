@@ -1,4 +1,7 @@
 {
+  "usingComponents": {
+    "mask":"../../components/mask/mask"
+  },
   "navigationBarTitleText": "",
   "navigationBarTextStyle": "white",
   "navigationBarBackgroundColor": "#482a1a",

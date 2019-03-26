@@ -291,5 +291,52 @@
 			</view>
 		</view>	
 	</view>
+
+
+	<!--马管家券-->
+    <!-- 马管家券 -->
+    <view style="position:fixed;top:0;bottom:0;left:0;right:0" wx:if="{{ (promotionList.hascoupons || promotionList.hasmerchantRedBags) && promotionListShow }}">
+        <view class="mask" style="position:fixed;top:0;bottom:0;left:0;right:0"></view>
+        <view class="flex flex-all-center" style="position:absolute;width:100%;height:100%;z-index:5000;color:white">
+            <!--马管家券-->
+            <view style="position:relative" wx:if="{{promotionList.hascoupons}}">
+                <!--背景图-->
+                <image src="../../image/honbaobg.png" style="width:540rpx;height:330rpx;"/>
+                <view class="flex flex-all-center" style="position:absolute;top:0;left:0;right:0;bottom:0;">
+                    <view style="width:100%;text-align:center;font-size:36rpx;">
+                        <view>恭喜您!</view>
+                        <text>获得马管家券!</text>
+                    </view>
+                    <view style="position:relative">
+                        <image src="../../image/daijinquan.png" style="width:289rpx;height:110rpx;padding:18rpx 0;" />
+                        <view style="position:absolute;top:0;left:0;right:0;bottom:0;font-size:36rpx;padding:50rpx 40rpx;color:#ca2d2c">
+                            <text style="font-size:22rpx;">￥</text>{{promotionList.coupons.couponsAmt}}
+                        </view>
+                    </view>
+                    
+                    <view style="width:100%;text-align:center;font-size:24rpx;">
+                        代金券已发放入您的账户
+                    </view>
+                </view>
+            </view>
+            <!-- 店铺红包 -->
+            <view class="mt20" style="position:relative" wx:if="{{promotionList.hasmerchantRedBags }}">
+              <image src="../../image/honbao.png" style="width:540rpx;height:240rpx;"/>
+              <view style="position:absolute;top:0;left:0;right:0;bottom:0;font-size:28rpx;padding:80rpx 40rpx;">
+                <view>送您{{promotionList.merchantRedBags.length}}个店铺红包</view>
+                <view style="font-size:24rpx">红包已存入[我的-红包]中</view>
+              </view>
+            </view>
+            <!-- 立即查看按钮 -->
+            <view style="margin-top:40rpx;" catch:tap="promotionListLook">
+                <image src="../../image/btnyellow.png" style="width:340rpx;height:90rpx;"/>
+              
+            </view>
+            <view style="margin-top:40rpx;" catch:tap="promotionListClose">
+                <image src="../../image/gb.png" style="width:67rpx;height:67rpx;"/>
+            </view>
+        </view>
+    </view>
+
 	<template is="showToast" data="{{showToast: showToast}}" />
 </view>

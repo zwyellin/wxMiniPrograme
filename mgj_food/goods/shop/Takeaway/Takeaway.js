@@ -13,6 +13,7 @@ Page(Object.assign({}, merchantShop,{
    */
   data: {
     sharedUserId:null,
+		goodsId:null,//商品id
 
     //上页面或请求回来的数据
     merchantInfoObj:null,
@@ -26,7 +27,17 @@ Page(Object.assign({}, merchantShop,{
     fullPrice:{},
     isTogether:false,  //控制去凑单按钮的显示与隐藏
     minPrice:0,       //商家起送价
-    listFoods:[],
+		listFoods:[],
+		
+
+
+		WXQRImage:"data:image/png;base64,",//店家二维码
+		QRcode_mask_show:false,
+		
+		// 评价
+		selestEvaluateStatus:0,
+		evaluate:{},
+		evaluateList:[],
   },
 
   /**
@@ -35,13 +46,21 @@ Page(Object.assign({}, merchantShop,{
   onLoad: function (options) {
     let {goodsId,sharedUserId}=options;
     //分享传goodsId,商店进来则读取其selectedFood。
-    if(goodsId!==undefined){//分享进来的
-      //根据goodsId发送请求  
+    if(true){//分享进来的 //goodsId!==undefined
+			//根据goodsId发送请求
+			this.data.goodsId=185;
+			this.findTGoodsById().then(()=>{
+				this.findMerchantInfo();
+				this.queryGoodsComments();
+				this.getMGJMerchantWXQRImage();
+			});
     }else{
       // 从上一页面读取数据。要显示的是selectedFood
-      this.getPrevData();
+			this.getPrevData();
+			this.getMGJMerchantWXQRImage();
+			// 请求评价
+			this.queryGoodsComments();
     }
-
   },
 
   /**
@@ -56,7 +75,9 @@ Page(Object.assign({}, merchantShop,{
    */
   onShow: function () {
 
-  },
+	},
+	
+	// 从上一页面读取
   getPrevData(){
     var pages = getCurrentPages();
     var prevPage = pages[pages.length - 2]; // 上一级页面
@@ -66,7 +87,9 @@ Page(Object.assign({}, merchantShop,{
       let selectFoods=prevPage.data.selectFoods;//全部选择了的商品
       let merchantInfoObj=prevPage.data.merchantInfoObj;//商家信息
       let ruleDtoList=prevPage.data.ruleDtoList;
-      let {totalcount,totalprice,minPrice,listFoods,merchantId}=prevPage.data;
+			let {totalcount,totalprice,minPrice,listFoods,merchantId}=prevPage.data;
+			// 修改选择了的商品对象
+			selectedFood=this._modifySelectFoods(selectedFood);
       this.setData({
         selectedFood,
         selectFoods,
@@ -77,14 +100,46 @@ Page(Object.assign({}, merchantShop,{
         minPrice,
         listFoods,
         merchantId
-      })
+			})
     }
-  },
+	},
+	 _modifySelectFoods(value){
+		// 修改imgs
+		let imgs=value.imgs;
+		let images=[];
+		if(imgs!=null && imgs!=""){
+			if(imgs.indexOf(";")==-1) images.push(imgs);
+			else{
+				images=imgs.split(';')
+			}
+		}
+		value.images=images;
+		return value;
+	},
+	// 请求商品
+	findTGoodsById(){
+		return wxRequest({
+			url:'/merchant/userClient?m=findTGoodsById',
+			method:'POST',
+			data:{
+				params:{
+					goodsId: this.data.goodsId
+				}	
+			}
+		}).then(res=>{
+			if(res.data.code==0){
+				let selectedFood=this._modifySelectFoods(res.data.value);
+				this.setData({
+					selectedFood
+				})
+				this.data.merchantId=selectedFood.merchantId
+			}
+		})
+	},
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
   },
   	//关闭查看商品详情
 	close(){
@@ -878,6 +933,56 @@ Page(Object.assign({}, merchantShop,{
 			fullPrice:fullPrice,
 			isTogether:isTogether	
 		});	
-	}
+	},
+
+	// 二维码
+	//店家二维码
+	getMGJMerchantWXQRImage(){
+		return wxRequest({
+			url:'/merchant/userClient?m=getMGJMerchantWXQRImage',
+			method:'POST',
+			data:{
+				token:app.globalData.token,
+				params:{
+					bizType:1,
+					merchantId:this.data.merchantId
+				}	
+			},
+		}).then(res=>{
+			let WXQRImage=this.data.WXQRImage;
+			WXQRImage+=res.data.value;
+			this.setData({
+				WXQRImage
+			})
+		})
+	},
+	//QRcodeIconTap
+	QRcodeIconTap(){
+		this.setData({
+			QRcode_mask_show:true
+		})
+	},
+
+	// 保存二维码
+	saveQRCode(e){
+		let {images}=e.currentTarget.dataset;
+		let that=this;
+		wx.previewImage({
+			current: images, // 当前显示图片的http链接
+			urls:[images],// 需要预览的图片http链接列表
+			success:function(){
+				that.setData({
+					QRcode_mask_show:false
+				})
+			}
+		})
+	},
+
+	// 关闭二维码显示
+	maskCancelTap(e){
+		this.setData({
+			QRcode_mask_show:false
+		})
+	},
 	
 }))

@@ -20,13 +20,19 @@ Page({
 		shareRedBagInfo:{},              //红包分享规则
 		shareShow:false,                  //控制分享红包弹框显示
 		shareShowImg:false,
-		shareRedBagAnimation:null
+		shareRedBagAnimation:null,
+
+		promotionList:null,//下单后的马管家券,红包等整体的对象
+		promotionListShow:true,//点X后置为false
+		
 	},
 	onLoad(options){
 		let { orderid, isredbag} = options;
 		this.data.orderid = orderid;
 		this.data.isredbag = isredbag;
-		this.findNewTOrderById();
+		this.findNewTOrderById().then(()=>{//显示订单信息后，再请求红包情况
+			this.getPromotionListByOrderId();
+		})
 		this.findCustomerAndComplainPhoneByUserXY();
 		if (this.data.isredbag) {
 			this.maskShowAnimation();
@@ -42,7 +48,7 @@ Page({
 	        title: '加载中',
 	        mask: true
 	    });
-		wxRequest({
+		return wxRequest({
 	        url:'/merchant/userClient?m=findNewTOrderById',
 	        method:'POST',
 	        data:{
@@ -55,16 +61,6 @@ Page({
 	        if (res.data.code === 0) {
 	        	let orderDetail = res.data.value;
 	          	let expectArrivalTime = parseInt(res.data.value.expectArrivalTime);
-	     //      	if (this.data.isredbag) {
-	     //      		if (orderDetail.shareRedBagInfo != null) {
-	     //      			this.shareRedBagShowAnimation();
-						// this.setData({
-						// 	shareRedBagInfo:orderDetail.shareRedBagInfo,
-						// 	shareShow:true,
-						// 	shareShowImg:true
-						// });
-	     //      		}
-	     //      	}
 	          	if (expectArrivalTime === 1) {
 	          		this.setData({
 	          			orderDetail:res.data.value,
@@ -81,10 +77,9 @@ Page({
 	          	}
 	        } else {
 	          	let msg = res.data.msg;
-	        } 
-	    }).finally(()=>{
-	    	wx.hideLoading();
-	    });
+					}
+				wx.hideLoading();
+	    })
 	},
 	//获取客服电话
 	findCustomerAndComplainPhoneByUserXY(){
@@ -437,19 +432,6 @@ Page({
 			shareShow:true
 		});
 	},
-	// onShareAppMessage(res) {
- //    	return {
- //      		title: '马管家红包来袭',
- //      		path: this.data.shareRedBagInfo.url,
- //      		imageUrl: this.data.shareRedBagInfo.img,
- //      		success: function(res) {
- //        		// 转发成功
- //     		},
- //      		fail: function(res) {
- //        		// 转发失败
- //      		}
- //    	};
- //  	},
   	shareRedBagShowAnimation(){
 		let animation = wx.createAnimation({ 
 			transformOrigin: "50% 50%", 
@@ -494,6 +476,52 @@ Page({
 		  url: '/goods/shop/shop?merchantid='+this.data.orderDetail.merchantId
 		});
 	},
+
+	//红包
+	getPromotionListByOrderId(){
+    wxRequest({
+      url:'/merchant/userClient?m=getPromotionListByOrderId',
+      method:'POST',
+      data:{
+          params:{
+            orderId: this.data.orderid
+          }
+      },
+    }).then(res=>{
+      if (res.data.code === 0) {
+        let promotionList=res.data.value;
+        promotionList.hascoupons=true;
+        if(promotionList.coupons.couponsAmt==undefined){
+          promotionList.hascoupons=false;
+        }
+        promotionList.hasmerchantRedBags=true;
+        if(promotionList.merchantRedBags.length==0){
+          promotionList.hasmerchantRedBags=false;
+        }
+        this.setData({
+          promotionList:res.data.value
+        })
+      } else {
+        
+      }
+   })
+  },
+  promotionListLook(e){
+    // 点查看红包，则先关闭再跳转。避免回来还展示
+    this.setData({
+      promotionListShow:false
+    },()=>{
+      wx.navigateTo({
+        url:"/goods/userredBag/userredBag"
+      })
+    })
+  },
+  promotionListClose(e){
+    this.setData({
+      promotionListShow:false
+    })
+  },
+
 	onUnload(){
 		if (this.data.isredbag) {
 			wx.switchTab({

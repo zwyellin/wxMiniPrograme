@@ -63,7 +63,7 @@
                     </view>
                     <view>
                         <template is="star-AttrScore" data="{{size:24,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
-                        <text class="font-size3">人均￥{{groupMerchantInfo.evaluateAvgPersonPrice || groupMerchantInfo.avgPersonPrice}}</text>
+                        <text class="font-size3">人均￥{{ groupMerchantInfo.avgPersonPrice}}</text>
                     </view>
                     <navigator class="font-size3 text-overflow-dots"
                     url="/goods/mapview/mapview?latitude={{groupMerchantInfo.latitude}}&longitude={{groupMerchantInfo.longitude}}&name={{groupMerchantInfo.name}}">

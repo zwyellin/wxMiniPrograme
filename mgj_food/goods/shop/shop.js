@@ -83,18 +83,28 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		merchantAptitudeImg:'',
 		windowWidth:750,
 		isonLoadRun:false,           //onload是否执行，用于show。
-		isShopSkeletonScreenShow:true  //商店整体骨架屏显示控制
+		isShopSkeletonScreenShow:true,  //商店整体骨架屏显示控制
+
+		WXQRImage:"data:image/png;base64,",//店家二维码
+    QRcode_mask_show:false
 		},shopSearchData),          //data 对象合并
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
 		let { merchantid,agentId,longitude,latitude,search,sharedUserId} = options;
+		const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
+		console.log("scene",scene,scene=="undefined")
 		//search为商店搜索，点击后跳转自身商店(用于标识)
 		//sharerToken标识，是转发出去后点击转发卡片进来的。
-		this.data.sharedUserId=sharedUserId;
-		console.log("分享者是:",sharedUserId);
-		console.log("自身userId为：",app.globalData.userId)
-		this.data.merchantId = merchantid;
+		if(scene=="undefined"){
+			this.data.sharedUserId=sharedUserId;
+			this.data.merchantId = merchantid;
+		}else{
+			let scene=scene.split(",");
+			this.data.merchantId =scene[0];
+			this.data.sharedUserId=scene[1];
+		}
+	
 		if (longitude && latitude) {
 			app.globalData.longitude = longitude;
 			app.globalData.latitude = latitude;
@@ -134,7 +144,9 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			return;
 		}
 		//获取商家详情
-		this.findMerchantInfo();
+		this.findMerchantInfo().then(()=>{//再请求店家二维码
+			this.getMGJMerchantWXQRImage();
+		})
 
 		//返回商家商品(热销榜，好评榜等) 
 		this.getShopList().then((res)=>{
@@ -654,7 +666,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
         	method:'POST',
         	data:{
         		params:{
-					merchantId:this.data.merchantId
+						merchantId:this.data.merchantId
         		},
         	},
         });
@@ -1385,6 +1397,54 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	    	this.data.leftScrollClick = false;
 	    }
 	},
+
+	//店家二维码
+	getMGJMerchantWXQRImage(){
+		return wxRequest({
+			url:'/merchant/userClient?m=getMGJMerchantWXQRImage',
+			method:'POST',
+			data:{
+				token:app.globalData.token,
+				params:{
+					bizType:1,
+					merchantId:this.data.merchantId
+				}	
+			},
+		}).then(res=>{
+			let WXQRImage=this.data.WXQRImage;
+			WXQRImage+=res.data.value;
+			this.setData({
+				WXQRImage
+			})
+		})
+	},
+	//QRcodeIconTap
+	QRcodeIconTap(){
+		this.setData({
+			QRcode_mask_show:true
+		})
+	},
+	// 保存二维码
+	saveQRCode(e){
+		let {images}=e.currentTarget.dataset;
+		let that=this;
+		wx.previewImage({
+			current: images, // 当前显示图片的http链接
+			urls:[images],// 需要预览的图片http链接列表
+			success:function(){
+				that.setData({
+					QRcode_mask_show:false
+				})
+			}
+		})
+	},
+	// 关闭二维码显示
+	maskCancelTap(e){
+    this.setData({
+      QRcode_mask_show:false
+    })
+  },
+
 	onShareAppMessage(res) {
 		console.log(app.globalData.userId);
     	return {
@@ -1398,7 +1458,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		this.setStorageShop(merchantId)
   	},
   onUnload(){
-
   	//如果销毁是因为支付完成之后的订单详情页面，则返回时不存储购物车
 		let isPayPageRoute = wx.getStorageSync('isPayPageRoute');
   		if (!isPayPageRoute) {

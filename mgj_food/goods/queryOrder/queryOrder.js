@@ -32,6 +32,11 @@ Page({
 		platformRedBagCount:0,  //可使用的平台红包个数
 		platformRedText:'无可用红包',
 
+		coupons:null, //马管家券
+    promotionCouponsDiscountTotalAmt:null,//马管家券金额
+    groupPurchaseOrderCouponCodeList:null,//抵用券要发送到请求的对象
+
+
 		promoInfoJson:[],       //本次订单参与的商家活动json  不明字段
 		day:'',
 		initTime:'',
@@ -382,6 +387,12 @@ Page({
 			data.orderItems = this.data.orderMessage.orderItems;
 			// data.sharedUserId=this.data.sharedUserId;
 			// console.log("下单请求，提交分享者id",this.data.sharerUserId)
+
+			// 马管家券
+			let coupons=this.data.coupons;
+			if(coupons!=null){
+				data.coupons=coupons;
+			}
 			wxRequest({
 	        	url:'/merchant/userClient?m=orderSubmit2',
 	        	method:'POST',
@@ -476,6 +487,12 @@ Page({
 		data.redBags = orderUseRedBagList.length === 0 ? null : orderUseRedBagList;
 		data.orderPayType = this.data.payIndex+1;
 		data.userAddressId = this.data.addressInfoId;
+
+		// 马管家券
+		let coupons=this.data.coupons;
+		if(coupons!=null){
+			data.coupons=coupons;
+		}
 		return wxRequest({
         	url:'/merchant/userClient?m=orderPreview2',
         	method:'POST',
@@ -488,7 +505,24 @@ Page({
         		},
         		token:app.globalData.token	
         	},
-        })
+        }).then((res)=>{
+					let coupons=null;
+					let promotionCouponsDiscountTotalAmt=null;
+					if(res.data.code==0){
+						coupons=res.data.value.coupons;
+						promotionCouponsDiscountTotalAmt=res.data.value.promotionCouponsDiscountTotalAmt
+					}else{
+
+					}
+					this.data.coupons=coupons;//如果不为空，则prev和submit要发送这个字段
+					this.setData({
+						promotionCouponsDiscountTotalAmt//要显示的
+					})
+					// then链
+					return new Promise((resolve, reject) => {
+            resolve(res);
+        	});
+				})
 	},
 	onUnload(){
 		//如果上一个页面是支付页面，则返回首页刷新数据

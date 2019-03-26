@@ -130,6 +130,23 @@
 
 	<!--以下为shop正常页-->
 	<view class="header" wx:if="{{!isSearchWrapperShow}}">
+		<!-- 搜索 -->
+		<view class="padding-lr-40 padding-tb-20 flex flex-row-center flex-spaceBetween">
+				<view  class="flex1 flex box-sizing-box flex-row-center"  catchtap="SearchIconTap"
+				style="border-radius:30rpx;height:54rpx;line-height:54rpx;background:#f0f0f0;margin-right:40rpx;"> 
+						<image class="flex0" src="../../images/images/search.png"  style="width:28rpx;height:28rpx;padding:0 20rpx;"/>
+						<text style="font-size:24rpx;color:#999">请输入商品名</text>
+				</view>
+				<!-- 店家二维码icon -->
+				<image class="flex0" src="../image/QRcodeIcon1.png" style="width:50rpx;height:50rpx;padding:6rpx 0rpx 6rpx 30rpx;" catch:tap="QRcodeIconTap"/>
+				<!-- 悬浮框 -->
+				<mask position="center" wx:if="{{QRcode_mask_show}}" catch:maskclick="maskCancelTap">
+					<view  style="background:white;border-radius:20rpx;margin:200rpx 80rpx 0 80rpx;text-align:center;padding:60rpx;">
+							<image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" catch:tap="saveQRCode"/>
+							<view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行识别及保存</view>
+					</view>
+				</mask>
+		</view>
 		<view class="content-wrapper">
 			<view class="avatar">
 				<image class="icon-image" src="{{merchantInfoObj.logo}}" ></image>	
@@ -143,13 +160,9 @@
 					<text>￥{{merchantInfoObj.shipFee-merchantInfoObj.merchantAssumeAmt}}</text>
 					<text class="count">|</text>
 					<text>{{merchantInfoObj.avgDeliveryTime}}分钟送达</text>
-					<!--new 这边新增搜索 点击-->
-					<view class="shopSearch" catchtap="SearchIconTap">
-						<image src="../../images/images/search_tap.png"></image>
-					</view>
 				</view>
-				<view class="cartcontrol-wrapper">
-					<swiper autoplay="true" circular="true" 
+				<view class="cartcontrol-wrapper flex flex-row-center flex-spaceBetween">
+					<swiper autoplay="true" circular="true"  class="flex1"
 						vertical="true" interval="3000" duration="500" style="height: 30rpx">
 						<swiper-item class="cartcontrol-content flex"
 							wx:for="{{merchantInfoObj.promotionActivityList}}" 
@@ -161,7 +174,7 @@
 						</swiper-item>
 					</swiper>
 					<view wx:if="{{merchantInfoObj.promotionActivityList.length > 0}}" 
-						class="fr" bindtap="broadcast" style="margin-top: 6rpx;margin-right: -5rpx">
+						class="flex0" bindtap="broadcast" style="margin-top: 6rpx;margin-right: -5rpx">
 						<text>{{merchantInfoObj.promotionActivityList.length}}个活动</text>
 						<image class="desc-img" src="../../images/images/down.png"></image>	
 					</view>	

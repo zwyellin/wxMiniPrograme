@@ -30,7 +30,7 @@
                     <view class="merchantStar flex flex-spaceBetween flex-row-center">
                         <view class="flex flex-row-center">
                             <template is="star-AttrScore" data="{{size:36,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
-                            <text>人均￥{{groupMerchantInfo.evaluateAvgPersonPrice || groupMerchantInfo.avgPersonPrice}}</text>
+                            <text>人均￥{{ groupMerchantInfo.avgPersonPrice}}</text>
                         </view>
                         <text class="merchantWorkTime">营业时间:{{groupMerchantInfo.workingTime}}</text>   
                     </view>

@@ -73,6 +73,15 @@
 				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
 			</view>
 		</view>
+		<!-- 马管家券 -->
+        <view wx:if="{{promotionCouponsDiscountTotalAmt}}" class="query-message font-14 clearfix">
+			<view class="fl font-16">
+				<text>马管家券</text>
+			</view>
+			<view class="fr">
+            	<text style="color:#ff9595">-￥{{promotionCouponsDiscountTotalAmt}}</text>
+			</view>
+		</view>
 		<navigator class="query-message font-14 clearfix" url="/goods/remarks/remarks">
 			<view class="fl font-16">
 				<text>订单备注</text>
