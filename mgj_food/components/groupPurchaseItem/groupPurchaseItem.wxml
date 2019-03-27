@@ -1,0 +1,121 @@
+<!--goods/components/groupPurchaseList/groupPurchaseList.wxml-->
+<import src="../star/star.wxml" />
+<wxs module="fixed" src="../../utils/star.wxs"></wxs>
+
+
+<!-- 单个的布局,此时要传入单个对象-->
+<navigator class="flex flex-spaceBetween purchaseItem rrr" wx:if="{{_requestObj==null}}"
+    url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{_itemObj.id}}">
+    <!-- 左边，图片 -->  
+    <image src="{{_itemObj.imgs[0] || '../../images/merchant/merchantLogo.png'}}" class="flex0 purchaseImage"/>
+    <!-- 右边内容 -->
+    <view class="purchaseContent flex1">
+        <!-- 标题 及外卖标识-->
+        <view class="flex flex-spaceBetween  flex-row-center purchaseTitle">
+            <text style="color:#333;font-size:34rpx;font-weight:bold">{{_itemObj.name}}</text>
+            <text wx:if="{{_itemObj.hasTakeaway==1}}" style="font-size:22rpx;padding:4rpx 10rpx;line-height:1;border-radius:8rpx;background:#55e2ae;vertical-align:center;">外卖</text>
+        </view>
+        <!-- 星星及平均消费 -->
+        <view class="purchaseStar flex flex-row-center" style="margin-top:18rpx;">
+             <template is="star-AttrScore" data="{{size:36,item:_itemObj,AttrName:'averageScore'}}"></template>
+             <text style="font-size:22rpx;color:#666">￥{{_itemObj.avgPersonPrice}}/人</text>
+        </view>
+        <!-- 商家推荐及距离 -->
+        <view class="flex flex-spaceBetween flex-row-center purchaseRecommend">
+            <text style="color:#666;font-size:22rpx;">{{_itemObj.merchantTag}}</text>
+            <text style="font-size:22rpx;color:#333">{{fixed.round(_itemObj.distance)}}km</text>
+        </view>
+        <!-- 消费类型 -->
+        <view class="purchaseType">
+            <!-- 买 -->
+            <view class="flex flex-row-center purchaseTypeItem" wx:if="{{_itemObj.discountRatio}}">
+                <image src="../../images/images/buy@2x.png"></image>
+                <text>在线支付,{{_itemObj.discountRatio}}折</text>
+            </view>
+            <!-- 代金券 -->
+             <view class="flex flex-row-center purchaseTypeItem" wx:if="{{_itemObj.voucher.length}}">
+                <image src="../../images/images/dai@2x.png"></image>
+                <view class="flex" style="flex-wrap:wrap">
+                     <text wx:for="{{_itemObj.voucher}}" wx:key="index" style="line-height:1.5">{{item.price}}代{{item.originPrice}}元</text>
+                </view>
+             </view>
+            <!-- 团购 -->
+             <view class="flex flex-row-center purchaseTypeItem" wx:if="{{_itemObj.groupSetMeal.length}}">
+               <image src="../../images/images/tuan@2x.png"></image>
+               <view class="flex" style="flex-wrap:wrap">
+                     <text wx:for="{{_itemObj.groupSetMeal}}" wx:key="index" style="line-height:1.5">{{item.price}}元{{item.groupPurchaseName}}</text>
+                </view>
+             </view>
+        </view>
+    </view>
+</navigator>
+
+
+<!-- 多个Item布局，此时传入请求参数，及其它配置项 -->
+<scroll-view wx:else scroll-y="{{_height}}" style="{{_height ? 'max-height:'+_height : ''}}" bindscrolltolower="scrollViewScrolltolower">
+    <block wx:for="{{_responseList}}" wx:for-index="index" wx:for-item="_itemObj" wx:key="index">
+        <navigator class="flex flex-spaceBetween purchaseItem" 
+            url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{_itemObj.id}}">
+            <!-- 左边，图片 -->  
+            <image src="{{_itemObj.imgs[0] || '../../images/merchant/merchantLogo.png'}}" class="flex0 purchaseImage"/>
+            <!-- 右边内容 -->
+            <view class="purchaseContent flex1">
+                <!-- 标题 及外卖标识-->
+                <view class="flex flex-spaceBetween  flex-row-center purchaseTitle">
+                    <text style="color:#333;font-size:34rpx;font-weight:bold">{{_itemObj.name}}</text>
+                    <text wx:if="{{_itemObj.hasTakeaway==1}}" style="font-size:22rpx;padding:4rpx 10rpx;line-height:1;border-radius:8rpx;background:#55e2ae;vertical-align:center;">外卖</text>
+                </view>
+                <!-- 星星及平均消费 -->
+                <view class="purchaseStar flex flex-row-center" style="margin-top:18rpx;">
+                    <template is="star-AttrScore" data="{{size:36,item:_itemObj,AttrName:'averageScore'}}"></template>
+                    <text style="font-size:22rpx;color:#666">￥{{_itemObj.avgPersonPrice }}/人</text>
+                </view>
+                <!-- 商家推荐及距离 -->
+                <view class="flex flex-spaceBetween flex-row-center purchaseRecommend">
+                    <text style="color:#666;font-size:22rpx;">{{_itemObj.merchantTag}}</text>
+                    <text style="font-size:22rpx;color:#333">{{fixed.round(_itemObj.distance)}}km</text>
+                </view>
+                <!-- 消费类型 -->
+                <view class="purchaseType">
+                    <!-- 买 -->
+                    <view class="flex flex-row-center purchaseTypeItem" wx:if="{{_itemObj.discountRatio}}">
+                        <image src="../../images/images/buy@2x.png"></image>
+                        <text>在线支付,{{_itemObj.discountRatio}}折</text>
+                    </view>
+                    <!-- 代金券 -->
+                    <view class="flex flex-row-center purchaseTypeItem" wx:if="{{_itemObj.voucher.length}}">
+                        <image src="../../images/images/dai@2x.png"></image>
+                        <view class="flex" style="flex-wrap:wrap">
+                            <text wx:for="{{_itemObj.voucher}}" wx:key="index" style="line-height:1.5">{{item.price}}代{{item.originPrice}}元</text>
+                        </view>
+                    </view>
+                    <!-- 团购 -->
+                    <view class="flex flex-row-center purchaseTypeItem" wx:if="{{_itemObj.groupSetMeal.length}}">
+                    <image src="../../images/images/tuan@2x.png"></image>
+                    <view class="flex" style="flex-wrap:wrap">
+                            <text wx:for="{{_itemObj.groupSetMeal}}" wx:key="index" style="line-height:1.5">{{item.price}}元{{item.groupPurchaseName}}</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </navigator>
+    </block>
+
+    <!-- 消息框 -->
+    <view class="padding-tb-20" wx:if="{{_isPageReachBottomState}}"> 
+        <view wx:if="{{!_listLastState}}" > <!--还没有加载或加载完数据-->
+            <view  class="loading-info">
+                <image src="/images/merchant/loading.png" class="img-loading"></image>
+	            <view class="loading-text">正在加载，请稍候</view>
+            </view> 
+        </view>
+        <view  wx:elif="{{_listLastState}}"> <!--加载完了数据-->
+            <view wx:if="{{_responseList.length==0}}" class="bottom-info">
+                <view class="color3 font-size4">抱歉，没有搜索到您想要的商家</view>
+            </view>
+            <view wx:elif="{{_responseList.length>4}}" class="bottom-info">
+                <view class="bottom-text">我是有底线的</view>
+            </view>
+        </view>
+    </view>
+</scroll-view>

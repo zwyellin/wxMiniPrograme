@@ -1,0 +1,217 @@
+
+
+<!-- 团购套餐详情页 -->
+<import src="../../../components/star/star.wxml" />
+<wxs module="fixed" src="../../../utils/star.wxs"></wxs>
+
+<view class="container page" style="padding-bottom:110rpx;">
+    <view wx:if="{{groupSetMealItem.showImgs.length!=0}}" class="merchantMainInfo_image">
+        <view class="flex flex-spaceBetween">                
+            <image src="{{groupSetMealItem.showImgs[0]}}" 
+            style="height:300rpx;border-radius:0;width:100%;" data-index="0" data-images="{{groupSetMealItem.images}}" catch:tap="merchantInfoImageTap"></image>
+        </view>
+        <view class="merchantMainInfo_image_TotalIcon" data-images="{{groupSetMealItem.images}}" catch:tap="merchantInfoImageTap" style="color:white;font-size:28rpx;">
+            <image src="../../image/imagesIcon.png" style="width:28rpx;height:28rpx;"></image>
+            {{groupSetMealItem.images.length}}
+        </view>
+    </view>
+    <!-- 基本信息 -->
+    <view class="pageItem row-line" style="padding-bottom:40rpx">
+        <!-- 套餐名字-->
+        <view class="font-size1 font-bold  flex flex-spaceBetween flex-row-center" style="padding-bottom:20rpx;">
+            <view>  
+                <text>{{groupSetMealItem.groupPurchaseName}}</text>
+                <block wx:if="{{groupSetMealItem.isPurchaseRestriction==3}}">
+                    <image src="../../image/newManUse.png" style="height:34rpx;width:126rpx;margin-top:-9rpx;vertical-align:middle;margin-left:20rpx;"/>
+                </block>
+            </view>
+            <!-- 商品二维码icon -->
+            <image src="../../image/QRcodeIcon.png" style="width:50rpx;height:50rpx;padding:5rpx 20rpx;" catch:tap="QRcodeIconTap"/>
+            <!-- 悬浮框 -->
+            <mask position="center" wx:if="{{QRcode_mask_show}}" catch:maskclick="maskCancelTap">
+                <view  style="background:white;border-radius:20rpx;margin:200rpx 80rpx 0 80rpx;text-align:center;padding:60rpx;">
+                    <image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" catch:tap="saveQRCode"/>
+                    <view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行识别及保存</view>
+                </view>
+            </mask>
+        </view>
+        <!-- 商家名称 -->
+        <view class="flex flex-row-center"> 
+            <image src="../../../images/images/server.png" class="flex0" style="width:30rpx;height:30rpx;padding-right:10rpx" />
+            <text class="font-size5 color2">{{groupMerchantInfo.name}}</text>
+        </view>
+        <!-- 预约信息，已售-->
+        <view class="flex flex-spaceBetween mt20">
+            <!--左边-->
+            <view class="font-size5">{{groupSetMealItem.isBespeakText}}<text class="column-line">|</text>{{groupSetMealItem.isCumulateText}}</view>
+            <!-- 右边，已售 -->
+            <text class="font-size5 color3">已售{{groupSetMealItem.accumulateSoldCount}}</text>
+        </view>
+    </view>
+    <view class="pageItem" style="padding-bottom:20rpx;">     
+        <!-- 类别 -->
+        <view wx:for="{{groupSetMealItem.groupPurchaseCouponGoodsTypeList}}" wx:for-item="typeItem" wx:for-index="typeIndex" wx:key="typeIndex">
+            <view class="mt30" class="categoryType">
+                <!-- 标题 -->
+                <text class="font-size4 color1 font-bold">{{typeItem.typeName}}:</text>
+                <!-- 内容 -->
+                <view style="margin-top:14rpx">
+                    <view wx:for="{{typeItem.groupPurchaseCouponGoodsList}}"  wx:key="index"
+                    class="flex flex-spaceBetween font-size4 color2" style="padding-top:16rpx;">
+                        <text class="categoryTypeItem">{{item.name}}({{item.quantity}}份)</text>
+                        <text>￥{{item.originPrice}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <!-- 板块 购票须知 -->
+    <view class="pageItem mt20 padding-tb-40 ticketMsg">
+        <text class="color1 font-bold font-size2" >购票须知</text>
+        <!-- 有效期 -->
+        <view class="ticketMsgItem mt30" wx:if="{{groupSetMealItem.endTime}}"> 
+            <text class="font-size4 color1 font-bold" style="display:block">有效期:</text>
+            <!-- 内容 -->
+            <text class="font-size4 color2">{{groupSetMealItem.createTime}}至{{groupSetMealItem.endTime}}</text>
+        </view>
+        <!-- 适用范围 -->
+        <view class="ticketMsgItem mt30" wx:if="{{groupSetMealItem.applyRange}}"> 
+            <text class="font-size4 color1 font-bold" style="display:block">适用范围:</text>
+            <!-- 内容 -->
+            <text class="font-size4 color2">{{groupSetMealItem.applyRange}}</text>
+        </view>
+        <!-- 使用规则 -->
+        <view class="ticketMsgItem mt30" wx:if="{{groupSetMealItem.useRule}}"> 
+            <text class="font-size4 color1 font-bold" style="display:block">使用规则:</text>
+            <!-- 内容 -->
+            <text class="font-size4 color2">{{groupSetMealItem.useRule}}</text>
+        </view>
+        <!-- 规则提醒 -->
+        <!-- 核销。@isAutomaticallyCancelAfterVerification 。1:自动;2:不自动 -->
+        <!-- 需预约且自动核销要提醒-->
+        <view wx:if="{{groupSetMealItem.isBespeak==1 && groupSetMealItem.isAutomaticallyCancelAfterVerification==1}}" class="ticketMsgItem mt30" > 
+            <text class="font-size4 color1 font-bold" style="display:block">规则提醒:</text>
+            <!-- 内容 -->
+            <text class="font-size4 color2">订单确认后，如超出预约时间未使用，将自动使用</text>
+        </view>
+    </view>
+
+    <!-- 板块，商家信息 -->
+    <view class="pageItem mt20 padding-tb-40">
+        <!-- 标题及更多优惠 -->
+        <view class="flex flex-spaceBetween flex-row-center">
+            <text class="color1 font-bold font-size2">商家信息</text>
+            <navigator class="flex flex-row-center" 
+            url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{groupSetMealItem.merchantId}}&sharedUserId={{sharedUserId}}">
+                <text class="font-size5">更多优惠</text>
+                <image src="../../image/more.png" style="width:20rpx;height:20rpx;padding-left:15rpx" />
+            </navigator>
+        </view>
+        <!-- 商家信息内容 -->
+        <view class="flex flex-spaceBetween" style="margin-top:40rpx">
+            <!-- 左边 -->
+            <image src="{{groupMerchantInfo.imgs[0] || '../../../images/merchant/merchantLogo.png'}}" class="flex0"  style="width:195rpx;height:130rpx;margin-right:20rpx;" />
+            <!-- 右边 -->
+            <view class="flex1 flex flex-row-center" style="maring-top:-6rpx">
+                <!--左边-->
+                <view >
+                    <view>
+                        <text class="font-size1">{{groupMerchantInfo.name}}</text>
+                    </view>
+                    <view>
+                        <template is="star-AttrScore" data="{{size:24,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
+                        <text class="font-size3">人均￥{{groupMerchantInfo.evaluateAvgPersonPrice || groupMerchantInfo.avgPersonPrice}}</text>
+                    </view>
+                    <navigator open-type="navigate" class="font-size3 text-overflow-dots"
+                    url="/goods/mapview/mapview?latitude={{groupMerchantInfo.latitude}}&longitude={{groupMerchantInfo.longitude}}&name={{groupMerchantInfo.name}}">
+                        <image src="../../../images/images/map_1.png" style="width:40rpx;height:40rpx;"/>
+                        <text>距您{{fixed.round(groupMerchantInfo.distance)}}km<text class="column-line">|</text>{{groupMerchantInfo.address}}</text>
+                    </navigator>
+                </view>
+                <!-- 右边 电话 -->
+                <image class="flex0" src="../../image/tel@2x.png" style="width:60rpx;height:60rpx;padding-left:20rpx;" catch:tap="callPhoneTap"/>
+                <!-- 电话弹窗 -->
+                <mask position="bottom" wx:if="{{tel_mask_show}}" catch:maskclick="maskCancelTap">
+                    <view style="background:white;border-radius:20rpx;margin:20rpx;text-align:center">
+                        <view><text style="color:#999;font-size:24rpx;line-height:1.5">商家服务热线</text></view>
+                        <scroll-view  scroll-y="{{true}}" style="max-height:260rpx;">
+                            <view wx:for="{{groupMerchantInfo.contacts}}" 
+                            style="font-size:28rpx;line-height:3;color:blue;border-top:1px solid #eee"
+                            data-telphone="{{item}}"
+                            wx:key="index"
+                            catch:tap="telphoneTap">
+                            {{item}}
+                            </view>
+                        </scroll-view>
+                    </view>
+                    <view style="font-size:28rpx;line-height:3;color:blue;background:white;border-radius:20rpx;margin:20rpx;text-align:center" catch:tap="maskCancelTap">取消</view>
+                </mask>
+            </view>
+        </view>
+    </view>
+
+    <!-- 板块，商家评价 -->
+    <view class="pageItem mt20 " style="padding-left:0;padding-right:0">
+        <!-- 标题 -->
+        <view class="flex flex-spaceBetween flex-row-center padding-lr-40 padding-tb-40">
+            <text class="color1 font-bold font-size2">用户评价</text>
+            <navigator class="flex flex-row-center" url="/goods/GroupPurchaseChildPage/evaluateListPage/evaluateListPage?merchantId={{groupMerchantInfo.id}}">
+                <text class="font-size5">{{groupMerchantInfo.merchantCommentNum ? groupMerchantInfo.merchantCommentNum+'条评价':'暂无评价'}}</text>
+                <image src="../../image/more.png" style="width:20rpx;height:20rpx;padding-left:15rpx" />
+            </navigator>
+        </view>
+        <!-- 评价内容 -->
+        <groupPurchaseEvalueteItem requestObj="{{ {merchantId:groupSetMealItem.merchantId,size:3} }}"></groupPurchaseEvalueteItem>
+    </view>
+
+    <!-- 板块，本店优惠 -->
+    <view class="pageItem mt20" style="padding:0 0 20rpx 0" wx:if="{{groupSetMealexcludeItem.length}}">
+        <!-- 标题 -->
+        <view class="padding-tb-20 padding-lr-40 row-line">
+            <text class="color1 font-bold font-size2">本店优惠</text>
+        </view>
+        <navigator class="flex flex-spaceBetween mt20 padding-lr-40" 
+            wx:for="{{groupSetMealexcludeItem}}" wx:key="index"
+            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}&sharedUserId={{sharedUserId}}">
+                <!-- 左边 -->
+                <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
+                <!-- 右边 -->
+                <view class="flex flex-spaceBetween" style="flex:1;margin-top:-10rpx;">
+                    <!-- 左边 -->
+                    <view><text style="font-size:34rpx; color:#333;font-weight:bold;">{{item.groupPurchaseName}}</text>
+                        <view style="margin-top:16rpx;font-size:22rpx;color:#666;">
+                            <text>{{item.isBespeakText}}</text>
+                            <block wx:if="{{item.isPurchaseRestriction==3}}">
+                                <image src="../image/newManUse.png" style="height:34rpx;width:126rpx;margin-top:-9rpx;vertical-align:middle;margin-left:20rpx;"/>
+                            </block>
+                            <block wx:else>
+                                <text style="padding:0 14rpx;color:#ccc">|</text>
+                                <text>{{item.isCumulateText}}</text>
+                            </block> 
+                        </view>
+                        <view style="margin-top:16rpx;" class="flex flex-row-center">
+                            <text style="font-size:30rpx;color:#fd5952">￥{{item.price}}</text>
+                            <text style="margin-left:20rpx;font-size:22rpx;color:#333">门市价￥{{item.packageOriginalPrice}}</text>
+                        </view>
+                    </view>
+                    <!-- 右边 -->
+                    <view class="flex flex-all-center serviceCategoryBuyButton">
+                        <button data-id="{{item.id}}" catch:tap="serviceCategory2Tap">购买</button>
+                        <text>已售{{item.accumulateSoldCount}}</text>
+                    </view>
+                </view>
+        </navigator>
+    </view>
+
+    <!--板块， 购买按钮 -->
+    <view class="pageItem box-sizing-box flex flex-spaceBetween flex-row-center padding-tb-20" style="position:fixed;bottom:0;width:100%;border-top:1px solid #e5e5e5">
+        <view class="">
+            <text style="font-size:48rpx;color:red;padding-right:20rpx">￥{{groupSetMealItem.price}}</text>
+            <text style="font-size:24rpx;" class="color2">门市价{{groupSetMealItem.packageOriginalPrice}}</text>
+        </view>
+        <button class="bg-button-color font-size2 border-radius3" style="color:white;margin:0;line-height:2"
+         data-id="{{groupSetMealItem.id}}" catch:tap="serviceCategory2Tap">立即购买</button>
+    </view>
+
+</view>

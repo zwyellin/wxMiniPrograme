@@ -20,7 +20,6 @@
     margin: 0 auto;
 }
 .navbar-item-merchant {
-    width: 156rpx;
     margin: 0 auto;
 }
 .no-order {

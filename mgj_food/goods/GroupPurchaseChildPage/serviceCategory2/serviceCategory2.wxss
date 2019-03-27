@@ -1,0 +1,49 @@
+/* goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2.wxss */
+@import "../../../components/star/star.wxss";
+
+.merchantMainInfo_image{
+    position: relative;
+    padding-bottom: 20rpx;
+    background:white;
+}
+.merchantMainInfo_image_TotalIcon{
+    position: absolute;
+    bottom: 10%;
+    right:30rpx;
+    padding: 4rpx 20rpx;
+    border-radius: 20rpx;
+    background: rgba(0,0,0,0.4);
+}
+
+/* 团购详情内容展示部分 */
+.categoryTypeItem::before{
+    content: ".";
+    display: inline-block;
+    font-weight: bold;
+    font-size: 34rpx;
+    transform:translateY(-6rpx);
+    padding:0 10rpx 0 20rpx;
+
+}
+/* 团购的样式 */
+.serviceCategoryItem_tuangouImage{
+    width: 195rpx;
+    height: 130rpx;
+    flex:0 0 auto;
+    margin-right: 20rpx;
+    border-radius: 8rpx;
+}
+.serviceCategoryBuyButton button{
+    font-size: 26rpx;
+    color:#fff;
+    background: #ff9900;
+    border-radius: 5rpx;
+    width:160rpx;
+    padding-left:10rpx;
+    padding-right:10rpx;
+}
+.serviceCategoryBuyButton text{
+    margin-top: 16rpx;
+    font-size: 22rpx;
+    color:#999;
+}

@@ -7,8 +7,12 @@
 		<view class="navbar-item"  data-idx="{{1}}" bindtap="navbarTap">
 			<view class="navbar-item-merchant {{currentTab==1 ? 'active' : ''}}">代金券{{vouchersCount}}张</view>
 		</view>
+		<view class="navbar-item"  data-idx="{{2}}" bindtap="navbarTap">
+			<view class="navbar-item-merchant {{currentTab==2 ? 'active' : ''}}">马管家券{{couponsCount}}张</view>
+		</view>
 	</view>
-	<view hidden="{{currentTab !== 0}}" class="container page-common redenvelopes redenvelopes-else">
+	<!-- 我的红包 -->
+	<view hidden="{{currentTab !== 0}}" class="container page-common redenvelopes redenvelopes-else" style="padding-bottom:20rpx">
 		<view wx:if="{{platfromRedBagList.length === 0 && show}}" class="no-order">
 			<image class="no-order-img" src="../../images/images/login@2x.png"></image>
 			<view class="no-order-text">
@@ -45,7 +49,8 @@
 			</view>
 		</view>
 	</view>
-	<view hidden="{{currentTab !== 1}}" class="container page-common" style="padding-top: 110rpx">
+	<!-- 我的代金券 -->
+	<view hidden="{{currentTab !== 1}}" class="container page-common" style="padding-top: 110rpx;padding-bottom:20rpx">
 		<view wx:if="{{redBagList.length === 0 && show}}" class="no-order">
 			<image class="no-order-img" src="../../images/images/login@2x.png"></image>
 			<view class="no-order-text">
@@ -57,11 +62,11 @@
 			wx:for-item="item"
 			wx:for-index="index" 
 			wx:key="index" 
-			data-id="{{item.merchantId}}"
-			bindtap="selectTab">
+			data-item="{{item}}"
+			bindtap="vouchersItemTap">
 			<view class="lottery-content flex">
 				<view class="lottery-icon">
-					<image class="lottery-icon-img" src="{{item.merchantLogo}}"></image>
+					<image class="lottery-icon-img" src="{{item.merchantLogo||'../../images/merchant/merchantLogo.png'}}"></image>
 				</view>
 				<view class="lottery-content-right font-14">
 					<view class="lottery-content-text">{{item.merchantName}}</view>
@@ -74,18 +79,52 @@
 			<view class="lottery-express">
 				<text style="margin-right: 20rpx">有效期</text>
 				<text>{{item.modifyTime}} - {{item.expirationTime}}</text>
-				<text class="fr">外卖</text>
+				<text class="fr">{{item.businessTypeText}}</text>
 			</view>
 		</view>
 	</view>
-	<view></view>
+	<!--马管家券-->
+	<view hidden="{{currentTab !== 2}}" class="container page-common" style="padding-top: 110rpx;padding-bottom:20rpx">
+		<view wx:if="{{couponsList.length === 0 && show}}" class="no-order">
+			<image class="no-order-img" src="../../images/images/login@2x.png"></image>
+			<view class="no-order-text">
+  			<text>暂无马管家券</text>
+			</view>
+		</view>
+		<view class="lottery-wrapper"
+			wx:for="{{couponsList}}"   
+			wx:for-item="item"
+			wx:for-index="index" 
+			wx:key="index" 
+			data-id="{{item.merchantId}}"
+			bindtap="vouchersItemTap">
+			<view class="lottery-content flex">
+				<view class="lottery-icon">
+					<image class="lottery-icon-img" src="{{item.merchantLogo||'../../images/merchant/merchantLogo.png'}}"></image>
+				</view>
+				<view class="lottery-content-right font-14">
+					<view class="lottery-content-text">{{item.name}}</view>
+					<view class="money" >满{{item.restrictAmt}}元可用</view>
+				</view>
+				<view class="lottery-content-price">
+					<text>￥</text><text style="font-size:60rpx">{{item.couponsAmt}}</text>
+				</view>
+			</view>
+			<view class="lottery-express">
+				<text style="margin-right: 20rpx">有效期</text>
+				<text>{{item.modifyTime}} - {{item.expirationTime}}</text>
+				<text class="fr">通用</text>
+			</view>
+		</view>
+	</view>
+
+
+	
+	
+	<!-- 消息 -->
 	<view class="loading-info" style="background: #ededed" wx:if="{{(!loading && platfromRedBagList.length > 4&&currentTab == 0) || (!loading && redBagList.length>4 && currentTab == 1)}}">
         <image src="/images/merchant/loading.png" class="img-loading"></image>
         <view class="loading-text">正在加载，请稍候</view>
     </view>
-
-    <!-- <view class="bottom-info" wx:if="{{!evaluate.length && loading}}">
- 		<view class="bottom-text">暂无更多红包</view>
-	</view> -->
 </view>
 	

@@ -90,12 +90,11 @@
 }
 .food-txt {
   padding: 12rpx 18rpx;
-  border: 4rpx solid #ff5959;
+  border: 2rpx solid #ff5959;
   border-radius: 10rpx;
   font-size: 24rpx;
 }
 .food-right {
-  flex: 1;
   align-items: center;
   flex-direction: row-reverse;
 }
@@ -110,9 +109,28 @@
 .food-pay {
   display: inline-block;
   width: 276rpx;
-  padding: 12rpx 18rpx;
-  border: 4rpx solid #ff5959;
-  margin-top: 14rpx;
+  padding: 12rpx 10rpx;
+  border: 1px solid #ff5959;
   border-radius: 10rpx;
   font-size: 26rpx;
+}
+.orderTypeIcon{
+  font-size: 24rpx;
+  background:#ff9900;
+  margin-left:40rpx;
+  color:white;
+  display:inline-block;
+  padding:4rpx 10rpx;
+  border-radius:6rpx;
+}
+
+.searchTag{
+  font-size: 28rpx;
+  color:#666;
+  padding:10rpx 20rpx;
+}
+.searchTagActive{
+  font-weight: bold;
+  font-size: 32rpx;
+  color:#ff9900
 }

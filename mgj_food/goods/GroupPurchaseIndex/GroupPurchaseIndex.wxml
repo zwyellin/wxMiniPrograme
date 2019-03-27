@@ -1,0 +1,84 @@
+<!--goods/GroupPurchaseIndex/GroupPurchaseIndex.wxml-->
+<view class="container page">
+    <!-- 搜索及轮播图 -->
+    <view style="background:white">
+        <!-- 搜索 -->
+        <view class="padding-lr-40 padding-tb-20">
+            <navigator url="/goods/GroupPurchaseIndex/GroupPurchaseSearch/GroupPurchaseSearch"
+            class="flex box-sizing-box flex-row-center" style="border-radius:30rpx;height:54rpx;line-height:54rpx;background:#f0f0f0"> 
+                <image class="flex0" src="../../images/images/search.png"  style="width:28rpx;height:28rpx;padding:0 20rpx;"/>
+                <text style="font-size:24rpx;color:#999">输入你想搜的内容</text>
+            </navigator>
+        </view>
+        <!--轮播图-->
+        <swiper  style="height:240rpx;"  indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
+            <block wx:for="{{bannerList}}" wx:key="index">
+                <swiper-item>
+                    <view data-item="{{item}}" catch:tap="findGroupPurchaseBannerListTap">
+                        <image class="swiper-image" src="{{item.picUrl}}" />
+                    </view>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+    <!-- 分类轮播图 -->
+    <view class="pageItem">
+        <!--分类轮播图-->
+        <swiper style="padding-top:40rpx;margin-bottom:40rpx;height:200rpx" indicator-dots="{{true}}"  interval="{{5000}}" duration="{{500}}">
+            <block wx:for="{{categoryList}}" wx:for-item="swiperItem" wx:for-index="index1" wx:key="index1">
+                <swiper-item class="flex">
+                    <view data-item="{{item}}" catch:tap="findGroupPurchasePrimaryCategoryListTap"
+                      wx:for="{{swiperItem}}" wx:key="index" style="width:100rpx;text-align:center;{{index==4 ? '':'margin-right:42rpx'}}"
+                      hover-class="none">
+                        <image  wx:if="{{item.graySwitch === 0}}" class="swiper-icon" src="{{item.picUrl || '../../images/merchant/classification_eva@2x.png'}}" 
+                        data-index1="{{index1}}" data-index="{{index}}" binderror="categoryListSrcErr" />
+                        <image  wx:if="{{item.graySwitch === 1}}" class="swiper-icon" src="{{item.grayUrl || '../../images/merchant/classification_eva@2x.png'}}"  
+                        data-index1="{{index1}}" data-index="{{index}}" binderror="categoryListSrcErr"/>
+                        <text class="font-14">{{item.name}}</text>
+                    </view>
+                </swiper-item>
+            </block>
+        </swiper>
+        <!-- 很优惠，慧生活 -->
+        <view class="primaryPublicityList flex margin-bottom:40rpx;" style="margin-top:40rpx;padding-bottom:40rpx;">
+            <view class="primaryPublicityListItem" wx:for="{{publicityList}}" wx:key="index" style="{{(index+1)%2==1 ? 'margin-right:10rpx;':''}}"
+            data-item="{{item}}" catch:tap="primaryPublicityListTap"> 
+                <image  src="../image/gg{{index+1}}.png" style="width:330rpx;height:180rpx;" />
+                <text class="color1 text-overflow-dots primaryPublicityListItem-text-absolute" style="font-size:24rpx;">{{item.groupPurchaseMerchantName || ''}}</text>
+                <view style="position:absolute;bottom:0;right:0;width:200rpx;height:100rpx;overflow:hidden">
+                    <image src="{{item.img}}" class="primaryPublicityListItem-img-absolute"/> 
+                </view>
+            </view>
+        </view>
+    </view>
+
+
+    <!-- 分类，排序，筛选 -->
+    <view class="pageItem mt20 flex row-line" style="justify-content:space-around;padding:30rpx 40rpx;">
+        <!-- 分类 -->
+        <view  data-index="0" catch:tap="sortTap">
+            <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==0? 'color:#ff9900':''}}">{{sortBar.sort0Title}}</text>
+            <image  src="{{sortBar.sortActive==0? '../../images/images/down_1ye.png' :'../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+        </view>
+        <!-- 排序 -->
+        <view data-index="1" catch:tap="sortTap">
+            <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==1? 'color:#ff9900':''}}">{{sortBar.sort1Title}}</text>
+            <image  src="{{sortBar.sortActive==1? '../../images/images/down_1ye.png' :'../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+        </view>
+        <!-- 筛选 -->
+        <view  data-index="2" catch:tap="sortTap">
+            <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==2? 'color:#ff9900':''}}">筛选</text>
+            <image  src="{{sortBar.sortActive==2? '../../images/images/down_1ye.png' :'../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+        </view>
+    </view>
+    <!-- 对应的浮层 -->
+    <groupPurchaseSortBar style="{{isSortBarHidden? 'display:none':''}}" 
+        requestObj="{{ {agentId,parentCategoryId:0} }}" sortActive="{{sortBar.sortActive}}"  catch:outRequestparams="groupPurchaseSortBarParams">
+    </groupPurchaseSortBar>
+
+    <!-- 商家列表 -->
+    <view style="background:white">
+        <groupPurchaseItem  requestObj="{{groupPurchaseItemRequsetObj}}" config="{{groupPurchaseItemConfig}}"></groupPurchaseItem>
+    </view>
+    
+</view>

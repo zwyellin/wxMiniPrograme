@@ -1,0 +1,44 @@
+<import src="../../components/showToast/showToast.wxml" />
+
+<view class="container page-common font-16">
+  <view class="order-price">
+    <text style="letter-spacing: 4rpx">订单总价</text>
+    <text class="fr" style="color:#ff5000">￥{{price}}</text>
+  </view>
+  <view class="pay-balance flex">
+    <view>
+      <view>
+        <text>余额支付<text style="font-size: 24rpx;color:#999;margin-left: 10rpx;">(账户余额：￥{{channelCost}})</text></text>
+      </view>
+      <view class="pay-channelright">
+        <icon type="success" size="28" color="{{payChannelColor ? '#ff9900' : '#dcdddd'}}" bindtap="payChannel" />
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{!selectPay}}" class="pay-content">
+    <view class="pay-mode">
+      <text>使用第三方平台支付</text>
+      <text class="fr">￥{{channelPrice}}</text>
+    </view>
+    <view class="pay-wx flex">
+      <view class="pay-left">
+        <image class="pay-image" src="../../images/images/userinfo_wechat.png"></image>
+        <text style="margin-left: 70rpx">微信支付</text>
+      </view>
+      <view class="pay-right">
+        <icon type="success" size="28" color="{{payWxColor ? '#ff9900' : '#dcdddd'}}" bindtap="payWx" />
+      </view>
+    </view>
+    <view class="pay-mode font-12" style="text-align:center">
+      <text style="color:#c4c4c4">更多支付方式,敬请期待</text>
+    </view>
+  </view>
+  <view class="pad-send font-18">
+    <view class="send" bindtap="getOpenId">
+      <text>确认支付</text>
+    </view>
+  </view>
+  <view wx:if="{{maskShow}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close">  
+  </view>
+  <template is="showToast" data="{{showToast: showToast}}" />
+</view>

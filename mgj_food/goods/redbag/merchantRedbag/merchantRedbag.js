@@ -5,7 +5,7 @@ Page({
 		select:null,
 		currentTab:0,
 		itemsPrice:0,
-		redBagList:[],
+		redBagList:[],//红包列表
 		disabledPlatformRedBagList:[],
 		platformRedBagList:[],
 		useRedBagList:[],       //本次订单使用的红包列表      
@@ -15,9 +15,18 @@ Page({
 	onLoad(){
 		let pages = getCurrentPages();
 	    let prevPage = pages[pages.length - 2];
-	    console.log(prevPage.data.platformRedBagList);
+		console.log("prevPage.data.redBagList",prevPage.data.redBagList);
+		let redBagList=prevPage.data.redBagList;
+		// 处理
+		redBagList.forEach((item)=>{
+			if(item.businessType==1){//类别：1外卖，6团购
+				item.businessTypeText="外卖"
+			}else if(item.businessType==6){
+				item.businessTypeText="团购"
+			}
+		});
 		this.setData({
-			redBagList:prevPage.data.redBagList,
+			redBagList,
 			disabledPlatformRedBagList:prevPage.data.disabledPlatformRedBagList,
 			platformRedBagList:prevPage.data.platformRedBagList,
 			useRedBagList:prevPage.data.useRedBagList || [],
@@ -65,9 +74,9 @@ Page({
 		});
 		redBagList[index].selectStatus = true;
 		let isFound = false;
-		useRedBagList.map((item,index)=>{
-			if (item.promotionType === redBagList[index].promotionType) {
-				useRedBagList.splice(index,1,redBagList[index]);
+		useRedBagList.map((_item,_index)=>{
+			if (_item.promotionType === redBagList[index].promotionType) {
+				useRedBagList.splice(_index,1,redBagList[index]);
 				isFound = true;
 			}	
 		});

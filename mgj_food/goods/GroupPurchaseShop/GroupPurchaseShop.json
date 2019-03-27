@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "groupPurchaseItem":"../../components/groupPurchaseItem/groupPurchaseItem" ,
+    "mask":"../../components/mask/mask",
+    "groupPurchaseEvalueteItem":"../../components/groupPurchaseEvaluateItem/groupPurchaseEvaluateItem"
+  },
+  "navigationBarTitleText":""
+}

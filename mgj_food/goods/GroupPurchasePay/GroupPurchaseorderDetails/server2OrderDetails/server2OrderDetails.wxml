@@ -1,0 +1,177 @@
+
+<!-- 团购套餐 -->
+<import src="../../../../components/star/star.wxml" />
+<wxs module="fixed" src="../../../../utils/star.wxs" ></wxs>
+
+<view class="container page">
+    <!-- 团购套餐展示 -->
+    <view class="pageItem row-line" style="padding-bottom:40rpx">
+        <!-- 套餐名字-->
+        <view class="font-size1 font-bold  flex flex-spaceBetween flex-row-center" style="padding:20rpx 0">
+            <image src="{{groupPurchaseOrder.groupPurchaseCouponImages[0] || './../../../images/merchant/merchantLogo.png'}}" class="serviceCategoryItem_tuangouImage"/>
+            <view class="flex1 flex flex-row-center flex-spaceBetween">
+                <view>
+                    <view>{{groupPurchaseOrder.groupPurchaseName}}</view>
+                    <text style="color:red">￥{{groupPurchaseOrder.totalPrice}}</text>
+                </view>
+                <navigator wx:if="{{hasUnuseCouponCode}}" url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}">
+                    <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >立即使用</button>
+                </navigator>
+            </view>
+        </view>
+        <!-- 预约信息，已售-->
+        <view class="font-size5">
+            <!-- 预约叠加信息 -->
+            <text >{{groupPurchaseOrder.isBespeakText}}</text>
+            <text class="column-line" style="padding:0 14rpx;">|</text>
+            <text>{{groupPurchaseOrder.isCumulateText}}</text>
+        </view>
+    </view>
+    <view class="pageItem" style="padding-bottom:20rpx;">     
+        <!-- 类别 -->
+        <view >
+            <view class="mt30" class="categoryType">
+                <!-- 标题 -->
+                <text class="color1 font-bold" style="font-size:32rpx;">团购券内容:</text>
+                <!-- 内容 -->
+                <view style="margin-top:14rpx">
+                    <view wx:for="{{groupPurchaseOrderCouponGoodsList}}"  wx:key="index"
+                    class="flex flex-spaceBetween font-size4 color2" style="padding-top:16rpx;">
+                        <text class="categoryTypeItem">{{item.name}}({{item.quantity}}份)</text>
+                        <text>￥{{item.originPrice}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <!-- 板块 购票须知 -->
+    <view class="pageItem mt20  ticketMsg">   
+        <view class="attr-items" style="padding-bottom:0">
+            <!-- 有效期 -->
+            <view class="attr-item">
+                <text class="item-title">有效期:</text>
+                <text class="item-content">有效期至：{{groupPurchaseOrder.groupPurchaseCouponEndTime}}</text>
+            </view>
+            <!-- 券码 -->
+            <!-- @status:-1,取消订单；0，订单创建；1，等待付款；2，购买完成；3，已退款；4，等待接单； -->
+            <!-- 已完成。则会有三种子状态｛待评价，待消费，已完成｝ -->
+            <!-- 只有购买完成及已退款才显示券码 -->
+            <view class="attr-item" wx:if="{{groupPurchaseOrder.status==2 || groupPurchaseOrder.status==3}}">
+                <text class="item-title" style="padding-bottom:0">劵码:</text>
+                <view wx:for="{{groupPurchaseOrderCouponCodeList}}" wx:key="index" 
+                class="flex flex-spaceBetween flex-row-center item-content padding-tb-20 {{index!=(groupPurchaseOrderCouponCodeList.length-1) ? 'row-line':''}} ">
+                    <text>{{item.couponCode}}</text>
+                     <block>
+                        <navigator wx:if="{{item.status==2}}" class="flex flex-row-center"
+                        url="/pages/goods/refundDetail/refundDetail?orderid={{orderId}}&type=6&groupPurchaseOrderCouponCodeId={{item.id}}">
+                            <text>{{item.statusText}}</text>
+                            <image class="flex1" src="../../../image/more.png" style="height:26rpx;width:26rpx;margin-left:6rpx;"  />
+                        </navigator>
+                        <text wx:else>{{item.statusText}}</text> 
+                    </block>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <view class="pageItem padding-tb-20 mt20" style="padding-bottom:30rpx;">
+        <!-- 商家信息内容 -->
+        <text style="color:#333;font-size:32rpx;font-weight:bold;">商家信息</text>
+        <navigator class="flex flex-spaceBetween" style="background:white;margin-top:20rpx"
+         url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{groupMerchantInfo.id}}">
+            <!-- 左边 -->
+            <image src="{{groupMerchantInfo.imgs[0] || '../../../../images/merchant/merchantLogo.png'}}" class="flex0"  style="width:195rpx;height:130rpx;margin-right:20rpx;" />
+            <!-- 右边 -->
+            <view class="flex1 flex flex-row-center" style="maring-top:-6rpx">
+                <!--左边-->
+                <view >
+                    <view>
+                        <text class="font-size2">{{groupMerchantInfo.name}}</text>
+                    </view>
+                    <view>
+                        <template is="star-AttrScore" data="{{size:24,item:groupMerchantInfo,AttrName:'averageScore'}}"></template>
+                        <text class="font-size3">人均￥{{ groupMerchantInfo.avgPersonPrice}}</text>
+                    </view>
+                    <navigator class="font-size3 text-overflow-dots"
+                    url="/goods/mapview/mapview?latitude={{groupMerchantInfo.latitude}}&longitude={{groupMerchantInfo.longitude}}&name={{groupMerchantInfo.name}}">
+                        <image src="../../../../images/images/map_1.png" style="width:40rpx;height:40rpx;"/>
+                        <text>距您{{fixed.round(groupMerchantInfo.distance)}}km<text class="column-line">|</text>{{groupMerchantInfo.address}}</text>
+                    </navigator>
+                </view>
+                <!-- 右边 电话 -->
+                <image class="flex0" src="../../../image/tel@2x.png" style="width:60rpx;height:60rpx;padding-left:20rpx;" catch:tap="callPhoneTap"/>
+                <!-- 电话弹窗 -->
+                <mask position="bottom" wx:if="{{tel_mask_show}}" catch:maskclick="maskCancelTap">
+                    <view style="background:white;border-radius:20rpx;margin:20rpx;text-align:center">
+                        <view><text style="color:#999;font-size:24rpx;line-height:1.5">商家服务热线</text></view>
+                        <scroll-view  scroll-y="{{true}}" style="max-height:260rpx;">
+                            <view wx:for="{{groupMerchantInfo.contacts}}" 
+                            style="font-size:28rpx;line-height:3;color:blue;border-top:1px solid #eee"
+                            data-telphone="{{item}}"
+                            wx:key="index"
+                            catch:tap="telphoneTap">
+                            {{item}}
+                            </view>
+                        </scroll-view>
+                    </view>
+                    <view style="font-size:28rpx;line-height:3;color:blue;background:white;border-radius:20rpx;margin:20rpx;text-align:center" catch:tap="maskCancelTap">取消</view>
+                </mask>
+            </view>
+        </navigator>
+    </view>
+    <!-- 订单信息 -->
+    <view class="pageItem mt20 padding-tb-20" style="padding-bottom:120rpx">
+        <view style="font-size:28rpx;">
+            <text class="item-title">订单信息</text>
+            <view class="codeList">
+                <view class="codeListItem">
+                     <view style="width:220rpx;display:inline-block">订单编号：</view>
+                     <text>{{groupPurchaseOrder.id }}</text>
+                </view>
+                <view class="codeListItem"  wx:if="{{groupPurchaseOrder.payDoneTime}}">
+                     <view style="width:220rpx;display:inline-block">付款时间：</view>
+                     <text>{{groupPurchaseOrder.payDoneTime}}</text>
+                </view>
+                <view class="codeListItem">
+                     <view style="width:220rpx;display:inline-block">数量：</view>
+                     <text>{{groupPurchaseOrder.quantity}}</text>
+                </view>
+                <view class="codeListItem">
+                     <view style="width:220rpx;display:inline-block">总价：</view>
+                     <text style="margin-left:-4rpx">￥{{groupPurchaseOrder.price}}</text>
+                </view>
+                <view wx:if="{{groupPurchaseOrder.redBagDiscountTotalAmt!=null && groupPurchaseOrder.redBagDiscountTotalAmt!=0}}" class="codeListItem">
+                     <view style="width:220rpx;display:inline-block">红包抵扣：</view>
+                     <text style="color:red;margin-left:-4rpx">-￥{{groupPurchaseOrder.redBagDiscountTotalAmt}}</text>
+                </view>
+                <view wx:if="{{groupPurchaseOrder.couponsTotalAmt!=null && groupPurchaseOrder.couponsTotalAmt!=0}}" class="codeListItem">
+                     <view style="width:220rpx;display:inline-block">马管家优惠券：</view>
+                     <text style="color:red;margin-left:-4rpx">-￥{{groupPurchaseOrder.couponsTotalAmt}}</text>
+                </view>
+                <view class="codeListItem" wx:if="{{groupPurchaseOrder.hasPayed}}">
+                     <view style="width:220rpx;display:inline-block">实付款：</view>
+                     <text style="margin-left:-4rpx">￥{{groupPurchaseOrder.hasPayed}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <!-- 反馈，退款，评价-->
+    <view class="pageItem  flex padding-tb-20 footerBtns" style="justify-content:flex-end;border-top:1px solid #e5e5e5">
+        <navigator hover-class="none"
+        url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/feedback/feedback?groupPurchaseCouponType={{groupPurchaseOrder.groupPurchaseCouponType}}&&merchantId={{groupMerchantInfo.id}}">
+            <button class="font-size2 footerBtn"  style="border:1px solid #999;color:#666" >反馈</button>
+        </navigator>
+        <navigator wx:if="{{hasUnuseCouponCode}}" hover-class="none"
+        url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/refund/refund">
+            <button class="font-size2 footerBtn"  style="border:1px solid #ff9900;color:#ff9900;margin-left:40rpx;">退款</button>
+        </navigator>
+        <!-- 如果没有还可以消费的且使用过。即没有未使用的，没有已锁定的，且有使用的，且评价状态为未评价。则显示评价按钮 -->
+        <!-- hasComments:0,待评价；1，已评价 -->
+        <navigator wx:if="{{groupPurchaseOrder.hasComments===0 && !hasUnuseCouponCode && !hassdCouponCode && hasuseCouponCode}}" hover-class="none"
+        url="/goods/GroupPurchaseChildPage/createEvaluate/createEvaluate?orderId={{orderId}}">
+            <button class="font-size2 footerBtn" style="border:1px solid #ff9900;color:#ff9900;margin-left:40rpx;">评价</button>
+        </navigator>
+    </view>
+</view>

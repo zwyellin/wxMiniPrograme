@@ -12,11 +12,11 @@
       	bindtap="selectTab">
 		<view class="lottery-content flex {{item.selectStatus ? 'active' : ''}}">
 			<view class="lottery-icon">
-				<image class="lottery-icon-img" src="{{item.merchantLogo}}"></image>
+				<image class="lottery-icon-img" src="{{item.merchantLogo || '../../../images/merchant/merchantLogo.png'}}"></image>
 			</view>
 			<view class="lottery-content-right font-14">
 				<view class="lottery-content-text">{{item.merchantName}}</view>
-				<view class="money {{item.selectStatus ? 'active' : ''}}" >满{{item.restrictAmt}}元可用</view>
+				<view class="money {{item.selectStatus ? 'active' : ''}}" >{{item.restrictAmt!=0? '满'+item.restrictAmt+'元可用' :'下单即可使用' }}</view>
 			</view>
 			<view class="lottery-content-price {{item.selectStatus ? 'active' : ''}}">
 				<text>￥</text><text style="font-size:60rpx">{{item.amt}}</text>
@@ -25,7 +25,7 @@
 		<view class="lottery-express {{item.selectStatus ? 'active' : ''}}">
 			<text style="margin-right: 20rpx">有效期至</text>
 			<text> {{item.expirationTime}}</text>
-			<text class="fr">外卖</text>
+			<text class="fr">{{item.businessTypeText}}</text>
 		</view>
 	</view>
 </view>

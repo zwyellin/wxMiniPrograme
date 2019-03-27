@@ -1,0 +1,375 @@
+<!--goods/shop/Takeaway/Takeaway.wxml-->
+<wxs module="tage" src="../../../utils/star.wxs"></wxs>
+<import src="../../../components/control/control.wxml" />
+<import src="../../../components/showToast/showToast.wxml" />
+<import src="../../template/shop/manfull.wxml" />
+<import src="../../../components/star/star.wxml" /> <!--评价星星模板-->
+<import src="../../../wxParse/wxParse.wxml" />  <!-- 富文本-->
+
+<!-- selectedFood.imgs 图片 -->
+<view class="container page">
+	<!--轮播图-->
+	<swiper  style="height:400rpx;"  indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
+		<block wx:for="{{selectedFood.images}}" wx:key="index">
+			<swiper-item>
+				<image class="swiper-image" src="{{item}}" />
+			</swiper-item>
+		</block>
+	</swiper>
+    <view style="background:white" class="padding-tb-20">
+		<!-- 基本信息 -->
+		<view class="flex flex-spaceBetween" style="padding-left:40rpx;">
+			<!-- 左边 -->
+			<view>
+				<view style="font-size:28rpx;color:#333;font-weight:bold">{{selectedFood.name}}</view>
+				<view style="font-size:24rpx;color:#666;margin-top:10rpx">月售{{selectedFood.monthSaled}}份</view>
+			</view>
+			<!-- 右边 二维码-->
+			<!-- 店家二维码icon -->
+			<image class="flex0" src="../../image/QRcodeIcon2.png" style="width:110rpx;height:60rpx;" catch:tap="QRcodeIconTap"/>
+			<!-- 悬浮框 -->
+			<mask position="center" wx:if="{{QRcode_mask_show}}" catch:maskclick="maskCancelTap">
+				<view  style="background:white;border-radius:20rpx;margin:200rpx 80rpx 0 80rpx;text-align:center;padding:60rpx;">
+					<image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" catch:tap="saveQRCode"/>
+					<view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行识别及保存</view>
+				</view>
+			</mask>
+		</view>
+		<!-- 购买 -->
+		<view class="pageItem flex flex-row-center flex-spaceBetween" style="margin-top:20rpx;padding-right:0;margin-right:20rpx;">
+			<view>
+				<text  style="font-size:32rpx;color:#f01414">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
+				<text style="font-size:26rpx;color:#666">￥{{selectedFood.now}}</text>
+			</view>
+			<view style="background: #fff">
+				<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
+					<text>商家休息中</text>
+				</view>
+				<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
+				<view wx:elif="{{selectedFood.status === 0 || (selectedFood.status === 0 || selectedFood.goodsSpecList.length === 1 && selectedFood.goodsSpecList[0].stockType && !selectedFood.surplusDiscountStock && selectedFood.goodsSpecList[0].stock === 0 )}}" class="choice-else font-10">	
+					<text>商品已售罄</text><!--不再售卖 或 （针对规格只有一个的，并且库存状态是有限的，并且不是折扣商品已卖完，并且库存数为0）-->
+				</view>
+				<!--else 正常卖-->
+				<view wx:else class="flex" style="align-items:center">
+					<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template> <!--+购买图标-->
+					<!--if有可能要选规格-->
+					<view wx:if="{{selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1}}" class="choice font-10 top-status" data-food="{{selectedFood}}"  catchtap="choice">
+						<text>选规格</text>
+					</view>
+				</view>  
+			</view>
+		</view>
+	</view>
+	<!--跳转到商店-->
+	<view class="pageItem mt20 padding-tb-20 flex flex-spaceBetween flex-row-center">
+			<!-- 左边 -->
+			<view class="flex1 flex  flex-row-center">
+					<image src="{{merchantInfoObj.logo}}"  style="width:100rpx;height:100rpx;" />
+					<view style="margin-left:20rpx">
+						<view class="font-15 color1">{{merchantInfoObj.name}}</view>
+						<view class="flex flex-row-center" style="margin-top:6rpx">
+								<text style="font-size:22rpx;color:#666">总体评分</text>
+								<template is="star-AttrScore" data="{{size:24,item:merchantInfoObj,AttrName:'averageScore'}}" ></template>
+						</view>
+					</view>
+			</view>
+			<!-- 右边，进店 -->
+		<button class="font-size3 footerBtn" style="border:1px solid #c2c2c2;color:#333;margin-left:40rpx;"
+		catch:tap="gotoShopBtnTap">进店</button>
+	</view>
+
+	<!-- 商品简介 -->
+	<view class="pageItem mt20">
+		<view class="padding-tb-20 font-15 color1 font-bold">商品简介</view>
+		<view class="font-14 color1"></view>
+	</view>
+	
+	<!-- 富文本 -->
+	<view wx:if="{{goodsInfo.nodes}}"  class="pageItem mt20" style="padding-left:0;padding-right:0;">
+			<view class="padding-tb-20 padding-lr-40 font-15 color1 font-bold">商家详情</view>
+			<template is="wxParse" data="{{wxParseData:goodsInfo.nodes}}" />
+	</view>
+
+
+	<!-- 商品评价 -->
+	<view class="mt20" style="padding-bottom:120rpx;">
+		<!-- 标题 -->
+		<view class="pageItem flex flex-spaceBetween flex-row-center">
+			<text class="padding-tb-20 font-15 color1 font-bold">商品评价(好评率{{tage.praise(selectedFood.commentScore)}}%)</text>
+			<text style="font-size:24rpx;color:#333">{{evaluate.list.length}}条评价</text>
+		</view>
+		<view class="new-valuate-content">
+          <view class="new-valuate-content-header">
+			  <view class="new-valuate-content-btns">
+			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 0 ? 'new-valuate-btn-hover1':''}}"  data-id='0' data-type="1" catch:tap="evaluateBtnSwitch">全部<text>{{evaluate.allCount}}</text></button>
+			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 1 ? 'new-valuate-btn-hover1':''}}"  data-id='1' data-type="1" catch:tap="evaluateBtnSwitch">好评<text>{{evaluate.goodCount}}</text></button>
+			    <button class="new-valuate-btn2 {{selestEvaluateStatus == 2 ? 'new-valuate-btn-hover2':''}}"  data-id="2" data-type="1" catch:tap="evaluateBtnSwitch">差评<text>{{evaluate.poorCount}}</text></button>
+			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 3 ? 'new-valuate-btn-hover1':''}}"  data-id="3" data-type="1" catch:tap="evaluateBtnSwitch">有图<text>{{evaluate.imgCount}}</text></button>
+			  </view>
+			  <view class="new-valuate-checkbox" catch:tap="merchantComIsFilterEmptySwitch">
+				<icon type="success" color="{{isHaveContent==1 ? 'green':'grey'}}" size="11" style="margin-right:10rpx;vertical-align:middle"></icon><text>只看有内容的评价</text>
+			  </view>
+		  </view>
+		  <view class="new-valuate-content-main">
+                <block wx:for="{{evaluate.list}}" wx:key="{{item.id}}">
+					<view class="new-valuate-item" >
+						<view class="new-valuate-item-userinfo">
+							<view class="new-evaluate-userinfo">				
+								<image class="new-evaluate-userinfo-image" src="{{item.appUser.headerImg!='' ? item.appUser.headerImg:'../../image/headerImage.png'}}"></image>
+								<view class="new-evaluate-userinfo-star" style="margin-left:10rpx;">
+									<text class="new-evaluate-userinfo-star-text">{{item.isAnonymous==1? '匿名用户' : tage.strReplace(item.appUser.name)}}</text>
+									<template is="star-AttrScore" data="{{size:36,item,AttrName:'goodsScore'}}" ></template>
+									<text style="vertical-align:text-bottom;color:#ff9900;font-size:22rpx;">{{tage.numberToText(item.goodsScore)}}</text>
+								</view>
+							</view>
+							<view class="new-evaluate-userinfo-time">
+								<text>{{item.createTime}}</text>
+							</view>
+						</view><!--评论的头像，名字，时间。部分结束-->
+						<view class="new-valuate-item-main"><!--评论内容开始 主内容 -->
+							<text class="new-valuate-item-mainText" wx:if="{{!item.merchantComments}}" style="color:#9a9a9a">该用户没有做具体评价哦！</text><!--顾客评价-->
+							<text class="new-valuate-item-mainText" wx:else>{{item.merchantComments}}</text><!--顾客评价-->
+							<view class="new-valuate-item-main-images flex" wx:if="{{item.isImg==1}}">
+							    <block wx:for="{{tage.splitStrToArr(item.imgUrl,';','true','198')}}"
+								       wx:key="imgIndex"
+								       wx:for-item="imgItem"
+									   wx:for-index="imgIndex"><!--tage.splitStrToArr 参数为：要解析的字符串，分隔符，是否图片加高清，高清图片的宽度-->
+									<image src="{{imgItem ? imgItem : '../images/merchant/merchantLogo.png'}}" class="new-valuate-item-main-image"
+									 catch:tap="valuateItemImageTap" data-current="{{imgIndex}}" data-imgs="{{tage.splitStrToArr(item.imgUrl,';','true',windowWidth)}}"
+									 style="margin-right:{{(imgIndex+1)%3==0 ? '':'16rpx'}};margin-top:16rpx"></image>
+								</block>		
+							</view>
+							<text class="new-valuate-item-mainText mt20" wx-if="{{item.replyContent!==null}}"><text>商家回复:</text>{{item.replyContent}}</text><!--商家回复-->
+							<view  wx:if="{{item.goodsCommentsList.length!=0}}"><!--赞，踩列表-->
+								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0}}" class="new-valuate-item-icon flex">
+									<image src="../../image/zan.png"></image><!-- 赞-->
+									<view class="new-valuate-item-iconText">
+										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores}}"
+											wx:for-index="goodsIndex"
+											wx:for-item="goodsItem"
+											wx:key="orderId">
+											<text>{{goodsItem.goodsName}}</text>
+										</block>
+									</view>
+								</view>
+								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex" style="margin-top:{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0 ? '' : '20rpx'}};">
+									<image src="../../image/cai.png"></image><!--踩-->
+									<view class="new-valuate-item-iconText">
+										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores}}"
+											wx:for-index="goodsIndex"
+											wx:for-item="goodsItem"
+											wx:key="id">
+											<text>{{goodsItem.goodsName}}</text>
+										</block>
+									</view>
+								</view>
+							</view>
+					   </view>
+					</view>
+			    </block>
+		    </view><!--content-main结束：即评论部分-->
+		</view>
+	</view>
+
+	<!--购物车-->
+	<view  class="shopcart">
+		<view wx:if="{{totalcount===0 && ruleDtoList.length > 0 && !activitySharedShow || !fold && ruleDtoList.length>0 && !isShowTogether && !activitySharedShow}}" class="shopcart-list-top lisTop">
+			<text 
+			wx:if="{{totalcount === 0 }}"
+				wx:for="{{ruleDtoList}}"
+				wx:for-index="index"
+				wx:for-item="ruletion"
+				wx:key="index"
+				>满{{ruletion.full}}减{{ruletion.sub}}<text wx:if="{{index != ruleDtoList.length-1}}">, </text>  </text>
+			<view wx:if="{{totalcount > 0}}" catchtap="boosLisr">
+				<template is="full" data="{{totalcount,ruleDtoList,totalprice,fullPrice,isTogether}}"></template>
+			</view>	
+		</view>
+		<view class="content">
+			<view class="contet-left">
+				<view class="logo-wrapper" >
+					<view class="logo" bindtap="showFood">
+						<image wx:if="{{totalcount===0}}" class="logo" src="/images/images/cart_1.png"></image>
+						<image wx:if="{{totalcount>0}}" class="logo" src="/images/images/cart_2.png"></image>
+					</view>
+					<view wx:if="{{totalcount>0}}" class="num">
+						<text>{{totalcount}}</text>
+					</view>
+				</view>
+				<view class="price" style="color:#fff"><text>￥{{totalprice}}</text></view>
+				<text class="desc" style="color:#fff">另需配送费¥{{merchantInfoObj.shipFee-merchantInfoObj.merchantAssumeAmt}}</text>
+			</view>
+			<view class="content-right" bindtap="checkOut">
+				<view class="pay {{ totalprice>=minPrice ? 'enough' : 'not-enough'}}" >
+					<text>{{tage.payDesc(totalprice,minPrice)}}</text>
+				</view>
+			</view>
+		</view>
+		<view wx:if="{{isShowTogether&&totalcount>0&& !activitySharedShow}}"  class="shopcart-list">
+			<view class="shopcart-list-top">
+				<view catchtap="boosList">
+					<template is="full" data="{{totalcount,ruleDtoList,totalprice,fullPrice,isTogether}}"></template>
+				</view>
+			</view>
+			<scroll-view
+				class="list-content"
+				scroll-y="true"
+				style="{{listFoods.length>=4 ? 'height:328rpx': ''}}">
+				<block
+					wx:for="{{listFoods}}" 
+					wx:for-item="food" 
+					wx:for-index="index" 
+					wx:key="index">
+					<view class="food" ><!-- 购物车展示的列表-->
+						<view class="name food-name">{{food.name}}
+							<text wx:if="{{food.priceObject.spec}}">({{food.priceObject.spec}})</text>
+							<text wx:if="{{food.attributes}}">{{food.attributes}}</text>
+						</view>
+						<view class="price">
+							<text>￥{{tage.shopFloat(food.priceObject.price,2)}}</text>
+						</view>
+						<view class="cartcontrol-wrapper">
+							<view class="control" style="height: 72rpx">
+								<view  class="cart-decrease" data-food="{{food}}" catchtap="decrease">
+									<image class="icon-add_circle" src="/images/images/decrease.png"></image>
+								</view>
+								<view  class="cart-count">
+									<text>{{tage.fullItemNum(food,selectFoods)}}</text>
+								</view>
+								<view class="cart-add" data-food="{{food}}" data-full-activity="{{true}}" catchtap="addCart">
+									<image class="icon-add_circle" src="/images/images/add.png"></image>
+								</view>
+							</view>
+						</view>
+					</view>
+				</block>
+			</scroll-view>
+		</view>
+		<view wx:if="{{fold}}" class="shopcart-list">
+			<view wx:if="{{ruleDtoList.length>0 && !activitySharedShow}}" class="shopcart-list-top">
+				<view wx:if="{{selectFoods.length>0}}" catchtap="boosLisr">
+					<template is="full" data="{{totalcount,ruleDtoList,totalprice,fullPrice,isTogether}}"></template>
+				</view>		
+			</view>
+			<view class="list-header"wx:if="{{!isShowTogether}}" >
+				<text class="list-title">购物车</text>
+				<text class="empty" bindtap="empty">清空</text>
+			</view>
+			<scroll-view class="list-content" 
+				scroll-y="true" 
+				style="{{selectFoods.length>=4 ? 'height:328rpx': ''}}" >
+				<block
+					wx:for="{{selectFoods}}" 
+				    wx:for-item="food" 
+				    wx:for-index="index" 
+				    wx:key="index">
+					<view class="food" >
+						<view class="name food-name">{{food.name}}
+							<text wx:if="{{food.priceObject.spec}}">({{food.priceObject.spec}})</text>
+							<text wx:if="{{food.attributes}}">{{food.attributes}}</text>
+						</view>
+						<view class="price">
+							<text>￥{{tage.price(food,userDiscountGoodsList)}}</text>
+						</view>
+						<view class="cartcontrol-wrapper">
+							<view class="control" style="height: 72rpx">
+								<view wx:if="{{food.count>0}}" class="cart-decrease" data-food="{{food}}" catchtap="decrease">
+									<image class="icon-add_circle" src="/images/images/decrease.png"></image>
+								</view>
+								<view wx:if="{{food.count>0}}" class="cart-count">
+									<text>{{food.count}}</text>
+								</view>
+								<view class="cart-add" data-food="{{food}}" catchtap="addCart">
+									<image class="icon-add_circle" src="/images/images/add.png"></image>
+								</view>
+							</view>
+						</view>
+					</view>
+				</block>
+			</scroll-view>
+		</view>
+	</view>
+
+
+    <!--底下遮罩-->
+	<view wx:if="{{choice}}" animation="{{maskAnimation}}" class="mask" bindtap="close" catchtouchmove="myCatchTouch">
+	</view>
+	<!--选择规格弹窗-->
+	<view wx:if="{{choice}}" animation="{{choiceAnimation}}" class="shoprules font-16" catchtouchmove="myCatchTouch">
+		<view class="shoprules-title">
+			<text>{{selectedFood.name}}</text>
+			<image class="shoprules-img" src="../../images/images/close.png" bindtap="close"></image>
+		</view>
+		<scroll-view scroll-y="true" catchtouchmove="myCatchTouch">
+			<view class="shoprules-wrapper font-14" catchtouchmove="myCatchTouch">
+				<view class="shoprules-content-rules">
+					<view class="shoprules-text">
+						<text>规格 :</text>
+					</view>
+					<view class="shoprules-options font-14"
+						wx:for="{{selectedFood.goodsSpecList}}" 
+						wx:for-item="taste" 
+						wx:for-index="index" 
+						wx:key="index">
+						<text class="shoprules-select {{index===specIndex ? 'shoprules-active' : ''}}" 
+							bindtap="choicespec"
+							data-index="{{index}}"
+							data-taste="{{taste}}">{{taste.spec}}
+						</text>
+					</view>
+					<view class="shoprules-messgae font-10">
+						<text wx:if="{{selectedFood.hasDiscount === 0 && selectedFood.goodsSpecList[specIndex].orderLimit}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{selectedFood.goodsSpecList[specIndex].orderLimit}}份</text>
+						<text wx:if="{{selectedFood.hasDiscount === 1 && selectedFood.everyGoodsEveryOrderBuyCount> 0}}" class="rules-text" style="color:#cd5c78;border: 1rpx solid #cd5c78">每单限购{{selectedFood.everyGoodsEveryOrderBuyCount}}份</text>
+						<text wx:if="{{selectedFood.goodsSpecList[specIndex].stockType && selectedFood.goodsSpecList[specIndex].stock <10 && selectedFood.hasDiscount === 0}}" class="rules-text" style="color:#fff;border: 1rpx solid #ff4849;background: #ff4849">仅剩{{selectedFood.goodsSpecList[specIndex].stock}}件</text>
+						<text wx:if="{{selectedFood.goodsSpecList[specIndex].minOrderNum && selectedFood.hasDiscount === 0}}" class="rules-text" style="color:#fb9a00;border: 1rpx solid #fb9a00">{{selectedFood.goodsSpecList[specIndex].minOrderNum}}份起购</text>
+					</view>
+				</view>
+				<view class="shoprules-content"
+					wx:for="{{selectedFood.goodsAttributeList}}" 
+					wx:for-item="item" 
+					wx:for-index="parentindex" 
+					wx:key="parentindex">
+					<view class="shoprules-text">
+						<text>{{item.title}} :</text>
+					</view>
+					<view class="shoprules-options font-14">
+						<text class="shoprules-select {{item.select == taste ? 'shoprules-active' : ''}}" 
+							wx:for="{{tage.splitStr(item.name)}}" 
+							wx:for-item="taste" 
+							wx:for-index="index" 
+							wx:key="index"
+							bindtap="choiceTaste"
+							data-parentindex = "{{parentindex}}"
+							data-taste="{{taste}}">{{taste}}
+						</text>
+					</view>
+				</view>	
+			</view>
+		</scroll-view>
+		<view class="shoprules-food">
+			<view  class="shoprules-left font-18">
+				<text>￥{{selectedFood.goodsSpecList[specIndex].price}}</text><text wx:if="{{selectedFood.goodsSpecList[specIndex].originalPrice}}" class="old-price">￥{{selectedFood.goodsSpecList[specIndex].originalPrice}}</text>
+			</view>
+			<view class="button flex">
+				<!-- <image class="button-img" src="../../images/images/cart_2.png"></image> -->
+				<text wx:if="{{tage.getstandard(selectedFood,specIndex,selectFoods)===0}}" class="button-txt" bindtap="addCart" data-rules="{{true}}" data-food="{{selectedFood}}" data-specindex="{{specIndex}}">加入购物车</text>
+				<view wx:if="{{tage.getstandard(selectedFood,specIndex,selectFoods)>0}}" class="cartcontrol-wrapper" style="height: 62rpx">
+					<view>
+						<view wx:if="{{tage.getstandard(selectedFood,specIndex,selectFoods)>0}}" class="cart-decrease" data-food="{{selectedFood}}" data-specindex="{{specIndex}}" data-rules="{{true}}" catchtap="decrease">
+							<image class="icon-add_circle" src="/images/images/decrease.png"></image>
+						</view>
+						<view wx:if="{{tage.getstandard(selectedFood,specIndex,selectFoods)>0}}" class="cart-count">
+							<text>{{tage.getstandard(selectedFood,specIndex,selectFoods)}}</text>
+						</view>
+						<view class="cart-add" data-rules="{{true}}" data-specindex="{{specIndex}}"data-food="{{selectedFood}}" catchtap="addCart">
+							<image class="icon-add_circle" src="/images/images/add.png"></image>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+<!-- 消息 -->
+<template is="showToast" data="{{showToast: showToast}}" />

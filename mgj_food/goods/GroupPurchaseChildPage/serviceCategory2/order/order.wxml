@@ -1,0 +1,111 @@
+
+<view  class="container page">
+    <!--板块。 订单内容信息 -->
+    <view class="pageItem padding-tb-40 flex flex-spaceBetween">
+        <!-- 左边 -->
+        <image src="{{groupSetMealItem.images[0] || ''}}" class="serviceCategoryItem_tuangouImage flex0"></image>
+        <!-- 右边 -->
+        <view class="flex flex-spaceBetween flex1" style="align-items:flex-end;padding-bottom:20rpx;">
+            <!-- 左边 -->
+            <view>
+                <text style="font-size:34rpx; color:#333;font-weight:bold;">{{groupSetMealItem.groupPurchaseName}}</text>
+                <view style="margin-top:16rpx;font-size:22rpx;color:#666;">
+                    <text>{{groupSetMealItem.isBespeakText}}</text>
+                    <text style="padding:0 14rpx;color:#ccc">|</text>
+                    <text>{{groupSetMealItem.isCumulateText}}</text>
+                </view>
+            </view>
+            <!-- 右边 -->
+            <view>
+                <text style="font-size:30rpx;color:#fd5952;display:block">￥{{groupSetMealItem.price}}</text>
+                <text style="font-size:22rpx;color:#333">门市价￥{{groupSetMealItem.packageOriginalPrice}}</text>
+            </view>
+        </view>
+    </view>
+
+    <!--板块。 数量，预约日期 -->
+    <view class="mt20" style="background:white">
+        <!-- 数量 -->
+        <view class="padding-lr-40 padding-tb-40 flex flex-spaceBetween flex-row-center row-line">
+            <text class="font-size3 color1">数量</text>
+            <!-- <slider class="flex1" min="0" max="10" step="1" show-value="{{true}}" style="margin:0 0 0 40rpx;" bindchanging="sliderChanging"></slider> -->
+            <!-- 滑块也行，这边替换成按钮 -->
+            <view class="flex flex-row-center">
+                <image wx:if="{{true}}" src="../../../image/icon_reduceYes.png" style="width:40rpx;height:40rpx;padding:0 10rpx;" data-type="-1" catch:tap="sliderChanging"/>
+                <image wx:else src="../../../image/icon_reduceNo.png" style="width:40rpx;height:40rpx;padding:0 10rpx;"/>
+                <text class="font-size3 color1" style="display:inline-block;width:60rpx;padding:0 30rpx;text-align:center">{{sliderValue}}</text>
+                <image wx:if="{{true}}" src="../../../image/icon_addYes.png" style="width:40rpx;height:40rpx;padding:0 10rpx;" data-type="1" catch:tap="sliderChanging"/>
+                <image  wx:else src="../../../image/icon_addNo.png" style="width:40rpx;height:40rpx;padding:0 10rpx;"/>
+            </view>
+        </view>
+        <!-- 预约日期 可能需要展示 -->
+        <block wx:if="{{groupSetMealItem.isBespeak==1}}">
+            <view class="padding-lr-40 padding-tb-40 flex flex-spaceBetween flex-row-center">
+                <text class="font-size3 color1">预约时间</text>           
+                <picker mode="date"   bindchange="pickerDateChange" class="flex flex-row-center"
+                start="{{pickerDataStart}}" end="{{pickerDataEnd}}">
+                    <text class="color1" style="font-size:30rpx;margin-right:20rpx;">{{pickerData|| '请预约时间'}}</text>
+                    <image src="../../../image/date.png" style="width:40rpx;height:40rpx;transform:translateY(10rpx);"/>
+                </picker>
+            </view>
+            <!--提醒文字 -->
+            <!-- 核销。@isAutomaticallyCancelAfterVerification 。1:自动;2:不自动 -->
+            <!-- 需预约且自动核销要提醒-->
+            <view wx:if="{{groupSetMealItem.isAutomaticallyCancelAfterVerification==1}}" class="padding-tb-20 padding-lr-40 flex flex-row-center" style="background:#fcf6ee">
+                <image class="flex0" src="../../../image/message.png" style="width:40rpx;height:40rpx;margin-right:20rpx;"/>
+                <text style="font-size:24rpx;color:#a78b6c">如未按预约时间,将于次日{{groupSetMealItem.cancelAfterVerificationTime}}自动使用</text>
+            </view>
+        </block>
+    </view>
+   
+    <!--小计  -->
+    <view class="pageItem padding-tb-40 flex flex-spaceBetween flex-row-center">
+        <text class="font-size3 color1">小计</text>
+        <text style="font-size:30rpx;color:#f95046">{{totalMoney}}</text>
+    </view>
+
+    <!--板块，红包，实付金额  -->
+    <view class="pageItem mt20">
+        <!--商家红包-->
+        <view wx:if="{{true}}" class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line" bindtap="platformRedPage">
+			<text class="font-size3 color1">平台红包</text>
+			<view class="flex  flex-row-center" style="font-size:28rpx;">
+				<text wx:if="{{platformRedBagCount===0}}" style="color:#999">{{platformRedText}}</text>
+				<text wx:if="{{platformRedBagCount && platformRedBagMoney === 0}}" style="color:#ff9595">有{{platformRedBagCount}}个红包可用</text>
+				<text wx:if="{{platformRedBagMoney != 0}}" style="color:#ff9595">-￥{{platformRedBagMoney}}</text>
+                <image src="../../../image/more.png" style="width:30rpx;height:30rpx;padding-left:20rpx;"/>
+            </view>
+		</view>
+        <!-- 商家红包 -->
+		<view wx:if="{{true}}"class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line" bindtap="merchantRedPage">
+			<text class="font-size3 color1">商家红包</text>
+			<view class="flex  flex-row-center" style="font-size:28rpx;">
+            	<text wx:if="{{redBagUsableCount===0}}" style="color:#999">{{redText}}</text>
+				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个商家红包可用</text>
+				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">-￥{{redBagMoney}}</text>
+                <image src="../../../image/more.png" style="width:30rpx;height:30rpx;padding-left:20rpx;"/>
+			</view>
+		</view>
+        <!-- 马管家券 -->
+        <view wx:if="{{promotionCouponsDiscountTotalAmt}}"class="flex flex-spaceBetween flex-row-center padding-tb-40 row-line">
+			<text class="font-size3 color1">马管家券</text>
+			<view class="flex  flex-row-center" style="font-size:28rpx;">
+            	<text style="color:#ff9595">-￥{{promotionCouponsDiscountTotalAmt}}</text>
+			</view>
+		</view>
+        <!-- 实付金额 -->
+        <view class="flex flex-spaceBetween flex-row-center padding-tb-40">
+             <text class="font-size3 color1">实付金额</text>
+             <text style="fong-size:30rpx;color:#f95046">{{realTotalMoney==="" ? '':'￥'+realTotalMoney}}</text>
+        </view>
+    </view>
+
+    <!-- 提交 -->
+    <view  catch:tap="submitOrderBtnTap" class="mt20 padding-tb-20 padding-lr-40">
+        <button class="bg-button-color font-size2" style="color:white">提交订单</button>
+    </view>
+    <view class="padding-lr-40 text-center" style="margin-bottom:40rpx;">
+        <text class="font-size5">仅限到店支付，请确认金额后提交</text>
+    </view> 
+
+</view>

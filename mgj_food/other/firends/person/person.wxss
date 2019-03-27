@@ -32,7 +32,7 @@
   width: 70%;
   left: 50%;
   transform: translateX(-50%);
-  margin: 718rpx auto 34rpx auto;
+  margin: 653rpx auto 34rpx auto;
   letter-spacing: 2rpx;
 }
 .line{
@@ -56,14 +56,7 @@
 	color:#fff;
 }
 .portrait {
-  width: 62rpx;
-  height: 62rpx;
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: 20rpx;
-  border:4rpx solid #fff;
-  border-radius: 60rpx;
-  background: #fff;
+  
 }
 .portrait-img {
   width: 62rpx;
@@ -74,4 +67,54 @@
   margin-top: 20rpx;
   vertical-align: middle;
   margin-left: 20rpx;
+}
+
+.shareResultsShow{
+  position: fixed;
+  top:660rpx;
+  z-index:999;
+  width:100%;
+  background: white;
+}
+.shareResultsShow .shareType text{
+  width: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  color:blue;
+  text-align: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+  line-height:2.5;
+  color:#999;
+  font-size: 28rpx;
+}
+
+.results-content{
+  padding: 0 30rpx;
+  height:80rpx;
+  border-bottom:1px solid #d7d7d7;
+}
+.results-content text{
+  font-size: 26rpx;
+  color:#333;
+}
+.results-no{
+  position: fixed;
+  bottom: 200rpx;
+  z-index: 1000;
+  text-align:center;
+  width:100%;
+}
+.results-no text{
+  color:#999;
+  font-size: 28rpx;
+}
+.results-no navigator{
+  font-size:28rpx;
+  width:200rpx;
+  margin:5rpx auto;
+  padding:10rpx;
+  background:#fa4d6a;
+  color:white;
+  border-radius:5rpx; 
 }

@@ -9,6 +9,7 @@ let discountGoodsIdList = [];//这里是保存折扣商品每个客户最多买�
 const DiscountGoodsMaxRequest=20;//折扣商品每个客户最多买的数组最大数。如果大于该数，则不一次性发请求
 Page(Object.assign({}, merchantShop,shopSearch,{
 	data:Object.assign({},{
+		sharedUserId:null,//分享者id
 		merchantType:null,    //商家类型
 		categoryId:null,
 		goodsMoreLoading:false, //加载更多
@@ -82,19 +83,35 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		merchantAptitudeImg:'',
 		windowWidth:750,
 		isonLoadRun:false,           //onload是否执行，用于show。
-		isShopSkeletonScreenShow:true  //商店整体骨架屏显示控制
+		isShopSkeletonScreenShow:true,  //商店整体骨架屏显示控制
+
+		WXQRImage:"data:image/png;base64,",//店家二维码
+    QRcode_mask_show:false
 		},shopSearchData),          //data 对象合并
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-		let { merchantid,longitude,latitude,search} = options;
-		this.data.merchantId = merchantid;
-		// if (longitude && latitude) {//如果有值，则保存到全局app中
-		// 	app.globalData.longitude = longitude;
-    //     	app.globalData.latitude = latitude;
-		// }
-		console.log("重新调用前,",app.globalData.longitude)
-		if(!app.globalData.longitude){
+
+		let { merchantid,search,sharedUserId} = options;
+		const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
+		console.log("scene",scene,scene=="undefined");
+		console.log("options",options);
+		console.log("scene",scene)
+		//search为商店搜索，点击后跳转自身商店(用于标识)
+		// 分享者id
+		if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
+		if(scene=="undefined"){
+			this.data.sharedUserId=sharedUserId;
+			this.data.merchantId = merchantid;
+		}else{
+			let scene=scene.split(",");
+			this.data.merchantId =scene[0];
+			this.data.sharedUserId=scene[1];
+		}
+		// 获取自己定位
+		console.log("重新调用前的经纬度,",app.globalData.longitude)
+		if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
+			console.log("重新调用获取经纬度,",app.globalData.longitude)
 			app.getLocation();
 		}
 		//获取系统信息 主要是为了计算产品scroll的高度
@@ -131,7 +148,19 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			return;
 		}
 		//获取商家详情
-		this.findMerchantInfo();
+		this.findMerchantInfo().then(()=>{//再请求店家二维码
+			this.getMGJMerchantWXQRImage();
+			// 查看是否有商品页面的缓存，有说明时商品页跳过来的，则要合并数据
+			console.log("shareTakeawayData",wx.getStorageSync('shareTakeawayData'))
+			if (wx.getStorageSync('shareTakeawayData')) {//说明有缓存
+				let shareTakeawayData=wx.getStorageSync('shareTakeawayData');
+				this.setData(shareTakeawayData,()=>{
+					wx.setStorageSync('shareTakeawayData',null);//清空
+				})
+			} else {
+		
+			}
+		})
 
 		//返回商家商品(热销榜，好评榜等) 
 		this.getShopList().then((res)=>{
@@ -206,13 +235,30 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		//条件：onload没有重复读取缓存，并且这个页面是shop本身页面。不是商店搜索页面时才执行
 		//触发场景：从商家搜索返回来时
 		var pages = getCurrentPages();
-		var prevPage = pages[pages.length - 2]; // 上一级页面
-		
+		var prevPage=null;
+		if(pages.length>=2){
+			prevPage= pages[pages.length - 2]; // 上一级页面
+		}else{//有可能是分享进来的，此时页面栈长度为1
+			prevPage={
+				route:""
+			}
+		}
 		if(!this.data.isonLoadRun){
+			// 商店搜索返回来的
 			if (!/goods\/shop\/shop/.test(prevPage.route)) {
 				this.getStorageShop(this.data.merchantId);
 				this.totalprice();
 			}
+			//也可能是商品页面返回来的。	// 要共享回去的数据selectFoods，listFoods，totalprice，totalcount,fullPrice
+			// 及sharedUserId
+			if(this.data.shareTakeawayData!==undefined){
+				this.setData(this.data.shareTakeawayData,()=>{
+					delete this.data.shareTakeawayData;	// 重置为undefined,避免非商品页也触发这里
+				});
+			}
+			// 如果是分享进来的，则是已本地缓存形式传输
+		}else{
+
 		}
 		wx.setStorageSync('isPayPageRoute',false);
 	},
@@ -558,7 +604,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 							value:res.data.value
 	      				});
 	      				wx.navigateTo({
-		  					url: '/goods/queryOrder/queryOrder?merchantId='+this.data.merchantId,
+		  					url: '/goods/queryOrder/queryOrder?merchantId='+this.data.merchantId+"&sharedUserId="+this.data.sharedUserId,
 		  					complete: function(){
 		  						that.data.getOrderStatus = false;
 		  					}
@@ -610,6 +656,9 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			orderItems.push(json);
 		});
 		data.orderItems = orderItems;
+		data.sharedUserId=this.data.sharedUserId;
+		console.log("ok")
+		console.log(data);
 		return wxRequest({
         	url:'/merchant/userClient?m=orderPreview2',
         	method:'POST',
@@ -649,7 +698,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
         	method:'POST',
         	data:{
         		params:{
-					merchantId:this.data.merchantId
+						merchantId:this.data.merchantId
         		},
         	},
         });
@@ -683,8 +732,8 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	},
 	//点击查看商品详情
 	selectefood(e){
-		this.maskShowAnimation();
-		this.choiceShowAnimation();
+		// this.maskShowAnimation();
+		// this.choiceShowAnimation();
 		let { food, parentIndex } = e.currentTarget.dataset;
 		if(this.data.isSearchWrapperShow){//如果是商店页面
 			food.parentRelationCategoryId = food.relationCategoryId;
@@ -696,9 +745,14 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			}
 		}
 		this.setData({
-	        selectedFood:food,
-			detailShow:true,
-	    });
+					selectedFood:food,
+		
+					// detailShow:true,
+	  },()=>{//设置成功后，跳转到商品页面
+				wx.navigateTo({
+					url:'/goods/shop/Takeaway/Takeaway'
+				})
+		});
 	},
 	//关闭查看商品详情
 	close(){
@@ -1375,30 +1429,72 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	    	this.data.leftScrollClick = false;
 	    }
 	},
-	onShareAppMessage(res) {
-    	return {
-      		title: '马管家',
-      		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude,
-      		success: function(res) {
-        		// 转发成功
-     		},
-      		fail: function(res) {
-        		// 转发失败
-      		}
-    	};
-  	},
-  	onHide(){
-		this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
-		let merchantId = this.data.merchantId;
-		this.setStorageShop(merchantId)
-  	},
-  	onUnload(){
 
-  		//如果销毁是因为支付完成之后的订单详情页面，则返回时不存储购物车
-		let isPayPageRoute = wx.getStorageSync('isPayPageRoute');
-  		if (!isPayPageRoute) {
-  			let merchantId = this.data.merchantId;
+	//店家二维码
+	getMGJMerchantWXQRImage(){
+		return wxRequest({
+			url:'/merchant/userClient?m=getMGJMerchantWXQRImage',
+			method:'POST',
+			data:{
+				token:app.globalData.token,
+				params:{
+					bizType:1,
+					merchantId:this.data.merchantId
+				}	
+			},
+		}).then(res=>{
+			let WXQRImage=this.data.WXQRImage;
+			WXQRImage+=res.data.value;
+			this.setData({
+				WXQRImage
+			})
+		})
+	},
+	//QRcodeIconTap
+	QRcodeIconTap(){
+		this.setData({
+			QRcode_mask_show:true
+		})
+	},
+	// 保存二维码
+	saveQRCode(e){
+		let {images}=e.currentTarget.dataset;
+		let that=this;
+		wx.previewImage({
+			current: images, // 当前显示图片的http链接
+			urls:[images],// 需要预览的图片http链接列表
+			success:function(){
+				that.setData({
+					QRcode_mask_show:false
+				})
+			}
+		})
+	},
+	// 关闭二维码显示
+	maskCancelTap(e){
+    this.setData({
+      QRcode_mask_show:false
+    })
+  },
+
+onShareAppMessage(res) {
+	console.log(app.globalData.userId);
+		return {
+				title: '马管家',
+				path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&sharedUserId='+app.globalData.userId,
+		};
+},
+onHide(){
+	this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
+	let merchantId = this.data.merchantId;
+	this.setStorageShop(merchantId)
+	},
+onUnload(){
+	//如果销毁是因为支付完成之后的订单详情页面，则返回时不存储购物车
+	let isPayPageRoute = wx.getStorageSync('isPayPageRoute');
+		if (!isPayPageRoute) {
+			let merchantId = this.data.merchantId;
 			this.setStorageShop(merchantId)
-  		}		
-  	}
+		}		
+	}
 }));

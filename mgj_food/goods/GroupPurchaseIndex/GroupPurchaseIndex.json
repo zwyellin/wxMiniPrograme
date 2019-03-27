@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "groupPurchaseItem":"../../components/groupPurchaseItem/groupPurchaseItem",
+    "groupPurchaseSortBar":"../../components/groupPurchaseSortBar/groupPurchaseSortBar" 
+  },
+  "navigationBarTitleText": "团购",
+  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#482a1a"
+}

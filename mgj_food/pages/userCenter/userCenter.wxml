@@ -28,11 +28,11 @@
 	  				<view class="font-12 mt10"><text >我的余额</text></view>
 	  			</view>
 	  			<navigator class="user-message" url="/goods/userredBag/userredBag" >
-	  				<view style="color:#ff5959"><text style="margin-right:6rpx;font-size: 44rpx">{{userMessage.redBagCount}}</text><text style="font-size: 28rpx" >个</text></view>
+	  				<view style="color:#ff9300"><text style="margin-right:6rpx;font-size: 44rpx">{{userMessage.redBagCount+userMessage.couponsCount}}</text><text style="font-size: 28rpx" >个</text></view>
 	  				<view class="font-12 mt10"><text>我的红包</text></view>
 	  			</navigator>
 	  			<navigator class="user-message" url="/other/firends/person/person">
-	  				<view style="color:#ff59a8"><text style="margin-right:6rpx;font-size: 44rpx">{{cashbackAmtSum}}</text><text style="font-size: 28rpx" >元</text></view>
+	  				<view style="color:#ff9300"><text style="margin-right:6rpx;font-size: 44rpx">{{cashbackAmtSum}}</text><text style="font-size: 28rpx" >元</text></view>
 	  				<view class="font-12 mt10"><text>我的返利</text></view>
 				</navigator>	
 	  		</view>

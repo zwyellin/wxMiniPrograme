@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "groupPurchaseEvalueteItem":"../../../components/groupPurchaseEvaluateItem/groupPurchaseEvaluateItem"
+  },
+  "navigationBarTitleText":"用户评价"
+}

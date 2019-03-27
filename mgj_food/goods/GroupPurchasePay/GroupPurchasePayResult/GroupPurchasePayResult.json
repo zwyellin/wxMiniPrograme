@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "groupPurchaseItem":"../../../../components/groupPurchaseItem/groupPurchaseItem"
+  },
+  "navigationBarTitleText": "支付结果",
+  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#482a1a"
+}

@@ -1,0 +1,19 @@
+/* goods/GroupPurchasePay/GroupPurchaseorderDetails/server0OrderDetails/serverOOrderDetails.wxss */
+.headImage{
+    width:70rpx;
+    height:70rpx;
+    border-radius:35rpx;
+   padding-top: 40rpx;
+}
+.footerBtns{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.footerBtn{
+    background: transparent;
+    line-height:2;
+    padding:0 60rpx;
+    border-radius:40rpx;
+}

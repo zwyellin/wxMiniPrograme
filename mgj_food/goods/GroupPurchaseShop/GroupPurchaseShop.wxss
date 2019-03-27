@@ -1,0 +1,146 @@
+/* goods/GroupPurchaseShop/GroupPurchaseShop.wxss */
+@import "../../components/star/star.wxss";
+
+.container{
+    background: #eee;
+}
+
+.merchantInfo,.serviceCategory,.merchantRecommend,.merchantCardBox,.merchant-evaluate,.NearGroupPurchase{
+    padding: 0 40rpx;
+    background:#fff;
+}
+.container text{
+  
+}
+/* 主要信息 */
+.merchantName{
+    color:#333;
+    font-size: 44rpx;
+}
+.merchantStar{
+    margin-top: 20rpx;
+    align-items:center;
+}
+.merchantStar text{
+    margin-left: 20rpx;
+    font-size: 22rpx;
+    color:#666;
+}
+.merchantWorkTime{
+    font-size:22rpx;
+    color:#999;
+}
+
+.merchantMainInfo_type{
+    margin-top: 30rpx;
+
+}
+.merchantMainInfo_type navigator{
+    margin: 0 14rpx;
+}
+.merchantMainInfo_image{
+    position: relative;
+    padding-bottom: 20rpx;
+    background:white;
+
+}
+
+.merchantMainInfo_type image{
+    width: 40rpx;
+    height: 40rpx;
+}
+.merchantMainInfo_image_TotalIcon{
+    position: absolute;
+    bottom: 10%;
+    right:30rpx;
+    padding: 4rpx 20rpx;
+    border-radius: 20rpx;
+    background: rgba(0,0,0,0.4);
+}
+
+.merchantInfoContactWay{
+    margin-top: 30rpx;
+    padding-bottom: 40rpx;
+}
+.merchantInfoContactWay navigator{
+    font-size: 28rpx;
+}
+.merchantInfoTel{
+    margin:0 20rpx;
+    flex:0 0 auto;
+}
+/* 支付方式（服务类别） */
+.serviceCategory{
+    padding-bottom: 40rpx; 
+}
+.serviceCategoryItem{
+    padding-top: 40rpx;
+}
+.serviceCategory_typeIcon image{
+    width: 40rpx;
+    height:40rpx;
+    margin-right: 20rpx;
+    border-radius: 5rpx;
+}
+.serviceCategory_typeIcon text{
+    font-size: 34rpx;
+    color:#333;
+    font-weight: bold;
+}
+.serviceCategoryBuyButton button{
+    font-size: 26rpx;
+    color:#fff;
+    background: #ff9900;
+    border-radius: 5rpx;
+    width:160rpx;
+    padding-left:10rpx;
+    padding-right:10rpx;
+}
+.serviceCategoryBuyButton text{
+    margin-top: 16rpx;
+    font-size: 22rpx;
+    color:#999;
+}
+.serviceCategoryItem_tuangouImage{
+    width: 195rpx;
+    height: 130rpx;
+    flex:0 0 auto;
+    margin-right: 20rpx;
+    border-radius: 8rpx;
+}
+/* 商家其它卡片信息 */
+.merchantCardBox{
+
+}
+.merchantCardItem{
+    padding: 40rpx 0;
+}
+.merchantCardItem-title{
+    font-size:34rpx;
+    color:#333;
+    font-weight: bold;
+}
+/* 商家评价 */
+.merchant-evaluate-type button{
+    padding: 20rpx !important;
+    line-height: 1;
+    border-radius: 38rpx;
+    margin-right: 20rpx;
+    margin-left: 0rpx;
+    margin-bottom: 20rpx;
+    border:1px solid grey;
+
+}
+.merchant-evaluate-type button text{
+    color:#666;
+    font-size: 26rpx;
+    
+}
+
+.maskModal{
+    background: white;
+    border-radius: 20rpx;
+    margin: 20rpx;
+    text-align:center;
+
+}

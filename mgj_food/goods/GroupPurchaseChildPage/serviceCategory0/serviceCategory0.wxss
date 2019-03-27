@@ -1,0 +1,26 @@
+/* goods/GroupPurchaseChildPage/serviceCategory0/serviceCategory0.wxss */
+@import "../../../components/showToast/showToast.wxss";
+
+.totalAmount input{
+    text-align: right;
+}
+
+/*swtich-input整体大小及背景色*/
+.wx-switch-input{
+    width:80rpx !important;
+    height:36rpx !important;
+    /* background: #50D2C2 !important; */
+    /* border: #50d2c2 !important; 2018-07-18 重置开关边框颜色 */
+}
+/*白色样式（false的样式）*/
+.wx-switch-input::before{
+    width:80rpx !important;
+    height: 36rpx !important;
+    margin-top: -1px;
+}
+/*绿色样式（true的样式）*/
+.wx-switch-input::after{
+    width: 40rpx !important;
+    height: 36rpx !important;
+    margin-top: -1px;
+}

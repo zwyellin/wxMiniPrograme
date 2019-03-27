@@ -4,6 +4,7 @@ const Pingpp = require('../../utils/pingpp.js');
 const feedbackApi=require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口
 Page({
   data: {
+    sharerUserId:null,
     maskAnimation:null,
     maskShow:false,
     selectPay:false,
@@ -18,12 +19,13 @@ Page({
     orderId:null
   },
   onLoad(options){
-    let { orderId, price, merchantId } = options;
+    let { orderId, price, merchantId,sharerUserId} = options;
     this.setData({
       price:price,
       channelPrice:price,
       merchantId:merchantId,
-      orderId:orderId
+      orderId:orderId,
+      sharerUserId:sharerUserId
     });
     this.findUserCenter();
   },

@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "mask":"../../../components/mask/mask"
+  },
+  "navigationBarTitleText": "",
+  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#482a1a",
+  "backgroundColor": "#f5f5f5",
+  "onReachBottomDistance":300
+}

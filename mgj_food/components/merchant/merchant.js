@@ -28,7 +28,6 @@ let merchantObj = {
 	},
 	//对源数据，获得精简数据
 	mapList(list){
-		console.log("对数据进行了精简")
 		return list.map(function(item,index,arr){
 					//对list数组的以下属性，提取出来
 					let {logo,id,status,businessStatus,isBrandMerchant,
@@ -59,11 +58,15 @@ let merchantObj = {
 	},
 	goToPageType(e) {
 		let { item } = e.currentTarget.dataset;
-		if (item.gotoType === 6) {
+		if (item.gotoType === 6) {//外卖
 			wx.navigateTo({
 				url:"/goods/shop/shop?merchantid=" + item.merchantId,
 			});
-		} else {
+		}else if(item.gotoType === 4){//团购
+			wx.navigateTo({
+				url:"/goods/GroupPurchaseIndex/GroupPurchaseIndex",
+			});
+		}else {
 			wx.navigateTo({
 				url:`/pages/classPage/classPage?id=${item.tagCategoryId}&name=${item.name}`
 			});

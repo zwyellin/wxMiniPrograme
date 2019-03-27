@@ -3,6 +3,7 @@ const feedbackApi=require('../../components/showToast/showToast.js');  //引入�
 const app = getApp();
 Page({
 	data:{
+		sharedUserId:null,
 		agentId:null,
 		isDisable:false,
 		totalPrice:0,
@@ -31,6 +32,11 @@ Page({
 		platformRedBagCount:0,  //可使用的平台红包个数
 		platformRedText:'无可用红包',
 
+		coupons:null, //马管家券
+    promotionCouponsDiscountTotalAmt:null,//马管家券金额
+    groupPurchaseOrderCouponCodeList:null,//抵用券要发送到请求的对象
+
+
 		promoInfoJson:[],       //本次订单参与的商家活动json  不明字段
 		day:'',
 		initTime:'',
@@ -46,11 +52,14 @@ Page({
 		isOpenOrderMenu:false   //控制订单商品展开显示
 	},
 	onLoad(options){
-		let { merchantId } = options;
+		let { merchantId , sharedUserId } = options;
+		// 分享者id
+		if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
 		let pages = getCurrentPages();
-	    let prevPage = pages[pages.length - 2];
-	    this.setData({
-	    	merchantId:merchantId,
+		let prevPage = pages[pages.length - 2];
+		this.setData({
+			merchantId:merchantId,
+			sharedUserId:sharedUserId,
 			orderMessage:prevPage.data.value,
 			totalPrice:prevPage.data.value.totalPrice,
 			discountAmt:prevPage.data.value.discountAmt,
@@ -378,6 +387,14 @@ Page({
 				redBags:orderUseRedBagList.length === 0 ? null : orderUseRedBagList
 			};
 			data.orderItems = this.data.orderMessage.orderItems;
+			// data.sharedUserId=this.data.sharedUserId;
+			// console.log("下单请求，提交分享者id",this.data.sharerUserId)
+
+			// 马管家券
+			let coupons=this.data.coupons;
+			if(coupons!=null){
+				data.coupons=coupons;
+			}
 			wxRequest({
 	        	url:'/merchant/userClient?m=orderSubmit2',
 	        	method:'POST',
@@ -385,7 +402,7 @@ Page({
 	        		params:{
 	        			data:JSON.stringify(data),
 	        			longitude:app.globalData.longitude,
-	        			latitude:app.globalData.latitude,	
+								latitude:app.globalData.latitude
 	        		},
 	        		token:app.globalData.token	
 	        	},
@@ -397,14 +414,14 @@ Page({
 	        		console.log(price)
 	        		if (res.data.value.paymentType ===1) {
 	        			let merchantId = this.data.merchantId;
-		                let shoppingCart = wx.getStorageSync('shoppingCart');
-		                if (shoppingCart[merchantId]) {
-		                  shoppingCart[merchantId] = []
-		                }
-                		wx.setStorageSync('shoppingCart',shoppingCart);
+								let shoppingCart = wx.getStorageSync('shoppingCart');
+								if (shoppingCart[merchantId]) {
+										shoppingCart[merchantId] = []
+								}
+                wx.setStorageSync('shoppingCart',shoppingCart);
 	        			wx.navigateTo({
-					  		url: '/goods/pay/pay?orderId=' + orderId + '&price=' + price + '&merchantId=' + this.data.merchantId,
-						});
+					  			url: '/goods/pay/pay?orderId=' + orderId + '&price=' + price + '&merchantId=' + this.data.merchantId+"&sharerUserId"+this.data.sharerUserId,
+								});
 	        		} 
 	        		if (res.data.value.paymentType ===2){
 	        			let merchantId = this.data.merchantId;
@@ -419,8 +436,8 @@ Page({
 	        			},1000);
 	        		}
 	        	} else {
-	        		let msg = res.data.value;
-	        		feedbackApi.showToast({title:msg});
+	        		let msg = res.data.value||"";
+	        	//	feedbackApi.showToast({title:msg});
 	        	}	
 	        }).finally(()=>{
 	        	wx.hideLoading();
@@ -471,7 +488,13 @@ Page({
 		data.orderItems = this.data.orderMessage.orderItems;
 		data.redBags = orderUseRedBagList.length === 0 ? null : orderUseRedBagList;
 		data.orderPayType = this.data.payIndex+1;
-		data.userAddressId = this.data.addressInfoId
+		data.userAddressId = this.data.addressInfoId;
+
+		// 马管家券
+		let coupons=this.data.coupons;
+		if(coupons!=null){
+			data.coupons=coupons;
+		}
 		return wxRequest({
         	url:'/merchant/userClient?m=orderPreview2',
         	method:'POST',
@@ -479,11 +502,29 @@ Page({
         		params:{
         			data:JSON.stringify(data),
         			longitude:this.data.addressLongitude,
-        			latitude:this.data.addressLatitude
+							latitude:this.data.addressLatitude,
+							sharedUserId:this.data.sharedUserId
         		},
         		token:app.globalData.token	
         	},
-        })
+        }).then((res)=>{
+					let coupons=null;
+					let promotionCouponsDiscountTotalAmt=null;
+					if(res.data.code==0){
+						coupons=res.data.value.coupons;
+						promotionCouponsDiscountTotalAmt=res.data.value.promotionCouponsDiscountTotalAmt
+					}else{
+
+					}
+					this.data.coupons=coupons;//如果不为空，则prev和submit要发送这个字段
+					this.setData({
+						promotionCouponsDiscountTotalAmt//要显示的
+					})
+					// then链
+					return new Promise((resolve, reject) => {
+            resolve(res);
+        	});
+				})
 	},
 	onUnload(){
 		//如果上一个页面是支付页面，则返回首页刷新数据

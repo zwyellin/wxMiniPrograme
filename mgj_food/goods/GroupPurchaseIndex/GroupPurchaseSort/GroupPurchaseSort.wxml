@@ -1,0 +1,30 @@
+<!--goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort.wxml-->
+<view style="background:white;"> 
+        <!-- 分类，排序，筛选 -->
+        <view class="pageItem flex row-line" style="justify-content:space-around;padding:30rpx 40rpx;">
+            <!-- 分类 -->
+            <view  data-index="0" catch:tap="sortTap">
+                <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==0? 'color:#ff9900':''}}">{{sortBar.sort0Title}}</text>
+                <image  src="{{sortBar.sortActive==0? '../../../images/images/down_1ye.png' :'../../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+            </view>
+            <!-- 排序 -->
+            <view data-index="1" catch:tap="sortTap">
+                <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==1? 'color:#ff9900':''}}">{{sortBar.sort1Title}}</text>
+                <image  src="{{sortBar.sortActive==1? '../../../images/images/down_1ye.png' :'../../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+            </view>
+            <!-- 筛选 -->
+            <view  data-index="2" catch:tap="sortTap">
+                <text class="font-14 color2" style="padding-right:12rpx;{{sortBar.sortActive==2? 'color:#ff9900':''}}">筛选</text>
+                <image  src="{{sortBar.sortActive==2? '../../../images/images/down_1ye.png' :'../../../images/images/down_1.png'}}" style="width:20rpx;height:12rpx"/>
+            </view>
+        </view>
+        <!-- 对应的浮层 -->
+        <groupPurchaseSortBar style="{{isSortBarHidden? 'display:none':''}}" 
+            requestObj="{{sort1RequsetObj}}" sortActive="{{sortBar.sortActive}}"  sort0ActiveRowId="{{childGroupPurchaseCategoryId}}"  
+            catch:outRequestparams="groupPurchaseSortBarParams" catch:changeFatherSort0text="changeSort0Text">
+        </groupPurchaseSortBar>
+            <!-- 商家列表 -->
+        <view style="background:white">
+            <groupPurchaseItem  requestObj="{{groupPurchaseItemRequsetObj}}" config="{{groupPurchaseItemConfig}}"></groupPurchaseItem>
+        </view>
+</view>

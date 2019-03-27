@@ -3,30 +3,45 @@
 	<view class="share-firend" style="background-image: url(http://7xu5hi.com1.z0.glb.clouddn.com/201805051352003971186.png);background-size:100% 100%">
 	</view>
 	<view class="share-money">
-		<text>￥{{fixed.fomatFloat(cashbackAmtSum,2)}}</text>
+		<text><text style="font-size:26rpx;">￥</text>{{fixed.fomatFloat(cashbackAmtSum,2)}}</text>
 	</view>
-	<navigator class="share-result" url="/other/firends/results/results">
-		<text>邀请战果 >></text>
-	</navigator>
-	<view class="title">
-		<text class="line"></text>
-		<text class="text">我邀请过的好友</text>
-		<text class="line"></text>
-	</view>
-	<view class="firends" style="background: #f94f69">
-		<scroll-view scroll-y="true" style="height:{{windowScrollHeight-410}}px">
-			<view class="firends-content"
+	<view class="shareResultsShow">
+		<view class="shareType">
+			<text catch:tap="shareTypeTap" data-type="0" style="{{type==0 ? 'color:#fb4062':''}}">邀请红包{{'('+userList0.length+')'}}</text>
+			<text catch:tap="shareTypeTap" data-type="1" style="{{type==1 ? 'color:#fb4062;border-left:1px solid #ccc':'border-left:1px solid #ccc'}}">分享红包{{'('+userList1.length+')'}}</text>
+		</view>
+		<view>
+			<scroll-view scroll-y="true" style="height:{{windowScrollHeight}}px" bindscrolltolower="shareResultsScrolltolower">
+			<view class="results-content flex flex-spaceBetween flex-row-center"
 				wx:for="{{userList}}" 
-		    	wx:for-item="item" 
-		    	wx:for-index="index" 
-		    	wx:key="index">
-		    	<view class="portrait">
-					<image wx:if="{{item.headImg}}" class="portrait-img" src="{{item.headImg}}"></image>
-					<image wx:if="{{!item.headImg}}" class="portrait-img" src="../../../images/images/login_no.png"></image>
+				wx:for-item="item" 
+				wx:for-index="index" 
+				wx:key="index">
+				<view class="flex flex-row-center portrait">
+					<image wx:if="{{item.headImg}}" class="portrait-img flex0" src="{{item.headImg}}"></image>
+					<image wx:if="{{!item.headImg}}" class="portrait-img flex0" src="../../../images/images/login_no.png"></image>
+					<text>{{item.inviteeMobile}}</text>
 				</view>
-	      		<text class="user font-16">{{item.mobile}}</text>
-	      		<text class="fr" style="margin-top: 30rpx;font-size: 28rpx">{{item.regTime}}</text>
-	  		</view>
-	  	</scroll-view>
+				<text class="fr" style="color:#ff9900">+ ￥{{item.cashbackAmt}}</text>
+			</view>
+			<view wx:if="{{userList.length==0}}" class="results-no">
+				<block wx:if="{{type==0}}">
+					<text>暂无邀请红包</text>
+					<navigator open-type="navigate" url="/other/firends/shareFirend/shareFirend">赚取红包</navigator>
+				</block>
+				<block wx:else>
+					<text>暂无分享红包</text>
+					<navigator open-type="navigate" url="/other/firends/shareFirend/shareFirend">赚取红包</navigator>
+				</block>
+			</view>
+			<view class="loading-info" wx:else >
+				<view wx:if="{{userList.length>4 && ((type==0 && islistLast0) || (type==1 && islistLast1))}}"  class="bottom-text">暂无更多</view>
+				<block wx:elif="{{loading}}">
+					<image src="../../images/merchant/loading.png" class="img-loading"></image>
+					<view class="loading-text">正在加载，请稍候</view>
+				</block>	
+			</view>
+			</scroll-view>
+		</view>
 	</view>
 </view>
