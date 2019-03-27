@@ -4,6 +4,7 @@
 <import src="../../../components/showToast/showToast.wxml" />
 <import src="../../template/shop/manfull.wxml" />
 <import src="../../../components/star/star.wxml" /> <!--评价星星模板-->
+<import src="../../../wxParse/wxParse.wxml" />  <!-- 富文本-->
 
 <!-- selectedFood.imgs 图片 -->
 <view class="container page">
@@ -59,13 +60,37 @@
 			</view>
 		</view>
 	</view>
-	
+	<!--跳转到商店-->
+	<view class="pageItem mt20 padding-tb-20 flex flex-spaceBetween flex-row-center">
+			<!-- 左边 -->
+			<view class="flex1 flex  flex-row-center">
+					<image src="{{merchantInfoObj.logo}}"  style="width:100rpx;height:100rpx;" />
+					<view style="margin-left:20rpx">
+						<view class="font-15 color1">{{merchantInfoObj.name}}</view>
+						<view class="flex flex-row-center" style="margin-top:6rpx">
+								<text style="font-size:22rpx;color:#666">总体评分</text>
+								<template is="star-AttrScore" data="{{size:24,item:merchantInfoObj,AttrName:'averageScore'}}" ></template>
+						</view>
+					</view>
+			</view>
+			<!-- 右边，进店 -->
+		<button class="font-size3 footerBtn" style="border:1px solid #c2c2c2;color:#333;margin-left:40rpx;"
+		catch:tap="gotoShopBtnTap">进店</button>
+	</view>
+
 	<!-- 商品简介 -->
 	<view class="pageItem mt20">
 		<view class="padding-tb-20 font-15 color1 font-bold">商品简介</view>
 		<view class="font-14 color1"></view>
 	</view>
 	
+	<!-- 富文本 -->
+	<view wx:if="{{goodsInfo.nodes}}"  class="pageItem mt20" style="padding-left:0;padding-right:0;">
+			<view class="padding-tb-20 padding-lr-40 font-15 color1 font-bold">商家详情</view>
+			<template is="wxParse" data="{{wxParseData:goodsInfo.nodes}}" />
+	</view>
+
+
 	<!-- 商品评价 -->
 	<view class="mt20" style="padding-bottom:120rpx;">
 		<!-- 标题 -->
@@ -115,6 +140,30 @@
 								</block>		
 							</view>
 							<text class="new-valuate-item-mainText mt20" wx-if="{{item.replyContent!==null}}"><text>商家回复:</text>{{item.replyContent}}</text><!--商家回复-->
+							<view  wx:if="{{item.goodsCommentsList.length!=0}}"><!--赞，踩列表-->
+								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0}}" class="new-valuate-item-icon flex">
+									<image src="../../image/zan.png"></image><!-- 赞-->
+									<view class="new-valuate-item-iconText">
+										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores}}"
+											wx:for-index="goodsIndex"
+											wx:for-item="goodsItem"
+											wx:key="orderId">
+											<text>{{goodsItem.goodsName}}</text>
+										</block>
+									</view>
+								</view>
+								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex" style="margin-top:{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0 ? '' : '20rpx'}};">
+									<image src="../../image/cai.png"></image><!--踩-->
+									<view class="new-valuate-item-iconText">
+										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores}}"
+											wx:for-index="goodsIndex"
+											wx:for-item="goodsItem"
+											wx:key="id">
+											<text>{{goodsItem.goodsName}}</text>
+										</block>
+									</view>
+								</view>
+							</view>
 					   </view>
 					</view>
 			    </block>

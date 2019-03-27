@@ -54,6 +54,14 @@ let modify={
           if(item.type==1){//代金券
             value.voucher=value.voucher.concat(item);
           }else if(item.type==2){//团购套餐
+            // 处理images
+            let images=item.images;
+            if(images.indexOf(";")==-1){
+              images=[images];
+            }else{
+              images=images.split(";");
+            }
+            item.images=images;
             value.groupSetMeal= value.groupSetMeal.concat(item);
           }
         });

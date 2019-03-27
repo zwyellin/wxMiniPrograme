@@ -92,8 +92,11 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
 		let { merchantid,agentId,longitude,latitude,search,sharedUserId} = options;
+		
 		const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
-		console.log("scene",scene,scene=="undefined")
+		console.log("scene",scene,scene=="undefined");
+		console.log("options",options);
+		console.log("scene",scene)
 		//search为商店搜索，点击后跳转自身商店(用于标识)
 		//sharerToken标识，是转发出去后点击转发卡片进来的。
 		if(scene=="undefined"){
@@ -146,6 +149,16 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		//获取商家详情
 		this.findMerchantInfo().then(()=>{//再请求店家二维码
 			this.getMGJMerchantWXQRImage();
+			// 查看是否有商品页面的缓存，有说明时商品页跳过来的，则要合并数据
+			console.log("shareTakeawayData",wx.getStorageSync('shareTakeawayData'))
+			if (wx.getStorageSync('shareTakeawayData')) {//说明有缓存
+				let shareTakeawayData=wx.getStorageSync('shareTakeawayData');
+				this.setData(shareTakeawayData,()=>{
+					wx.setStorageSync('shareTakeawayData',null);//清空
+				})
+			} else {
+		
+			}
 		})
 
 		//返回商家商品(热销榜，好评榜等) 
@@ -221,13 +234,30 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		//条件：onload没有重复读取缓存，并且这个页面是shop本身页面。不是商店搜索页面时才执行
 		//触发场景：从商家搜索返回来时
 		var pages = getCurrentPages();
-		var prevPage = pages[pages.length - 2]; // 上一级页面
-		
+		var prevPage=null;
+		if(pages.length>=2){
+			prevPage= pages[pages.length - 2]; // 上一级页面
+		}else{//有可能是分享进来的，此时页面栈长度为1
+			prevPage={
+				route:""
+			}
+		}
 		if(!this.data.isonLoadRun){
+			// 商店搜索返回来的
 			if (!/goods\/shop\/shop/.test(prevPage.route)) {
 				this.getStorageShop(this.data.merchantId);
 				this.totalprice();
 			}
+			//也可能是商品页面返回来的。	// 要共享回去的数据selectFoods，listFoods，totalprice，totalcount,fullPrice
+			// 及sharedUserId
+			if(this.data.shareTakeawayData!==undefined){
+				this.setData(this.data.shareTakeawayData,()=>{
+					delete this.data.shareTakeawayData;	// 重置为undefined,避免非商品页也触发这里
+				});
+			}
+			// 如果是分享进来的，则是已本地缓存形式传输
+		}else{
+
 		}
 		wx.setStorageSync('isPayPageRoute',false);
 	},

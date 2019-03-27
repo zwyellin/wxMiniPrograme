@@ -108,7 +108,7 @@ Page({
         }
       })
       // 保存抵用券金额，但不渲染到页面。先后台判断
-      //this.data.OrderPreviewRequestObj.cashDeductionPrice=cashDeductionPrice;
+      this.data.OrderPreviewRequestObj.cashDeductionPrice=cashDeductionPrice;
       this.setData({
         groupPurchaseOrderCouponCodeList,
       },()=>{
@@ -198,10 +198,6 @@ Page({
     }
     this.data.orderMoney=data.totalPrice;
     data.originalPrice=totalPrice;
-    let coupons=this.data.coupons;
-    if(coupons!=null){
-      data.coupons=coupons;
-    }
     if(this.data.sharedUserId!=null){
       data.sharedUserId=this.data.sharedUserId;
     }
@@ -241,14 +237,9 @@ Page({
         // 更新总提交价格
         this.data.actuallyAmount=totalPrice;
         this.setData({
-          actuallyAmount:totalPrice
+          actuallyAmount:totalPrice,
+          'OrderPreviewRequestObj.cashDeductionPrice':cashDeductionPrice        // 更新抵用券
         })
-        // 更新抵用券
-        if(cashDeductionPrice){
-          this.setData({
-            'OrderPreviewRequestObj.cashDeductionPrice':cashDeductionPrice
-          })
-        }
       }else{
         wx.showToast({
           title:res.data.value,

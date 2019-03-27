@@ -135,15 +135,21 @@ Page({
       if(_item.checkType) num+=1;
     })
     if(num==0){//第一个
+      hasisCumulate0=false;//重置
       item.checkType=true;//同时标记选中状态
       if(item.isCumulate==0) hasisCumulate0=true;//第一个选的就是不可叠加的。做好已有不可叠加的标记
     }else{//后续只能添加可叠加的，不可叠加的只能是第一个
       if(item.isCumulate==0){//不可叠加
         if(item.checkType){//如果已经被选中了，则取消选中
           item.checkType=false;
-        }else{//否则提示
-          wx.showToast({
+        }else if(hasisCumulate0){//否则提示
+          wx.showToast({//已选中不可叠加情况
             title:"你不能再选择不可叠加的代金券",
+            icon:"none"
+          })
+        }else{
+          wx.showToast({//木有选中不可叠加的
+            title:"这个是不可叠加的代金券",
             icon:"none"
           })
         }
@@ -158,6 +164,7 @@ Page({
         }
       }
     }
+    this.data.hasisCumulate0=hasisCumulate0;
     couponCodeList[index]=item;
     this.setData({
       couponCodeList

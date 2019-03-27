@@ -7,28 +7,37 @@ const feedbackApi = require('../../../components/showToast/showToast.js');  //�
 const { wxRequest, Promise } = require('../../../utils/util.js');
 const { merchantShop } = require('../../template/shop/merchantShop.js');
 
+let WxParse = require('../../../wxParse/wxParse.js');//富文本
+
 Page(Object.assign({}, merchantShop,{
   /**
    * 页面的初始数据
    */
   data: {
-    sharedUserId:null,
-		goodsId:null,//商品id
+		sharedUserId:null,
+		// 方式一：通过商品id，请求商品数据，再加载商家信息（ruleDtoList）
+		// findMerchantInfo会设置方式二的那些属性
+		goodsId:null,//商品id,
 
-    //上页面或请求回来的数据
+		// 方式二：读取上个页面信息，区别：这个方式返回商店时要共享数据
+		//上页面或请求回来的数据
+		// 【要共享购物车信息部分的属性】返回商店时渲染到商店页面
+		// 要共享回去的数据selectFoods，listFoods，totalprice，totalcount,fullPrice
+		selectedFood:{}, //某一商品详情。在这里是页面要显示的商品数据
     merchantInfoObj:null,
-    merchantId:null,
+		merchantId:null,
+			// 以下为购物车信息
+		selectFoods:[],  //添加进购物车里的商品
+		listFoods:[],			//点购物车展开的购买了的列表
+		minPrice:0,       //商家起送价
+			//以下为购物车满减部分信息 
+		ruleDtoList:null,//活动规则，用于计算总价
+		fullPrice:{},			//满减
     totalprice:0,    //购买商品总价
     totalcount:0,   //购买商品总个数
-    selectFoods:[],  //添加进购物车里的商品
-    selectedFood:{}, //某一商品详情
-    ruleDtoList:null,//活动规则，用于计算总价
-
-    fullPrice:{},
-    isTogether:false,  //控制去凑单按钮的显示与隐藏
-    minPrice:0,       //商家起送价
-		listFoods:[],
-		
+		isTogether:false,  //控制去凑单按钮的显示与隐藏
+			// 以下为去凑单需要用的对象
+		removalMenuList:{},
 
 
 		WXQRImage:"data:image/png;base64,",//店家二维码
@@ -44,38 +53,80 @@ Page(Object.assign({}, merchantShop,{
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let {goodsId,sharedUserId}=options;
+		let {goodsId,sharedUserId}=options;
+		this.data.sharedUserId=sharedUserId;
     //分享传goodsId,商店进来则读取其selectedFood。
-    if(true){//分享进来的 //goodsId!==undefined
+    if(goodsId!==undefined){//分享进来的 //goodsId!==undefined
 			//根据goodsId发送请求
-			this.data.goodsId=185;
+			this.data.goodsId=goodsId;
 			this.findTGoodsById().then(()=>{
+				console.log("ruleDtoList",this.data.ruleDtoList)
 				this.findMerchantInfo();
+
 				this.queryGoodsComments();
 				this.getMGJMerchantWXQRImage();
+				this.showTakeAwayGoodsDetail();
 			});
     }else{
       // 从上一页面读取数据。要显示的是selectedFood
 			this.getPrevData();
-			this.getMGJMerchantWXQRImage();
-			// 请求评价
-			this.queryGoodsComments();
     }
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+	onUnload(){
+		// 店铺进来，是返回回去商家。触发onunload来共享这边数据
+		// 分享进来，是重定向到商家。传参过去
+		// 要共享回去的数据selectFoods，listFoods，totalprice，totalcount,fullPrice
+		// 及sharedUserId
+		let shareTakeawayData={};
+		var pages = getCurrentPages();
+		if(pages.length>1){//店铺进来德，而非分享进来德
+			var prevPage = pages[pages.length - 2]; // 上一级页面
+			shareTakeawayData={
+				selectFoods:this.data.selectFoods,
+				listFoods:this.data.listFoods,
+				totalprice:this.data.totalprice,
+				totalcount:this.data.totalcount,
+				fullPrice:this.data.fullPrice,
+				sharedUserId:this.data.sharedUserId
+			}
+			prevPage.data.shareTakeawayData=shareTakeawayData;//设置上一页面数据
+			// 那边onshow时会判断
+		}
 	},
+	// 进店按钮点击事件
+	gotoShopBtnTap(e){
+		// 分享进来，是重定向到商家。传参过去
+		// 要共享回去的数据selectFoods，listFoods，totalprice，totalcount,fullPrice
+		let shareTakeawayData={};
+		shareTakeawayData={
+			selectFoods:this.data.selectFoods,
+			listFoods:this.data.listFoods,
+			totalprice:this.data.totalprice,
+			totalcount:this.data.totalcount,
+			fullPrice:this.data.fullPrice,
+			sharedUserId:this.data.sharedUserId
+		}
+		wx.showToast({
+			title:"正在跳转",
+			icon:"loading",
+			mask:true,
+			duration:20000
+		})
+		wx.setStorageSync('shareTakeawayData',shareTakeawayData);
+		wx.redirectTo({
+			url:`/goods/shop/shop?merchantid=${this.data.selectedFood.merchantId}&sharedUserId=${this.data.sharedUserId}`,
+			success:()=>{
+				wx.hideToast();
+			}
+		})
+	},
+	// 分享
+	onShareAppMessage(res) {
+		return {
+				title:this.data.selectedFood.name ,
+				path: '/goods/shop/Takeaway/Takeaway?goodsId='+ this.data.selectedFood.id+'&sharedUserId='+app.globalData.userId,
+		};
+  },
 	
 	// 从上一页面读取
   getPrevData(){
@@ -87,19 +138,29 @@ Page(Object.assign({}, merchantShop,{
       let selectFoods=prevPage.data.selectFoods;//全部选择了的商品
       let merchantInfoObj=prevPage.data.merchantInfoObj;//商家信息
       let ruleDtoList=prevPage.data.ruleDtoList;
-			let {totalcount,totalprice,minPrice,listFoods,merchantId}=prevPage.data;
+			let {totalcount,totalprice,minPrice,listFoods,merchantId,isTogether,fullPrice,removalMenuList}=prevPage.data;
 			// 修改选择了的商品对象
 			selectedFood=this._modifySelectFoods(selectedFood);
       this.setData({
-        selectedFood,
-        selectFoods,
-        totalcount,
-        totalprice,
-        merchantInfoObj,
-        ruleDtoList,
-        minPrice,
-        listFoods,
-        merchantId
+        selectedFood,//商品对象
+        merchantInfoObj,//渲染需要
+				merchantId,
+				// 以下为购物车信息
+				selectFoods,
+				listFoods,
+				minPrice,
+				// 以下为购物车满减部分信息
+				ruleDtoList,
+				totalprice,
+				totalcount,
+				isTogether,
+				fullPrice,
+				// 以下为去凑单需要用的对象
+				removalMenuList
+			},()=>{
+				this.getMGJMerchantWXQRImage();
+				this.queryGoodsComments();
+				this.showTakeAwayGoodsDetail();
 			})
     }
 	},
@@ -116,31 +177,48 @@ Page(Object.assign({}, merchantShop,{
 		value.images=images;
 		return value;
 	},
-	// 请求商品
-	findTGoodsById(){
+
+		// 请求商品
+		findTGoodsById(){
+			return wxRequest({
+				url:'/merchant/userClient?m=findTGoodsById',
+				method:'POST',
+				data:{
+					params:{
+						goodsId: this.data.goodsId
+					}	
+				}
+			}).then(res=>{
+				if(res.data.code==0){
+					let selectedFood=this._modifySelectFoods(res.data.value);
+					this.setData({
+						selectedFood
+					})
+					this.data.merchantId=selectedFood.merchantId
+				}
+			})
+		},
+
+	//富文本
+	showTakeAwayGoodsDetail(){
 		return wxRequest({
-			url:'/merchant/userClient?m=findTGoodsById',
+			url:'/merchant/userClient?m=showTakeAwayGoodsDetail',
 			method:'POST',
 			data:{
 				params:{
-					goodsId: this.data.goodsId
+					goodsId: this.data.selectedFood.id
 				}	
 			}
 		}).then(res=>{
 			if(res.data.code==0){
-				let selectedFood=this._modifySelectFoods(res.data.value);
-				this.setData({
-					selectedFood
-				})
-				this.data.merchantId=selectedFood.merchantId
+				let that = this;
+				WxParse.wxParse('goodsInfo', 'html', res.data.value.data, that, 5);
+				console.log(res.value.data)
 			}
 		})
 	},
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  },
+
+
   	//关闭查看商品详情
 	close(){
 		this.maskHideAnimation();
@@ -683,8 +761,76 @@ Page(Object.assign({}, merchantShop,{
 			});
 	    }
 	    this.totalprice();
-  },
-  
+	},
+	//清空购物车
+	empty(){
+		this.setData({
+			selectFoods: [],
+			fold: false
+			});
+			this.totalprice();
+	},
+	// 关闭去凑单
+	boosList(){
+		this.setData({
+			isShowTogether:false
+		});
+	},
+	//去凑单
+	boosLisr(){
+		if(this.data.isTogether){
+			let fullPrice = this.data.fullPrice;       
+			let removalMenuList = this.data.removalMenuList;
+			let listFoods = [];			
+			removalMenuList.forEach(item=>{
+				let attributes = "";
+				if (item.goodsAttributeList[0] && item.goodsAttributeList[0].name) {
+					let attributesList = item.goodsAttributeList[0].name.split('|*|');
+					attributes = attributesList[0];
+				}
+				item.goodsSpecList.forEach((spec)=>{
+					if (spec.price > 0 && spec.price <= fullPrice.fullRange*2 && item.hasDiscount!=1) {
+						if (attributes) {
+							listFoods.push({attributes:attributes, id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
+						} else {
+							listFoods.push({id:item.id, hasDiscount: item.hasDiscount, categoryId: item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
+						}
+					}	
+				});
+			});
+
+			if (listFoods.length === 0) {
+				removalMenuList.map(item=>{
+					let attributes = "";
+					if (item.goodsAttributeList[0] && item.goodsAttributeList[0].name) {
+						let attributesList = item.goodsAttributeList[0].name.split('|*|');
+						attributes = attributesList[0];
+					}
+					item.goodsSpecList.map((spec)=>{
+						if (spec.price > 0 && item.hasDiscount!=1) {
+							if (attributes) {
+								listFoods.push({attributes:attributes, id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
+							} else {
+								listFoods.push({id:item.id,hasDiscount:item.hasDiscount,categoryId:item.categoryId, parentRelationCategoryId: item.parentRelationCategoryId, name: item.name, priceObject: spec});
+							}
+						}	
+					});
+				});
+			}
+			listFoods.sort((a,b)=>{
+				return a.priceObject.price-b.priceObject.price;
+			});
+			this.setData({
+				listFoods:listFoods.slice(0,10),
+				isShowTogether:!this.data.isShowTogether,
+				fold:false
+			});
+		} else {
+			this.setData({
+				isShowTogether:false
+			});
+		}
+	},
   //计算订单中某一商品的总数
 	getCartCount: function (id,priceObject) {
 		let selectFoods = this.data.selectFoods;

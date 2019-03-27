@@ -255,8 +255,54 @@ Page({
   // 电话弹窗 点击取消
   maskCancelTap(e){
     this.setData({
-      tel_mask_show:false
+      tel_mask_show:false,
+      QRcode_mask_show:false
     })
   },
-
+	//店家二维码
+	getMGJMerchantWXQRImage(){
+		return wxRequest({
+			url:'/merchant/userClient?m=getMGJMerchantWXQRImage',
+			method:'POST',
+			data:{
+				token:app.globalData.token,
+				params:{
+					bizType:1,
+					merchantId:this.data.groupPurchaseMerchantId
+				}	
+			},
+		}).then(res=>{
+			let WXQRImage=this.data.WXQRImage;
+			WXQRImage+=res.data.value;
+			this.setData({
+				WXQRImage
+			})
+		})
+	},
+	//QRcodeIconTap
+	QRcodeIconTap(){
+		this.setData({
+			QRcode_mask_show:true
+		})
+	},
+	// 保存二维码
+	saveQRCode(e){
+		let {images}=e.currentTarget.dataset;
+		let that=this;
+		wx.previewImage({
+			current: images, // 当前显示图片的http链接
+			urls:[images],// 需要预览的图片http链接列表
+			success:function(){
+				that.setData({
+					QRcode_mask_show:false
+				})
+			}
+		})
+	},
+	//关闭二维码显示
+	maskCancelTap(e){
+    this.setData({
+      QRcode_mask_show:false
+    })
+  },
 })

@@ -154,7 +154,7 @@
                 wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index"
                 url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}&&sharedUserId={{sharedUserId}}">
                     <!-- 左边 -->
-                    <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
+                    <image src="{{item.images[0]}}" class="serviceCategoryItem_tuangouImage"></image>
                     <!-- 右边 -->
                     <view class="flex flex-spaceBetween" style="flex:1;margin-top:-10rpx;">
                         <!-- 左边 -->

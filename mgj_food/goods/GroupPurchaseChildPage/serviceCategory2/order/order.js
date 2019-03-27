@@ -485,20 +485,20 @@ Page({
           /** 每单限量数 */
           //private Integer orderLimit = 0; null为不限制
           let {stockType,isPurchaseRestriction,stock,surplusStock,orderLimit}=groupSetMealItem;
-          if(orderLimit==null) orderLimit=999;
-          let maxNum=999;//默认较大的值
-          if(isPurchaseRestriction==1 && stockType==1){//都有限制，取小值
-            maxNum=Math.min(surplusStock,orderLimit)
-          }else if(isPurchaseRestriction==1){//库存有限制
-             maxNum=surplusStock;
-          }else if(stockType==1){
-            maxNum=orderLimit;
-          }
+          // if(orderLimit==null) orderLimit=999;
+          // let maxNum=999;//默认较大的值
+          // if(isPurchaseRestriction==1 && stockType==1){//都有限制，取小值
+          //   maxNum=Math.min(surplusStock,orderLimit)
+          // }else if(isPurchaseRestriction==1){//库存有限制
+          //    maxNum=surplusStock;
+          // }else if(stockType==1){
+          //   maxNum=orderLimit;
+          // }
           this.data.groupSetMealItem=groupSetMealItem;
           this.setData({
             groupSetMealItem,
             merchantId:groupSetMealItem.merchantId,
-            maxNum
+            
          });
         //  设置预约时间
        //是否需要预约

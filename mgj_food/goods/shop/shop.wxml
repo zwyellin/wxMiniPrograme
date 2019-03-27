@@ -468,25 +468,10 @@
 							<view  wx:if="{{item.goodsCommentsList.length!=0}}"><!--赞，踩列表-->
 								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0}}" class="new-valuate-item-icon flex">
 									<image src="../image/zan.png"></image><!-- 赞-->
-									<view class="new-valuate-item-iconText">
-										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores}}"
-											wx:for-index="goodsIndex"
-											wx:for-item="goodsItem"
-											wx:key="orderId">
-											<text>{{goodsItem.goodsName}}</text>
-										</block>
-									</view>
 								</view>
-								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex" style="margin-top:{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0 ? '' : '20rpx'}};">
+								<view wx:if="{{ }}" class="new-valuate-item-icon flex" style="margin-top:{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0 ? '' : '20rpx'}};">
 									<image src="../image/cai.png"></image><!--踩-->
-									<view class="new-valuate-item-iconText">
-										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores}}"
-											wx:for-index="goodsIndex"
-											wx:for-item="goodsItem"
-											wx:key="id">
-											<text>{{goodsItem.goodsName}}</text>
-										</block>
-								    </view>
+									<text></text>
 								</view>
 							</view>
 					   </view>

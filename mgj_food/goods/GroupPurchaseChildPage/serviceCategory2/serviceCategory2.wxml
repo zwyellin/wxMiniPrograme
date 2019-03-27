@@ -25,7 +25,15 @@
                     <image src="../../image/newManUse.png" style="height:34rpx;width:126rpx;margin-top:-9rpx;vertical-align:middle;margin-left:20rpx;"/>
                 </block>
             </view>
-            <image src="../../image/QRcodeIcon.png" style="width:50rpx;height:50rpx;padding:5rpx 20rpx;"/>
+            <!-- 商品二维码icon -->
+            <image src="../../image/QRcodeIcon.png" style="width:50rpx;height:50rpx;padding:5rpx 20rpx;" catch:tap="QRcodeIconTap"/>
+            <!-- 悬浮框 -->
+            <mask position="center" wx:if="{{QRcode_mask_show}}" catch:maskclick="maskCancelTap">
+                <view  style="background:white;border-radius:20rpx;margin:200rpx 80rpx 0 80rpx;text-align:center;padding:60rpx;">
+                    <image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" catch:tap="saveQRCode"/>
+                    <view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行识别及保存</view>
+                </view>
+            </mask>
         </view>
         <!-- 商家名称 -->
         <view class="flex flex-row-center"> 
@@ -68,22 +76,24 @@
             <text class="font-size4 color2">{{groupSetMealItem.createTime}}至{{groupSetMealItem.endTime}}</text>
         </view>
         <!-- 适用范围 -->
-        <view class="ticketMsgItem mt30" wx:if="groupSetMealItem.applyRange"> 
+        <view class="ticketMsgItem mt30" wx:if="{{groupSetMealItem.applyRange}}"> 
             <text class="font-size4 color1 font-bold" style="display:block">适用范围:</text>
             <!-- 内容 -->
             <text class="font-size4 color2">{{groupSetMealItem.applyRange}}</text>
         </view>
         <!-- 使用规则 -->
-        <view class="ticketMsgItem mt30" wx:if="groupSetMealItem.useRule"> 
+        <view class="ticketMsgItem mt30" wx:if="{{groupSetMealItem.useRule}}"> 
             <text class="font-size4 color1 font-bold" style="display:block">使用规则:</text>
             <!-- 内容 -->
             <text class="font-size4 color2">{{groupSetMealItem.useRule}}</text>
         </view>
         <!-- 规则提醒 -->
-        <view wx:if="{{false}}" class="ticketMsgItem mt30" wx:if="groupSetMealItem.useRule"> 
+        <!-- 核销。@isAutomaticallyCancelAfterVerification 。1:自动;2:不自动 -->
+        <!-- 需预约且自动核销要提醒-->
+        <view wx:if="{{groupSetMealItem.isBespeak==1 && groupSetMealItem.isAutomaticallyCancelAfterVerification==1}}" class="ticketMsgItem mt30" > 
             <text class="font-size4 color1 font-bold" style="display:block">规则提醒:</text>
             <!-- 内容 -->
-            <text class="font-size4 color2">{{groupSetMealItem.useRule}}</text>
+            <text class="font-size4 color2">订单确认后，如超出预约时间未使用，将自动使用</text>
         </view>
     </view>
 

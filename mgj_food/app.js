@@ -19,10 +19,10 @@ App({
         this.globalData.windowWidth = res.windowWidth;
         if (res.model.indexOf('iPhone') > -1) {
           this.globalData.client = "iphone";
-          this.globalData.clientVersion = "3.1.9";
+          this.globalData.clientVersion = "3.2.1";
         } else {
           this.globalData.client = "android";
-          this.globalData.clientVersion = "3.2.5";
+          this.globalData.clientVersion = "3.2.6";
         }
         this.globalData.pixelRatio = res.pixelRatio;
         console.log(res.model);
@@ -113,7 +113,7 @@ App({
   globalData: {
     token:'',
     client:'',
-    clientVersion:'3.2.3',
+    clientVersion:'',
     agentPhone:null,
     pixelRatio:null,
     agentId:null,
