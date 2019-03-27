@@ -13,7 +13,6 @@ const merchantShop = {
         		params:{
         			latitude:app.globalData.latitude,
     					longitude:app.globalData.longitude,
-        			agentId:app.globalData.agentId,
         			merchantId:this.data.merchantId
         		}	
         	},
@@ -28,6 +27,8 @@ const merchantShop = {
 				wx.setNavigationBarTitle({
 				  	title: name
 				});
+				// 更新代理商【可能是分享进来的】
+				app.globalData.agentId=value.agentId;
 				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}

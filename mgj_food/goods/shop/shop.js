@@ -1477,7 +1477,7 @@ onShareAppMessage(res) {
 	console.log(app.globalData.userId);
 		return {
 				title: '马管家',
-				path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&agentId='+app.globalData.agentId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude+'&sharedUserId='+app.globalData.userId,
+				path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&sharedUserId='+app.globalData.userId,
 		};
 },
 onHide(){
