@@ -3,7 +3,7 @@
     <!--板块。 订单内容信息 -->
     <view class="pageItem padding-tb-40 flex flex-spaceBetween">
         <!-- 左边 -->
-        <image src="{{groupSetMealItem.images}}" class="serviceCategoryItem_tuangouImage flex0"></image>
+        <image src="{{groupSetMealItem.images[0] || ''}}" class="serviceCategoryItem_tuangouImage flex0"></image>
         <!-- 右边 -->
         <view class="flex flex-spaceBetween flex1" style="align-items:flex-end;padding-bottom:20rpx;">
             <!-- 左边 -->

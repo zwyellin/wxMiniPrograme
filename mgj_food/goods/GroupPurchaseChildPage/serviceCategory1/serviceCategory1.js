@@ -9,27 +9,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isLoginsuccess:false,//是否登入
-
-    tel_mask_show:false,
-    groupMerchantInfo:null,//直接读取上一页的该对象
-    merchantId:null,
-    voucherItem:null,
-    itemIndex:null,
-
-
+    //入参 
     groupPurchaseCouponId:null,
     sharedUserId:null,
-
-
+    //请求回来的数据对象/属性
+    groupMerchantInfo:null,//商家对象
+    voucherItem:null,//代金券对象
+    // 页面状态
+    isLoginsuccess:false,//是否登入
+    tel_mask_show:false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //  判断是否登入
-    this.isLoginsuccess();
     // 获得参数@groupPurchaseCouponId为其id
     let {groupPurchaseCouponId,sharedUserId}=options;
     if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取自己的经纬度。及设置商家对应的代理商
@@ -38,22 +32,16 @@ Page({
     if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
     Object.assign(this.data,{
       groupPurchaseCouponId,
+    })
+    this.setData({
       sharedUserId
     })
     // 开始请求
-    console.log("传过来的参数为",groupPurchaseCouponId)
     this.findGroupPurchaseCouponInfo();
 
-
+    //判断是否登入
+    this.isLoginsuccess();
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
    //点击电话图标事件
    callPhoneTap(e){
     this.setData({
@@ -98,8 +86,14 @@ Page({
       this.isLoginsuccess(true);//跳转到登入
     }
   },
-
+  // 请求代金券信息
   findGroupPurchaseCouponInfo(){
+    wx.showToast({
+      title:"加载中",
+      icon:"loading",
+      mask:true,
+      duration:20000
+    })
     wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
       method:'POST',
@@ -112,11 +106,11 @@ Page({
         }	
       },
     }).then(res=>{
+      wx.hideToast();
       if (res.data.code === 0) {
         let value=res.data.value;
         let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseMerchant)
         let voucherItem=this.voucherItemModify(value);
-        app.globalData.agentId=groupMerchantInfo.agentId;
         this.setData({
           groupMerchantInfo,
           voucherItem,
@@ -143,12 +137,4 @@ Page({
     }
     return item;
   },
-  // 分享
-	onShareAppMessage(res) {
-		console.log(app.globalData.userId);
-    	return {
-      		title: '马管家',
-      		path: '/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId='+ this.data.groupPurchaseCouponId+'&sharedUserId='+app.globalData.userId,
-    	};
-  	},
 })

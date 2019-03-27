@@ -102,7 +102,8 @@
         <!-- 标题及更多优惠 -->
         <view class="flex flex-spaceBetween flex-row-center">
             <text class="color1 font-bold font-size2">商家信息</text>
-            <navigator class="flex flex-row-center" url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{groupSetMealItem.merchantId}}">
+            <navigator class="flex flex-row-center" 
+            url="/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId={{groupSetMealItem.merchantId}}&sharedUserId={{sharedUserId}}">
                 <text class="font-size5">更多优惠</text>
                 <image src="../../image/more.png" style="width:20rpx;height:20rpx;padding-left:15rpx" />
             </navigator>
@@ -172,7 +173,7 @@
         </view>
         <navigator class="flex flex-spaceBetween mt20 padding-lr-40" 
             wx:for="{{groupSetMealexcludeItem}}" wx:key="index"
-            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}">
+            url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}&sharedUserId={{sharedUserId}}">
                 <!-- 左边 -->
                 <image src="{{item.images}}" class="serviceCategoryItem_tuangouImage"></image>
                 <!-- 右边 -->

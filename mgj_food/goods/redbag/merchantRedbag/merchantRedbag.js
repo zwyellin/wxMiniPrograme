@@ -74,9 +74,9 @@ Page({
 		});
 		redBagList[index].selectStatus = true;
 		let isFound = false;
-		useRedBagList.map((item,index)=>{
-			if (item.promotionType === redBagList[index].promotionType) {
-				useRedBagList.splice(index,1,redBagList[index]);
+		useRedBagList.map((_item,_index)=>{
+			if (_item.promotionType === redBagList[index].promotionType) {
+				useRedBagList.splice(_index,1,redBagList[index]);
 				isFound = true;
 			}	
 		});

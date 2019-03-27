@@ -53,6 +53,8 @@ Page({
 	},
 	onLoad(options){
 		let { merchantId , sharedUserId } = options;
+		// 分享者id
+		if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
 		let pages = getCurrentPages();
 		let prevPage = pages[pages.length - 2];
 		this.setData({

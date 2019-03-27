@@ -164,7 +164,9 @@ Page({
         let value=res.data.value;
         this.setData({
           enableGroupPurchaseOrderCouponCodeCount:value.enableGroupPurchaseOrderCouponCodeCount,
+          // 保存马管家券
           coupons:value.coupons,
+          // 保存抵用券
           promotionCouponsDiscountTotalAmt:value.promotionCouponsDiscountTotalAmt,
         })
       }else{
@@ -198,7 +200,7 @@ Page({
     }
     this.data.orderMoney=data.totalPrice;
     data.originalPrice=totalPrice;
-    if(this.data.sharedUserId!=null){
+    if(this.data.sharedUserId!==null){
       data.sharedUserId=this.data.sharedUserId;
     }
     // 抵用券
@@ -271,7 +273,7 @@ Page({
     if(coupons!=null){
       groupPurchaseOrderSubmitRequestObj.coupons=coupons;
     }
-    if(this.data.sharedUserId!=null){
+    if(this.data.sharedUserId!==null){
       groupPurchaseOrderSubmitRequestObj.sharedUserId=this.data.sharedUserId;
     }
     // 抵用券

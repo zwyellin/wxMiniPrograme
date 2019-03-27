@@ -61,7 +61,7 @@ Page({
     // 获得参数
     let {groupPurchaseCouponId,sharedUserId}=options;
     this.data.groupPurchaseCouponId=groupPurchaseCouponId;
-    if(sharedUserId=="undefined") sharedUserId=null;//避免参数页面传输过程中转为字符串
+    if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;//避免参数页面传输过程中转为字符串
     this.data.sharedUserId=sharedUserId;
     this.findGroupPurchaseCouponInfo().then(()=>{
       this.promotionPreSetting().then(()=>{
@@ -191,7 +191,7 @@ Page({
             coupons
           })
         }
-        if(this.data.sharedUserId!=null){
+        if(this.data.sharedUserId!==null){
           OrderSubmitReqObj.sharedUserId=this.data.sharedUserId;
         }
         let data=JSON.stringify(OrderSubmitReqObj);
@@ -302,6 +302,12 @@ voucherItemModify(item){
 
   // 更新订单
 promotionPreSetting(){
+  wx.showToast({
+    title:"更新订单",
+    icon:"loading",
+    mask:true,
+    duration:20000
+  })
   let orderUseRedBagList = [];
   if (this.data.useRedBagList) {
     this.data.useRedBagList.map(item=>{
@@ -344,6 +350,7 @@ promotionPreSetting(){
       params:params
     },
   }).then((res)=>{
+    wx.hideToast();
     if (res.data.code === 0) {
         this.data.coupons=res.data.value.coupons;//马管家券
         this.setData({

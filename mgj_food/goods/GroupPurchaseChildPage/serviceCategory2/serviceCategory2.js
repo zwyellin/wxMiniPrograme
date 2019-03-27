@@ -9,53 +9,57 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isLoginsuccess:false,//是否登入
-
-    tel_mask_show:false,
-    groupMerchantInfo:null,//
-    merchantId:null,
-    groupSetMealItem:null,//上一页团购套餐Item。以及加上请求回来的套餐具体内容
+    //入参 
+    groupPurchaseCouponId:null,
+    sharedUserId:null,
+    //请求回来的数据对象/属性
+    groupMerchantInfo:null,//商家对象
+    groupSetMealItem:null,//团购套餐
     groupSetMealexcludeItem:null,//本店优惠
-
+    agentId:null,//订单提交时需要,可能是分享进来的，因而要重置agentId 
+    // 其它页面渲染需要属性
+    latitude:null,
+    longitude:null,
+    // 页面状态
+    isLoginsuccess:false,//是否登入
+    tel_mask_show:false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-      // 获得参数@groupPurchaseCouponId为其id
-      let {groupPurchaseCouponId,latitude,longitude}=options;
-      if(!latitude){//如果没传经纬度
-        if(!app.globalData.latitude){//如果app.json也没有，则是外部进来德，要重新获取经纬度
-  
-        }else{//app.json中，则赋值
-          latitude=app.globalData.latitude;
-          longitude=app.globalData.longitude;
-        }
-      }
-      Object.assign(this.data,{
-        groupPurchaseCouponId,
-        longitude,
-        latitude
-      })
-     this.findGroupPurchaseCouponInfo();
+    // 获得参数@groupPurchaseCouponId为其id
+    let {groupPurchaseCouponId,sharedUserId}=options;
+    // 获取自己定位
+    let latitude,longitude;
+    if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
+
+    }else{//app.json中，则赋值
+      latitude=app.globalData.latitude;
+      longitude=app.globalData.longitude;
+    }
+    //分享id
+    if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
+    Object.assign(this.data,{
+      groupPurchaseCouponId,
+      longitude,
+      latitude,
+    })
+    this.setData({
+      sharedUserId
+    })
+    this.findGroupPurchaseCouponInfo();
      
     //  判断是否登入
     this.isLoginsuccess();
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  // 分享事件
+  onShareAppMessage() {
+    return {
+        title: this.data.groupSetMealItem.groupPurchaseName,
+        path: `/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${groupPurchaseCouponId}&sharedUserId=${app.globalData.userId}`,
+    };
   },
 
   isLoginsuccess(isLoginTo){
@@ -78,14 +82,20 @@ Page({
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
       wx.navigateTo({
-        url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id
+        url:"/goods/GroupPurchaseChildPage/serviceCategory2/order/order?groupPurchaseCouponId="+id+"&sharedUserId="+this.data.sharedUserId
       })
     }else{
       this.isLoginsuccess(true);//跳转到登入
     }
   },
-
+  // 请求团购套餐信息
   findGroupPurchaseCouponInfo(){
+    wx.showToast({
+      title:"加载中",
+      icon:"loading",
+      mask:true,
+      duration:20000
+    })
     wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
       method:'POST',
@@ -93,11 +103,12 @@ Page({
         token:app.globalData.token,
         params:{
           groupPurchaseCouponId:this.data.groupPurchaseCouponId,
-          size:20,
-          start:0
+          latitude:app.globalData.latitude,
+          longitude:app.globalData.longitude,
         }	
       },
     }).then(res=>{
+      wx.hideToast();
       if (res.data.code === 0) {
         let value=res.data.value;
         let groupMerchantInfo=modify.GrouopMerchantModify(value.groupPurchaseMerchant)
@@ -106,6 +117,8 @@ Page({
            groupSetMealItem,
            groupMerchantInfo
         });
+        // 获取代理商
+        app.globalData.agentId=value.agentId;
         // 加载本店优惠
         this.findGroupPurchaseCouponList(groupSetMealItem.merchantId);
       }else {}

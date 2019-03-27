@@ -91,14 +91,14 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-		let { merchantid,agentId,longitude,latitude,search,sharedUserId} = options;
-		
+		let { merchantid,agentId,search,sharedUserId} = options;
 		const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
 		console.log("scene",scene,scene=="undefined");
 		console.log("options",options);
 		console.log("scene",scene)
 		//search为商店搜索，点击后跳转自身商店(用于标识)
-		//sharerToken标识，是转发出去后点击转发卡片进来的。
+		// 分享者id
+		if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
 		if(scene=="undefined"){
 			this.data.sharedUserId=sharedUserId;
 			this.data.merchantId = merchantid;
@@ -107,11 +107,9 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			this.data.merchantId =scene[0];
 			this.data.sharedUserId=scene[1];
 		}
-	
-		if (longitude && latitude) {
-			app.globalData.longitude = longitude;
-			app.globalData.latitude = latitude;
-			app.globalData.agentId=app.globalData.agentId || agentId;
+		// 获取自己定位
+		if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
+
 		}
 		//获取系统信息 主要是为了计算产品scroll的高度
 		wx.getSystemInfo({
@@ -1475,24 +1473,24 @@ Page(Object.assign({}, merchantShop,shopSearch,{
     })
   },
 
-	onShareAppMessage(res) {
-		console.log(app.globalData.userId);
-    	return {
-      		title: '马管家',
-      		path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&agentId='+app.globalData.agentId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude+'&sharedUserId='+app.globalData.userId,
-    	};
-  	},
-  onHide(){
-		this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
-		let merchantId = this.data.merchantId;
-		this.setStorageShop(merchantId)
-  	},
-  onUnload(){
-  	//如果销毁是因为支付完成之后的订单详情页面，则返回时不存储购物车
-		let isPayPageRoute = wx.getStorageSync('isPayPageRoute');
-  		if (!isPayPageRoute) {
-  			let merchantId = this.data.merchantId;
-			  this.setStorageShop(merchantId)
-  		}		
-  	}
+onShareAppMessage(res) {
+	console.log(app.globalData.userId);
+		return {
+				title: '马管家',
+				path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&agentId='+app.globalData.agentId+'&longitude='+app.globalData.longitude+'&latitude='+app.globalData.latitude+'&sharedUserId='+app.globalData.userId,
+		};
+},
+onHide(){
+	this.data.isonLoadRun=false;//标识 onload是否执行 这边重置
+	let merchantId = this.data.merchantId;
+	this.setStorageShop(merchantId)
+	},
+onUnload(){
+	//如果销毁是因为支付完成之后的订单详情页面，则返回时不存储购物车
+	let isPayPageRoute = wx.getStorageSync('isPayPageRoute');
+		if (!isPayPageRoute) {
+			let merchantId = this.data.merchantId;
+			this.setStorageShop(merchantId)
+		}		
+	}
 }));
