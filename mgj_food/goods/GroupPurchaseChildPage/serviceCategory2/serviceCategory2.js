@@ -23,6 +23,10 @@ Page({
     // 页面状态
     isLoginsuccess:false,//是否登入
     tel_mask_show:false,
+
+    // 店家二维码
+    WXQRImage:"",//店家二维码
+    QRcode_mask_show:false,
   },
 
   /**
@@ -31,14 +35,32 @@ Page({
   onLoad: function (options) {
     // 获得参数@groupPurchaseCouponId为其id
     let {groupPurchaseCouponId,sharedUserId}=options;
+    const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
+		console.log("options",options);
+		console.log("scene",scene);
+		//search为商店搜索，点击后跳转自身商店(用于标识)
+		if(scene==undefined || scene=="undefined"){
+      this.data.groupPurchaseCouponId =groupPurchaseCouponId;
+			this.data.sharedUserId=sharedUserId;
+		}else{//扫码进来的
+			console.log("扫码进来的");
+			let scene=scene.split(",");
+			this.data.groupPurchaseCouponId =scene[0];
+			this.data.sharedUserId=scene[1];
+		}
+		// 分享者id
+		sharedUserId=this.data.sharedUserId;
+    if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
+    
     // 获取自己定位
     let latitude,longitude;
-    if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
-
-    }else{//app.json中，则赋值
-      latitude=app.globalData.latitude;
-      longitude=app.globalData.longitude;
-    }
+		console.log("重新调用前的经纬度,",app.globalData.longitude)
+		if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
+			app.getLocation();
+      console.log("重新调用获取经纬度,",app.globalData.longitude)
+		}
+    latitude=app.globalData.latitude;
+    longitude=app.globalData.longitude;
     //分享id
     if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
     Object.assign(this.data,{
@@ -223,26 +245,27 @@ Page({
       phoneNumber: telphone  //电话号码
     })
   },
-  // 电话弹窗 点击取消
+  // 弹窗 点击取消
   maskCancelTap(e){
     this.setData({
-      tel_mask_show:false
+      tel_mask_show:false,
+      QRcode_mask_show:false
     })
   },
-	//店家二维码
+	//商品的二维码
 	getMGJMerchantWXQRImage(){
 		return wxRequest({
-			url:'/merchant/userClient?m=getMGJMerchantWXQRImage',
+			url:'/merchant/userClient?m=getMGJGoodsWXQRImage',
 			method:'POST',
 			data:{
 				token:app.globalData.token,
 				params:{
-					bizType:1,
-					merchantId:this.data.groupPurchaseMerchantId
+          bizType:6,
+          goodsId:this.data.groupPurchaseCouponId
 				}	
 			},
 		}).then(res=>{
-			let WXQRImage=this.data.WXQRImage;
+			let WXQRImage="data:image/png;base64,"+res.data.value;
 			WXQRImage+=res.data.value;
 			this.setData({
 				WXQRImage
@@ -253,7 +276,18 @@ Page({
 	QRcodeIconTap(){
 		this.setData({
 			QRcode_mask_show:true
-		})
+    })
+    let WXQRImage=this.data.WXQRImage;
+    if(WXQRImage.length==0){//说明还没有发请求
+      wx.showToast({
+        title:"加载中",
+        icon:"loading",
+        duration:2000
+      })
+      this.getMGJMerchantWXQRImage().then(()=>{
+        wx.hideToast();
+      })
+    }
 	},
 	// 保存二维码
 	saveQRCode(e){
@@ -268,11 +302,5 @@ Page({
 				})
 			}
 		})
-  },
-  //关闭二维码显示
-	maskCancelTap(e){
-    this.setData({
-      QRcode_mask_show:false
-    })
   },
 })

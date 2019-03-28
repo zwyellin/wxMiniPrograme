@@ -8,7 +8,7 @@
         <view  class="discountDescriptionContent">
             <text>到店付仅限到店消费后使用，请勿提前支付</text>
             <text>请在付款前和商家确认门店信息和消费金额</text>
-            <text>遇节假日能否先受优惠，请详询店家</text>
+            <text>遇节假日能否享受优惠，请详询店家</text>
             <text>请与商家确认到店付能与店内其它优惠共享</text>
         </view>
     </view>

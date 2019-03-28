@@ -48,11 +48,13 @@ Page({
     orderId:null,//保存订单提交时候的order订单id
     orderMoney:null,
 
+    isSharingRelationship:null,// @isSharingRelationship为该商店的代金券是否和优惠买单共享  //  1:共享；2：不共享 。不共享则不显示抵用券
     enableGroupPurchaseOrderCouponCodeCount:null,//抵用券数量
 
     coupons:null, //马管家券
     promotionCouponsDiscountTotalAmt:null,//马管家券金额
     groupPurchaseOrderCouponCodeList:[],//抵用券要发送到请求的对象
+    couponsShow:false,//是否显示
   },
 
   /**
@@ -60,9 +62,15 @@ Page({
    */
   onLoad: function (options) {
     // 获得参数
-    let {merchantId,discountRatio,merchantName,sharedUserId}=options;
+    // @isSharingRelationship为该商店的代金券是否和优惠买单共享
+    //  1:共享；2：不共享 。不共享则不显示抵用券
+    let {merchantId,discountRatio,merchantName,isSharingRelationship,sharedUserId}=options;
     if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
     this.data.sharedUserId=sharedUserId;
+    this.setData({
+      isSharingRelationship
+    })
+    console.log("代金券是否和优惠买单共享，1:共享；2：不共享",isSharingRelationship)
     //设置标题
     wx.setNavigationBarTitle({
       title:merchantName
@@ -221,7 +229,7 @@ Page({
     }).then(res=>{
       wx.hideToast();
       if (res.data.code === 0) {
-        let {cashDeductionPrice,originalPrice,notJoinDiscountAmount,discountAmt,totalPrice,promotionCouponsDiscountTotalAmt}=res.data.value; 
+        let {originalTotalPrice,cashDeductionPrice,originalPrice,notJoinDiscountAmount,discountAmt,totalPrice,promotionCouponsDiscountTotalAmt}=res.data.value; 
         let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
         if(this.data.discountActive) {
           OrderPreviewRequestObj.hasDiscount=1;
@@ -235,6 +243,7 @@ Page({
         Object.assign(groupPurchaseOrderSubmitRequestObj,{
           originalPrice,notJoinDiscountAmount,totalPrice
         })
+        this.data.originalTotalPrice=originalTotalPrice;//这个价格本来真实提交时总额，但优惠大于输入金额时，实际提交金额为0.01即totalPrice字段
         this.data.groupPurchaseOrderSubmitRequestObj=groupPurchaseOrderSubmitRequestObj;
         // 更新总提交价格
         this.data.actuallyAmount=totalPrice;
@@ -270,7 +279,7 @@ Page({
     if(groupPurchaseOrderSubmitRequestObj.hasDiscount==0) delete groupPurchaseOrderSubmitRequestObj.hasDiscount;
     if(!this.data.excludeAmountInputActive) delete groupPurchaseOrderSubmitRequestObj.notJoinDiscountAmount;
     let coupons=this.data.coupons;
-    if(coupons!=null){
+    if(false && coupons!=null &&this.data.originalTotalPrice>0){//如果原本提交价格为非正，则不用提交马管家券字段。改为不用传
       groupPurchaseOrderSubmitRequestObj.coupons=coupons;
     }
     if(this.data.sharedUserId!==null){
@@ -350,6 +359,9 @@ Page({
     this.setData({
       totalAmountInputValue:value,//如果为空，则不能点击优惠金额
     });
+    let value=parseFloat(value.substring(1));
+    //if(value>=this.data.coupons)
+    //couponsShow
      //计算实付金额
      this.actuallyAmount();
   },

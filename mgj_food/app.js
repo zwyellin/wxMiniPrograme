@@ -99,6 +99,26 @@ App({
 				this.globalData.longitude = longitude;
         this.globalData.latitude = latitude;
         console.log("重新调用了获取经纬度接口。longitude:",longitude,",latitude:",latitude)
+        // 再通过经纬度获取城市名
+        let obj = {
+					location:{
+						longitude:lng,
+						latitude:lat
+					}
+				};
+        getBMapLocation(obj).then(res=>{
+					let address;
+					if (res.status === 0) {
+						let address = res.result.address;
+            let region = res.result.address_component.city;
+            let myCityName=address+"-"+"region"
+            console.log("当前城市:",myCityName)
+					}
+			    }).catch(err=>{
+			    	this.setData({
+						isAgentId:true
+					});
+			  });
       })
     })
   },
@@ -198,6 +218,7 @@ App({
     agentPhone:null,
     pixelRatio:null,
     agentId:null,
+    sign:null,
     userId:null,
     addressInfo:null,
     cityName:null,

@@ -118,7 +118,8 @@ Page(Object.assign({}, merchantObj, {
 			tagId:this.data.tagId,
         	tagParentId:this.data.tagParentId,
         	size:10,
-        	start:this.data.start
+			start:this.data.start,
+			sign:app.globalData.sign
 		};
 		wxRequest({
         	url:'/merchant/userClient?m=findTakeAwayMerchant4',

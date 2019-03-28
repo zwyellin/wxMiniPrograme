@@ -85,34 +85,36 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		isonLoadRun:false,           //onload是否执行，用于show。
 		isShopSkeletonScreenShow:true,  //商店整体骨架屏显示控制
 
-		WXQRImage:"data:image/png;base64,",//店家二维码
+		WXQRImage:"",//店家二维码
     QRcode_mask_show:false
 		},shopSearchData),          //data 对象合并
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
 
-		let { merchantid,search,sharedUserId} = options;
+		let { merchantid,sharedUserId,search} = options;
 		const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
-		console.log("scene",scene,scene=="undefined");
 		console.log("options",options);
-		console.log("scene",scene)
+		console.log("scene",scene);
 		//search为商店搜索，点击后跳转自身商店(用于标识)
-		// 分享者id
-		if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
 		if(scene=="undefined"){
+			this.data.merchantId =merchantid;
 			this.data.sharedUserId=sharedUserId;
-			this.data.merchantId = merchantid;
-		}else{
+		}else{//扫码进来的
+			console.log("扫码进来的");
 			let scene=scene.split(",");
 			this.data.merchantId =scene[0];
 			this.data.sharedUserId=scene[1];
 		}
+		// 分享者id
+		sharedUserId=this.data.sharedUserId;
+		if(sharedUserId==undefined || sharedUserId=="undefined") this.data.sharedUserId=null;
+
 		// 获取自己定位
 		console.log("重新调用前的经纬度,",app.globalData.longitude)
 		if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
-			console.log("重新调用获取经纬度,",app.globalData.longitude)
 			app.getLocation();
+			console.log("重新调用获取经纬度,",app.globalData.longitude)
 		}
 		//获取系统信息 主要是为了计算产品scroll的高度
 		wx.getSystemInfo({
@@ -148,8 +150,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			return;
 		}
 		//获取商家详情
-		this.findMerchantInfo().then(()=>{//再请求店家二维码
-			this.getMGJMerchantWXQRImage();
+		this.findMerchantInfo().then(()=>{
 			// 查看是否有商品页面的缓存，有说明时商品页跳过来的，则要合并数据
 			console.log("shareTakeawayData",wx.getStorageSync('shareTakeawayData'))
 			if (wx.getStorageSync('shareTakeawayData')) {//说明有缓存
@@ -1443,8 +1444,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				}	
 			},
 		}).then(res=>{
-			let WXQRImage=this.data.WXQRImage;
-			WXQRImage+=res.data.value;
+			let WXQRImage="data:image/png;base64,"+res.data.value;
 			this.setData({
 				WXQRImage
 			})
@@ -1455,6 +1455,17 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		this.setData({
 			QRcode_mask_show:true
 		})
+		let WXQRImage=this.data.WXQRImage;
+    if(WXQRImage.length==0){//说明还没有发请求
+      wx.showToast({
+        title:"加载中",
+        icon:"loading",
+        duration:2000
+      })
+      this.getMGJMerchantWXQRImage().then(()=>{
+        wx.hideToast();
+      })
+    }
 	},
 	// 保存二维码
 	saveQRCode(e){

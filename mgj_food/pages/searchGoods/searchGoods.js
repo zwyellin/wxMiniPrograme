@@ -48,7 +48,8 @@ Page(Object.assign({}, merchantObj,{
                     longitude:app.globalData.longitude,
                     latitude:app.globalData.latitude,
                     searchParam:value,
-                    start:0
+                    start:0,
+                    sign:app.globalData.sign
                 }   
             },
         }).then(res=> {

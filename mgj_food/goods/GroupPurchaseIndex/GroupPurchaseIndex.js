@@ -21,6 +21,7 @@ Page({
     groupPurchaseItemRequsetObj:null,//团购商家请求参数对象
     groupPurchaseItemRequsetObjDefault:{//其实还会加入经纬度
       url:"findGroupPurchaseMerchantBySearch",
+      sign:app.globalData.sign,
       start:0,
       size:5
     },

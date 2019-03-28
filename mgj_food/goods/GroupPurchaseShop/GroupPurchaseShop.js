@@ -20,6 +20,10 @@ Page({
     isLoginsuccess:false,//是否登入
     isredbagShow:true,//默认要显示，有没有是另外一回事。点击领取后就不显示了
     tel_mask_show:false,// 是否显示电话弹窗
+
+    // 店家二维码
+    WXQRImage:"",//店家二维码
+		QRcode_mask_show:false,
   },
    /**
    * 生命周期函数--监听页面加载
@@ -27,11 +31,30 @@ Page({
   onLoad: function (options) {
     // 跳商家，需要参数groupPurchaseMerchantId
     let {groupPurchaseMerchantId,sharedUserId}=options;
-    // 获取自己定位
-    if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
+    const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
+		console.log("options",options);
+		console.log("scene",scene);
+		//search为商店搜索，点击后跳转自身商店(用于标识)
+		if(scene==undefined || scene=="undefined"){
+      this.data.groupPurchaseMerchantId =groupPurchaseMerchantId;
+			this.data.sharedUserId=sharedUserId;
+		}else{//扫码进来的
+			console.log("扫码进来的");
+			let scene=scene.split(",");
+			this.data.groupPurchaseMerchantId =scene[0];
+			this.data.sharedUserId=scene[1];
+		}
+		// 分享者id
+		sharedUserId=this.data.sharedUserId;
+		if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
 
-    }
-    if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
+
+		// 获取自己定位
+		console.log("重新调用前的经纬度,",app.globalData.longitude)
+		if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
+			app.getLocation();
+			console.log("重新调用获取经纬度,",app.globalData.longitude)
+		}
     Object.assign(this.data,{
       groupPurchaseMerchantId,
     })
@@ -79,8 +102,9 @@ Page({
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
       wx.navigateTo({
-        url:"/goods/GroupPurchaseChildPage/serviceCategory0/serviceCategory0?merchantId="+this.data.groupMerchantInfo.id+"&discountRatio="+ratio+
-        "&merchantName="+this.data.groupMerchantInfo.name+"&sharedUserId="+this.data.sharedUserId
+        url:"/goods/GroupPurchaseChildPage/serviceCategory0/serviceCategory0?merchantId="+this.data.groupMerchantInfo.id+
+        "&discountRatio="+ratio+"&merchantName="+this.data.groupMerchantInfo.name+
+        "&isSharingRelationship="+this.data.groupMerchantInfo.isSharingRelationship+"&sharedUserId="+this.data.sharedUserId
       })
     }else{
       this.isLoginsuccess(true);//跳转到登入
@@ -274,13 +298,12 @@ Page({
 			data:{
 				token:app.globalData.token,
 				params:{
-					bizType:1,
+					bizType:6,
 					merchantId:this.data.groupPurchaseMerchantId
 				}	
 			},
 		}).then(res=>{
-			let WXQRImage=this.data.WXQRImage;
-			WXQRImage+=res.data.value;
+		  let WXQRImage="data:image/png;base64,"+res.data.value;
 			this.setData({
 				WXQRImage
 			})
@@ -290,7 +313,18 @@ Page({
 	QRcodeIconTap(){
 		this.setData({
 			QRcode_mask_show:true
-		})
+    })
+    let WXQRImage=this.data.WXQRImage;
+    if(WXQRImage.length==0){//说明还没有发请求
+      wx.showToast({
+        title:"加载中",
+        icon:"loading",
+        duration:2000
+      })
+      this.getMGJMerchantWXQRImage().then(()=>{
+        wx.hideToast();
+      })
+    }
 	},
 	// 保存二维码
 	saveQRCode(e){
@@ -305,11 +339,6 @@ Page({
 				})
 			}
 		})
-	},
-	//关闭二维码显示
-	maskCancelTap(e){
-    this.setData({
-      QRcode_mask_show:false
-    })
   },
+  
 })

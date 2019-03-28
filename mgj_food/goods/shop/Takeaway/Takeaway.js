@@ -40,7 +40,7 @@ Page(Object.assign({}, merchantShop,{
 		removalMenuList:{},
 
 
-		WXQRImage:"data:image/png;base64,",//店家二维码
+		WXQRImage:"",//店家二维码
 		QRcode_mask_show:false,
 		
 		// 评价
@@ -54,23 +54,45 @@ Page(Object.assign({}, merchantShop,{
    */
   onLoad: function (options) {
 		let {goodsId,sharedUserId}=options;
-		this.data.sharedUserId=sharedUserId;
-    //分享传goodsId,商店进来则读取其selectedFood。
+		const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
+		console.log("options",options);
+		console.log("scene",scene);
+		//search为商店搜索，点击后跳转自身商店(用于标识)
+		if(scene==undefined || scene=="undefined"){
+			this.data.sharedUserId=sharedUserId;
+			this.data.goodsId =goodsId;
+		}else{//扫码进来的
+			console.log("扫码进来的");
+			let scene=scene.split(",");
+			this.data.goodsId =scene[0];
+			this.data.sharedUserId=scene[1];
+		}
+		// 分享者id
+		sharedUserId=this.data.sharedUserId;
+		if(sharedUserId==undefined || sharedUserId=="undefined") this.data.sharedUserId=null;
+
+		this.setData({//ui根据goodsId选择是否展示进店
+			goodsId
+		})
+		//分享传goodsId,商店进来则读取其selectedFood。
     if(goodsId!==undefined){//分享进来的 //goodsId!==undefined
 			//根据goodsId发送请求
-			this.data.goodsId=goodsId;
 			this.findTGoodsById().then(()=>{
 				console.log("ruleDtoList",this.data.ruleDtoList)
 				this.findMerchantInfo();
-
 				this.queryGoodsComments();
-				this.getMGJMerchantWXQRImage();
 				this.showTakeAwayGoodsDetail();
 			});
     }else{
       // 从上一页面读取数据。要显示的是selectedFood
 			this.getPrevData();
-    }
+		}
+		// 获取自己定位
+		console.log("重新调用前的经纬度,",app.globalData.longitude)
+		if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
+			app.getLocation();
+			console.log("重新调用获取经纬度,",app.globalData.longitude)
+		}
   },
 	onUnload(){
 		// 店铺进来，是返回回去商家。触发onunload来共享这边数据
@@ -158,7 +180,6 @@ Page(Object.assign({}, merchantShop,{
 				// 以下为去凑单需要用的对象
 				removalMenuList
 			},()=>{
-				this.getMGJMerchantWXQRImage();
 				this.queryGoodsComments();
 				this.showTakeAwayGoodsDetail();
 			})
@@ -989,8 +1010,8 @@ Page(Object.assign({}, merchantShop,{
         	data:{
         		params:{
         			data:JSON.stringify(data),
-        			longitude:app.globalData.longitude || '1',
-							latitude:app.globalData.latitude || '1'
+        			longitude:app.globalData.longitude ||  this.data.merchantInfoObj.longitude,
+							latitude:app.globalData.latitude ||  this.data.merchantInfoObj.longitude
         		},
         		token:app.globalData.token	
         	},
@@ -1085,17 +1106,17 @@ Page(Object.assign({}, merchantShop,{
 	//店家二维码
 	getMGJMerchantWXQRImage(){
 		return wxRequest({
-			url:'/merchant/userClient?m=getMGJMerchantWXQRImage',
+			url:'/merchant/userClient?m=getMGJGoodsWXQRImage',
 			method:'POST',
 			data:{
 				token:app.globalData.token,
 				params:{
 					bizType:1,
-					merchantId:this.data.merchantId
+					goodsId:this.data.selectedFood.id
 				}	
 			},
 		}).then(res=>{
-			let WXQRImage=this.data.WXQRImage;
+			let WXQRImage="data:image/png;base64,"+res.data.value;
 			WXQRImage+=res.data.value;
 			this.setData({
 				WXQRImage
@@ -1107,6 +1128,17 @@ Page(Object.assign({}, merchantShop,{
 		this.setData({
 			QRcode_mask_show:true
 		})
+		let WXQRImage=this.data.WXQRImage;
+    if(WXQRImage.length==0){//说明还没有发请求
+      wx.showToast({
+        title:"加载中",
+        icon:"loading",
+        duration:2000
+      })
+      this.getMGJMerchantWXQRImage().then(()=>{
+        wx.hideToast();
+      })
+    }
 	},
 
 	// 保存二维码

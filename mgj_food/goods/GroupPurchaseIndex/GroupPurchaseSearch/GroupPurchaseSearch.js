@@ -27,6 +27,7 @@ Page({
    //分类浮层及商家列表相关
    groupPurchaseItemRequsetObj:null,//团购商家请求参数对象
    groupPurchaseItemRequsetObjDefault:{//注意不能赋值，否则，分类筛选时合并默认请求参数会带上原先的请求参数
+     sign:app.globalData.sign,
      agentId:null,
      latitude:null,
      longitude:null,

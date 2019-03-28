@@ -28,7 +28,8 @@ const merchantShop = {
 				  	title: name
 				});
 				// 更新代理商【可能是分享进来的】
-				app.globalData.agentId=value.agentId;
+				app.globalData.agentId=value.merchant.agentId;
+				console.log("设置了代理商",app.globalData.agentId)
 				if(!value.merchant.logo || !/.*(\.png|\.jpg)$/i.test(value.merchant.logo)){
 					value.merchant.logo = '/images/merchant/merchantLogo.png';
 				}

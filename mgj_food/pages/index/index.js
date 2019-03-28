@@ -107,8 +107,8 @@ Page(Object.assign({}, merchantObj, {
 					}
 				}; 
 				let { longitude, latitude } = gcj02tobd09(lng,lat);
-				if(true){
-					console.log("测试地址")
+				if(false){
+					console.log("测试地址:longitude",app.globalData.longitude)
 					app.globalData.longitude= "116.304782";
 					app.globalData.latitude="39.966128";
 				}else{
@@ -126,6 +126,7 @@ Page(Object.assign({}, merchantObj, {
 							} else {
 								app.globalData.agentPhone = null;
 							}
+							app.globalData.sign=value.sign;
 						} else {
 							app.globalData.agentPhone = null;
 							app.globalData.agentId = null;
@@ -252,6 +253,7 @@ Page(Object.assign({}, merchantObj, {
 						} else {
 							app.globalData.agentPhone = null;
 						}
+						app.globalData.sign=value.sign;
 					} else {
 						app.globalData.agentPhone = null;
 						app.globalData.agentId = null;
@@ -524,7 +526,8 @@ Page(Object.assign({}, merchantObj, {
 			tagId:this.data.tagId,
         	tagParentId:this.data.tagParentId,
         	size:10,
-        	start:this.data.start
+			start:this.data.start,
+			sign:app.globalData.sign
 		};
 		//加载数据前，展示骨架屏
 		this.setData({

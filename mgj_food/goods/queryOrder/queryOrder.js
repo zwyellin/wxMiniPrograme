@@ -171,6 +171,7 @@ Page({
 	},
 	//获取平台可用红包
 	queryPlatformRedBagList(){
+		console.log("查看是否有代理商",app.globalData.agentId)
 		wxRequest({
         	url:'/merchant/userClient?m=queryPlatformRedBagList',
         	method:'POST',
@@ -178,12 +179,12 @@ Page({
         		token:app.globalData.token,
         		params:{
         			itemsPrice: this.data.orderMessage.itemsPrice,
-					merchantId: this.data.merchantId,
-					userAddressId:this.data.addressInfoId,
-					agentId:app.globalData.agentId,
-					promoInfoJson: JSON.stringify(this.data.promoInfoJson),
-					businessType:1,
-					discountGoodsDiscountAmt:this.data.orderMessage.discountGoodsDiscountAmt
+							merchantId: this.data.merchantId,
+							userAddressId:this.data.addressInfoId,
+							agentId:app.globalData.agentId,
+							promoInfoJson: JSON.stringify(this.data.promoInfoJson),
+							businessType:1,
+							discountGoodsDiscountAmt:this.data.orderMessage.discountGoodsDiscountAmt
         		}	
         	},
         }).then(res=>{

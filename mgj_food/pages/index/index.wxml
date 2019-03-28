@@ -14,7 +14,9 @@
 			</view>
 			<image class ="flex0" src="/images/images/down_rotate.png" style="width:20rpx;height:20rpx;margin-top:6rpx;"></image>
 		</view>
-		<view classs="box-sizing-box" style="border-top-left-radius:30rpx;border-bottom-left-radius:30rpx;background:#ccc;font-size:26rpx;color:#333;padding:10rpx 20rpx;">APP体验</view>
+		<navigator url="/other/firends/load/load">
+			<view class="box-sizing-box" style="border-top-left-radius:30rpx;border-bottom-left-radius:30rpx;background:#ccc;font-size:26rpx;color:#333;padding:10rpx 20rpx;">APP体验</view>
+		</navigator>
 	</view>
 	<!-- 搜索框 -->
 	<view class="padding-tb-20 flex flex-row-center flex-spaceBetween" >
