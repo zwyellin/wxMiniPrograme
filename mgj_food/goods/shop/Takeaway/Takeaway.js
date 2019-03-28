@@ -47,6 +47,15 @@ Page(Object.assign({}, merchantShop,{
 		selestEvaluateStatus:0,
 		evaluate:{},
 		evaluateList:[],
+
+		// 导航
+		navObj:[
+			{text:"商品",to:"sp"},
+			{text:"详情",to:"xq"},
+			{text:"评价",to:"pj"},
+		],
+		navActiveIndex:0,
+		toView:null//对应底下滚动view要滚到哪个id那里
   },
 
   /**
@@ -72,7 +81,7 @@ Page(Object.assign({}, merchantShop,{
 		if(sharedUserId==undefined || sharedUserId=="undefined") this.data.sharedUserId=null;
 
 		this.setData({//ui根据goodsId选择是否展示进店
-			goodsId
+			goodsId:goodsId==undefined? null :goodsId //setData不能设置undefined
 		})
 		//分享传goodsId,商店进来则读取其selectedFood。
     if(goodsId!==undefined){//分享进来的 //goodsId!==undefined
@@ -101,7 +110,7 @@ Page(Object.assign({}, merchantShop,{
 		// 及sharedUserId
 		let shareTakeawayData={};
 		var pages = getCurrentPages();
-		if(pages.length>1){//店铺进来德，而非分享进来德
+		if(pages.length>1){//店铺进来的，而非分享进来的
 			var prevPage = pages[pages.length - 2]; // 上一级页面
 			shareTakeawayData={
 				selectFoods:this.data.selectFoods,
@@ -114,6 +123,16 @@ Page(Object.assign({}, merchantShop,{
 			prevPage.data.shareTakeawayData=shareTakeawayData;//设置上一页面数据
 			// 那边onshow时会判断
 		}
+	},
+	// 导航点击事件
+	navTap(e){
+		let {index}=e.target.dataset;
+		let navObj=this.data.navObj;
+		this.setData({
+			toView:navObj[index].to,
+			navActiveIndex:index
+		})
+
 	},
 	// 进店按钮点击事件
 	gotoShopBtnTap(e){
@@ -194,6 +213,8 @@ Page(Object.assign({}, merchantShop,{
 			else{
 				images=imgs.split(';')
 			}
+		}else{
+			images=['../../../images/merchant/merchantLogo.png']
 		}
 		value.images=images;
 		return value;

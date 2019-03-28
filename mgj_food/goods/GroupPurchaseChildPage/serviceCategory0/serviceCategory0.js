@@ -359,9 +359,16 @@ Page({
     this.setData({
       totalAmountInputValue:value,//如果为空，则不能点击优惠金额
     });
-    let value=parseFloat(value.substring(1));
-    //if(value>=this.data.coupons)
-    //couponsShow
+    value=parseFloat(value.substring(1));
+    if(value>=this.data.coupons[0].restrictAmt){
+      this.setData({
+        couponsShow:true
+      })
+    }else{
+      this.setData({
+        couponsShow:false
+      })
+    }
      //计算实付金额
      this.actuallyAmount();
   },

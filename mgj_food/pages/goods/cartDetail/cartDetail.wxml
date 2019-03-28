@@ -329,11 +329,11 @@
             </view>
             <!-- 立即查看按钮 -->
             <view style="margin-top:40rpx;" catch:tap="promotionListLook">
-                <image src="../../image/btnyellow.png" style="width:340rpx;height:90rpx;"/>
+                <image src="../../../goods/image/btnyellow.png" style="width:340rpx;height:90rpx;"/>
               
             </view>
             <view style="margin-top:40rpx;" catch:tap="promotionListClose">
-                <image src="../../image/gb.png" style="width:67rpx;height:67rpx;"/>
+                <image src="../../../goods/image/gb.png" style="width:67rpx;height:67rpx;"/>
             </view>
         </view>
     </view>

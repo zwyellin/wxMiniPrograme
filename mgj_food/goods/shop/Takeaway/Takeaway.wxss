@@ -7,6 +7,9 @@
 @import "../../../components/star/star.wxss";
 @import "../../../wxParse/wxParse.wxss"; /* 富文本*/
 
+.navItemActive{
+	color:#fe9800
+}
 .footerBtn{
 	background: transparent;
 	line-height:2;

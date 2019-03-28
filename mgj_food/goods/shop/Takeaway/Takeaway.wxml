@@ -8,173 +8,189 @@
 
 <!-- selectedFood.imgs 图片 -->
 <view class="container page">
-	<!--轮播图-->
-	<swiper  style="height:400rpx;"  indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
-		<block wx:for="{{selectedFood.images}}" wx:key="index">
-			<swiper-item>
-				<image class="swiper-image" src="{{item}}" />
-			</swiper-item>
-		</block>
-	</swiper>
-    <view style="background:white" class="padding-tb-20">
-		<!-- 基本信息 -->
-		<view class="flex flex-spaceBetween" style="padding-left:40rpx;">
-			<!-- 左边 -->
-			<view>
-				<view style="font-size:28rpx;color:#333;font-weight:bold">{{selectedFood.name}}</view>
-				<view style="font-size:24rpx;color:#666;margin-top:10rpx">月售{{selectedFood.monthSaled}}份</view>
+	<!-- 导航，fixed -->
+	<view class="flex row-line" style="justify-content: space-around;padding:0 40rpx;font-size:28rpx;color:#333">
+			<view wx:for="{{navObj}}" wx:key="index" style="padding:20rpx 40rpx" class="{{navActiveIndex==index? 'navItemActive' : ''}}"
+			data-to="{{item.to}}" data-index="{{index}}" catch:tap="navTap">
+				 {{item.text}}
 			</view>
-			<!-- 右边 二维码-->
-			<!-- 店家二维码icon -->
-			<image class="flex0" src="../../image/QRcodeIcon2.png" style="width:110rpx;height:60rpx;" catch:tap="QRcodeIconTap"/>
-			<!-- 悬浮框 -->
-			<mask position="center" wx:if="{{QRcode_mask_show}}" catch:maskclick="maskCancelTap">
-				<view  style="background:white;border-radius:20rpx;margin:200rpx 80rpx 0 80rpx;text-align:center;padding:60rpx;">
-					<block wx:if="{{WXQRImage.length>200}}">
-						<image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" catch:tap="saveQRCode"/>
-						<view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行识别及保存</view>
-					</block>
-					<block wx:else>
-						<image src="../../image/MGJQR_SJ.png" style="width:368rpx;height:455rpx" />
-					</block> 
-				</view>
-			</mask>
-		</view>
-		<!-- 购买 -->
-		<view class="pageItem flex flex-row-center flex-spaceBetween" style="margin-top:20rpx;padding-right:0;margin-right:20rpx;">
-			<view>
-				<text  style="font-size:32rpx;color:#f01414">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
-				<text style="font-size:26rpx;color:#666">￥{{selectedFood.now}}</text>
-			</view>
-			<view style="background: #fff">
-				<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
-					<text>商家休息中</text>
-				</view>
-				<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
-				<view wx:elif="{{selectedFood.status === 0 || (selectedFood.status === 0 || selectedFood.goodsSpecList.length === 1 && selectedFood.goodsSpecList[0].stockType && !selectedFood.surplusDiscountStock && selectedFood.goodsSpecList[0].stock === 0 )}}" class="choice-else font-10">	
-					<text>商品已售罄</text><!--不再售卖 或 （针对规格只有一个的，并且库存状态是有限的，并且不是折扣商品已卖完，并且库存数为0）-->
-				</view>
-				<!--else 正常卖-->
-				<view wx:else class="flex" style="align-items:center">
-					<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template> <!--+购买图标-->
-					<!--if有可能要选规格-->
-					<view wx:if="{{selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1}}" class="choice font-10 top-status" data-food="{{selectedFood}}"  catchtap="choice">
-						<text>选规格</text>
-					</view>
-				</view>  
-			</view>
-		</view>
 	</view>
-	<!--跳转到商店-->
-	<view wx:if="{{goodsId}}" class="pageItem mt20 padding-tb-20 flex flex-spaceBetween flex-row-center">
-			<!-- 左边 -->
-			<view class="flex1 flex  flex-row-center">
-					<image src="{{merchantInfoObj.logo}}"  style="width:100rpx;height:100rpx;" />
-					<view style="margin-left:20rpx">
-						<view class="font-15 color1">{{merchantInfoObj.name}}</view>
-						<view class="flex flex-row-center" style="margin-top:6rpx">
-								<text style="font-size:22rpx;color:#666">总体评分</text>
-								<template is="star-AttrScore" data="{{size:24,item:merchantInfoObj,AttrName:'averageScore'}}" ></template>
+	<!--底下滑动块-->
+  <scroll-view
+    scroll-y
+    style="height: 600px;"
+    bindscroll="scroll"
+    scroll-into-view="{{toView}}"
+		scroll-with-animation="{{true}}"
+  >
+		<!--轮播图-->
+		<swiper id="sp" style="height:400rpx;"  indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="{{5000}}" duration="{{500}}">
+			<block wx:for="{{selectedFood.images}}" wx:key="index">
+				<swiper-item>
+					<image class="swiper-image" src="{{item}}" />
+				</swiper-item>
+			</block>
+		</swiper>
+		<view style="background:white" class="padding-tb-20">
+			<!-- 基本信息 -->
+			<view class="flex flex-spaceBetween" style="padding-left:40rpx;">
+				<!-- 左边 -->
+				<view>
+					<view style="font-size:28rpx;color:#333;font-weight:bold">{{selectedFood.name}}</view>
+					<view style="font-size:24rpx;color:#666;margin-top:10rpx">月售{{selectedFood.monthSaled}}份</view>
+				</view>
+				<!-- 右边 二维码-->
+				<!-- 店家二维码icon -->
+				<image class="flex0" src="../../image/QRcodeIcon2.png" style="width:110rpx;height:60rpx;" catch:tap="QRcodeIconTap"/>
+				<!-- 悬浮框 -->
+				<mask position="center" wx:if="{{QRcode_mask_show}}" catch:maskclick="maskCancelTap">
+					<view  style="background:white;border-radius:20rpx;margin:200rpx 80rpx 0 80rpx;text-align:center;padding:60rpx;">
+						<block wx:if="{{WXQRImage.length>200}}">
+							<image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" catch:tap="saveQRCode"/>
+							<view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行识别及保存</view>
+						</block>
+						<block wx:else>
+							<image src="../../image/MGJQR_SJ.png" style="width:368rpx;height:455rpx" />
+						</block> 
+					</view>
+				</mask>
+			</view>
+			<!-- 购买 -->
+			<view class="pageItem flex flex-row-center flex-spaceBetween" style="margin-top:20rpx;padding-right:0;margin-right:20rpx;">
+				<view>
+					<text  style="font-size:32rpx;color:#f01414">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
+					<text style="font-size:26rpx;color:#666">￥{{selectedFood.now}}</text>
+				</view>
+				<view style="background: #fff">
+					<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
+						<text>商家休息中</text>
+					</view>
+					<!-- else 在营业（if有可能规格一个的已售罄（及不再售卖）/正常卖）-->
+					<view wx:elif="{{selectedFood.status === 0 || (selectedFood.status === 0 || selectedFood.goodsSpecList.length === 1 && selectedFood.goodsSpecList[0].stockType && !selectedFood.surplusDiscountStock && selectedFood.goodsSpecList[0].stock === 0 )}}" class="choice-else font-10">	
+						<text>商品已售罄</text><!--不再售卖 或 （针对规格只有一个的，并且库存状态是有限的，并且不是折扣商品已卖完，并且库存数为0）-->
+					</view>
+					<!--else 正常卖-->
+					<view wx:else class="flex" style="align-items:center">
+						<template is="contorl-add" data="{{food:selectedFood,selectFoods,topStatus:true}}" ></template> <!--+购买图标-->
+						<!--if有可能要选规格-->
+						<view wx:if="{{selectedFood.goodsSpecList.length >1 || selectedFood.goodsAttributeList.length >=1}}" class="choice font-10 top-status" data-food="{{selectedFood}}"  catchtap="choice">
+							<text>选规格</text>
 						</view>
-					</view>
+					</view>  
+				</view>
 			</view>
-			<!-- 右边，进店 -->
-		<button class="font-size3 footerBtn" style="border:1px solid #c2c2c2;color:#333;margin-left:40rpx;"
-		catch:tap="gotoShopBtnTap">进店</button>
-	</view>
-
-	<!-- 商品简介 -->
-	<view class="pageItem mt20">
-		<view class="padding-tb-20 font-15 color1 font-bold">商品简介</view>
-		<view class="font-14 color1"></view>
-	</view>
-	
-	<!-- 富文本 -->
-	<view wx:if="{{goodsInfo.nodes}}"  class="pageItem mt20" style="padding-left:0;padding-right:0;">
-			<view class="padding-tb-20 padding-lr-40 font-15 color1 font-bold">商家详情</view>
-			<template is="wxParse" data="{{wxParseData:goodsInfo.nodes}}" />
-	</view>
-
-
-	<!-- 商品评价 -->
-	<view class="mt20" style="padding-bottom:120rpx;">
-		<!-- 标题 -->
-		<view class="pageItem flex flex-spaceBetween flex-row-center">
-			<text class="padding-tb-20 font-15 color1 font-bold">商品评价(好评率{{tage.praise(selectedFood.commentScore)}}%)</text>
-			<text style="font-size:24rpx;color:#333">{{evaluate.list.length}}条评价</text>
 		</view>
-		<view class="new-valuate-content">
-          <view class="new-valuate-content-header">
-			  <view class="new-valuate-content-btns">
-			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 0 ? 'new-valuate-btn-hover1':''}}"  data-id='0' data-type="1" catch:tap="evaluateBtnSwitch">全部<text>{{evaluate.allCount}}</text></button>
-			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 1 ? 'new-valuate-btn-hover1':''}}"  data-id='1' data-type="1" catch:tap="evaluateBtnSwitch">好评<text>{{evaluate.goodCount}}</text></button>
-			    <button class="new-valuate-btn2 {{selestEvaluateStatus == 2 ? 'new-valuate-btn-hover2':''}}"  data-id="2" data-type="1" catch:tap="evaluateBtnSwitch">差评<text>{{evaluate.poorCount}}</text></button>
-			    <button class="new-valuate-btn1 {{selestEvaluateStatus == 3 ? 'new-valuate-btn-hover1':''}}"  data-id="3" data-type="1" catch:tap="evaluateBtnSwitch">有图<text>{{evaluate.imgCount}}</text></button>
-			  </view>
-			  <view class="new-valuate-checkbox" catch:tap="merchantComIsFilterEmptySwitch">
-				<icon type="success" color="{{isHaveContent==1 ? 'green':'grey'}}" size="11" style="margin-right:10rpx;vertical-align:middle"></icon><text>只看有内容的评价</text>
-			  </view>
-		  </view>
-		  <view class="new-valuate-content-main">
-                <block wx:for="{{evaluate.list}}" wx:key="{{item.id}}">
-					<view class="new-valuate-item" >
-						<view class="new-valuate-item-userinfo">
-							<view class="new-evaluate-userinfo">				
-								<image class="new-evaluate-userinfo-image" src="{{item.appUser.headerImg!='' ? item.appUser.headerImg:'../../image/headerImage.png'}}"></image>
-								<view class="new-evaluate-userinfo-star" style="margin-left:10rpx;">
-									<text class="new-evaluate-userinfo-star-text">{{item.isAnonymous==1? '匿名用户' : tage.strReplace(item.appUser.name)}}</text>
-									<template is="star-AttrScore" data="{{size:36,item,AttrName:'goodsScore'}}" ></template>
-									<text style="vertical-align:text-bottom;color:#ff9900;font-size:22rpx;">{{tage.numberToText(item.goodsScore)}}</text>
-								</view>
+		<!--跳转到商店-->
+		<view wx:if="{{goodsId}}" class="pageItem mt20 padding-tb-20 flex flex-spaceBetween flex-row-center">
+				<!-- 左边 -->
+				<view class="flex1 flex  flex-row-center">
+						<image src="{{merchantInfoObj.logo}}"  style="width:100rpx;height:100rpx;" />
+						<view style="margin-left:20rpx">
+							<view class="font-15 color1">{{merchantInfoObj.name}}</view>
+							<view class="flex flex-row-center" style="margin-top:6rpx">
+									<text style="font-size:22rpx;color:#666">总体评分</text>
+									<template is="star-AttrScore" data="{{size:24,item:merchantInfoObj,AttrName:'averageScore'}}" ></template>
 							</view>
-							<view class="new-evaluate-userinfo-time">
-								<text>{{item.createTime}}</text>
-							</view>
-						</view><!--评论的头像，名字，时间。部分结束-->
-						<view class="new-valuate-item-main"><!--评论内容开始 主内容 -->
-							<text class="new-valuate-item-mainText" wx:if="{{!item.merchantComments}}" style="color:#9a9a9a">该用户没有做具体评价哦！</text><!--顾客评价-->
-							<text class="new-valuate-item-mainText" wx:else>{{item.merchantComments}}</text><!--顾客评价-->
-							<view class="new-valuate-item-main-images flex" wx:if="{{item.isImg==1}}">
-							    <block wx:for="{{tage.splitStrToArr(item.imgUrl,';','true','198')}}"
-								       wx:key="imgIndex"
-								       wx:for-item="imgItem"
-									   wx:for-index="imgIndex"><!--tage.splitStrToArr 参数为：要解析的字符串，分隔符，是否图片加高清，高清图片的宽度-->
-									<image src="{{imgItem ? imgItem : '../images/merchant/merchantLogo.png'}}" class="new-valuate-item-main-image"
-									 catch:tap="valuateItemImageTap" data-current="{{imgIndex}}" data-imgs="{{tage.splitStrToArr(item.imgUrl,';','true',windowWidth)}}"
-									 style="margin-right:{{(imgIndex+1)%3==0 ? '':'16rpx'}};margin-top:16rpx"></image>
-								</block>		
-							</view>
-							<text class="new-valuate-item-mainText mt20" wx-if="{{item.replyContent!==null}}"><text>商家回复:</text>{{item.replyContent}}</text><!--商家回复-->
-							<view  wx:if="{{item.goodsCommentsList.length!=0}}"><!--赞，踩列表-->
-								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0}}" class="new-valuate-item-icon flex">
-									<image src="../../image/zan.png"></image><!-- 赞-->
-									<view class="new-valuate-item-iconText">
-										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores}}"
-											wx:for-index="goodsIndex"
-											wx:for-item="goodsItem"
-											wx:key="orderId">
-											<text>{{goodsItem.goodsName}}</text>
-										</block>
-									</view>
-								</view>
-								<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex" style="margin-top:{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0 ? '' : '20rpx'}};">
-									<image src="../../image/cai.png"></image><!--踩-->
-									<view class="new-valuate-item-iconText">
-										<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores}}"
-											wx:for-index="goodsIndex"
-											wx:for-item="goodsItem"
-											wx:key="id">
-											<text>{{goodsItem.goodsName}}</text>
-										</block>
-									</view>
-								</view>
-							</view>
-					   </view>
+						</view>
+				</view>
+				<!-- 右边，进店 -->
+			<button class="font-size3 footerBtn" style="border:1px solid #c2c2c2;color:#333;margin-left:40rpx;"
+			catch:tap="gotoShopBtnTap">进店</button>
+		</view>
+
+		<!-- 商品简介 -->
+		<view id="xq" class="pageItem mt20">
+			<view class="padding-tb-20 font-15 color1 font-bold">商品简介</view>
+			<view wx:if="{{selectedFood.description}}" class="font-14 color1" style="padding-bottom:20rpx">{{selectedFood.description}}</view>
+		</view>
+		
+		<!-- 富文本 -->
+		<view  wx:if="{{goodsInfo.nodes}}"  class="pageItem mt20" style="padding-left:0;padding-right:0;">
+				<view class="padding-tb-20 padding-lr-40 font-15 color1 font-bold">商家详情</view>
+				<template is="wxParse" data="{{wxParseData:goodsInfo.nodes}}" />
+		</view>
+
+
+		<!-- 商品评价 -->
+		<view id="pj" class="mt20" style="padding-bottom:120rpx;">
+			<!-- 标题 -->
+			<view class="pageItem flex flex-spaceBetween flex-row-center">
+				<text class="padding-tb-20 font-15 color1 font-bold">商品评价(好评率{{tage.praise(selectedFood.commentScore)}}%)</text>
+				<text style="font-size:24rpx;color:#333">{{selectedFood.commentNum}}条评价</text>
+			</view>
+			<view class="new-valuate-content">
+					<view class="new-valuate-content-header">
+					<view class="new-valuate-content-btns">
+						<button class="new-valuate-btn1 {{selestEvaluateStatus == 0 ? 'new-valuate-btn-hover1':''}}"  data-id='0' data-type="1" catch:tap="evaluateBtnSwitch">全部<text>{{evaluate.allCount}}</text></button>
+						<button class="new-valuate-btn1 {{selestEvaluateStatus == 1 ? 'new-valuate-btn-hover1':''}}"  data-id='1' data-type="1" catch:tap="evaluateBtnSwitch">好评<text>{{evaluate.goodCount}}</text></button>
+						<button class="new-valuate-btn2 {{selestEvaluateStatus == 2 ? 'new-valuate-btn-hover2':''}}"  data-id="2" data-type="1" catch:tap="evaluateBtnSwitch">差评<text>{{evaluate.poorCount}}</text></button>
+						<button class="new-valuate-btn1 {{selestEvaluateStatus == 3 ? 'new-valuate-btn-hover1':''}}"  data-id="3" data-type="1" catch:tap="evaluateBtnSwitch">有图<text>{{evaluate.imgCount}}</text></button>
 					</view>
-			    </block>
-		    </view><!--content-main结束：即评论部分-->
+					<view class="new-valuate-checkbox" catch:tap="merchantComIsFilterEmptySwitch">
+						<icon type="success" color="{{isHaveContent==1 ? 'green':'grey'}}" size="11" style="margin-right:10rpx;vertical-align:middle"></icon><text>只看有内容的评价</text>
+					</view>
+				</view>
+				<view class="new-valuate-content-main">
+					<block wx:for="{{evaluate.list}}" wx:key="{{item.id}}">
+						<view class="new-valuate-item" >
+							<view class="new-valuate-item-userinfo">
+								<view class="new-evaluate-userinfo">				
+									<image class="new-evaluate-userinfo-image" src="{{item.appUser.headerImg!='' ? item.appUser.headerImg:'../../image/headerImage.png'}}"></image>
+									<view class="new-evaluate-userinfo-star" style="margin-left:10rpx;">
+										<text class="new-evaluate-userinfo-star-text">{{item.isAnonymous==1? '匿名用户' : tage.strReplace(item.appUser.name)}}</text>
+										<template is="star-AttrScore" data="{{size:36,item,AttrName:'goodsScore'}}" ></template>
+										<text style="vertical-align:text-bottom;color:#ff9900;font-size:22rpx;">{{tage.numberToText(item.goodsScore)}}</text>
+									</view>
+								</view>
+								<view class="new-evaluate-userinfo-time">
+									<text>{{item.createTime}}</text>
+								</view>
+							</view><!--评论的头像，名字，时间。部分结束-->
+							<view class="new-valuate-item-main"><!--评论内容开始 主内容 -->
+								<text class="new-valuate-item-mainText" wx:if="{{!item.merchantComments}}" style="color:#9a9a9a">该用户没有做具体评价哦！</text><!--顾客评价-->
+								<text class="new-valuate-item-mainText" wx:else>{{item.merchantComments}}</text><!--顾客评价-->
+								<view class="new-valuate-item-main-images flex" wx:if="{{item.isImg==1}}">
+										<block wx:for="{{tage.splitStrToArr(item.imgUrl,';','true','198')}}"
+												wx:key="imgIndex"
+												wx:for-item="imgItem"
+											wx:for-index="imgIndex"><!--tage.splitStrToArr 参数为：要解析的字符串，分隔符，是否图片加高清，高清图片的宽度-->
+										<image src="{{imgItem ? imgItem : '../images/merchant/merchantLogo.png'}}" class="new-valuate-item-main-image"
+										catch:tap="valuateItemImageTap" data-current="{{imgIndex}}" data-imgs="{{tage.splitStrToArr(item.imgUrl,';','true',windowWidth)}}"
+										style="margin-right:{{(imgIndex+1)%3==0 ? '':'16rpx'}};margin-top:16rpx"></image>
+									</block>		
+								</view>
+								<text class="new-valuate-item-mainText mt20" wx-if="{{item.replyContent!==null}}"><text>商家回复:</text>{{item.replyContent}}</text><!--商家回复-->
+								<view  wx:if="{{item.goodsCommentsList.length!=0}}"><!--赞，踩列表-->
+									<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0}}" class="new-valuate-item-icon flex">
+										<image src="../../image/zan.png"></image><!-- 赞-->
+										<view class="new-valuate-item-iconText">
+											<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores}}"
+												wx:for-index="goodsIndex"
+												wx:for-item="goodsItem"
+												wx:key="orderId">
+												<text>{{goodsItem.goodsName}}</text>
+											</block>
+										</view>
+									</view>
+									<view wx:if="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores.length>0}}" class="new-valuate-item-icon flex" style="margin-top:{{tage.filterEvaluateScore(item.goodsCommentsList).goodScores.length>0 ? '' : '20rpx'}};">
+										<image src="../../image/cai.png"></image><!--踩-->
+										<view class="new-valuate-item-iconText">
+											<block wx:for="{{tage.filterEvaluateScore(item.goodsCommentsList).badScores}}"
+												wx:for-index="goodsIndex"
+												wx:for-item="goodsItem"
+												wx:key="id">
+												<text>{{goodsItem.goodsName}}</text>
+											</block>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</block>
+				</view><!--content-main结束：即评论部分-->
+			</view>
 		</view>
-	</view>
+	</scroll-view>
 
 	<!--购物车-->
 	<view  class="shopcart">
@@ -375,6 +391,5 @@
 		</view>
 	</view>
 </view>
-
 <!-- 消息 -->
 <template is="showToast" data="{{showToast: showToast}}" />
