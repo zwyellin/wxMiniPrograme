@@ -18,8 +18,8 @@
 	<!--底下滑动块-->
   <scroll-view
     scroll-y
-    style="height: 600px;"
-    bindscroll="scroll"
+    style="height: {{contentScrollHeight}}px;"
+    bindscroll="contentScroll"
     scroll-into-view="{{toView}}"
 		scroll-with-animation="{{true}}"
   >
@@ -112,7 +112,7 @@
 
 
 		<!-- 商品评价 -->
-		<view id="pj" class="mt20" style="padding-bottom:120rpx;">
+		<view id="pj" class="mt20">
 			<!-- 标题 -->
 			<view class="pageItem flex flex-spaceBetween flex-row-center">
 				<text class="padding-tb-20 font-15 color1 font-bold">商品评价(好评率{{tage.praise(selectedFood.commentScore)}}%)</text>

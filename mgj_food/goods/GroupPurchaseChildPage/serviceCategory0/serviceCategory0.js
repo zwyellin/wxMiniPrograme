@@ -459,14 +459,14 @@ Page({
       //处理好discountAmount
       discountAmount="-￥"+parseInt(discountAmount*100)/100;//保留两位小数
       //处理好actuallyAmount
-      if(promotionCouponsDiscountTotalAmt!=null){
+      if(promotionCouponsDiscountTotalAmt!=null && totalAmountInputValue>=this.data.coupons[0].restrictAmt){
         actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt
       }
       actuallyAmount=actuallyAmount-cashDeductionPrice;
       actuallyAmount="￥"+parseInt(actuallyAmount*100)/100;//保留两位小数
     }else{
       //处理好actuallyAmount
-      if(promotionCouponsDiscountTotalAmt!=null){
+      if(promotionCouponsDiscountTotalAmt!=null && totalAmountInputValue>=this.data.coupons[0].restrictAmt){
         actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt
       }
       actuallyAmount=actuallyAmount-cashDeductionPrice;

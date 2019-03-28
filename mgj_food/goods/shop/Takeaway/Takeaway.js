@@ -55,7 +55,8 @@ Page(Object.assign({}, merchantShop,{
 			{text:"评价",to:"pj"},
 		],
 		navActiveIndex:0,
-		toView:null//对应底下滚动view要滚到哪个id那里
+		toView:null,//对应底下滚动view要滚到哪个id那里
+		contentScrollHeight:null
   },
 
   /**
@@ -79,6 +80,15 @@ Page(Object.assign({}, merchantShop,{
 		// 分享者id
 		sharedUserId=this.data.sharedUserId;
 		if(sharedUserId==undefined || sharedUserId=="undefined") this.data.sharedUserId=null;
+
+		// 设置滚动条高度
+		wx.getSystemInfo({
+			success: (res)=> {
+				this.setData({
+					contentScrollHeight: res.windowHeight - 192*(app.globalData.windowWidth/750)
+				});
+			}
+		});
 
 		this.setData({//ui根据goodsId选择是否展示进店
 			goodsId:goodsId==undefined? null :goodsId //setData不能设置undefined
@@ -132,7 +142,10 @@ Page(Object.assign({}, merchantShop,{
 			toView:navObj[index].to,
 			navActiveIndex:index
 		})
-
+	},
+	// 滚动条滚动事件
+	contentScroll(e){
+		console.log(e.detail)
 	},
 	// 进店按钮点击事件
 	gotoShopBtnTap(e){
