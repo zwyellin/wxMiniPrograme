@@ -31,17 +31,20 @@ Page({
 		this.data.orderid = orderid;
 		this.data.isredbag = isredbag;
 		this.findNewTOrderById().then(()=>{//显示订单信息后，再请求红包情况
-			this.getPromotionListByOrderId();
+			// 仅在下单之后进入这个页面才会触发
+			var pages = getCurrentPages();
+			var prevPage = pages[pages.length - 2]; // 上一级页面
+			// 	if(	/goods\/queryOrder\/queryOrder/.test(prevPage.route))
+			if(this.data.isredbag){
+				this.getPromotionListByOrderId();
+				this.maskShowAnimation();
+				this.setData({
+					maskShow:true,
+				});
+				this.data.isredbag = true;
+			}
 		})
-		this.findCustomerAndComplainPhoneByUserXY();
-		if (this.data.isredbag) {
-			this.maskShowAnimation();
-			this.setData({
-				maskShow:true,
-			});
-			this.data.isredbag = true;
-			this.getMerchantRedBagByOrderId();
-		}		
+		this.findCustomerAndComplainPhoneByUserXY();	
 	},
 	findNewTOrderById(){
 		wx.showLoading({

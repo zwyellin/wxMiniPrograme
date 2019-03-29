@@ -23,7 +23,7 @@ Page({
     discount:null,//这个等于OrderPreviewRequestObj.discountRatio
     discountText:null,
 
-    discountActive:true,//是否开启打折
+    discountActive:false,//是否开启打折
 
     actuallyAmount:"",//实付金额(totalAmountInputValue,[excludeAmountInputActive,excludeAmountInputValue],[discountActive,discount])
     discountAmount:"",//折扣了多少金额(totalAmountInputValue,[excludeAmountInputActive,excludeAmountInputValue],[discountActive,discount])
@@ -279,7 +279,8 @@ Page({
     if(groupPurchaseOrderSubmitRequestObj.hasDiscount==0) delete groupPurchaseOrderSubmitRequestObj.hasDiscount;
     if(!this.data.excludeAmountInputActive) delete groupPurchaseOrderSubmitRequestObj.notJoinDiscountAmount;
     let coupons=this.data.coupons;
-    if(false && coupons!=null &&this.data.originalTotalPrice>0){//如果原本提交价格为非正，则不用提交马管家券字段。改为不用传
+     // 马管家券
+    if(coupons!=null){//如果原本提交价格为非正，则不用提交马管家券字段。改为不用传
       groupPurchaseOrderSubmitRequestObj.coupons=coupons;
     }
     if(this.data.sharedUserId!==null){
@@ -290,6 +291,7 @@ Page({
     if(groupPurchaseOrderCouponCodeList!=null && groupPurchaseOrderCouponCodeList.length!=0){
       groupPurchaseOrderSubmitRequestObj.groupPurchaseOrderCouponCodeList=groupPurchaseOrderCouponCodeList;
     }
+   
     let data=JSON.stringify(groupPurchaseOrderSubmitRequestObj);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
@@ -359,16 +361,6 @@ Page({
     this.setData({
       totalAmountInputValue:value,//如果为空，则不能点击优惠金额
     });
-    value=parseFloat(value.substring(1));
-    if(value>=this.data.coupons[0].restrictAmt){
-      this.setData({
-        couponsShow:true
-      })
-    }else{
-      this.setData({
-        couponsShow:false
-      })
-    }
      //计算实付金额
      this.actuallyAmount();
   },
@@ -429,11 +421,13 @@ Page({
   },
   // 计算实付金额及折扣了多少金额
   actuallyAmount(){
-    if(this.data.totalAmountInputValue.length<=1){//￥符号，则
+    if(this.data.totalAmountInputValue.length<=1 || parseFloat(this.data.totalAmountInputValue.substring(1))<parseFloat(this.data.excludeAmountInputValue.substring(1))){//￥符号，则
       this.setData({
         actuallyAmount:0,
         discountAmount:0,
         'OrderPreviewRequestObj.cashDeductionPrice':0,
+        excludeAmountNewValue:0,
+        couponsShow:false
       })
       let groupPurchaseOrderCouponCodeList=this.data.groupPurchaseOrderCouponCodeList;
       // 重置抵用券
@@ -458,26 +452,29 @@ Page({
       }
       //处理好discountAmount
       discountAmount="-￥"+parseInt(discountAmount*100)/100;//保留两位小数
-      //处理好actuallyAmount
-      if(promotionCouponsDiscountTotalAmt!=null && totalAmountInputValue>=this.data.coupons[0].restrictAmt){
-        actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt
-      }
       actuallyAmount=actuallyAmount-cashDeductionPrice;
-      actuallyAmount="￥"+parseInt(actuallyAmount*100)/100;//保留两位小数
     }else{
-      //处理好actuallyAmount
-      if(promotionCouponsDiscountTotalAmt!=null && totalAmountInputValue>=this.data.coupons[0].restrictAmt){
-        actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt
-      }
       actuallyAmount=actuallyAmount-cashDeductionPrice;
-      actuallyAmount="￥"+parseInt(actuallyAmount*100)/100;//保留两位小数
     }
-    if(actuallyAmount.indexOf('-')!=-1){
-      wx.showToast({
-        title:"输入金额不能低于优惠金额",
-        icon:"none"
+
+    // finally处理
+    actuallyAmount=parseInt(actuallyAmount*100)/100
+    if(actuallyAmount>=this.data.coupons[0].restrictAmt){//最终价格超过马管家券门槛则显示
+      this.setData({
+        couponsShow:true
+      })
+     
+      if(promotionCouponsDiscountTotalAmt!=null){
+        actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt;
+      }
+    }else{
+      this.setData({
+        couponsShow:false
       })
     }
+    // 如果显示马管家券后，计算马管家券之后价格为负数，则为0.01
+    if(actuallyAmount<0) actuallyAmount=0.01;
+    actuallyAmount="￥"+parseInt(actuallyAmount*100)/100;//保留两位小数
     this.setData({
       actuallyAmount,
       discountAmount

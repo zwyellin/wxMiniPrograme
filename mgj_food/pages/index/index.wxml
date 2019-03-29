@@ -4,7 +4,7 @@
 
 <!--index.wxml-->
 <View class="container {{maskShow ? 'posi' : ''}} {{isAgentId ? 'no-goods' : ''}}">
-
+	{{num1}}
 	<view class="flex flex-row-center flex-spaceBetween" style="background:white;">
 		<!--地图位置-->
 		<view class="flex0 flex flex-row-center padding-lr-20" bindtap="redirectToAddress">

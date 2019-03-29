@@ -59,7 +59,7 @@
 			<view class="pageItem flex flex-row-center flex-spaceBetween" style="margin-top:20rpx;padding-right:0;margin-right:20rpx;">
 				<view>
 					<text  style="font-size:32rpx;color:#f01414">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).price}}</text>
-					<text style="font-size:26rpx;color:#666">￥{{selectedFood.now}}</text>
+					<text wx:if="{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).originalPrice}}" class="old-price">￥{{tage.sortGoodsSpecList(selectedFood.goodsSpecList).originalPrice}}</text>
 				</view>
 				<view style="background: #fff">
 					<view wx:if="{{merchantInfoObj.businessStatus === 1 || merchantInfoObj.status=== 0}}" class="choice-else font-10"  ><!--如果代理商不允许它开业，或者它自己是休息状态：即显示商家休息-->
@@ -105,8 +105,8 @@
 		</view>
 		
 		<!-- 富文本 -->
-		<view  wx:if="{{goodsInfo.nodes}}"  class="pageItem mt20" style="padding-left:0;padding-right:0;">
-				<view class="padding-tb-20 padding-lr-40 font-15 color1 font-bold">商家详情</view>
+		<view  wx:if="{{goodsInfo.nodes}}"  class="pageItem mt20" style="padding-left:10rpx;padding-right:10rpx;">
+				<view class="font-15 color1 font-bold" style="padding:20rpx 30rpx">商家详情</view>
 				<template is="wxParse" data="{{wxParseData:goodsInfo.nodes}}" />
 		</view>
 
@@ -116,9 +116,9 @@
 			<!-- 标题 -->
 			<view class="pageItem flex flex-spaceBetween flex-row-center">
 				<text class="padding-tb-20 font-15 color1 font-bold">商品评价(好评率{{tage.praise(selectedFood.commentScore)}}%)</text>
-				<text style="font-size:24rpx;color:#333">{{selectedFood.commentNum}}条评价</text>
+				<text style="font-size:24rpx;color:#333">{{evaluate.allCount}}条评价</text>
 			</view>
-			<view class="new-valuate-content">
+			<view class="new-valuate-content" style="margin-top:0;">
 					<view class="new-valuate-content-header">
 					<view class="new-valuate-content-btns">
 						<button class="new-valuate-btn1 {{selestEvaluateStatus == 0 ? 'new-valuate-btn-hover1':''}}"  data-id='0' data-type="1" catch:tap="evaluateBtnSwitch">全部<text>{{evaluate.allCount}}</text></button>

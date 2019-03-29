@@ -109,7 +109,9 @@ Page({
                 redBagMoney:0
               });
               //再次请求，重新赋值
-              this.promotionPreSetting();
+              setTimeout(()=>{
+                this.promotionPreSetting();
+              },2000)
             }
           })
 	    }
@@ -135,8 +137,10 @@ Page({
               this.setData({
                 platformRedBagMoney:0
               });
-              //再次请求，重新赋值
-              this.promotionPreSetting();
+              //再次请求，重新赋值,先显示错误信息
+              setTimeout(()=>{
+                this.promotionPreSetting();
+              },2000)
             }
           })
       }
@@ -357,7 +361,7 @@ promotionPreSetting(){
           realTotalMoney:res.data.value.totalPrice,
           promotionCouponsDiscountTotalAmt:res.data.value.promotionCouponsDiscountTotalAmt,//马管家券金额
         })
-    }else if(res.data.code===502){
+    }else{
         return new Promise((resolve, reject) => {
             resolve(res);
         });

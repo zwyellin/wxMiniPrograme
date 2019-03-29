@@ -1,5 +1,5 @@
 // goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult.js
-const { wxRequest } = require('../../../utils/util.js');
+const { wxRequest ,NumberAnimate} = require('../../../utils/util.js');
 const app = getApp();
 Page({
 
@@ -118,6 +118,22 @@ Page({
         }
         this.setData({
           promotionList:res.data.value
+        },()=>{//显示之后数字动态改变
+          let num1 = promotionList.coupons.couponsAmt
+          let n1 = new NumberAnimate({
+            from:num1,//开始时的数字
+            speed:5000,//总时间
+            refreshTime:100,//刷新一次的时间，频率
+            decimals:3,//小数点后的位数
+            onUpdate:()=>{
+              this.setData({
+              'promotionList.coupons.couponsAmt':n1.tempValue
+              });
+            },
+            onComplete:()=>{
+              //console.log("随机红包结束")
+            }
+          });
         })
       } else {
         

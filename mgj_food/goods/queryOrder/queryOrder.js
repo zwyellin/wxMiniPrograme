@@ -53,6 +53,7 @@ Page({
 	},
 	onLoad(options){
 		let { merchantId , sharedUserId } = options;
+		console.log("分享者id:",sharedUserId)
 		// 分享者id
 		if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
 		let pages = getCurrentPages();
@@ -74,7 +75,9 @@ Page({
 			payList:prevPage.data.value.payments,
 			deliveryTimes:prevPage.data.value.deliveryTimes,
 			initTime:prevPage.data.value.deliveryTimes[0].times[0]['1'],
-			timeArr:prevPage.data.value.deliveryTimes[0].times[0]
+			timeArr:prevPage.data.value.deliveryTimes[0].times[0],
+			promotionCouponsDiscountTotalAmt:prevPage.data.value.promotionCouponsDiscountTotalAmt,
+			coupons:prevPage.data.value.coupons,
 		});
 		let arr = prevPage.data.value.deliveryTimes[this.data.timeIndex].times;
 		let sendTime = [];
@@ -111,29 +114,32 @@ Page({
 						orderMessage:orderMessage,
 						addressInfo:addressInfo
 					});
+
+					if (this.data.addressInfoId != null && this.data.usePlatformRedBagList === null) {
+						this.queryPlatformRedBagList();
+					}
+					if (this.data.useRedBagList != null) {
+						this.data.useRedBagList.map(item=>{
+							redBagMoney += item.amt;
+						});
+						this.setData({
+							redBagMoney:redBagMoney
+						});
+					}
+					if (this.data.usePlatformRedBagList != null) {
+						this.data.usePlatformRedBagList.map(item=>{
+							platformRedBagMoney += item.amt;
+						});
+						this.setData({
+							platformRedBagMoney:platformRedBagMoney
+						});
+					}	
+
 				}
-	        }).finally(()=>{
-	        	wx.hideLoading();
-	        });
-	        if (this.data.addressInfoId != null && this.data.usePlatformRedBagList === null) {
-	        	this.queryPlatformRedBagList();
-	        }
-	        if (this.data.useRedBagList != null) {
-	        	this.data.useRedBagList.map(item=>{
-					redBagMoney += item.amt;
-				});
-				this.setData({
-					redBagMoney:redBagMoney
-				});
-	        }
-	        if (this.data.usePlatformRedBagList != null) {
-	        	this.data.usePlatformRedBagList.map(item=>{
-					platformRedBagMoney += item.amt;
-				});
-				this.setData({
-					platformRedBagMoney:platformRedBagMoney
-				});
-	        }		
+			}).finally(()=>{
+				wx.hideLoading();
+			});
+	
 		}
 	},
 	//获取商家可用红包
@@ -385,7 +391,8 @@ Page({
 				userAddressId:this.data.addressInfo.id,
 				userId:this.data.orderMessage.userId,
 				caution:this.data.remarks,
-				redBags:orderUseRedBagList.length === 0 ? null : orderUseRedBagList
+				redBags:orderUseRedBagList.length === 0 ? null : orderUseRedBagList,
+				sharedUserId:this.data.sharedUserId
 			};
 			data.orderItems = this.data.orderMessage.orderItems;
 			// data.sharedUserId=this.data.sharedUserId;
@@ -509,18 +516,19 @@ Page({
         		token:app.globalData.token	
         	},
         }).then((res)=>{
-					let coupons=null;
-					let promotionCouponsDiscountTotalAmt=null;
+					wx.hideLoading();
 					if(res.data.code==0){
-						coupons=res.data.value.coupons;
-						promotionCouponsDiscountTotalAmt=res.data.value.promotionCouponsDiscountTotalAmt
+						this.data.coupons=res.data.value.coupons;//如果不为空，则prev和submit要发送这个字段
+						this.setData({
+							promotionCouponsDiscountTotalAmt:res.data.value.promotionCouponsDiscountTotalAmt//要显示的
+						})
 					}else{
-
+						wx.showToast({
+							title:res.data.value,
+							icon:"none"
+						})
 					}
-					this.data.coupons=coupons;//如果不为空，则prev和submit要发送这个字段
-					this.setData({
-						promotionCouponsDiscountTotalAmt//要显示的
-					})
+
 					// then链
 					return new Promise((resolve, reject) => {
             resolve(res);

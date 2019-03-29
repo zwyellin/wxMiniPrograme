@@ -19,14 +19,10 @@ const merchantShop = {
         }).then(res=>{
 			if (res.data.code === 0) {
 				let value = res.data.value;
-				console.log(res)
 				let name = value.merchant.name;
 				let ruleDtoList =[];
 				let merchantRedBagList = value.merchant.merchantRedBagList;
 				let promotionActivityList=value.merchant.promotionActivityList;
-				wx.setNavigationBarTitle({
-				  	title: name
-				});
 				// 更新代理商【可能是分享进来的】
 				app.globalData.agentId=value.merchant.agentId;
 				console.log("设置了代理商",app.globalData.agentId)

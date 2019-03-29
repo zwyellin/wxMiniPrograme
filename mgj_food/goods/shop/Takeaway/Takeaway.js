@@ -96,9 +96,21 @@ Page(Object.assign({}, merchantShop,{
 		//分享传goodsId,商店进来则读取其selectedFood。
     if(goodsId!==undefined){//分享进来的 //goodsId!==undefined
 			//根据goodsId发送请求
+			wx.showToast({
+				title:"加载中",
+				icon:"loading",
+				mask:true,
+				duration:20000
+			})
 			this.findTGoodsById().then(()=>{
-				console.log("ruleDtoList",this.data.ruleDtoList)
-				this.findMerchantInfo();
+				console.log("good:",this.data.selectedFood)
+				this.findMerchantInfo().then(()=>{
+					wx.hideToast();
+					// 设置标题
+					wx.setNavigationBarTitle({
+						title: this.data.merchantInfoObj.name
+					});
+				});
 				this.queryGoodsComments();
 				this.showTakeAwayGoodsDetail();
 			});
@@ -145,7 +157,7 @@ Page(Object.assign({}, merchantShop,{
 	},
 	// 滚动条滚动事件
 	contentScroll(e){
-		console.log(e.detail)
+		//console.log(e.detail)
 	},
 	// 进店按钮点击事件
 	gotoShopBtnTap(e){
@@ -176,6 +188,7 @@ Page(Object.assign({}, merchantShop,{
 	},
 	// 分享
 	onShareAppMessage(res) {
+		console.log("分享成功",app.globalData.userId)
 		return {
 				title:this.data.selectedFood.name ,
 				path: '/goods/shop/Takeaway/Takeaway?goodsId='+ this.data.selectedFood.id+'&sharedUserId='+app.globalData.userId,
@@ -186,7 +199,7 @@ Page(Object.assign({}, merchantShop,{
   getPrevData(){
     var pages = getCurrentPages();
     var prevPage = pages[pages.length - 2]; // 上一级页面
-    if (/goods\/shop\/shop/.test(prevPage.route)) {//商店。这边没有区分商店搜索页
+		if (/goods\/shop\/shop/.test(prevPage.route)) {//商店。这边没有区分商店搜索页
       // 获取商家信息
       let selectedFood=prevPage.data.selectedFood;//要显示的商品
       let selectFoods=prevPage.data.selectFoods;//全部选择了的商品
@@ -195,6 +208,12 @@ Page(Object.assign({}, merchantShop,{
 			let {totalcount,totalprice,minPrice,listFoods,merchantId,isTogether,fullPrice,removalMenuList}=prevPage.data;
 			// 修改选择了的商品对象
 			selectedFood=this._modifySelectFoods(selectedFood);
+			wx.showToast({
+				title:"加载中",
+				icon:"loading",
+				mask:true,
+				duration:20000
+			})
       this.setData({
         selectedFood,//商品对象
         merchantInfoObj,//渲染需要
@@ -213,7 +232,13 @@ Page(Object.assign({}, merchantShop,{
 				removalMenuList
 			},()=>{
 				this.queryGoodsComments();
-				this.showTakeAwayGoodsDetail();
+				this.showTakeAwayGoodsDetail().then(()=>{
+				});
+				wx.hideToast();
+				// 设置标题
+				wx.setNavigationBarTitle({
+					title: merchantInfoObj.name
+				});
 			})
     }
 	},

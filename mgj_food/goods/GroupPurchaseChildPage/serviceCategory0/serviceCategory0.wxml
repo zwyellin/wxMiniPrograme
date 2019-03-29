@@ -26,7 +26,7 @@
         <text class="font-size3 font-bold color1">{{discountText}}折</text>
         <view>
             <text class="font-size4" style="color:red">{{discountAmount}}</text>
-            <switch type="checkbox" style="transform:scale(0.8);padding:5rpx 20rpx;" color="#ff9900" checked="{{true}}" bindchange="discountSwitch"></switch>
+            <switch type="checkbox" style="transform:scale(0.8);padding:5rpx 20rpx;" color="#ff9900" checked="{{discountActive}}" bindchange="discountSwitch"></switch>
         </view>
        
     </view>

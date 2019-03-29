@@ -115,7 +115,9 @@ Page({
                 redBagMoney:0
               });
               //再次请求，重新赋值
-              this.promotionPreSetting();
+              setTimeout(()=>{
+                this.promotionPreSetting();
+              },2000)
             }
           })
 
@@ -143,7 +145,9 @@ Page({
                 platformRedBagMoney:0
               });
               //再次请求，重新赋值
-              this.promotionPreSetting();
+              setTimeout(()=>{
+                this.promotionPreSetting();
+              },2000)
             }
           })
       }

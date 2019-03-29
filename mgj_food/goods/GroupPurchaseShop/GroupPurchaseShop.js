@@ -76,6 +76,7 @@ Page({
   },
   // 分享事件
   onShareAppMessage() {
+    console.log("分享成功",app.globalData.userId)
     return {
         title: this.data.groupMerchantInfo.name,
         path: "/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId="+this.data.groupPurchaseMerchantId+
@@ -246,7 +247,7 @@ Page({
         let that=this;
         wx.showModal({
           title:"提示",
-          content:'恭喜您已成功领取'+redbagItem.amt+"元红包，可在[个人执行]->[我的红包]查看",
+          content:'恭喜您已成功领取'+redbagItem.amt+"元红包，可在[个人中心]->[我的红包]查看",
           confirmText:'我知道了',
           showCancel:false,
           confirmColor:"#314bec",

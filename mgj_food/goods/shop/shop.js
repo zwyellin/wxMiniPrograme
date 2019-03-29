@@ -154,7 +154,14 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			// 查看是否有商品页面的缓存，有说明时商品页跳过来的，则要合并数据
 			console.log("shareTakeawayData",wx.getStorageSync('shareTakeawayData'))
 			if (wx.getStorageSync('shareTakeawayData')) {//说明有缓存
+				wx.showToast({
+					title:"更新中",
+					icon:"loading",
+					mask:true,
+					duration:20000
+				})
 				let shareTakeawayData=wx.getStorageSync('shareTakeawayData');
+				wx.hideToast();
 				this.setData(shareTakeawayData,()=>{
 					wx.setStorageSync('shareTakeawayData',null);//清空
 				})
@@ -253,7 +260,14 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 			//也可能是商品页面返回来的。	// 要共享回去的数据selectFoods，listFoods，totalprice，totalcount,fullPrice
 			// 及sharedUserId
 			if(this.data.shareTakeawayData!==undefined){
+				wx.showToast({
+					title:"更新中",
+					icon:"loading",
+					mask:true,
+					duration:20000
+				})
 				this.setData(this.data.shareTakeawayData,()=>{
+					wx.hideToast();
 					delete this.data.shareTakeawayData;	// 重置为undefined,避免非商品页也触发这里
 				});
 			}
@@ -602,7 +616,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 							console.log("进入前的调用",app.globalData.longitude)
 	      			if (res.data.code === 0) {
 	      				this.setData({
-							value:res.data.value
+									value:res.data.value
 	      				});
 	      				wx.navigateTo({
 		  					url: '/goods/queryOrder/queryOrder?merchantId='+this.data.merchantId+"&sharedUserId="+this.data.sharedUserId,
@@ -751,7 +765,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 					// detailShow:true,
 	  },()=>{//设置成功后，跳转到商品页面
 				wx.navigateTo({
-					url:'/goods/shop/Takeaway/Takeaway'
+					url:'/goods/shop/Takeaway/Takeaway?sharedUserId='+this.data.sharedUserId
 				})
 		});
 	},
@@ -1489,7 +1503,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
   },
 
 onShareAppMessage(res) {
-	console.log(app.globalData.userId);
+	console.log("分享成功",app.globalData.userId)
 		return {
 				title: '马管家',
 				path: '/goods/shop/shop?merchantid='+ this.data.merchantId+'&sharedUserId='+app.globalData.userId,

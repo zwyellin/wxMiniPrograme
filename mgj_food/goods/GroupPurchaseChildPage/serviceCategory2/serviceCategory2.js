@@ -61,8 +61,6 @@ Page({
 		}
     latitude=app.globalData.latitude;
     longitude=app.globalData.longitude;
-    //分享id
-    if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
     Object.assign(this.data,{
       groupPurchaseCouponId,
       longitude,
@@ -78,9 +76,10 @@ Page({
   },
   // 分享事件
   onShareAppMessage() {
+    console.log("分享成功",app.globalData.userId)
     return {
         title: this.data.groupSetMealItem.groupPurchaseName,
-        path: `/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${groupPurchaseCouponId}&sharedUserId=${app.globalData.userId}`,
+        path: `/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${this.data.groupPurchaseCouponId}&sharedUserId=${app.globalData.userId}`,
     };
   },
 
