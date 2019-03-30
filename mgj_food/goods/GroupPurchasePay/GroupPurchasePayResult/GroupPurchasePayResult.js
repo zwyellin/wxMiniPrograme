@@ -108,53 +108,71 @@ Page({
     }).then(res=>{
       if (res.data.code === 0) {
         let promotionList=res.data.value;
+        let couponsAmt=JSON.parse(JSON.stringify(res.data.value.coupons.couponsAmt));
         promotionList.hascoupons=true;
         if(promotionList.coupons.couponsAmt==undefined){
           promotionList.hascoupons=false;
-        }
+        }else{//获取马管家券有效期
+					let data2=new Date().getTime();
+					let expirationTime=new Date( promotionList.coupons.expirationTime-data2);
+					promotionList.coupons.expirationTime=expirationTime.getDay()+(expirationTime.getHours()>0?1:0)
+				}
         promotionList.hasmerchantRedBags=true;
-        if(promotionList.merchantRedBags.length==0){
+        if(promotionList.merchantRedBags===undefined ||promotionList.merchantRedBags==null || promotionList.merchantRedBags.length==0){
           promotionList.hasmerchantRedBags=false;
+        }else{ // 设置有效期
+          let merchantRedBags=promotionList.merchantRedBags;
+          merchantRedBags.forEach((_item,_index)=>{
+            let data=new Date(_item.expirationTime);
+            _item.expirationTime=data.getFullYear()+"."+(data.getMonth()+1)+"."+data.getDay()
+          })
+          promotionList.merchantRedBags=merchantRedBags
         }
         this.setData({
-          promotionList:res.data.value
+          promotionList
         },()=>{//显示之后数字动态改变
-          let num1 = promotionList.coupons.couponsAmt
-          let n1 = new NumberAnimate({
-            from:num1,//开始时的数字
-            speed:5000,//总时间
-            refreshTime:100,//刷新一次的时间，频率
-            decimals:3,//小数点后的位数
-            onUpdate:()=>{
-              this.setData({
-              'promotionList.coupons.couponsAmt':n1.tempValue
-              });
-            },
-            onComplete:()=>{
-              //console.log("随机红包结束")
+          let k=0
+          let t1=setInterval(()=>{
+            k+=1;
+            if(k==10) {
+              clearInterval(t1)
+              console.log(couponsAmt);
+              setTimeout(()=>{//避免太频繁，堵塞
+                this.setData({
+                  'promotionList.coupons.couponsAmt':couponsAmt
+                })
+              },100)
             }
-          });
+            this.setData({
+              'promotionList.coupons.couponsAmt':parseInt(Math.random()*10*100)/100 //保留两位的随机数
+            })
+          },100)
         })
       } else {
         
       }
    })
   },
-  promotionListLook(e){
-    // 点查看红包，则先关闭再跳转。避免回来还展示
-    this.setData({
-      promotionListShow:false
-    },()=>{
+  redBagsGotoTap(e){
+    let {index}=e.target.dataset;
+    let merchantRedBags=this.data.promotionList.merchantRedBags;
+    let {merchantId,businessType}=merchantRedBags[index];
+    if(businessType==1){//外卖
       wx.navigateTo({
-        url:"/goods/userredBag/userredBag"
+				url:"/goods/shop/shop?merchantid=" + merchantId,
+			});
+    }else if(businessType==6){//团购
+      wx.navigateTo({
+        url:`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${merchantId}`
       })
-    })
+    }
   },
   promotionListClose(e){
     this.setData({
       promotionListShow:false
     })
   },
+  
   // 完成按钮点击事件
   finishBtnTap(e){
     // <!-- groupPurchaseOrder:orderType:。 1, "代金券",2, "团购券",3, "优惠买单" --> 

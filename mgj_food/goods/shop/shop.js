@@ -97,14 +97,18 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		console.log("options",options);
 		console.log("scene",scene);
 		//search为商店搜索，点击后跳转自身商店(用于标识)
-		if(scene=="undefined"){
+		if(scene==undefined || scene=="undefined"){
 			this.data.merchantId =merchantid;
 			this.data.sharedUserId=sharedUserId;
 		}else{//扫码进来的
 			console.log("扫码进来的");
-			let scene=scene.split(",");
-			this.data.merchantId =scene[0];
-			this.data.sharedUserId=scene[1];
+			if(scene.indexOf(",")==-1){
+				this.data.goodsId=scene;
+			}else{
+				let sceneArr=scene.split(",");
+				this.data.goodsId =sceneArr[0];
+				this.data.sharedUserId=sceneArr[1];
+			}
 		}
 		// 分享者id
 		sharedUserId=this.data.sharedUserId;
@@ -722,6 +726,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		this.maskShowAnimation();
 		this.choiceShowAnimation();
 		let { food, parentIndex } = e.currentTarget.dataset;
+		let ccfood=JSON.parse(JSON.stringify(food));
 		// let selectedFood = this.data.selectedFood;
 		
 		let arr = [];

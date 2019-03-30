@@ -185,13 +185,15 @@ Page({
       }
     })
   },
-  groupPurchaseOrderPreview(){
-    wx.showToast({
-      title:"加载中",
-      icon:"loading",
-      duration:20000,
-      mask:true
-    })
+  groupPurchaseOrderPreview(status){
+    if(!status){//在不参与优惠金额，那里输入因为太频繁请求，木有转圈圈
+      wx.showToast({
+        title:"更新订单",
+        icon:"loading",
+        duration:20000,
+        mask:true
+      })
+    }
     let data=JSON.parse(JSON.stringify(this.data.OrderPreviewRequestObj));
     let totalPrice=parseFloat(this.data.totalAmountInputValue.substring(1));
     let excludeAmountInputValue=this.data.excludeAmountInputValue;
@@ -229,7 +231,7 @@ Page({
     }).then(res=>{
       wx.hideToast();
       if (res.data.code === 0) {
-        let {originalTotalPrice,cashDeductionPrice,originalPrice,notJoinDiscountAmount,discountAmt,totalPrice,promotionCouponsDiscountTotalAmt}=res.data.value; 
+        let {coupons,originalTotalPrice,cashDeductionPrice,originalPrice,notJoinDiscountAmount,discountAmt,totalPrice,promotionCouponsDiscountTotalAmt}=res.data.value; 
         let OrderPreviewRequestObj=this.data.OrderPreviewRequestObj;
         if(this.data.discountActive) {
           OrderPreviewRequestObj.hasDiscount=1;
@@ -249,8 +251,10 @@ Page({
         this.data.actuallyAmount=totalPrice;
         this.setData({
           actuallyAmount:totalPrice,
+          promotionCouponsDiscountTotalAmt,
           'OrderPreviewRequestObj.cashDeductionPrice':cashDeductionPrice        // 更新抵用券
         })
+        this.data.coupons=coupons;
       }else{
         wx.showToast({
           title:res.data.value,
@@ -280,7 +284,7 @@ Page({
     if(!this.data.excludeAmountInputActive) delete groupPurchaseOrderSubmitRequestObj.notJoinDiscountAmount;
     let coupons=this.data.coupons;
      // 马管家券
-    if(coupons!=null){//如果原本提交价格为非正，则不用提交马管家券字段。改为不用传
+    if(coupons!=null){
       groupPurchaseOrderSubmitRequestObj.coupons=coupons;
     }
     if(this.data.sharedUserId!==null){
@@ -291,7 +295,7 @@ Page({
     if(groupPurchaseOrderCouponCodeList!=null && groupPurchaseOrderCouponCodeList.length!=0){
       groupPurchaseOrderSubmitRequestObj.groupPurchaseOrderCouponCodeList=groupPurchaseOrderCouponCodeList;
     }
-   
+    delete groupPurchaseOrderSubmitRequestObj.promotionCouponsDiscountTotalAmt
     let data=JSON.stringify(groupPurchaseOrderSubmitRequestObj);
     return wxRequest({
       url:'/merchant/userClient?m=groupPurchaseOrderSubmit',
@@ -393,6 +397,7 @@ Page({
     })
     //计算实付金额
     this.actuallyAmount();
+    this.groupPurchaseOrderPreview(true);
   },
     // 不参与优惠金额，切换
   excludeAmountSwitch(e){
@@ -459,7 +464,7 @@ Page({
 
     // finally处理
     actuallyAmount=parseInt(actuallyAmount*100)/100
-    if(actuallyAmount>=this.data.coupons[0].restrictAmt){//最终价格超过马管家券门槛则显示
+    if(this.data.coupons!==null && this.data.coupons.length>0 && actuallyAmount>=this.data.coupons[0].restrictAmt){//最终价格超过马管家券门槛则显示
       this.setData({
         couponsShow:true
       })

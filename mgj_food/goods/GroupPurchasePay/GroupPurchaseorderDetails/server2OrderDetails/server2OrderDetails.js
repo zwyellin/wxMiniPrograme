@@ -158,7 +158,9 @@ Page({
   },
   modifygroupPurchaseOrder(item){
     // 处理图片
-    if(item.groupPurchaseCouponImages.indexOf(";")!=-1){
+    if(item.groupPurchaseCouponImages==null){
+      item.groupPurchaseCouponImages=[];
+    }else if(item.groupPurchaseCouponImages.indexOf(";")!=-1){
       item.groupPurchaseCouponImages=item.groupPurchaseCouponImages.split(";");
     }else{
       if(item.groupPurchaseCouponImages!=null){

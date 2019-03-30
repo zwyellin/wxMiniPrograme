@@ -72,7 +72,6 @@ Page({
     timer(obj){  
       obj.paymentExpireTime = obj.paymentExpireTime.replace(/-/g,'/');
       obj.createTime = obj.createTime.replace(/-/g,'/');
-
       let nowTime =  new Date().getTime();
       let dateTime =  new Date(obj.paymentExpireTime).getTime()-3000; 
       let time = dateTime  - nowTime;
@@ -127,14 +126,16 @@ Page({
       }
     },
     changeRefundButton(item){
-      item.createTime = item.createTime.replace(/-/g,'/');
-      let time = new Date(item.createTime).getTime();
-      if (time > this.data.time) {//如果创建订单的时间比2018.5还早，则？
-        item.refundDetail = true;//退款详情
-      } else {
-        item.refundDetail = false;
+      if(item.type==1){
+        item.createTime = item.createTime.replace(/-/g,'/');
+        let time = new Date(item.createTime).getTime();
+        if (time > this.data.time) {//如果创建订单的时间比2018.5还早，则？
+          item.refundDetail = true;//退款详情
+        } else {
+          item.refundDetail = false;
+        }
+        item.createTime = refundTime(item.createTime);
       }
-      item.createTime = refundTime(item.createTime);
       // 修改团购的信息,有两个接口，所以处理要先判断是否有该值
       if(item.type==6){
         let orderType=undefined ;
@@ -159,8 +160,9 @@ Page({
         }
 
         // 处理订单状态,以上已处理完不同接口导致的差异。以下统一使用item即可
+
         // 修改显示的时间格式
-        item.groupPurchaseOrder.createTime = refundTime(item.groupPurchaseOrder.createTime);
+        item.groupPurchaseOrder.createTime = refundTime(item.groupPurchaseOrder.createTime.replace(/-/g,'/'));
         // @status:-1,取消订单；0，订单创建；1，等待付款；2，购买完成；3，已退款；4，等待接单；
         let status=item.groupPurchaseOrder.status;
         item.groupPurchaseOrder.childStatus=null;

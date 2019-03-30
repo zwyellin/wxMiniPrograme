@@ -19,13 +19,14 @@ Page({
     orderId:null
   },
   onLoad(options){
-    let { orderId, price, merchantId,sharerUserId} = options;
+    let { orderId, price, merchantId,sharedUserId} = options;
+    if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null
     this.setData({
       price:price,
       channelPrice:price,
       merchantId:merchantId,
       orderId:orderId,
-      sharerUserId:sharerUserId
+      sharedUserId:sharedUserId
     });
     this.findUserCenter();
   },

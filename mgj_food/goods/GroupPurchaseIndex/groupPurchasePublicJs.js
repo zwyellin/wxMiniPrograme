@@ -56,7 +56,9 @@ let modify={
           }else if(item.type==2){//团购套餐
             // 处理images
             let images=item.images;
-            if(images.indexOf(";")==-1){
+            if(images==null){
+              images=[];
+            }else if(images.indexOf(";")==-1){
               images=[images];
             }else{
               images=images.split(";");

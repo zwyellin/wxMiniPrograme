@@ -16,19 +16,19 @@
             <text>订单总金额</text>
             <text>￥{{groupPurchaseOrder.originalPrice}}</text>
         </view>
-        <view class="flex flex-spaceBetween padding-tb-20 row-line">
+        <view class="flex flex-spaceBetween padding-tb-20 row-line" wx:if="{{groupPurchaseOrder.totalOriginalPrice}}">
             <text>优惠</text>
             <text style="color:red">-￥{{groupPurchaseOrder.totalOriginalPrice}}</text>
         </view>
-        <view class="flex flex-spaceBetween padding-tb-20 row-line">
+        <view class="flex flex-spaceBetween padding-tb-20 row-line" wx:if="{{groupPurchaseOrder.cashDeductionPrice}}">
             <text>抵用券</text>
             <text style="color:red">-￥{{groupPurchaseOrder.cashDeductionPrice}}</text>
         </view>
-        <view class="flex flex-spaceBetween padding-tb-20 row-line">
+        <view class="flex flex-spaceBetween padding-tb-20 row-line" wx:if="{{groupPurchaseOrder.redBagDiscountTotalAmt}}">
             <text>红包</text>
             <text style="color:red">-￥{{groupPurchaseOrder.redBagDiscountTotalAmt}}</text>
         </view>
-        <view class="flex flex-spaceBetween padding-tb-20">
+        <view class="flex flex-spaceBetween padding-tb-20" wx:if="{{groupPurchaseOrder.couponsTotalAmt}}">
             <text>马管家券优惠</text>
             <text style="color:red">-￥{{groupPurchaseOrder.couponsTotalAmt}}</text>
         </view>

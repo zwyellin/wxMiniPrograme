@@ -8,7 +8,7 @@ Page({
    */
   data: {
     merchantId:null,
-    couponCodeList:null,//请求下来的代金券
+    couponCodeList:[],//请求下来的代金券
   
     ischangeToHistoryPage:false,//是否切入到了历史代金券的本页面
    
@@ -27,6 +27,7 @@ Page({
     let pages = getCurrentPages();
     let prevPage = pages[pages.length - 2];
     this.data.prevPage=prevPage;
+    this.data.isExpire=isExpire;
     if(isExpire==1){//说明是点击历史代金券进去的本页面
       this.setData({
         ischangeToHistoryPage:true
@@ -45,11 +46,6 @@ Page({
       this.setData({
         merchantId,
       },()=>{
-        wx.showToast({
-          title:"加载中",
-          icon:"loading",
-          duration:20000
-        })
         this.findGroupPurchaseOrderCouponCodeList(isExpire).then(()=>{
           wx.hideToast();
         });
@@ -67,6 +63,12 @@ Page({
       },()=>{
         wx.hideToast();
       })
+      // 遍历确认hasisCumulate0:false,//是否有不可叠加的被选中了
+      couponCodeList.forEach((_item,_index)=>{
+        if(_item.checkType && _item.isCumulate==0) this.setData({
+          hasisCumulate0:true
+        });
+      })
     }
   },
   // 页面返回时，保存本页面要保存的数据
@@ -75,12 +77,21 @@ Page({
     shareVouchersData.couponCodeList=this.data.couponCodeList;
     this.data.prevPage.data.shareVouchersData=shareVouchersData;
   },
-  findGroupPurchaseOrderCouponCodeList(isExpire){
+  // 触底事件
+  onReachBottom(){
+    this.findGroupPurchaseOrderCouponCodeList(this.data.isExpire,true)
+  },
+  findGroupPurchaseOrderCouponCodeList(isExpire,status){
+    wx.showToast({
+      title:"加载中",
+      icon:"loading",
+      duration:20000
+    })
     let params={
       isExpire: isExpire,//0为可用券。1为历史券。ui底部可以点击查看历史券
       merchantId: this.data.merchantId,
       size: 20,
-      start: 0
+      start: this.data.couponCodeList.length
     }
     return wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseOrderCouponCodeList',
@@ -90,13 +101,16 @@ Page({
         params:params
       },
     }).then(res=>{
+      wx.hideToast();
       if(res.data.code==0){
-        let couponCodeList=this.modifyCouponCodeList(res.data.value);
+        let couponCodeListNew=this.modifyCouponCodeList(res.data.value);
+        let couponCodeList=this.data.couponCodeList;
+        if(status) couponCodeListNew=couponCodeList.concat(couponCodeListNew);
         this.setData({
-          couponCodeList:couponCodeList
+          couponCodeList:couponCodeListNew
         })
       }else{
-        wxRequest.wx.showToast({
+       wx.showToast({
           title: res.data.value,
           icon: 'none',
           duration: 1500,

@@ -84,40 +84,24 @@ Page({
       },
     }).then(res=>{
       if (res.data.code === 0) {
-        let value=this.findGroupPurchaseBannerListModify(res.data.value);
+        let value=res.data.value;
         this.setData({
           bannerList:value
         })
       }
     })
   },
-  findGroupPurchaseBannerListModify(value){
-    value.forEach((_item,_index)=>{
-      switch(_item.bannerType){
-        case 1:{//外部链接
-          _item.url=`/pages/webView/webView?src=${_item.url}`;
-          break;//
-        }
-        case 2:{//代金券或团购券。
-          _item.url="/goods/GroupPurchaseChildPage/serviceCategory1/serviceCategory1?groupPurchaseMerchantId="+ _item.groupPurchaseMerchantId+"&groupPurchaseCouponId="+_item.groupPurchaseCouponId
-          break;
-        }
-        case 3:{//团购商家
-          _item.url=`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${_item.groupPurchaseMerchantId}`
-          break;
-        }
-        case 4:{//团购分类
-          _item.url=`/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId=${_item.groupPurchaseCouponId}`
-          brack;
-        }
-        default:{
-
-        }
-      }
+  // 主分类图片加载失败事件
+  BannerListSrcErr(e){
+    let {index}=e.target.dataset;
+    let bannerList=this.data.bannerList;
+    let item= bannerList[index];
+    item.picUrl="../../images/merchant/merchantLogo.png";
+    this.setData({
+      bannerList:bannerList
     })
-    console.log("返回value",value)
-    return value;
   },
+
   // banner的跳转
   findGroupPurchaseBannerListTap(e){
     let {item}=e.currentTarget.dataset;
@@ -125,9 +109,9 @@ Page({
     //@bannerType :1跳链接。2跳代金券和团购套餐。3跳团购商家。4团购分类
     //@url跳链接的地址
     if(bannerType===1){
-      wx.navigateTo({
-        url:`/pages/webView/webView?src=${url}`
-      })
+      // wx.navigateTo({
+      //   url:`/pages/webView/webView?src=${url}`
+      // })
     }else if(bannerType===2){//需要请求判断，loading提示
       wx.showToast({
         title:"正在跳转",
@@ -210,8 +194,11 @@ Page({
     //@gotoUrl跳分类的链接
     //groupPurchaseCategoryId一级分类的id。 childGroupPurchaseCategoryId二级分类的id如果为Null则跳一级分类
     if(gotoType===1){
+      // wx.navigateTo({
+      //   url:`/pages/webView/webView?src=${gotoUrl}`
+      // })
       wx.navigateTo({
-        url:`/pages/webView/webView?src=${gotoUrl}`
+        url:`/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort`
       })
     }else if(gotoType===2){
       wx.navigateTo({
@@ -225,7 +212,7 @@ Page({
     let categoryList=this.data.categoryList;
     let item= categoryList[index1][index];
     item.picUrl="../../images/merchant/classification_eva@2x.png";
-    item.picUrl="../../images/merchant/classification_eva@2x.png";
+    item.grayUrl="../../images/merchant/classification_eva@2x.png";
     this.setData({
       categoryList:categoryList
     })
@@ -259,9 +246,9 @@ Page({
     //@gotoType :1跳链接。2跳代金券和团购套餐。3跳团购商家。
     //@linkUrl跳链接的地址
     if(gotoType===1){
-      wx.navigateTo({
-        url:`/pages/webView/webView?src=${linkUrl}`
-      })
+      // wx.navigateTo({
+      //   url:`/pages/webView/webView?src=${linkUrl}`
+      // })
     }else if(gotoType===2){//需要请求判断，loading提示
       wx.showToast({
         title:"正在跳转",

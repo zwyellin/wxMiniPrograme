@@ -1,7 +1,7 @@
 <wxs module="cart" src="../../../utils/star.wxs"></wxs>
 <import src="../../../components/showToast/showToast.wxml" />
 <view  class="page container">
-  	<view wx:if="{{loginsuccess && orderList.length === 0 && show}}" class="no-order">
+  	<view wx:if="{{loginsuccess && orderList.length === 0 && show && orderListTag==0}}" class="no-order">
   		<image class="no-order-img" src="../../../images/images/no_order@2x.png"></image>
   		<view class="no-order-text">
   			<text>你暂时没有订单记录</text>
@@ -16,7 +16,7 @@
   			<text>立即登录</text>
   		</view>
   	</view>
-  	<view wx:if="{{loginsuccess && orderList.length > 0 && show}}" >
+  	<view wx:if="{{loginsuccess && (orderList.length > 0 || orderListTag!=0) && show}}" >
 	  	<!-- 分类搜索 -->
 		<view class="pageItem padding-tb-20" style="border-top:1px solid #e5e5e5">
 			<view class="flex flex-spaceBetween flex-row-center">

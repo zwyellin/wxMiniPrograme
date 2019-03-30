@@ -15,7 +15,7 @@
             <block wx:for="{{bannerList}}" wx:key="index">
                 <swiper-item>
                     <view data-item="{{item}}" catch:tap="findGroupPurchaseBannerListTap">
-                        <image class="swiper-image" src="{{item.picUrl}}" />
+                        <image class="swiper-image" src="{{item.picUrl}}" binderror="BannerListSrcErr"/>
                     </view>
                 </swiper-item>
             </block>
@@ -40,13 +40,33 @@
             </block>
         </swiper>
         <!-- 很优惠，慧生活 -->
+        <!-- 有可能1,3,4个 -->
         <view class="primaryPublicityList flex margin-bottom:40rpx;" style="margin-top:40rpx;padding-bottom:40rpx;">
-            <view class="primaryPublicityListItem" wx:for="{{publicityList}}" wx:key="index" style="{{(index+1)%2==1 ? 'margin-right:10rpx;':''}}"
+            <!--1个的情况-->
+            <view  wx:if="{{publicityList.length==1}}" class="primaryPublicityListItem" wx:for="{{publicityList}}" wx:key="index" style="width:670rpx"
+            data-item="{{item}}" catch:tap="primaryPublicityListTap"> 
+                <image  src="../image/gg{{index+1}}.png " style="width:670rpx;height:180rpx;" />
+                <text class="color1 text-overflow-dots primaryPublicityListItem-text-absolute" style="font-size:24rpx;">{{item.groupPurchaseMerchantName || ''}}</text>
+                <view style="position:absolute;bottom:0;right:0;width:200rpx;height:100rpx;overflow:hidden">
+                    <image src="{{item.img || '../../images/merchant/merchantLogo.png'}}" class="primaryPublicityListItem-img-absolute"/> 
+                </view>
+            </view>
+            <!-- 3个的情况 -->
+            <view  wx:if="{{publicityList.length==3}}" class="primaryPublicityListItem" wx:for="{{publicityList}}" wx:key="index" style="{{index==0?'width:670rpx':''}};{{index==1?'margin-right:10rpx;':''}}"
+            data-item="{{item}}" catch:tap="primaryPublicityListTap"> 
+                <image  src="../image/gg{{index+1}}.png " style="width:{{index==0?'670rpx':'330rpx'}};height:180rpx;" />
+                <text class="color1 text-overflow-dots primaryPublicityListItem-text-absolute" style="font-size:24rpx;">{{item.groupPurchaseMerchantName || ''}}</text>
+                <view style="position:absolute;bottom:0;right:0;width:200rpx;height:100rpx;overflow:hidden">
+                    <image src="{{item.img || '../../images/merchant/merchantLogo.png'}}" class="primaryPublicityListItem-img-absolute"/> 
+                </view>
+            </view>
+            <!-- 4个的情况 -->
+            <view  wx:if="{{publicityList.length==4}}" class="primaryPublicityListItem" wx:for="{{publicityList}}" wx:key="index" style="{{(index+1)%2==1 ? 'margin-right:10rpx;':''}}"
             data-item="{{item}}" catch:tap="primaryPublicityListTap"> 
                 <image  src="../image/gg{{index+1}}.png" style="width:330rpx;height:180rpx;" />
                 <text class="color1 text-overflow-dots primaryPublicityListItem-text-absolute" style="font-size:24rpx;">{{item.groupPurchaseMerchantName || ''}}</text>
                 <view style="position:absolute;bottom:0;right:0;width:200rpx;height:100rpx;overflow:hidden">
-                    <image src="{{item.img}}" class="primaryPublicityListItem-img-absolute"/> 
+                    <image src="{{item.img || '../../images/merchant/merchantLogo.png'}}" class="primaryPublicityListItem-img-absolute"/> 
                 </view>
             </view>
         </view>

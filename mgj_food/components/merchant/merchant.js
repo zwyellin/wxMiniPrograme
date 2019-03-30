@@ -57,18 +57,53 @@ let merchantObj = {
 		return true;
 	},
 	goToPageType(e) {
+		// @private int gotoType;
+		//** 跳转类型1：网址链接/业务模块，2：外卖分类 ,4:团购分类，6：外卖商家
+		// 网址链接/业务模块：是否是业务模块，businessFlag
+		// 跳网址:gotoUrl
+		// 服务分类编号 serviceCategoryId
+		// 业务模块,businessType: 注意外卖模块不是根据这个来，有【跑腿，洗衣，团购等】
+		// 团购一级分类 groupPurchaseCategoryId
+		// 团购二级分类 childGroupPurchaseCategoryId
+		// 一级分类名称  groupPurchaseCategoryName
+		// 二级分类名称 childGroupPurchaseCategoryName
 		let { item } = e.currentTarget.dataset;
-		if (item.gotoType === 6) {//外卖
-			wx.navigateTo({
-				url:"/goods/shop/shop?merchantid=" + item.merchantId,
-			});
-		}else if(item.gotoType === 4){//团购
-			wx.navigateTo({
-				url:"/goods/GroupPurchaseIndex/GroupPurchaseIndex",
-			});
-		}else {
+		if(item.gotoType===1){
+			if(item.businessFlag===1){//业务模块
+				let businessType=item.businessType;
+				switch(businessType){
+					case 4:{//团购模块
+						console.log("去团购模块")
+						wx.navigateTo({
+							url:"/goods/GroupPurchaseIndex/GroupPurchaseIndex",
+						});
+						break;
+					}default:{//其它模块，暂时没有，跳外卖分类
+						console.log("去其它模块")
+						wx.navigateTo({
+							url:`/pages/classPage/classPage?id=${item.tagCategoryId}&name=${item.name}`
+						});
+					}
+				}
+			}else{//网址也跳分类
+				wx.navigateTo({
+					url:`/pages/classPage/classPage?id=${item.tagCategoryId}&name=${item.name}`
+				});
+			}
+		}else if(item.gotoType===2){//外卖分类
 			wx.navigateTo({
 				url:`/pages/classPage/classPage?id=${item.tagCategoryId}&name=${item.name}`
+			});
+		}else if(item.gotoType===4){//团购分类
+			let groupPurchaseCategoryId=item.groupPurchaseCategoryId;
+			let childGroupPurchaseCategoryId=item.childGroupPurchaseCategoryId;
+			let name=item.groupPurchaseCategoryName ||item.childGroupPurchaseCategoryName || '团购分类'
+			wx.navigateTo({
+				url:`/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId=${groupPurchaseCategoryId}&childGroupPurchaseCategoryId=${childGroupPurchaseCategoryId}&name=${name}`
+			  })
+		}else if(item.gotoType===6){//外卖商家
+			wx.navigateTo({
+				url:"/goods/shop/shop?merchantid=" + item.merchantId,
 			});
 		}
 	},

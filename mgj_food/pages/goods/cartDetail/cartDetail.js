@@ -104,38 +104,6 @@ Page({
 		    }
 	    });
 	},
-	//根据订单领取商家红包
-	getMerchantRedBagByOrderId(){
-		wxRequest({
-	      url:'/merchant/userClient?m=getMerchantRedBagByOrderId',
-	      method:'POST',
-	      data:{
-	      		token:app.globalData.token,
-	        	params:{
-	          		orderId:this.data.orderid
-	        	} 
-	      	},
-	    }).then(res=>{
-		    if (res.data.code === 0) {
-		        let getMerchantRedBagList = res.data.value;
-		        if (getMerchantRedBagList) {
-		        	this.maskShowAnimation();
-		        	this.choiceShowAnimation();
-		        	this.setData({
-		          		getMerchantRedBagList:getMerchantRedBagList,
-		          		maskShow:true,
-		          		show:true
-		        	});
-		        } else {
-		        	setTimeout(()=>{
-						this.maskHideAnimation();
-					},1500);
-		        } 
-		    }
-	    }).catch(err=> {
-	    	console.log(err);
-	    });
-	},
 	//再来一单
 	nextOrder(e){
 	    wx.showLoading({
@@ -481,7 +449,7 @@ Page({
 	},
 
 	//红包
-	getPromotionListByOrderId(){
+  getPromotionListByOrderId(){
     wxRequest({
       url:'/merchant/userClient?m=getPromotionListByOrderId',
       method:'POST',
@@ -496,33 +464,71 @@ Page({
         promotionList.hascoupons=true;
         if(promotionList.coupons.couponsAmt==undefined){
           promotionList.hascoupons=false;
-        }
+				}else{//获取马管家券有效期
+					let data2=new Date().getTime();
+					let expirationTime=promotionList.coupons.expirationTime-data2;
+          let oneDay=24*60*60*1000;
+          promotionList.coupons.expirationTime=Math.ceil(expirationTime/oneDay);
+				}
         promotionList.hasmerchantRedBags=true;
-        if(promotionList.merchantRedBags.length==0){
+        if(promotionList.merchantRedBags===undefined ||promotionList.merchantRedBags==null || promotionList.merchantRedBags.length==0){
           promotionList.hasmerchantRedBags=false;
+        }else{ // 设置有效期
+					let merchantRedBags=promotionList.merchantRedBags;
+          merchantRedBags.forEach((_item,_index)=>{
+            let data=new Date(_item.expirationTime);
+            _item.expirationTime=data.getFullYear()+"."+(data.getMonth()+1)+"."+data.getDay()
+          })
+          promotionList.merchantRedBags=merchantRedBags
         }
         this.setData({
-          promotionList:res.data.value
+          promotionList
+        },()=>{//显示之后数字动态改变
+					let k=0
+					let couponsAmt=JSON.parse(JSON.stringify(res.data.value.coupons.couponsAmt));
+          let t1=setInterval(()=>{
+            k+=1;
+            if(k==10) {
+              clearInterval(t1)
+              console.log(couponsAmt);
+              setTimeout(()=>{//避免太频繁，堵塞
+                this.setData({
+                  'promotionList.coupons.couponsAmt':couponsAmt
+                })
+              },100)
+            }
+            this.setData({
+              'promotionList.coupons.couponsAmt':parseInt(Math.random()*10*100)/100 //保留两位的随机数
+            })
+          },100)
         })
       } else {
         
       }
    })
   },
-  promotionListLook(e){
-    // 点查看红包，则先关闭再跳转。避免回来还展示
-    this.setData({
-      promotionListShow:false
-    },()=>{
+  redBagsGotoTap(e){
+    let {index}=e.target.dataset;
+    let merchantRedBags=this.data.promotionList.merchantRedBags;
+    let {merchantId,businessType}=merchantRedBags[index];
+    if(businessType==1){//外卖
       wx.navigateTo({
-        url:"/goods/userredBag/userredBag"
+				url:"/goods/shop/shop?merchantid=" + merchantId,
+			});
+    }else if(businessType==6){//团购
+      wx.navigateTo({
+        url:`/goods/GroupPurchaseShop/GroupPurchaseShop?groupPurchaseMerchantId=${merchantId}`
       })
-    })
+    }
   },
   promotionListClose(e){
     this.setData({
       promotionListShow:false
-    })
+    },()=>{
+			if(this.data.orderDetail.shareRedBagInfo){
+				this.clickImgShareShowWX();//打开分享红包
+			}
+		})
   },
 
 	onUnload(){

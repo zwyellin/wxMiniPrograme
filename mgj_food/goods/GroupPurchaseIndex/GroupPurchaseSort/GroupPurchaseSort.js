@@ -22,6 +22,7 @@ Page({
    groupPurchaseItemRequsetObj:null,//团购商家请求参数对象
    groupPurchaseItemRequsetObjDefault:{//注意不能赋值，否则，分类筛选时合并默认请求参数会带上原先的请求参数
      url:"findGroupPurchaseMerchantBySearch",
+     sign:app.globalData.sign,
      latitude:null,
      longitude:null,
      size: 10,
@@ -58,7 +59,7 @@ Page({
     Object.assign(groupPurchaseItemRequsetObjDefault,{
       latitude:app.globalData.latitude,
       longitude:app.globalData.longitude,
-      groupPurchaseCategoryId
+      groupPurchaseCategoryId:groupPurchaseCategoryId==undefined?null:groupPurchaseCategoryId
     })
     // 默认加载要根据二级id来，如果不是为null
     let groupPurchaseItemRequsetObj=this.data.groupPurchaseItemRequsetObj;

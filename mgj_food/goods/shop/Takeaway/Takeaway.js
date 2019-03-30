@@ -73,9 +73,13 @@ Page(Object.assign({}, merchantShop,{
 			this.data.goodsId =goodsId;
 		}else{//扫码进来的
 			console.log("扫码进来的");
-			let scene=scene.split(",");
-			this.data.goodsId =scene[0];
-			this.data.sharedUserId=scene[1];
+			if(scene.indexOf(",")==-1){
+				this.data.goodsId=scene;
+			}else{
+				let sceneArr=scene.split(",");
+				this.data.goodsId =sceneArr[0];
+				this.data.sharedUserId=sceneArr[1];
+			}
 		}
 		// 分享者id
 		sharedUserId=this.data.sharedUserId;

@@ -58,7 +58,7 @@
 			</view>
 			<view class="fr">
 				<text wx:if="{{platformRedBagCount===0}}" style="color:#999">{{platformRedText}}</text>
-				<text wx:if="{{platformRedBagCount && platformRedBagMoney === 0}}" style="color:#ff9595">有{{platformRedBagCount}}个红包可用</text>
+				<text wx:if="{{platformRedBagCount && platformRedBagMoney === 0}}" style="color:#ff9595">有{{platformRedBagCount}}个红包可选</text>
 				<text wx:if="{{platformRedBagMoney != 0}}" style="color:#ff9595">-￥{{platformRedBagMoney}}</text>
 				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
 			</view>
@@ -68,8 +68,8 @@
 				<text>商家代金券</text>
 			</view>
 			<view class="fr">
-				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个代金券可用</text>
-				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">代金券金额为{{redBagMoney}}元</text>
+				<text wx:if="{{redBagUsableCount && redBagMoney === 0}}" style="color:#ff9595">有{{redBagUsableCount}}个代金券可选</text>
+				<text wx:if="{{redBagMoney != 0}}" style="color:#ff9595">-￥{{redBagMoney}}</text>
 				<image class="query-img fr" style="margin-top: 38rpx" src="../../images/images/down.png" ></image>
 			</view>
 		</view>

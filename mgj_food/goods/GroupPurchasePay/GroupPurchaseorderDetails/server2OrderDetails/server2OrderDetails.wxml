@@ -7,7 +7,7 @@
     <!-- 团购套餐展示 -->
     <view class="pageItem row-line" style="padding-bottom:40rpx">
         <!-- 套餐名字-->
-        <view class="font-size1 font-bold  flex flex-spaceBetween flex-row-center" style="padding:20rpx 0">
+        <view class="font-size2  flex flex-spaceBetween flex-row-center" style="padding:20rpx 0">
             <image src="{{groupPurchaseOrder.groupPurchaseCouponImages[0] || './../../../images/merchant/merchantLogo.png'}}" class="serviceCategoryItem_tuangouImage"/>
             <view class="flex1 flex flex-row-center flex-spaceBetween">
                 <view>
@@ -15,7 +15,7 @@
                     <text style="color:red">￥{{groupPurchaseOrder.totalPrice}}</text>
                 </view>
                 <navigator wx:if="{{hasUnuseCouponCode}}" url="/goods/GroupPurchasePay/GroupPurchaseorderDetails/orderUse/orderUse?orderId={{orderId}}">
-                    <button class="bg-button-color font-size2" style="color:white;margin:0;line-height:2" >立即使用</button>
+                    <button class="bg-button-color font-size3" style="color:white;margin:0;line-height:2" >立即使用</button>
                 </navigator>
             </view>
         </view>
