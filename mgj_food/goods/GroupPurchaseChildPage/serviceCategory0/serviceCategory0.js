@@ -468,7 +468,6 @@ Page({
       this.setData({
         couponsShow:true
       })
-     
       if(promotionCouponsDiscountTotalAmt!=null){
         actuallyAmount=actuallyAmount-promotionCouponsDiscountTotalAmt;
       }
@@ -479,7 +478,7 @@ Page({
     }
     // 如果显示马管家券后，计算马管家券之后价格为负数，则为0.01
     if(actuallyAmount<0) actuallyAmount=0.01;
-    actuallyAmount="￥"+parseInt(actuallyAmount*100)/100;//保留两位小数
+    actuallyAmount=parseInt(actuallyAmount*100)/100;//保留两位小数
     this.setData({
       actuallyAmount,
       discountAmount

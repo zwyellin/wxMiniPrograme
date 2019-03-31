@@ -17,6 +17,7 @@
 	</view>
 	<!--底下滑动块-->
   <scroll-view
+		id="scrollView"
     scroll-y
     style="height: {{contentScrollHeight}}px;"
     bindscroll="contentScroll"

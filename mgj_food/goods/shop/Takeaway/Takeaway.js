@@ -128,7 +128,8 @@ Page(Object.assign({}, merchantShop,{
 			app.getLocation();
 			console.log("重新调用获取经纬度,",app.globalData.longitude)
 		}
-  },
+	},
+
 	onUnload(){
 		// 店铺进来，是返回回去商家。触发onunload来共享这边数据
 		// 分享进来，是重定向到商家。传参过去
@@ -149,46 +150,6 @@ Page(Object.assign({}, merchantShop,{
 			prevPage.data.shareTakeawayData=shareTakeawayData;//设置上一页面数据
 			// 那边onshow时会判断
 		}
-	},
-	// 导航点击事件
-	navTap(e){
-		let {index}=e.target.dataset;
-		let navObj=this.data.navObj;
-		this.setData({
-			toView:navObj[index].to,
-			navActiveIndex:index
-		})
-	},
-	// 滚动条滚动事件
-	contentScroll(e){
-		//console.log(e.detail)
-	},
-	// 进店按钮点击事件
-	gotoShopBtnTap(e){
-		// 分享进来，是重定向到商家。传参过去
-		// 要共享回去的数据selectFoods，listFoods，totalprice，totalcount,fullPrice
-		let shareTakeawayData={};
-		shareTakeawayData={
-			selectFoods:this.data.selectFoods,
-			listFoods:this.data.listFoods,
-			totalprice:this.data.totalprice,
-			totalcount:this.data.totalcount,
-			fullPrice:this.data.fullPrice,
-			sharedUserId:this.data.sharedUserId
-		}
-		wx.showToast({
-			title:"正在跳转",
-			icon:"loading",
-			mask:true,
-			duration:20000
-		})
-		wx.setStorageSync('shareTakeawayData',shareTakeawayData);
-		wx.redirectTo({
-			url:`/goods/shop/shop?merchantid=${this.data.selectedFood.merchantId}&sharedUserId=${this.data.sharedUserId}`,
-			success:()=>{
-				wx.hideToast();
-			}
-		})
 	},
 	// 分享
 	onShareAppMessage(res) {
@@ -236,8 +197,7 @@ Page(Object.assign({}, merchantShop,{
 				removalMenuList
 			},()=>{
 				this.queryGoodsComments();
-				this.showTakeAwayGoodsDetail().then(()=>{
-				});
+				this.showTakeAwayGoodsDetail();
 				wx.hideToast();
 				// 设置标题
 				wx.setNavigationBarTitle({
@@ -262,26 +222,26 @@ Page(Object.assign({}, merchantShop,{
 		return value;
 	},
 
-		// 请求商品
-		findTGoodsById(){
-			return wxRequest({
-				url:'/merchant/userClient?m=findTGoodsById',
-				method:'POST',
-				data:{
-					params:{
-						goodsId: this.data.goodsId
-					}	
-				}
-			}).then(res=>{
-				if(res.data.code==0){
-					let selectedFood=this._modifySelectFoods(res.data.value);
-					this.setData({
-						selectedFood
-					})
-					this.data.merchantId=selectedFood.merchantId
-				}
-			})
-		},
+	// 请求商品
+	findTGoodsById(){
+		return wxRequest({
+			url:'/merchant/userClient?m=findTGoodsById',
+			method:'POST',
+			data:{
+				params:{
+					goodsId: this.data.goodsId
+				}	
+			}
+		}).then(res=>{
+			if(res.data.code==0){
+				let selectedFood=this._modifySelectFoods(res.data.value);
+				this.setData({
+					selectedFood
+				})
+				this.data.merchantId=selectedFood.merchantId
+			}
+		})
+	},
 
 	//富文本
 	showTakeAwayGoodsDetail(){
@@ -297,11 +257,91 @@ Page(Object.assign({}, merchantShop,{
 			if(res.data.code==0){
 				let that = this;
 				WxParse.wxParse('goodsInfo', 'html', res.data.value.data, that, 5);
-				console.log(res.value.data)
+			}
+		}).finally(()=>{
+			this.getElePosition();//获取数据加载后滚动view内节点的高度信息
+		})
+	},
+	// 导航点击事件
+	navTap(e){
+		let index=0;
+		let navObj=this.data.navObj;
+		if(typeof e == "object"){
+			index=e.target.dataset.index;
+			this.setData({
+			toView:navObj[index].to,
+			navActiveIndex:index
+		})
+		}else if(typeof e == "number"){
+			index=e;//函数调用
+			this.setData({
+				navActiveIndex:index
+			})
+		}
+	},
+	getElePosition(){//获取详情，评价。到顶端(是内容的顶端，注意不是父容器的)的高度，【异步】
+		wx.createSelectorQuery().selectAll('#scrollView,#xq,#pj').boundingClientRect().exec((res)=>{
+			console.log("获取节点信息",res)
+			let youhua=40;//节点可视高度在原本节点位置提升一些，视为到达了该节点可视区域
+			this.data.scrollViewToTopHeight=res[0][0].top;
+			this.data.xqToTopHeight=res[0][1].top-res[0][0].top-youhua;//计算到scrollView容器的距离
+			this.data.pjToTopHeight=res[0][2].top-res[0][0].top-youhua;//计算到scrollView容器的距离
+		})
+	},
+	// 滚动条滚动事件
+	contentScroll(e){
+		let xqToTopHeight=this.data.xqToTopHeight;
+		let pjToTopHeight=this.data.pjToTopHeight;
+		if(xqToTopHeight==undefined || pjToTopHeight==undefined) return;
+
+		let {scrollTop,scrollHeight,deltaY}=e.detail;//px
+		console.log(e.detail)
+		let contentScrollHeight=this.data.contentScrollHeight;
+		let scrollEleHeight=contentScrollHeight/scrollHeight*contentScrollHeight;//滚动条自身的高度
+		// 滚动条的中间，到scrollView顶端的距离
+		let scrollCenterTop=scrollTop+scrollEleHeight/2;
+		let isReachBottom=false;//是否到底，到底时，可视区域为scrollView高度：即scrollView高度+scrollTop=scrollHeight
+		if(scrollHeight<2*contentScrollHeight && deltaY<0){//触底判断，优化scrollHeight比较小的
+			if(scrollHeight-scrollTop-contentScrollHeight<40) isReachBottom=true
+		}
+		if(scrollCenterTop>pjToTopHeight || isReachBottom){
+			console.log(scrollTop,scrollCenterTop,xqToTopHeight,pjToTopHeight,"2")
+			this.navTap(2)
+		}else if(scrollTop,scrollCenterTop>xqToTopHeight){
+			console.log(scrollCenterTop,xqToTopHeight,pjToTopHeight,"1")
+			this.navTap(1)
+		}else{
+			console.log(scrollTop,scrollCenterTop,xqToTopHeight,pjToTopHeight,"0")
+			this.navTap(0)
+		}
+	},
+	// 进店按钮点击事件
+	gotoShopBtnTap(e){
+		// 分享进来，是重定向到商家。传参过去
+		// 要共享回去的数据selectFoods，listFoods，totalprice，totalcount,fullPrice
+		let shareTakeawayData={};
+		shareTakeawayData={
+			selectFoods:this.data.selectFoods,
+			listFoods:this.data.listFoods,
+			totalprice:this.data.totalprice,
+			totalcount:this.data.totalcount,
+			fullPrice:this.data.fullPrice,
+			sharedUserId:this.data.sharedUserId
+		}
+		wx.showToast({
+			title:"正在跳转",
+			icon:"loading",
+			mask:true,
+			duration:20000
+		})
+		wx.setStorageSync('shareTakeawayData',shareTakeawayData);
+		wx.redirectTo({
+			url:`/goods/shop/shop?merchantid=${this.data.selectedFood.merchantId}&sharedUserId=${this.data.sharedUserId}`,
+			success:()=>{
+				wx.hideToast();
 			}
 		})
 	},
-
 
   	//关闭查看商品详情
 	close(){

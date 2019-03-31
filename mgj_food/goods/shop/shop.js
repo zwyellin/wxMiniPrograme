@@ -123,8 +123,9 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		//获取系统信息 主要是为了计算产品scroll的高度
 		wx.getSystemInfo({
 			success: (res)=> {
+				// 144为购物车的rpx高度
 				this.setData({
-					windowScrollHeight: res.windowHeight - 280*(app.globalData.windowWidth/750),
+					windowScrollHeight: res.windowHeight - (280+144)*(app.globalData.windowWidth/750),
 					shopSearchScrollHeight: res.windowHeight - 216*(app.globalData.windowWidth/750)
 				});
 			}

@@ -51,7 +51,7 @@
 		</view>
         <view class="flex flex-spaceBetween flex-row-center padding-tb-40 padding-lr-40">
             <text class="font-size3 color1">实付金额</text>
-            <text class="font-size4" style="color:red">{{actuallyAmount}}</text>
+            <text class="font-size4" style="color:red">{{actuallyAmount?'-￥'+actuallyAmount:''}}</text>
         </view>
     </view>
     
