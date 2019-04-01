@@ -1,5 +1,5 @@
 // goods/GroupPurchasePay/GroupPurchasePayResult/GroupPurchasePayResult.js
-const { wxRequest ,NumberAnimate} = require('../../../utils/util.js');
+const { wxRequest} = require('../../../utils/util.js');
 const app = getApp();
 Page({
 
@@ -125,15 +125,9 @@ Page({
 		   shareRedBagAnimation: animation.export()  
 		}); 
 	},
-	selectTab(e){
-		wx.navigateTo({
-		  url: '/goods/shop/shop?merchantid='+this.data.orderDetail.merchantId
-		});
-  },
   clickImgShareShowWX(){
 		this.shareRedBagShowAnimation();
 		this.setData({
-			shareRedBagInfo:this.data.orderDetail.shareRedBagInfo,
 			shareShow:true
 		});
 	},
@@ -154,6 +148,13 @@ Page({
 		   shareRedBagAnimation: animation.export()  
 		}); 
   },
+  	//订单完成后出现发红包按钮
+	clickImgShareShowWX(){
+		this.shareRedBagShowAnimation();
+		this.setData({
+			shareShow:true
+		});
+	},
   // 下单红包
   getPromotionListByOrderId(){
     wxRequest({
@@ -231,12 +232,34 @@ Page({
     this.setData({
       promotionListShow:false
     },()=>{
-			if(this.data.orderDetail.shareRedBagInfo){
+			if(this.data.shareRedBagInfo){
 				this.clickImgShareShowWX();//打开分享红包
 			}
 		})
   },
+  	//关闭红包分享页面
+	closeShare(){
+		this.shareRedBagHideAnimation()
+	},
   
+  // 分享
+  onShareAppMessage(res) {
+    console.log("分享红包path:",this.data.shareRedBagInfo.url)
+    return {
+        title: '马管家红包来袭',
+        path: this.data.shareRedBagInfo.url,
+        imageUrl: this.data.shareRedBagInfo.img,
+        success: function(res) {
+          // 转发成功
+       },
+        fail: function(res) {
+          // 转发失败
+        }
+    };
+  },
+  myCatchTouch(){
+		return false;
+	},
   // 完成按钮点击事件
   finishBtnTap(e){
     // <!-- groupPurchaseOrder:orderType:。 1, "代金券",2, "团购券",3, "优惠买单" --> 

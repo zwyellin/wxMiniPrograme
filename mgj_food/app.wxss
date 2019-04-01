@@ -55,6 +55,10 @@ image{
 .mb20{
   margin-bottom: 20rpx;
 }
+.padding-lr-10{
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+}
 .padding-lr-20{
   padding-left: 20rpx;
   padding-right: 20rpx;

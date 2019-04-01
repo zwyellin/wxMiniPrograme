@@ -123,18 +123,24 @@ Page({
     if(item.createTime && item.createTime.indexOf(" ")!=-1){
       item.createTime=item.createTime.substring(0,item.createTime.indexOf(" "));
     }
+    // <!--提醒文字 -->
+    // <!-- 核销。@isAutomaticallyCancelAfterVerification 。1:自动;2:不自动 -->
+    //文案要求：
+    // 1.免预约，则显示 免预约，随时退，不可叠加，过期自动退
+    // 2.需预约，不自动核销。则显示，需预约，随时退，不可叠加，过期自动退
+    // 3.需预约，自动核销。则显示，需预约，随时退，超时自动使用，不可叠加
     // 处理是否叠加
-    if(item.isCumulate){//是否叠加 0:否,1:是 
-      item.isCumulateText="可叠加"
-    }else{
-    item.isCumulateText="不可叠加"
+    
+    if(!item.isBespeak){//免预约
+      item.bespeakCumulateMsg=["免预约","随时退","不可叠加","过期自动退"];
+    }else{//需预约
+      if(item.isAutomaticallyCancelAfterVerification==1){//自动核销
+        item.bespeakCumulateMsg=["需预约","随时退","不可叠加","超时自动使用"];
+      }else{//2:不自动核销
+        item.bespeakCumulateMsg=["需预约","随时退","不可叠加","过期自动退"];
+      }
     }
-    //处理是否预约  
-    if(item.isBespeak){//0:否,1:是 
-      item.isBespeakText="需预约"
-    }else{
-      item.isBespeakText="免预约"
-    }
+    
     return item;
   },
 })

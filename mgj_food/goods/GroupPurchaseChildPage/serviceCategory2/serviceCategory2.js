@@ -150,18 +150,35 @@ Page({
     });
   },
   modifygroupSetMealItem(value){
+      // <!--提醒文字 -->
+      // <!-- 核销。@isAutomaticallyCancelAfterVerification 。1:自动;2:不自动 -->
+      //文案要求：
+      // 1.免预约，则显示 免预约，随时退，不可叠加，过期自动退
+      // 2.需预约，不自动核销。则显示，需预约，随时退，不可叠加，过期自动退
+      // 3.需预约，自动核销。则显示，需预约，随时退，超时自动使用，不可叠加
       // 处理是否叠加
-      if(value.isCumulate){//是否叠加 0:否,1:是 
-        value.isCumulateText="可叠加"
-      }else{
-        value.isCumulateText="不可叠加"
+      
+      if(!value.isBespeak){//免预约
+        value.bespeakCumulateMsg=["免预约","随时退","不可叠加","过期自动退"];
+      }else{//需预约
+        if(value.isAutomaticallyCancelAfterVerification==1){//自动核销
+          value.bespeakCumulateMsg=["需预约","随时退","不可叠加","超时自动使用"];
+        }else{//2:不自动核销
+          value.bespeakCumulateMsg=["需预约","随时退","不可叠加","过期自动退"];
+        }
       }
-      //处理是否预约  
-      if(value.isBespeak){//0:否,1:是 
-        value.isBespeakText="需预约"  
-      }else{
-        value.isBespeakText="免预约"
-      }
+      // if(value.isCumulate){//是否叠加 0:否,1:是 
+      //   value.isCumulateText="可叠加"
+      // }else{
+      //   value.isCumulateText="不可叠加"
+      // }
+      // //处理是否预约  
+      // if(value.isBespeak){//0:否,1:是 
+      //   value.isBespeakText="需预约"  
+      // }else{
+      //   value.isBespeakText="免预约"
+      // }
+
       // 处理图片
     if(value.images){
       value.images=value.images.split(";");

@@ -1,6 +1,6 @@
 //获取应用实例
 const app = getApp();
-const { Promise, wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09} = require('../../utils/util.js');
+const { Promise, wxRequest, getBMapLocation, wxGetLocation, qqMap, gcj02tobd09,buttonClicked} = require('../../utils/util.js');
 const { initClassList, imgUrls, merchantFeature, merchantActive } = require('../../components/homeClass.js');
 const { merchantObj } = require('../../components/merchant/merchant.js');
 let interval;

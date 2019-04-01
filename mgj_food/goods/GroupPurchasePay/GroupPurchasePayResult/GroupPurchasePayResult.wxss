@@ -23,6 +23,14 @@
 }
 
 /* 分享红包 */
+.red-img-big {
+	width: 130rpx;
+	height: 150rpx;
+	position: fixed;
+	bottom: 400rpx;
+	right: 25rpx
+}
+
 .order-overPage {
 	position:absolute;
 	top:0;
@@ -62,4 +70,16 @@
 	color:#faa761;
 	border-left: 1rpx solid #d8d8d8;
 	background: #fff!important;
+}
+/* 遮罩 */
+.common-mask-share {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    opacity: 0.6;
+    background: #000;
 }

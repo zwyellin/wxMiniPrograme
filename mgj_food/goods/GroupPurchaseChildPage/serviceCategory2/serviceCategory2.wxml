@@ -48,7 +48,12 @@
         <!-- 预约信息，已售-->
         <view class="flex flex-spaceBetween mt20">
             <!--左边-->
-            <view class="font-size5">{{groupSetMealItem.isBespeakText}}<text class="column-line">|</text>{{groupSetMealItem.isCumulateText}}</view>
+            <view  class="font-size5">
+                <text>{{groupSetMealItem.bespeakCumulateMsg[0]}}</text><text class="column-line padding-lr-10">|</text>
+                <text>{{groupSetMealItem.bespeakCumulateMsg[1]}}</text><text class="column-line padding-lr-10">|</text>
+                <text>{{groupSetMealItem.bespeakCumulateMsg[2]}}</text><text class="column-line padding-lr-10">|</text>
+                <text>{{groupSetMealItem.bespeakCumulateMsg[3]}}</text>
+            </view>
             <!-- 右边，已售 -->
             <text class="font-size5 color3">已售{{groupSetMealItem.accumulateSoldCount}}</text>
         </view>

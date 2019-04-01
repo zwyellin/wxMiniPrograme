@@ -1,4 +1,4 @@
-const { wxRequest, Promise } = require('../../utils/util.js');
+const { wxRequest, Promise ,buttonClicked} = require('../../utils/util.js');
 const feedbackApi = require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 const { merchantShop } = require('../template/shop/merchantShop.js');
 const { shopSearch,shopSearchData } = require('shopSearch.js');
@@ -164,6 +164,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 					mask:true,
 					duration:20000
 				})
+				// 商品也返回来时，合并信息
 				let shareTakeawayData=wx.getStorageSync('shareTakeawayData');
 				wx.hideToast();
 				this.setData(shareTakeawayData,()=>{
@@ -754,6 +755,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	selectefood(e){
 		// this.maskShowAnimation();
 		// this.choiceShowAnimation();
+		if(buttonClicked(this)) return;
 		let { food, parentIndex } = e.currentTarget.dataset;
 		if(this.data.isSearchWrapperShow){//如果是商店页面
 			food.parentRelationCategoryId = food.relationCategoryId;

@@ -2,7 +2,7 @@
 /*思路：点击搜索之后，进入一个页面，但因为要复用太大shop的方法和ui。
 *则，点搜索后，导航到新的自己页面。然后根据路由参数search来区分这个页面到底是给商店用还是商店搜索用
 */
-const { wxRequest } = require('../../utils/util.js');
+const { wxRequest ,buttonClicked} = require('../../utils/util.js');
 const feedbackApi = require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 
 const app=getApp();
@@ -25,6 +25,7 @@ let shopSearchData={
 let shopSearch={
 	//shop head部分点击搜索图标 事件
 	SearchIconTap(e){
+       if(buttonClicked(this)) return;
        //先缓存购物车情况
        let merchantId = this.data.merchantId;
        if (!wx.getStorageSync('shoppingCart')) {

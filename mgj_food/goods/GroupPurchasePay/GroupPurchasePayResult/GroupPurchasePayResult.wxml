@@ -46,7 +46,7 @@
     <scroll-view style="margin-top:148rpx;background:white;height:{{scrollHeight}}px" scroll-y="{{true}}">
         <groupPurchaseItem  requestObj="{{groupPurchaseItemRequsetObj}}"></groupPurchaseItem>
     </scroll-view>
-
+    <view wx:if="{{shareShow}}" class="common-mask-share" catchtap="closeShare" catchtouchmove="myCatchTouch">	</view>
     <!-- 订单完成后出现发红包按钮图片 -->
 	<image wx:if="{{shareRedBagInfo}}" class="red-img-big" src="../../../images/merchant/shareredbag.png" bindtap="clickImgShareShowWX"></image>
 	<!--  -->

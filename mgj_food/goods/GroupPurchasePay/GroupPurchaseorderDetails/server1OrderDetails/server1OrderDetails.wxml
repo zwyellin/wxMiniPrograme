@@ -18,10 +18,11 @@
         </view>
         <!-- 代金券属性 -->
         <view class="mt20  font-size5">
-            <!-- 预约叠加信息 -->
-            <text >{{groupPurchaseOrder.isBespeakText}}</text>
-            <text class="column-line" style="padding:0 14rpx;">|</text>
-            <text>{{groupPurchaseOrder.isCumulateText}}</text>
+             <!-- 预约叠加信息 -->
+            <text>{{groupPurchaseOrder.bespeakCumulateMsg[0]}}</text><text class="column-line padding-lr-10">|</text>
+            <text>{{groupPurchaseOrder.bespeakCumulateMsg[1]}}</text><text class="column-line padding-lr-10">|</text>
+            <text>{{groupPurchaseOrder.bespeakCumulateMsg[2]}}</text><text class="column-line padding-lr-10">|</text>
+            <text>{{groupPurchaseOrder.bespeakCumulateMsg[3]}}</text>
         </view>
         <!-- 代金券其它属性-->
         <view class="attr-items" style="padding-bottom:0">

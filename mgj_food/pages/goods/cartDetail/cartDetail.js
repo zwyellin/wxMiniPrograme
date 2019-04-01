@@ -205,7 +205,7 @@ Page({
         	url:'/pages/goods/refundDetail/refundDetail?orderid=' + this.data.orderid
       	});
     },
-    myCatchTouch(){
+  myCatchTouch(){
 		return false;
 	},
 	close(){
@@ -530,7 +530,24 @@ Page({
 			}
 		})
   },
-
+	onShareAppMessage(res) {
+		if(res.from=="button"){
+			let src=this.data.shareRedBagInfo.url;
+			src=src.replace("http","https");
+			console.log("分享红包path:",src)
+			return {
+					title: '马管家红包来袭',
+					path: "/pages/webView/webView?src="+src,
+					imageUrl: this.data.shareRedBagInfo.img,
+					success: function(res) {
+						// 转发成功
+				},
+					fail: function(res) {
+						// 转发失败
+					}
+			};
+		}
+  },
 	onUnload(){
 		if (this.data.isredbag) {
 			wx.switchTab({

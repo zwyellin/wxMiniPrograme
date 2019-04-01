@@ -12,11 +12,14 @@
         <!-- 代金券属性 -->
         <view class="mt20 flex flex-spaceBetween font-size5">
             <!-- 预约叠加信息 -->
-            <view>
-                <text >{{voucherItem.isBespeakText}}</text>
-                <text class="column-line" style="padding:0 14rpx;">|</text>
-                <text>{{voucherItem.isCumulateText}}</text>
+            <!--左边-->
+            <view  class="font-size5">
+                <text>{{voucherItem.bespeakCumulateMsg[0]}}</text><text class="column-line padding-lr-10">|</text>
+                <text>{{voucherItem.bespeakCumulateMsg[1]}}</text><text class="column-line padding-lr-10">|</text>
+                <text>{{voucherItem.bespeakCumulateMsg[2]}}</text><text class="column-line padding-lr-10">|</text>
+                <text>{{voucherItem.bespeakCumulateMsg[3]}}</text>
             </view>
+            <!-- 右边 -->
             <view>已售{{voucherItem.accumulateSoldCount}}</view>
         </view>
         <!-- 代金券其它属性-->

@@ -1,3 +1,4 @@
+const { buttonClicked} = require('../../utils/util.js');
 const app = getApp();
 let merchantObj = {
 	moveDown(e){
@@ -67,6 +68,7 @@ let merchantObj = {
 		// 团购二级分类 childGroupPurchaseCategoryId
 		// 一级分类名称  groupPurchaseCategoryName
 		// 二级分类名称 childGroupPurchaseCategoryName
+		if(buttonClicked(this)) return
 		let { item } = e.currentTarget.dataset;
 		if(item.gotoType===1){
 			if(item.businessFlag===1){//业务模块
