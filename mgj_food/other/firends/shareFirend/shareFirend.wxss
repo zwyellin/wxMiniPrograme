@@ -90,3 +90,10 @@
 	top:999999rpx;
 	left: 0
 }
+
+/*  */
+.line{
+	flex:1;
+	position: relative;
+	border-bottom: 1rpx solid #ccc;
+  }

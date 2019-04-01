@@ -27,7 +27,7 @@
 			<view wx:if="{{userList.length==0}}" class="results-no">
 				<block wx:if="{{type==0}}">
 					<text>暂无邀请红包</text>
-					<navigator open-type="navigate" url="/other/firends/shareFirend/shareFirend">赚取红包</navigator>
+					<navigator open-type="navigate" url="/other/firends/shareFirend/shareFirend?index=1">赚取红包</navigator>
 				</block>
 				<block wx:else>
 					<text>暂无分享红包</text>

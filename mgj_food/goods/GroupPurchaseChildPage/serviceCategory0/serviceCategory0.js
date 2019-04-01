@@ -423,6 +423,8 @@ Page({
     })
     //计算实付金额
     this.actuallyAmount();
+    this.groupPurchaseOrderPreview();
+    // 
   },
   // 计算实付金额及折扣了多少金额
   actuallyAmount(){

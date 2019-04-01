@@ -533,7 +533,6 @@ Page({
 	onShareAppMessage(res) {
 		if(res.from=="button"){
 			let src=this.data.shareRedBagInfo.url;
-			src=src.replace("http","https");
 			console.log("分享红包path:",src)
 			return {
 					title: '马管家红包来袭',
