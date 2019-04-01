@@ -88,6 +88,7 @@ Page(Object.assign({}, merchantShop,{
 		// 设置滚动条高度
 		wx.getSystemInfo({
 			success: (res)=> {
+				// 192 为
 				this.setData({
 					contentScrollHeight: res.windowHeight - 192*(app.globalData.windowWidth/750)
 				});

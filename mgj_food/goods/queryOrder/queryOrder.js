@@ -49,7 +49,9 @@ Page({
 		remarks: '',          //备注信息
 		maskShow:false,
 		timePageShow:false,
-		isOpenOrderMenu:false   //控制订单商品展开显示
+		isOpenOrderMenu:false,   //控制订单商品展开显示
+
+		submitType:false,//是否 下单，解决微信下个页面返回bug
 	},
 	onLoad(options){
 		let { merchantId , sharedUserId } = options;
@@ -102,7 +104,8 @@ Page({
 		this.filterUsableRedBagList();
 		this.queryPlatformRedBagList();
 	},
-	onShow(){
+	onShow(){//注意：微信switchBar,下个页面返回也会触发这里
+		if(this.data.submitType) return;
 		if (this.data.useRedBagList != null || this.data.addressInfoId != null || this.data.usePlatformRedBagList != null) {
 			let redBagMoney = 0;
 			let platformRedBagMoney = 0;
@@ -417,6 +420,8 @@ Page({
 	        }).then(res=>{
 	        	console.log(res);
 	        	if (res.data.code === 0) {
+							// 确认提交状态
+							this.data.submitType=true;
 	        		let orderId = res.data.value.id;
 	        		let price = res.data.value.totalPrice;
 	        		console.log(price)

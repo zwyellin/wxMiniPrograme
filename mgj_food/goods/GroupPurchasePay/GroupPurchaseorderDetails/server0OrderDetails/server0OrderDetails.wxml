@@ -45,7 +45,7 @@
         </view>
         <view class="flex flex-spaceBetween padding-tb-20 row-line">
             <text>支付时间</text>
-            <text>￥{{groupPurchaseOrder.payDoneTime}}</text>
+            <text>{{groupPurchaseOrder.payDoneTime}}</text>
         </view>
         <view class="flex flex-spaceBetween padding-tb-20 row-line">
             <text>支付方式</text>

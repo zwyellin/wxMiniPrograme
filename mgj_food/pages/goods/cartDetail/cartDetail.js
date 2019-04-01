@@ -477,7 +477,7 @@ Page({
 					let merchantRedBags=promotionList.merchantRedBags;
           merchantRedBags.forEach((_item,_index)=>{
             let data=new Date(_item.expirationTime);
-            _item.expirationTime=data.getFullYear()+"."+(data.getMonth()+1)+"."+data.getDay()
+            _item.expirationTime=data.getFullYear()+"."+(data.getMonth()+1)+"."+data.getDate()
           })
           promotionList.merchantRedBags=merchantRedBags
         }
