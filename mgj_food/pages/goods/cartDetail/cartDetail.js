@@ -526,7 +526,7 @@ Page({
       promotionListShow:false
     },()=>{
 			if(this.data.orderDetail.shareRedBagInfo){
-				this.clickImgShareShowWX();//打开分享红包
+			//	this.clickImgShareShowWX();//打开分享红包
 			}
 		})
   },

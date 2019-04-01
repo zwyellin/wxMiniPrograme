@@ -233,7 +233,7 @@ Page({
       promotionListShow:false
     },()=>{
 			if(this.data.shareRedBagInfo){
-				this.clickImgShareShowWX();//打开分享红包
+			//	this.clickImgShareShowWX();//打开分享红包
 			}
 		})
   },

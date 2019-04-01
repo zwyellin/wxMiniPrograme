@@ -158,6 +158,7 @@
 	      	<text class="txt">{{expectArrivalTime || '立即送达'}}</text>
 	    </view>
 	</view>
+	<!-- 这段view废弃 -->
 	<view class="redbag" wx:if="{{show}}" animation="{{orderRedAnimation}}">
 		<view class="redbag-close">
 			<image class="redbag-close-img" catchtap="close" src="../../../images/images/close_red.png"></image>
@@ -182,9 +183,9 @@
 			</view>
 		</view>
 	</view>
-	<view wx:if="{{false}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close" catchtouchmove="myCatchTouch">	
-	</view>
-	<view wx:if="{{shareShow}}" class="common-mask-share" catchtap="closeShare" catchtouchmove="myCatchTouch">	
+	<!-- 以上view废弃 -->
+	<view wx:if="{{false}}" animation="{{maskAnimation}}" class="common-mask" catchtap="close" catchtouchmove="myCatchTouch">	</view>
+	<view wx:if="{{shareShow && false}}" class="common-mask-share" catchtap="closeShare" catchtouchmove="myCatchTouch">	
 	</view>
 	<view wx:if="{{trackShow}}" class="order-track" catchtouchmove="myCatchTouch">
 		<view class="track-header flex">
@@ -285,9 +286,9 @@
 		</view> 
 	</view>
 	<!-- 订单完成后出现发红包按钮图片 -->
-	<image wx:if="{{orderDetail.shareRedBagInfo}}" class="red-img-big" src="../../../images/merchant/shareredbag.png" bindtap="clickImgShareShowWX"></image>
+	<image wx:if="{{orderDetail.shareRedBagInfo && false}}" class="red-img-big" src="../../../images/merchant/shareredbag.png" bindtap="clickImgShareShowWX"></image>
 	<!--  -->
-	<view class="order-overPage flex" wx:if="{{shareShow}}">
+	<view class="order-overPage flex" wx:if="{{shareShow && false}}">
 		<view class="sharered-page" wx:if="{{shareShow}}" animation="{{shareRedBagAnimation}}" catchtouchmove="myCatchTouch">
 			<view style="left:{{shareRedbagLeft}}">
 				<view class="red-page-img flex">
