@@ -1,5 +1,5 @@
 const app = getApp();
-const { wxRequest } = require('../../utils/util.js');
+const { wxRequest ,buttonClicked} = require('../../utils/util.js');
 const {modify} =require("../GroupPurchaseIndex/groupPurchasePublicJs.js");
 const feedbackApi = require('../../components/showToast/showToast.js');  //引入消息提醒暴露的接口 
 // goods/GroupPurchaseShop/GroupPurchaseShop.js
@@ -103,6 +103,7 @@ Page({
   },
   // 点击优惠买单 按钮
   serviceCategory0Tap(e){
+    if(buttonClicked(this)) return;
     let {id,ratio}=e.target.dataset;
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
@@ -117,6 +118,7 @@ Page({
   },
   // 点击代金券 按钮
   serviceCategory1Tap(e){
+    if(buttonClicked(this)) return;
     let {id}=e.target.dataset;
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){
@@ -130,6 +132,7 @@ Page({
   },
   // 点击团购的 按钮
   serviceCategory2Tap(e){
+    if(buttonClicked(this)) return;
     let {id}=e.target.dataset;
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){

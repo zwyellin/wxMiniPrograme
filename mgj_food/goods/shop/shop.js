@@ -164,6 +164,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 					mask:true,
 					duration:20000
 				})
+				
 				// 商品也返回来时，合并信息
 				let shareTakeawayData=wx.getStorageSync('shareTakeawayData');
 				wx.hideToast();

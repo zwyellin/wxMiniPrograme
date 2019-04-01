@@ -1,6 +1,6 @@
 // goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2.js
 const app = getApp();
-const { wxRequest } = require('../../../utils/util.js');
+const { wxRequest,buttonClicked } = require('../../../utils/util.js');
 const {modify} =require("../../GroupPurchaseIndex/groupPurchasePublicJs.js")
 // findGroupPurchaseCouponInfo：代金券和团购套餐详情都是请求这接口。区别是type。1：代金券，2：团购套餐
 Page({
@@ -103,6 +103,7 @@ Page({
   },
   // 点击团购的 按钮。
   serviceCategory2Tap(e){
+    if(buttonClicked(this)) return;
     let {id}=e.target.dataset;
     let isLoginsuccess=this.data.isLoginsuccess;
     if(isLoginsuccess){

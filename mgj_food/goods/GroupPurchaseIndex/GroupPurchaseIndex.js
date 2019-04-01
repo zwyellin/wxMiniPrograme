@@ -1,6 +1,6 @@
 // goods/GroupPurchaseIndex/GroupPurchaseIndex.js
 const app = getApp();
-const { wxRequest } = require('../../utils/util.js');
+const { wxRequest, buttonClicked} = require('../../utils/util.js');
 const { modify} = require('groupPurchasePublicJs.js');
 Page({
 
@@ -104,6 +104,7 @@ Page({
 
   // banner的跳转
   findGroupPurchaseBannerListTap(e){
+    if(buttonClicked(this)) return;
     let {item}=e.currentTarget.dataset;
     let {bannerType,url,groupPurchaseMerchantId,groupPurchaseCouponId}=item;
     //@bannerType :1跳链接。2跳代金券和团购套餐。3跳团购商家。4团购分类
@@ -187,6 +188,7 @@ Page({
   // 主分类的跳转
   //url="/goods/GroupPurchaseIndex/GroupPurchaseSort/GroupPurchaseSort?groupPurchaseCategoryId={{item.groupPurchaseCategoryId}}&childGroupPurchaseCategoryId={{item.childGroupPurchaseCategoryId}}"
   findGroupPurchasePrimaryCategoryListTap(e){
+    if(buttonClicked(this)) return;
     let {item}=e.currentTarget.dataset;
     let {gotoType,gotoUrl,groupPurchaseCategoryId,childGroupPurchaseCategoryId,name}=item;
     //name是作为跳到分类页面的标题
@@ -241,6 +243,7 @@ Page({
   },
   // 广告位的跳转
   primaryPublicityListTap(e){
+    if(buttonClicked(this)) return;
     let {item}=e.currentTarget.dataset;
     let {gotoType,groupPurchaseMerchantId,groupPurchaseCouponId,linkUrl}=item;
     //@gotoType :1跳链接。2跳代金券和团购套餐。3跳团购商家。
