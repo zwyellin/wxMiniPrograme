@@ -56,7 +56,8 @@ Page(Object.assign({}, merchantShop,{
 		],
 		navActiveIndex:0,
 		toView:null,//对应底下滚动view要滚到哪个id那里
-		contentScrollHeight:null
+		contentScrollHeight:null,
+		isnavTap:false
   },
 
   /**
@@ -80,6 +81,9 @@ Page(Object.assign({}, merchantShop,{
 				this.data.goodsId =sceneArr[0];
 				this.data.sharedUserId=sceneArr[1];
 			}
+			this.setData({
+				goodsId:this.data.goodsId //渲染到视图
+			})
 		}
 		// 分享者id
 		sharedUserId=this.data.sharedUserId;
@@ -95,11 +99,9 @@ Page(Object.assign({}, merchantShop,{
 			}
 		});
 
-		this.setData({//ui根据goodsId选择是否展示进店
-			goodsId:goodsId==undefined? null :goodsId //setData不能设置undefined
-		})
+
 		//分享传goodsId,商店进来则读取其selectedFood。
-    if(goodsId!==undefined){//分享进来的 //goodsId!==undefined
+    if(this.data.goodsId!==undefined){//分享进来的 //goodsId!==undefined
 			//根据goodsId发送请求
 			wx.showToast({
 				title:"加载中",
@@ -225,6 +227,7 @@ Page(Object.assign({}, merchantShop,{
 
 	// 请求商品
 	findTGoodsById(){
+		console.log("data1",this.data)
 		return wxRequest({
 			url:'/merchant/userClient?m=findTGoodsById',
 			method:'POST',
@@ -268,32 +271,18 @@ Page(Object.assign({}, merchantShop,{
 		let index=0;
 		let navObj=this.data.navObj;
 		if(typeof e == "object"){
+			this.data.isnavTap=true;
 			index=e.target.dataset.index;
 			this.setData({
-			toView:navObj[index].to,
-			navActiveIndex:index
-		})
+				toView:navObj[index].to,
+				navActiveIndex:index
+			})
 		}else if(typeof e == "number"){
 			index=e;//函数调用
-			let alreadySetnavActiveIndex=this.data.alreadySetnavActiveIndex;
-			// 以下设置是避免频繁渲染到视图层，引起卡顿
-			if(alreadySetnavActiveIndex==undefined || !alreadySetnavActiveIndex){
-				this.data.alreadySetnavActiveIndex=true;
-				this.setData({
-					navActiveIndex:index
-				},()=>{
-					console.log("设置index成功:",index)
-					setTimeout(() => {
-						console.log("延时设置index",this.data.scrollLastIndex)
-						this.data.alreadySetnavActiveIndex=false;
-						this.setData({
-							navActiveIndex:this.data.scrollLastIndex//延迟后设置最后一次的Index
-						})
-					}, 200);
-				})
-			}else{
-				this.data.scrollLastIndex=index;//保存最后的index
-			}
+			console.log("函数调用")
+			this.setData({
+				navActiveIndex:index
+			})
 		}
 	},
 	getElePosition(){//获取详情，评价。到顶端(是内容的顶端，注意不是父容器的)的高度，【异步】
@@ -307,6 +296,12 @@ Page(Object.assign({}, merchantShop,{
 	},
 	// 滚动条滚动事件
 	contentScroll(e){
+		console.log("触发滚动",this.data.isnavTap)
+		if(this.data.isnavTap) {
+			this.data.isnavTap=false;
+			return;
+		}
+		console.log("触发滚动1")
 		let xqToTopHeight=this.data.xqToTopHeight;
 		let pjToTopHeight=this.data.pjToTopHeight;
 		if(xqToTopHeight==undefined || pjToTopHeight==undefined) return;

@@ -74,7 +74,7 @@
 			</view>
 		</view>
 		<!-- 马管家券 -->
-        <view wx:if="{{promotionCouponsDiscountTotalAmt}}" class="query-message font-14 clearfix">
+        <view wx:if="{{payIndex=== 0 && promotionCouponsDiscountTotalAmt}}" class="query-message font-14 clearfix">
 			<view class="fl font-16">
 				<text>马管家券</text>
 			</view>

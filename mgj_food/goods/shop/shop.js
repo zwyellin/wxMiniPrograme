@@ -108,6 +108,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 				let sceneArr=scene.split(",");
 				this.data.merchantId =sceneArr[0];
 				this.data.sharedUserId=sceneArr[1];
+				console.log("this.data",this.data)
 			}
 		}
 		// 分享者id

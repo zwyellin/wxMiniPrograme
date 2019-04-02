@@ -49,13 +49,16 @@ Page({
 			}else{
 				let sceneArr=scene.split(",");
 				this.data.groupPurchaseCouponId =sceneArr[0];
-				this.data.sharedUserId=sceneArr[1];
-			}
+        this.data.sharedUserId=sceneArr[1];
+      }
+      console.log("this.data",this.data)
 		}
 		// 分享者id
 		sharedUserId=this.data.sharedUserId;
     if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
-    
+    this.setData({
+      sharedUserId
+    })
     // 获取自己定位
     let latitude,longitude;
 		console.log("重新调用前的经纬度,",app.globalData.longitude)
@@ -63,16 +66,7 @@ Page({
 			app.getLocation();
       console.log("重新调用获取经纬度,",app.globalData.longitude)
 		}
-    latitude=app.globalData.latitude;
-    longitude=app.globalData.longitude;
-    Object.assign(this.data,{
-      groupPurchaseCouponId,
-      longitude,
-      latitude,
-    })
-    this.setData({
-      sharedUserId
-    })
+
     this.findGroupPurchaseCouponInfo();
      
     //  判断是否登入
@@ -122,6 +116,8 @@ Page({
       mask:true,
       duration:20000
     })
+    console.log("this.data1",this.data)
+    console.log("groupPurchaseCouponId",this.data.groupPurchaseCouponId)
     wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseCouponInfo',
       method:'POST',

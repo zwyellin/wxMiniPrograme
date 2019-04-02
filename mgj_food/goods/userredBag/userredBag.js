@@ -45,6 +45,11 @@ Page({
 				mask: true
 			});
 		}
+		let currentTab=this.data.currentTab;
+		let redBagType=1;
+		if(currentTab==2) redBagType=1;
+		if(currentTab==2) redBagType=2;
+		if(currentTab==2) redBagType=15;
 		wxRequest({
 		  	url:'/merchant/userClient?m=queryRedBagList',
 		  	method:'POST',
@@ -53,7 +58,7 @@ Page({
 				params:{
 			  		start:this.data.start,
 			  		size:5,
-			  		redBagType:1,//1:全部;2：平台;...
+			  		redBagType:redBagType,//1:全部;2：平台;...
 			  		isDisabled:this.data.isDisabled
 				}
 		  	},
@@ -67,14 +72,14 @@ Page({
 					nowPlatfromRedBagList = nowPlatfromRedBagList.concat(platfromRedBagList);
 					if (platfromRedBagList.length === 0) {
 						this.setData({
-								loading:true
+							loading:true
 						});
 					}
 					this.setData({
-							platfromRedBagList:nowPlatfromRedBagList,//更新平台红包
-							platformRedBagCount:platformRedBagCount,	//更新平台红包数量
-							vouchersCount:vouchersCount,//更新代金券数量
-							couponsCount: res.data.value.couponsCount,//更新马管家券数量
+						platfromRedBagList:nowPlatfromRedBagList,//更新平台红包
+						platformRedBagCount:platformRedBagCount,	//更新平台红包数量
+						vouchersCount:vouchersCount,//更新代金券数量
+						couponsCount: res.data.value.couponsCount,//更新马管家券数量
 					});
 				} else if(this.data.currentTab == 1) {//我的代金券
 					let nowRedBagList = this.data.redBagList;
@@ -98,14 +103,15 @@ Page({
 						});
 					} 
 					this.setData({
-							redBagList:nowRedBagList,//更新代金券列表
-							vouchersCount:vouchersCount,	//更新代金券数量
-							platformRedBagCount:res.data.value.platformRedBagCount,//更新平台红包数量
-							couponsCount: res.data.value.couponsCount//更新马管家券数量
+						redBagList:nowRedBagList,//更新代金券列表
+						vouchersCount:vouchersCount,	//更新代金券数量
+						platformRedBagCount:res.data.value.platformRedBagCount,//更新平台红包数量
+						couponsCount: res.data.value.couponsCount//更新马管家券数量
 					});
 				}else if(this.data.currentTab == 2) {//马管家券
 					let couponsList=this.data.couponsList;
 					let nowcouponsList=res.data.value.coupons;
+					if(couponsList.length==this.data.couponsCount) return
 					nowcouponsList.map((item)=>{
 						item.modifyTime = item.modifyTime.replace(/-/g,'/');
 						item.modifyTime = new Date(item.modifyTime).getTime();
@@ -119,10 +125,11 @@ Page({
 					});
 					if (couponsList.length === 0) {
 						this.setData({
-								loading:true
+							loading:true
 						});
 					}
 					couponsList=couponsList.concat(nowcouponsList);
+					console.log("couponsList",this.data.couponsList.length,couponsList.length)
 					this.setData({
 						couponsList,
 						couponsCount: res.data.value.couponsCount,//更新马管家券数量

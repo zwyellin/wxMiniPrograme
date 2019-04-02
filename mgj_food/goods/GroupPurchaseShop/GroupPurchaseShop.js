@@ -46,25 +46,22 @@ Page({
 				let sceneArr=scene.split(",");
 				this.data.groupPurchaseMerchantId=sceneArr[0];
 				this.data.sharedUserId=sceneArr[1];
-			}
+      }
+      console.log("this.data",this.data)
 		}
 		// 分享者id
 		sharedUserId=this.data.sharedUserId;
 		if(sharedUserId==undefined || sharedUserId=="undefined") sharedUserId=null;
-
-
+    this.setData({
+      sharedUserId
+    })
 		// 获取自己定位
 		console.log("重新调用前的经纬度,",app.globalData.longitude)
 		if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
 			app.getLocation();
 			console.log("重新调用获取经纬度,",app.globalData.longitude)
 		}
-    Object.assign(this.data,{
-      groupPurchaseMerchantId,
-    })
-    this.setData({
-      sharedUserId
-    })
+
     // 发送请求
     this.requestGrouopMerchantInfo().then(()=>{
       //请求，商家评论

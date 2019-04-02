@@ -60,7 +60,7 @@
             <!-- 左边 -->
             <image src="{{groupMerchantInfo.imgs[0] || '../../../../images/merchant/merchantLogo.png'}}" class="flex0"  style="width:195rpx;height:130rpx;margin-right:20rpx;" />
             <!-- 右边 -->
-            <view class="flex1 flex flex-row-center" style="maring-top:-6rpx">
+            <view class="flex1 flex flex-row-center flex-spaceBetween" style="maring-top:-6rpx">
                 <!--左边-->
                 <view >
                     <view>

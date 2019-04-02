@@ -115,11 +115,15 @@ Page({
 					let addressInfo = res.data.value.addressInfo;
 					this.setData({
 						orderMessage:orderMessage,
-						addressInfo:addressInfo
+						addressInfo:addressInfo,
+						redBagUsableCount:orderMessage.redBagUsableCount
 					});
 
 					if (this.data.addressInfoId != null && this.data.usePlatformRedBagList === null) {
 						this.queryPlatformRedBagList();
+					}
+					if(this.data.useRedBagList===null){
+						this.filterUsableRedBagList();
 					}
 					if (this.data.useRedBagList != null) {
 						this.data.useRedBagList.map(item=>{
@@ -155,8 +159,8 @@ Page({
         		params:{
         			itemsPrice: this.data.orderMessage.itemsPrice,
 					merchantId: this.data.merchantId,
-					latitude: -1,
-					longitude: -1,
+					latitude: app.globalData.latitude,
+					longitude: app.globalData.longitude,
 					discountGoodsDiscountAmt:this.data.orderMessage.discountGoodsDiscountAmt,
 					promoInfoJson: JSON.stringify(this.data.promoInfoJson)
         		}	
@@ -525,7 +529,8 @@ Page({
 					if(res.data.code==0){
 						this.data.coupons=res.data.value.coupons;//如果不为空，则prev和submit要发送这个字段
 						this.setData({
-							promotionCouponsDiscountTotalAmt:res.data.value.promotionCouponsDiscountTotalAmt//要显示的
+							promotionCouponsDiscountTotalAmt:res.data.value.promotionCouponsDiscountTotalAmt,//要显示的
+							promoInfoJson:res.data.value.promoList
 						})
 					}else{
 						wx.showToast({
