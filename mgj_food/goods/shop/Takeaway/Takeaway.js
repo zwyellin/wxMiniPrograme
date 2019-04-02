@@ -275,9 +275,25 @@ Page(Object.assign({}, merchantShop,{
 		})
 		}else if(typeof e == "number"){
 			index=e;//函数调用
-			this.setData({
-				navActiveIndex:index
-			})
+			let alreadySetnavActiveIndex=this.data.alreadySetnavActiveIndex;
+			// 以下设置是避免频繁渲染到视图层，引起卡顿
+			if(alreadySetnavActiveIndex==undefined || !alreadySetnavActiveIndex){
+				this.data.alreadySetnavActiveIndex=true;
+				this.setData({
+					navActiveIndex:index
+				},()=>{
+					console.log("设置index成功:",index)
+					setTimeout(() => {
+						console.log("延时设置index",this.data.scrollLastIndex)
+						this.data.alreadySetnavActiveIndex=false;
+						this.setData({
+							navActiveIndex:this.data.scrollLastIndex//延迟后设置最后一次的Index
+						})
+					}, 200);
+				})
+			}else{
+				this.data.scrollLastIndex=index;//保存最后的index
+			}
 		}
 	},
 	getElePosition(){//获取详情，评价。到顶端(是内容的顶端，注意不是父容器的)的高度，【异步】
@@ -294,9 +310,8 @@ Page(Object.assign({}, merchantShop,{
 		let xqToTopHeight=this.data.xqToTopHeight;
 		let pjToTopHeight=this.data.pjToTopHeight;
 		if(xqToTopHeight==undefined || pjToTopHeight==undefined) return;
-
+	
 		let {scrollTop,scrollHeight,deltaY}=e.detail;//px
-		console.log(e.detail)
 		let contentScrollHeight=this.data.contentScrollHeight;
 		let scrollEleHeight=contentScrollHeight/scrollHeight*contentScrollHeight;//滚动条自身的高度
 		// 滚动条的中间，到scrollView顶端的距离
@@ -305,14 +320,12 @@ Page(Object.assign({}, merchantShop,{
 		if(scrollHeight<2*contentScrollHeight && deltaY<0){//触底判断，优化scrollHeight比较小的
 			if(scrollHeight-scrollTop-contentScrollHeight<40) isReachBottom=true
 		}
+
 		if(scrollCenterTop>pjToTopHeight || isReachBottom){
-			console.log(scrollTop,scrollCenterTop,xqToTopHeight,pjToTopHeight,"2")
 			this.navTap(2)
 		}else if(scrollTop,scrollCenterTop>xqToTopHeight){
-			console.log(scrollCenterTop,xqToTopHeight,pjToTopHeight,"1")
 			this.navTap(1)
-		}else{
-			console.log(scrollTop,scrollCenterTop,xqToTopHeight,pjToTopHeight,"0")
+		}else{	
 			this.navTap(0)
 		}
 	},

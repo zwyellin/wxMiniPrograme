@@ -327,7 +327,7 @@
             <!-- 店铺红包 -->
             <scroll-view class="mt20"  wx:if="{{promotionList.merchantRedBags.length>0}}"
             style="max-height:560rpx;padding:20rpx 0;text-align:center;width:640rpx;background:red;" scroll-y="true">
-                <view wx:for="{{promotionList.merchantRedBags}}" style="position:relative">
+                <view wx:for="{{promotionList.merchantRedBags}}" wx:key="index" style="position:relative">
                    <image src="../../../images/merchant/honbao.png" style="width:604rpx;height:160rpx;"/>
                    <view style="position:absolute;top:0;left:0;right:0;bottom:0;font-size:36rpx;padding:20rpx 40rpx;color:#ca2d2c" class="flex flex-spaceBetween flex-row-center">
                         <!-- 左边 -->

@@ -89,6 +89,7 @@ App({
     } 
   },
   getLocation(){//获得经纬度
+    console.log("尝试获取经纬度")
     this.getSeting().then(()=>{
 			this.wxGetLocation({
 				type:'gcj02'
@@ -106,19 +107,6 @@ App({
 						latitude:lat
 					}
 				};
-        getBMapLocation(obj).then(res=>{
-					let address;
-					if (res.status === 0) {
-						let address = res.result.address;
-            let region = res.result.address_component.city;
-            let myCityName=address+"-"+"region"
-            console.log("当前城市:",myCityName)
-					}
-			    }).catch(err=>{
-			    	this.setData({
-						isAgentId:true
-					});
-			  });
       })
     })
   },
@@ -224,7 +212,7 @@ App({
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain: 'https://prelaunch.horsegj.com',
+    domain: 'https://www.saibaojt.com',
     windowHeight: 0,
     windowWidth: 0,
     // latitude:'39.966128',

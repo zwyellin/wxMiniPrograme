@@ -103,10 +103,10 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		}else{//扫码进来的
 			console.log("扫码进来的");
 			if(scene.indexOf(",")==-1){
-				this.data.goodsId=scene;
+				this.data.merchantId=scene;
 			}else{
 				let sceneArr=scene.split(",");
-				this.data.goodsId =sceneArr[0];
+				this.data.merchantId =sceneArr[0];
 				this.data.sharedUserId=sceneArr[1];
 			}
 		}
@@ -118,7 +118,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 		console.log("重新调用前的经纬度,",app.globalData.longitude)
 		if(!app.globalData.latitude){//如果app.json也没有，则是外部进来的，要重新获取经纬度
 			app.getLocation();
-			console.log("重新调用获取经纬度,",app.globalData.longitude)
 		}
 		//获取系统信息 主要是为了计算产品scroll的高度
 		wx.getSystemInfo({

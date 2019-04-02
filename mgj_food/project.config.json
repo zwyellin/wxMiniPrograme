@@ -29,12 +29,27 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 2,
 			"list": [
 				{
 					"id": -1,
 					"name": "模拟版本更新",
-					"pathName": "pages/index/index"
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": 1,
+					"name": "扫码进入",
+					"pathName": "goods/shop/shop",
+					"query": "2334",
+					"scene": 1011
+				},
+				{
+					"id": -1,
+					"name": "扫码进入",
+					"pathName": "goods/shop/shop",
+					"query": "2334",
+					"scene": 1011
 				}
 			]
 		}

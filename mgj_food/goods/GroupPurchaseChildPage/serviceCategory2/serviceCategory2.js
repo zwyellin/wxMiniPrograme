@@ -45,10 +45,10 @@ Page({
 		}else{//扫码进来的
 			console.log("扫码进来的");
       if(scene.indexOf(",")==-1){
-				this.data.goodsId=scene;
+				this.data.groupPurchaseCouponId=scene;
 			}else{
 				let sceneArr=scene.split(",");
-				this.data.goodsId =sceneArr[0];
+				this.data.groupPurchaseCouponId =sceneArr[0];
 				this.data.sharedUserId=sceneArr[1];
 			}
 		}
