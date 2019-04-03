@@ -3,7 +3,6 @@
 
 .merchantMainInfo_image{
     position: relative;
-    padding-bottom: 20rpx;
     background:white;
 }
 .merchantMainInfo_image_TotalIcon{

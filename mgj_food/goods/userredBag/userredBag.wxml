@@ -1,6 +1,6 @@
 <wxs module="time" src="../../utils/star.wxs"></wxs>
 <view class="container">
-	<view class="navbar">
+	<view class="navbar row-line">
 		<view class="navbar-item" data-idx="{{0}}" bindtap="navbarTap">
 			<view class="navbar-item-platform {{currentTab==0 ? 'active' : ''}}">红包{{platformRedBagCount}}个</view>
 		</view>
@@ -64,16 +64,18 @@
 			wx:key="index" 
 			data-item="{{item}}"
 			bindtap="vouchersItemTap">
-			<view class="lottery-content flex">
-				<view class="lottery-icon">
+			<view class="lottery-content flex flex-spaceBetween flex-row-center">
+				<view class="lottery-icon flex0">
 					<image class="lottery-icon-img" src="{{item.merchantLogo||'../../images/merchant/merchantLogo.png'}}"></image>
 				</view>
-				<view class="lottery-content-right font-14">
-					<view class="lottery-content-text">{{item.merchantName}}</view>
-					<view class="money" >满{{item.restrictAmt}}元可用</view>
-				</view>
-				<view class="lottery-content-price">
-					<text>￥</text><text style="font-size:60rpx">{{item.amt}}</text>
+				<view class="flex flex1 flex-spaceBetween flex-row-center">
+					<view class="lottery-content-right font-14">
+						<view class="lottery-content-text">{{item.merchantName}}</view>
+						<view class="money" >满{{item.restrictAmt}}元可用</view>
+					</view>
+					<view class="lottery-content-price" style="padding-right:40rpx;">
+						<text>￥</text><text style="font-size:60rpx">{{item.amt}}</text>
+					</view>
 				</view>
 			</view>
 			<view class="lottery-express">
@@ -98,15 +100,15 @@
 			wx:key="index" 
 			data-id="{{item.merchantId}}"
 			bindtap="vouchersItemTap">
-			<view class="lottery-content flex">
-				<view class="lottery-icon">
+			<view class="lottery-content flex flex-spaceBetween">
+				<!-- <view class="lottery-icon">
 					<image class="lottery-icon-img" src="{{item.merchantLogo||'../../images/merchant/merchantLogo.png'}}"></image>
-				</view>
+				</view> -->
 				<view class="lottery-content-right font-14">
 					<view class="lottery-content-text">{{item.name}}</view>
 					<view class="money" >满{{item.restrictAmt}}元可用</view>
 				</view>
-				<view class="lottery-content-price">
+				<view class="lottery-content-price" style="padding-right:40rpx;">
 					<text>￥</text><text style="font-size:60rpx">{{item.couponsAmt}}</text>
 				</view>
 			</view>

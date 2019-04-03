@@ -283,10 +283,11 @@ Page({
 			},
 		}).then(res=>{
 			let WXQRImage="data:image/png;base64,"+res.data.value;
-			WXQRImage+=res.data.value;
 			this.setData({
 				WXQRImage
-			})
+			},()=>{
+        delete this.data.WXQRImage
+      })
 		})
 	},
 	//QRcodeIconTap
@@ -295,7 +296,7 @@ Page({
 			QRcode_mask_show:true
     })
     let WXQRImage=this.data.WXQRImage;
-    if(WXQRImage.length==0){//说明还没有发请求
+    if(WXQRImage==""){//说明还没有发请求
       wx.showToast({
         title:"加载中",
         icon:"loading",
@@ -305,7 +306,16 @@ Page({
         wx.hideToast();
       })
     }
-	},
+  },
+  QRcodeErr(){
+    // this.getMGJMerchantWXQRImage().then(()=>{
+    //   wx.hideToast();
+    // })
+    // console.log("重新渲染")
+    // this.setData({
+    //   WXQRImage:this.data.WXQRImage
+    // })
+  },
 	// 保存二维码
 	saveQRCode(e){
 		let {images}=e.currentTarget.dataset;

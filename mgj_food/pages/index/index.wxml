@@ -9,7 +9,7 @@
 		<!--地图位置-->
 		<view class="flex0 flex flex-row-center padding-lr-20" bindtap="redirectToAddress">
 			<image class ="flex0" src="/images/images/location.png"  style="width:34rpx;height:38rpx;padding-right:20rpx;margin-top:10rpx;"/>
-			<view class="text-overflow-dots flex1" style="padding-right:10rpx;width:300rpx;">
+			<view class="text-overflow-dots flex1" style="padding-right:10rpx;max-width:300rpx;">
 				<text style="font-size:26rpx;color:#333">{{city.cityName}}</text> 
 			</view>
 			<image class ="flex0" src="/images/images/down_rotate.png" style="width:20rpx;height:20rpx;margin-top:6rpx;"></image>

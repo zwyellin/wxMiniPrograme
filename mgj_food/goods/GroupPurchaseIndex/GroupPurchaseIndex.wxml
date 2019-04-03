@@ -15,7 +15,7 @@
             <block wx:for="{{bannerList}}" wx:key="index">
                 <swiper-item>
                     <view data-item="{{item}}" catch:tap="findGroupPurchaseBannerListTap">
-                        <image class="swiper-image" src="{{item.picUrl}}" binderror="BannerListSrcErr"/>
+                        <image class="swiper-image" src="{{item.picUrl}}" data-index="{{index}}" binderror="BannerListSrcErr"/>
                     </view>
                 </swiper-item>
             </block>

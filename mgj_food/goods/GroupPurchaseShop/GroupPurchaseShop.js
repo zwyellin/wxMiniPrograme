@@ -311,7 +311,9 @@ Page({
 		  let WXQRImage="data:image/png;base64,"+res.data.value;
 			this.setData({
 				WXQRImage
-			})
+			},()=>{
+        delete this.data.WXQRImage
+      })
 		})
 	},
 	//QRcodeIconTap
@@ -320,7 +322,7 @@ Page({
 			QRcode_mask_show:true
     })
     let WXQRImage=this.data.WXQRImage;
-    if(WXQRImage.length==0){//说明还没有发请求
+    if(WXQRImage==""){//说明还没有发请求
       wx.showToast({
         title:"加载中",
         icon:"loading",

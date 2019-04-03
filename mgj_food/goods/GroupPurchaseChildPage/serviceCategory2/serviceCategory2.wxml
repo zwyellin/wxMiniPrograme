@@ -16,7 +16,7 @@
         </view>
     </view>
     <!-- 基本信息 -->
-    <view class="pageItem row-line" style="padding-bottom:40rpx">
+    <view class="pageItem row-line" style="padding-bottom:40rpx;padding-top:20rpx">
         <!-- 套餐名字-->
         <view class="font-size1 font-bold  flex flex-spaceBetween flex-row-center" style="padding-bottom:20rpx;">
             <view>  
@@ -31,8 +31,8 @@
             <mask position="center" wx:if="{{QRcode_mask_show}}" catch:maskclick="maskCancelTap">
                 <view  style="background:white;border-radius:20rpx;margin:200rpx 80rpx 0 80rpx;text-align:center;padding:60rpx;">
                    <block>
-                        <image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" catch:tap="saveQRCode"/>
-                        <view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行识别及保存</view>
+                        <image src="{{WXQRImage}}" style="width:400rpx;height:400rpx;" data-images="{{WXQRImage}}" binderror="QRcodeErr" catch:tap="saveQRCode"/>
+                        <view style="font-size:28rpx;color:#666;margin-top:40rpx;">点击二维码可以进行分享或保存</view>
                    </block>
                 </view>
             </mask>
