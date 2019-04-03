@@ -21,5 +21,13 @@
 			<text>登录</text>
 		</view>
 	</view>
+	
+	<button
+	open-type="getUserInfo"
+	bindgetuserinfo="bindGetUserInfo"
+	>
+		微信登录
+	</button>
+
 	<template is="showToast" data="{{showToast: showToast}}" />
 </view>

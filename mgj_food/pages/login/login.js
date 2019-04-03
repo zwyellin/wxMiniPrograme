@@ -134,8 +134,8 @@ Page({
         		let telephone = loginMessage.mobile;
         		app.globalData.token = loginMessage.token;
         		app.globalData.userId = loginMessage.id;
-        		wx.setStorageSync('loginstatus',true);
-        		wx.setStorageSync('loginMessage',loginMessage);
+        		wx.setStorageSync('loginstatus',true);//记录登录状态
+        		wx.setStorageSync('loginMessage',loginMessage);//缓存用户信息
 				if (this.data.switch === 'usercenter') {
 					let pages = getCurrentPages();
 	    			let prevPage = pages[pages.length - 2];
@@ -266,5 +266,89 @@ Page({
          		disabled: false   
         	});
         });
+	},
+	// 微信登录
+	WXlogin(){
+		console.log("进入微信登录函数")
+		wx.login({ //登录
+			success: ress => {
+			 wx.setStorageSync('codeWX', ress.code)
+			  var key = null
+			  wxRequest({
+				url:'/merchant/appletClient?m=appletLoginBefore',
+				method:'POST',
+				data:{
+					params:{
+						code:ress.code,	
+						imei: wx.getStorageSync('codeWX'),
+						bizType:1,//这边区分建材
+					},	
+				},
+				}).then(getKey=>{// 获取key
+					// 发送 res.code 到后台换取 openId, sessionKey, unionId
+					getKey=getKey.data;
+					if (getKey.success) {
+						console.log("已经获取到了key")
+						key = getKey.value.key;
+						app.globalData.openId = key;
+						//console.log(e.detail.userInfo)
+						// 存储code
+						//wx.setStorageSync('code', key)
+						wx.getUserInfo({
+						success: function (e) {
+							console.log("登录中获取用户信息")
+							//wx.setStorageSync('wxInfo', e.userInfo)
+							var params = {
+							encryptedData: e.encryptedData,
+							iv: e.iv,
+							key,
+							code: key,
+							longitude: app.globalData.longitude,
+							latitude: app.globalData.latitude,
+							bizType:1,//这边区分建材
+							};
+							wxRequest({
+								url:'/merchant/appletClient?m=appletLogin',
+								method:'POST',
+								data:{
+									params:params,
+									imei: wx.getStorageSync('codeWX'),
+								},
+								}).then(data=>{// 获取key
+								//console.log(data)
+								if (data.success) {
+									// if (app.globalData.isLoginId) {
+									// wx.navigateTo({
+									// 	url: app.globalData.isLoginUrl
+									// });
+									// } else {
+									// wx.switchTab({
+									// 	url: '../index/index',
+									// });
+									// }
+									// 存储登录信息
+									//app.globalData.userInfo = data.value
+									//wx.setStorageSync('userInfo', data.value)
+									//app.globalData.userInfo = wx.getStorageSync("userInfo")
+									//wx.setStorageSync('token', data.value.token)
+								}
+							})
+						},
+						fail:()=>{//获取用户信息接口失败
+							wx.showToast({
+								title:"请授权",
+								icon:"loading"
+							})
+						}
+					})
+					}
+				})
+
+			}
+		});
+	},
+	bindGetUserInfo(e){
+		console.log("获取用户信息",e);
+		this.WXlogin();
 	}
 });
