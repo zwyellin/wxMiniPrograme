@@ -45,8 +45,13 @@ Page(Object.assign({}, merchantShop,{
 		
 		// 评价
 		selestEvaluateStatus:0,
-		evaluate:{},
+		evaluateStart:0,
+		evaluate:{
+			list:[]
+		},
 		evaluateList:[],
+		evaluateSize:20,
+		openMoreItem:false,
 
 		// 导航
 		navObj:[
@@ -350,6 +355,18 @@ Page(Object.assign({}, merchantShop,{
 				wx.hideToast();
 			}
 		})
+	},
+	// 评论展开闭合
+	openMoreItem(e){
+    let {type}=e.target.dataset;
+    this.setData({
+      openMoreItem:type
+    })
+	},
+	// 获取更多评论
+	getMoreEvaluate(){
+		if(!this.data.openMoreItem) return;//没有展开更多或者一开始数量就不多，则不再加载
+		this.queryGoodsComments(true);
 	},
 
   	//关闭查看商品详情

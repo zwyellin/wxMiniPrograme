@@ -23,7 +23,10 @@ Page({
 
     // 店家二维码
     WXQRImage:"",//店家二维码
-		QRcode_mask_show:false,
+    QRcode_mask_show:false,
+    
+    //团购套餐Item>3时，隐藏多余部分
+    openMoreItem:false
   },
    /**
    * 生命周期函数--监听页面加载
@@ -141,7 +144,15 @@ Page({
       this.isLoginsuccess(true);//跳转到登入
     }
   },
-
+  //团购套餐展开关闭事件
+  openMoreItem(e){
+    let {type}=e.target.dataset;
+    this.setData({
+      openMoreItem:type
+    })
+  },
+  
+  
   // 商家信息-请求
   requestGrouopMerchantInfo(){
     wx.showToast({

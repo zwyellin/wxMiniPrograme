@@ -20,7 +20,7 @@
 		id="scrollView"
     scroll-y
     style="height: {{contentScrollHeight}}px;"
-   
+   	bindscrolltolower="getMoreEvaluate"
     scroll-into-view="{{toView}}"
 		scroll-with-animation="{{true}}"
   >
@@ -129,7 +129,7 @@
 					</view>
 				</view>
 				<view class="new-valuate-content-main">
-					<block wx:for="{{evaluate.list}}" wx:key="{{item.id}}">
+					<block wx:for="{{evaluate.list}}" wx:key="{{item.id}}" wx:if="{{openMoreItem ||index<5}}">
 						<view class="new-valuate-item" >
 							<view class="new-valuate-item-userinfo">
 								<view class="new-evaluate-userinfo">				
@@ -185,6 +185,12 @@
 							</view>
 						</view>
 					</block>
+					<!--  -->
+				<!--评论太长的处理 -->
+        <view  wx:if="{{evaluate.list.length>5}}" style="text-align:center;background:#eee;height:80rpx;line-height:80rpx;" class="color2 font-12">
+            <text wx:if="{{!openMoreItem}}" data-type="{{true}}" catch:tap="openMoreItem">查看更多>></text>
+            <text wx:else data-type="{{false}}" catch:tap="openMoreItem">收起列表↑↑</text>
+        </view>
 				</view><!--content-main结束：即评论部分-->
 			</view>
 		</view>

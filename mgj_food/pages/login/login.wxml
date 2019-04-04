@@ -22,12 +22,8 @@
 		</view>
 	</view>
 	
-	<button
-	open-type="getUserInfo"
-	bindgetuserinfo="bindGetUserInfo"
-	>
-		微信登录
-	</button>
+	<!-- 先屏蔽微信登录功能，js中有实现部分功能 -->
+	<!-- <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">微信登录</button> -->
 
 	<template is="showToast" data="{{showToast: showToast}}" />
 </view>

@@ -42,7 +42,7 @@
             <!-- 团购 -->
              <view class="flex flex-row-center purchaseTypeItem" wx:if="{{_itemObj.groupSetMeal.length}}">
                <image src="../../images/images/tuan@2x.png"></image>
-               <view class="flex" style="flex-wrap:wrap">
+               <view class="text-overflow-dots" style="line-height:1;margin-top:-6rpx;">
                      <text wx:for="{{_itemObj.groupSetMeal}}" wx:key="index" style="line-height:1.5">{{item.price}}元{{item.groupPurchaseName}}</text>
                 </view>
              </view>
@@ -92,7 +92,7 @@
                     <!-- 团购 -->
                     <view class="flex flex-row-center purchaseTypeItem" wx:if="{{_itemObj.groupSetMeal.length}}">
                     <image src="../../images/images/tuan@2x.png"></image>
-                    <view class="flex" style="flex-wrap:wrap">
+                    <view class="text-overflow-dots" style="line-height:1;margin-top:-6rpx;">
                             <text wx:for="{{_itemObj.groupSetMeal}}" wx:key="index" style="line-height:1.5">{{item.price}}元{{item.groupPurchaseName}}</text>
                         </view>
                     </view>

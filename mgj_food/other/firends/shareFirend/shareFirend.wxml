@@ -27,7 +27,7 @@
 		<!-- 邀请红包 -->
 		<swiper-item style="position:relative">
 			<image src="../../images/yaoqinghonbaobg.jpg" style="width:100%;height:{{contentHeight}}px;" />
-			<view style="position:absolute;width:80%;left:10%;bottom:40rpx;background:white;box-shadow:0 0 10px 4px rgba(184,42,66,.75);padding:20rpx;" class="border-radius5">
+			<view style="position:absolute;width:80%;left:10%;bottom:40rpx;background:white;box-shadow:0 0 10px 4px rgba(184,42,66,.75);padding:20rpx;" class="border-radius5 box-sizing-box">
 				<view style="font-size:32rpx;color:#222;padding:20rpx 40rpx;" class="flex flex-row-center">
 					<text class="line"></text>
 					<text style="padding:0 20rpx;">活动规则</text>

@@ -165,6 +165,11 @@ const merchantShop = {
 	},
 	// 获取商品评论
 	queryGoodsComments(isLoadMore){
+		wx.showToast({
+			title:"加载中",
+			icon:"loading",
+			duration:5000
+		})
 		wxRequest({
 			url:'/merchant/userClient?m=queryGoodsComments',
 			method:'POST',
@@ -178,6 +183,7 @@ const merchantShop = {
 				}	
 			}
 		}).then(res=>{
+			wx.hideToast();
 			if (res.data.code === 0) {
 				let resValue = res.data.value;
 				let evaluate = this.data.evaluate;
@@ -194,7 +200,9 @@ const merchantShop = {
 				this.setData({
 					evaluate:evaluate,
 				});
-				}
+				this.data.evaluateStart=evaluate.list.length;
+			}
+		
 			this.data.isEvaluate = false;
 		})
 	},

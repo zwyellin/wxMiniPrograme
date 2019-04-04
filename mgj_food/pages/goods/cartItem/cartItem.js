@@ -219,6 +219,8 @@ Page({
       this.setData({
         orderListTag:tag
       },()=>{
+        // 清空start
+        this.data.start=0;
         this.findNewUserTOrders(false);
       })
     },

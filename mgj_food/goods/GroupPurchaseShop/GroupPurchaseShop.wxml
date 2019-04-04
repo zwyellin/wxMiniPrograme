@@ -153,7 +153,7 @@
                     <text>团购套餐</text>
                 </view>
                 <navigator class="flex flex-spaceBetween mt20" hover-class="none"
-                wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index"
+                wx:for="{{groupMerchantInfo.groupSetMeal}}" wx:key="index" wx:if="{{openMoreItem ||index<2}}"
                 url="/goods/GroupPurchaseChildPage/serviceCategory2/serviceCategory2?groupPurchaseCouponId={{item.id}}&sharedUserId={{sharedUserId}}">
                     <!-- 左边 -->
                     <image src="{{item.images[0] ||'../../images/merchant/merchantLogo.png' }}" class="serviceCategoryItem_tuangouImage"></image>
@@ -185,9 +185,15 @@
                 </navigator>
             </view>
         </view>
+        <!-- 团购套餐太长的处理 -->
+        <view  wx:if="{{groupMerchantInfo.groupSetMeal.length>2}}" style="text-align:center;background:#eee;height:80rpx;line-height:80rpx;" class="color2 font-12">
+            <text wx:if="{{!openMoreItem}}" data-type="{{true}}" catch:tap="openMoreItem">查看更多>></text>
+            <text wx:else data-type="{{false}}" catch:tap="openMoreItem">收起列表↑↑</text>
+        </view>
+
     <!--服务种类布局完毕-->
     <!-- 商家其它卡片信息 -->
-    <view class="merchantCardBox mt20">
+    <view class="merchantCardBox {{groupMerchantInfo.groupSetMeal.length>2?'':'mt20'}}">
         <!-- 商家推荐 -->
         <view class="merchantCardItem"> 
             <text class="merchantCardItem-title">商家推荐</text>
