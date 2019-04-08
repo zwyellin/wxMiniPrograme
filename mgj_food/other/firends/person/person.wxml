@@ -1,14 +1,18 @@
 <wxs module="fixed" src="../../../utils/star.wxs"></wxs>
 <view class="container">
-	<view class="share-firend" style="background-image: url(http://7xu5hi.com1.z0.glb.clouddn.com/201805051352003971186.png);background-size:100% 100%">
+	<view class="share-firend">
+		<image src="../../../images/images/person_redbag.png" style="height:290rpx;"/>
 	</view>
 	<view class="share-money">
-		<text><text style="font-size:26rpx;">￥</text>{{fixed.fomatFloat(cashbackAmtSum,2)}}</text>
+		<view style="font-size:70rpx;font-bold">￥{{fixed.fomatFloat(cashbackAmtSum,2)}}</view>
+		<view style="font-size:28rpx;" class="mt20">累计返现</view>
+		<view style="font-size:28rpx;" class="mt20">累计返现金额已存入您的账户余额，可用于消费或提现</view>
 	</view>
 	<view class="shareResultsShow">
-		<view class="shareType">
-			<text catch:tap="shareTypeTap" data-type="0" style="{{type==0 ? 'color:#fb4062':''}}">邀请红包{{'('+userList0.length+')'}}</text>
-			<text catch:tap="shareTypeTap" data-type="1" style="{{type==1 ? 'color:#fb4062;border-left:1px solid #ccc':'border-left:1px solid #ccc'}}">分享红包{{'('+userList1.length+')'}}</text>
+		<view class="shareType flex flex-spaceBetween flex-row-center">
+			<text class="shareTypeText" catch:tap="shareTypeTap" data-type="0" style="{{type==0 ? 'color:rgb(254,57,30); border-bottom: 1px solid rgb(254,57,30);':''}}">邀请红包{{'('+userList0.length+')'}}</text>
+			<text style="color:#e5e5e5">|</text>
+			<text class="shareTypeText" catch:tap="shareTypeTap" data-type="1" style="{{type==1 ? 'color:rgb(254,57,30); border-bottom: 1px solid rgb(254,57,30);':''}}">分享红包{{'('+userList1.length+')'}}</text>
 		</view>
 		<view>
 			<scroll-view scroll-y="true" style="height:{{windowScrollHeight}}px" bindscrolltolower="shareResultsScrolltolower">
@@ -27,11 +31,11 @@
 			<view wx:if="{{userList.length==0}}" class="results-no">
 				<block wx:if="{{type==0}}">
 					<text>暂无邀请红包</text>
-					<navigator open-type="navigate" url="/other/firends/shareFirend/shareFirend?index=1">赚取红包</navigator>
+					<navigator open-type="navigate" url="/other/firends/shareFirend/shareFirend?index=0">赚取红包</navigator>
 				</block>
 				<block wx:else>
 					<text>暂无分享红包</text>
-					<navigator open-type="navigate" url="/other/firends/shareFirend/shareFirend">赚取红包</navigator>
+					<navigator open-type="navigate" url="/other/firends/shareFirend/shareFirend?index=1">赚取红包</navigator>
 				</block>
 			</view>
 			<view class="loading-info" wx:else >

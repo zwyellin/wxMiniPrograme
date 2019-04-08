@@ -9,12 +9,12 @@
 }
 .share-money {
 	position: fixed;
-	top:356rpx;
-	left: 50%;
-	transform: translateX(-50%);
+	top:50rpx;
 	font-size: 72rpx;
-	color:#e73a24;
-	font-weight: 700;
+  text-align: center;
+  color:white;
+  left:0;
+  right:0;
 }
 .share-result {
   position: fixed;
@@ -71,22 +71,21 @@
 
 .shareResultsShow{
   position: fixed;
-  top:660rpx;
+  top:290rpx;
   z-index:999;
   width:100%;
   background: white;
 }
-.shareResultsShow .shareType text{
+.shareResultsShow .shareType{
+  border-bottom: 1px solid #e5e5e5;
+}
+.shareTypeText{
   width: 50%;
   display: inline-block;
-  box-sizing: border-box;
-  color:blue;
   text-align: center;
-  box-sizing: border-box;
-  border-bottom: 1px solid #ccc;
-  line-height:2.5;
+  line-height:3;
   color:#999;
-  font-size: 28rpx;
+  font-size: 32rpx;
 }
 
 .results-content{
@@ -114,7 +113,7 @@
   width:200rpx;
   margin:5rpx auto;
   padding:10rpx;
-  background:#fa4d6a;
+  background:rgb(254,57,30);
   color:white;
   border-radius:5rpx; 
 }
