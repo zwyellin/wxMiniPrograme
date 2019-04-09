@@ -1,7 +1,7 @@
 <wxs module="fixed" src="../../../utils/star.wxs"></wxs>
 <view class="container">
 	<view class="share-firend">
-		<image src="../../../images/images/person_redbag.png" style="height:290rpx;border-radius:0"/>
+		<image src="../../../images/images/person_redbag.png" style="height:290rpx;width:750rpx;border-radius:0"/>
 	</view>
 	<view class="share-money">
 		<view style="font-size:70rpx;font-bold">￥{{fixed.fomatFloat(cashbackAmtSum,2)}}</view>

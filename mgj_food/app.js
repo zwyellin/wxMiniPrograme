@@ -212,7 +212,7 @@ App({
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain:'https://prelaunch.horsegj.com',
+    domain:'https://www.saibaojt.com',
     windowHeight: 0,
     windowWidth: 0,
     // latitude:'39.966128',
@@ -224,4 +224,4 @@ App({
 //wxapi     线上
 // prelaunch
 // https://prelaunch.horsegj.com
-// https://www.saibaojt.com 体验版
+// https://www.saibaojt.com 体验版 39

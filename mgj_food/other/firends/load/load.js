@@ -1,6 +1,6 @@
 Page({
 	data:{
-		
+		imageFinishLoad:false
 	},
 	// 点击图片事件
 	imageTap(e){
@@ -11,4 +11,10 @@ Page({
 			urls:images // 需要预览的图片http链接列表
 		})
 	},
+	imageFinishLoad(e){
+		console.log(e);
+		this.setData({
+			imageFinishLoad:true
+		})
+	}
 })
