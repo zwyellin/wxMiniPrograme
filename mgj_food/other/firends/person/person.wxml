@@ -1,7 +1,7 @@
 <wxs module="fixed" src="../../../utils/star.wxs"></wxs>
 <view class="container">
 	<view class="share-firend">
-		<image src="../../../images/images/person_redbag.png" style="height:290rpx;"/>
+		<image src="../../../images/images/person_redbag.png" style="height:290rpx;border-radius:0"/>
 	</view>
 	<view class="share-money">
 		<view style="font-size:70rpx;font-bold">￥{{fixed.fomatFloat(cashbackAmtSum,2)}}</view>
@@ -41,7 +41,7 @@
 			<view class="loading-info" wx:else >
 				<view wx:if="{{userList.length>4 && ((type==0 && islistLast0) || (type==1 && islistLast1))}}"  class="bottom-text">暂无更多</view>
 				<block wx:elif="{{loading}}">
-					<image src="../../images/merchant/loading.png" class="img-loading"></image>
+					<image src="../../../images/merchant/loading.png" class="img-loading"></image>
 					<view class="loading-text">正在加载，请稍候</view>
 				</block>	
 			</view>

@@ -1,3 +1,10 @@
 <view class="container">
-	<image class="load-share" src="../../images/share.png"></image>	
+	<view style="position:relative;height:1220rpx;">
+		<image class="load-share" style="border-radius:0" src="../../images/share.png" 
+		data-images="{{ ['../../images/share.png'] }}" data-index="{{0}}" catch:tap="imageTap" catch:longpress="imageTap"></image>
+		<view style="position:absolute;bottom:40rpx;text-align:center;font-size:32rpx;color:#794a13;width:100%;line-height:2;">
+			<view>合作热线：400-997-9393</view>
+			<view>江西赛宝网络科技有限公司</view>
+		</view>
+	</view>
 </view>

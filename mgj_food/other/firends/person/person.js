@@ -24,7 +24,7 @@ Page({
 		wx.getSystemInfo({
 			success: (res)=> {
 				this.setData({
-					windowScrollHeight: res.windowHeight - 732*(app.globalData.windowWidth/750)+2,//修复box-sizing带来的问题
+					windowScrollHeight: res.windowHeight - 370*(app.globalData.windowWidth/750),//修复box-sizing带来的问题
 				});
 			}
 		});
@@ -63,9 +63,9 @@ Page({
 			loading:true
 		});
 		if(type==0){
-			this.data.start=this.data.start0;
+			this.data.start=this.data.userList0.length;
 		}else{
-			this.data.start=this.data.start1;
+			this.data.start=this.data.userList1.length;
 		}
 		wxRequest({
 	    	url:'/merchant/userClient?m=findInviteCashbackDetailList',
