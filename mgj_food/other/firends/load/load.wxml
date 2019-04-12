@@ -1,7 +1,7 @@
 <view class="container">
 	<view style="position:relative;height:1202rpx;">
-		<image class="load-share" style="border-radius:0" src="../../images/share.png" bindload='imageFinishLoad'
-		data-images="{{ ['../../images/share.png'] }}" data-index="{{0}}" catch:tap="imageTap" catch:longpress="imageTap"></image>
+		<image class="load-share" style="border-radius:0" src="http://7xu5hi.com1.z0.glb.clouddn.com/201904091334222965289.png" bindload='imageFinishLoad'
+		data-images="{{ ['http://7xu5hi.com1.z0.glb.clouddn.com/201904091334222965289.png'] }}" data-index="{{0}}" catch:tap="imageTap" catch:longpress="imageTap"></image>
 		<view wx:if="{{imageFinishLoad}}" style="position:absolute;bottom:40rpx;text-align:center;font-size:32rpx;color:#794a13;width:100%;line-height:2;">
 			<view>合作热线：400-997-9393</view>
 			<view>江西赛宝网络科技有限公司</view>

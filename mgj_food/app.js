@@ -4,7 +4,7 @@
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
-    // this.updataApp();
+    this.updataApp();
     let loginMessage = wx.getStorageSync('loginMessage');
     let shoppingCart = wx.getStorageSync('shoppingCart');
     // if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
@@ -178,28 +178,42 @@ App({
 	},
   updataApp() {//版本更新
     if (wx.canIUse('getUpdateManager')) {
+      console.log("检查版本更新")
       const updateManager = wx.getUpdateManager();
       updateManager.onCheckForUpdate((res)=> {
-        if (res.hasUpdate) { // 请求完新版本信息的回调
-          updateManager.onUpdateReady(()=> {
-            wx.showModal({
-              title: '更新提示',
-              content: '新版本已经准备好，是否重启应用？',
-              success: (res)=> {
-                if (res.confirm) {// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
-                  updateManager.applyUpdate();
-                }
-              }
-            });
-          });
-          updateManager.onUpdateFailed(()=> {
-            console.log('新版本下载失败');
-          });
-        }
+        console.log(res.hasUpdate)
       });
+      updateManager.onUpdateReady(()=> {
+        // 
+        try {
+          console.log("清除缓存记录")
+          wx.clearStorageSync()
+        } catch (e) {
+          // Do something when catch error
+        }
+        wx.showModal({
+          title: '更新提示',
+          content: '新版本已经准备好，准备重启启用',
+          showCancel:false,
+          success: (res)=> {
+            if (res.confirm) {// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+              updateManager.applyUpdate();
+            }
+          }
+        });
+      });
+      updateManager.onUpdateFailed(()=> {
+        console.log('新版本下载失败');
+      });
+
+      // 方式二
+      // updateManager.applyUpdate();
     }
   },
   globalData: {
+    wxInfo:null,//微信登录的用户信息
+    openId:null,
+
     token:'',
     client:'',
     clientVersion:'',
@@ -212,7 +226,7 @@ App({
     cityName:null,
     userInfo: null,
     sessionId: null,
-    domain:'https://www.saibaojt.com',
+    domain:'https://prelaunch.horsegj.com',
     windowHeight: 0,
     windowWidth: 0,
     // latitude:'39.966128',

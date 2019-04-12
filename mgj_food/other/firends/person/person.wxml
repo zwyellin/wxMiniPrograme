@@ -1,14 +1,14 @@
 <wxs module="fixed" src="../../../utils/star.wxs"></wxs>
 <view class="container">
 	<view class="share-firend">
-		<image src="../../../images/images/person_redbag.png" style="height:290rpx;width:750rpx;border-radius:0"/>
+		<image src="../../../images/images/person_redbag.png" style="height:290rpx;width:750rpx;border-radius:0" bindload='imageFinishLoad' />
 	</view>
 	<view class="share-money">
 		<view style="font-size:70rpx;font-bold">￥{{fixed.fomatFloat(cashbackAmtSum,2)}}</view>
 		<view style="font-size:28rpx;" class="mt20">累计返现</view>
 		<view style="font-size:28rpx;" class="mt20">累计返现金额已存入您的账户余额，可用于消费或提现</view>
 	</view>
-	<view class="shareResultsShow">
+	<view wx:if="{{imageFinishLoad}}" class="shareResultsShow">
 		<view class="shareType flex flex-spaceBetween flex-row-center">
 			<text class="shareTypeText" catch:tap="shareTypeTap" data-type="0" style="{{type==0 ? 'color:rgb(254,57,30); border-bottom: 1px solid rgb(254,57,30);':''}}">邀请红包{{'('+userList0.length+')'}}</text>
 			<text style="color:#e5e5e5">|</text>

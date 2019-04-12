@@ -93,6 +93,8 @@ Page({
     //判断是否登入
     if (loginMessage && typeof loginMessage == "object" && loginMessage.token && loginStatus) {
       this.data.isLoginsuccess=true;
+      // app.globalData.token = loginMessage.token;
+      // app.globalData.userId = loginMessage.id;
     }else{
       if(isLoginTo){
         wx.navigateTo({//跳转到登入
@@ -199,6 +201,7 @@ Page({
   },
   // 商家评价-请求findGroupPurchaseEvaluateList。在商家信息，返回来之后，发请求
   findGroupPurchaseEvaluateList(){
+    console.log("token",app.globalData.token)
     return wxRequest({
       url:'/merchant/userClient?m=findGroupPurchaseEvaluateList',
       method:'POST',

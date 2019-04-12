@@ -570,7 +570,7 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	checkOut(){
 		let that = this;
 		let loginMessage = wx.getStorageSync('loginMessage');
-    	let loginstatus = wx.getStorageSync('loginstatus');
+    let loginstatus = wx.getStorageSync('loginstatus');
 		if (this.data.totalcount === 0 || this.data.totalprice < this.data.minPrice) return;
 		if (loginMessage && typeof loginMessage == "object" && loginstatus) {
       		// wx.setStorageSync('food',this.data.selectFoods);

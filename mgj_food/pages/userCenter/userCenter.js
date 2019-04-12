@@ -22,20 +22,30 @@ Page({
     loading: false
   },
   onLoad(options) {
-    if (app.globalData.userInfo && app.globalData.userInfo.avatarUrl) {
-      let avatarUrl = app.globalData.userInfo.avatarUrl;
-      let nickName = app.globalData.userInfo.nickName;
-      this.setData({
-        avatarUrl:avatarUrl,
-        nickName:nickName
-      });
-    }
+
   },
   onShow () {
+    console.log("show")
     this.findCustomerAndComplainPhoneByUserXY();
     let loginMessage = wx.getStorageSync('loginMessage');
     let loginStatus = wx.getStorageSync('loginstatus');
     if (loginMessage && typeof loginMessage == "object" && loginStatus && loginMessage.token) {
+      // 获取微信用户信息，登录界面有保存的字段为：
+      // 	wx.setStorageSync('wxInfo',wxInfo);
+      // app.globalData.wxInfo=wxInfo;
+      let wxInfo=wx.getStorageSync('wxInfo');
+      console.log("wxInfo",wxInfo)
+      if (wxInfo && wxInfo.userInfo) {
+        let userInfo=wxInfo.userInfo;
+        let avatarUrl = userInfo.avatarUrl;
+        let nickName = userInfo.nickName;
+        console.log("avatarUrl.nickName",avatarUrl,nickName)
+        this.setData({
+          avatarUrl:avatarUrl,
+          nickName:nickName
+        });
+      }
+      // 其它请求及处理
       this.findUserCenter();
       this.findUserListAndCashbackAmtSum();
       let name = loginMessage.mobile.toString();

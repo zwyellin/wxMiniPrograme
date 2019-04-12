@@ -888,6 +888,6 @@
 			</view>
 		</view>
 	</view>
+</view>
 	<template is="showToast" data="{{showToast: showToast}}" />
 	<template is="activity" data="{{pickertag,itemList:merchantInfoObj,pickertagAnimation}}" />
-</view>

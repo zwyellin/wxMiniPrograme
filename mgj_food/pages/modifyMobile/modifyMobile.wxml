@@ -1,0 +1,74 @@
+<!--pages/modifyMobile/modifyMobile.wxml-->
+<import src="../../components/showToast/showToast.wxml" />
+<!-- 解绑 -->
+<view class="container page " wx:if="{{!newMobileBindShow }}">
+    <view class="font-14" style="background:#fff">
+        <view class="flex flex-spaceBetween flex-row-center row-line pageItem" style="height:100rpx;border-top:1px solid #eee">
+            <text>当前手机号</text>
+            <text>{{oldMobile}}</text>
+        </view>
+        <view class="flex flex-spaceBetween flex-row-center row-line pageItem" style="height:100rpx;">
+            <input class="flex1 " type="number" placeholder="请输入验证码" bindinput="checkPass" />
+            <view class="flex0 send-ma login-active" disabled="{{disabled}}" bindtap="getVerificationCode">
+                <text class="mobile-ma">{{yanzhengma}}</text>	
+            </view> 
+        </view>
+    </view>
+    <view class="padding-40 font-14" style="color:#666;">当前手机若无法正常使用，请及时联系您的客户经理</view>
+    <view class="pad-send">
+		<view class="send" bindtap="modifyMobileBefore">
+			<text>验证手机</text>
+		</view>
+	</view>
+</view>
+
+<!-- 绑定新手机 -->
+<view class="container page " wx:if="{{newMobileBindShow}}">
+    <view class="font-14" style="background:#fff">
+        <view class="flex flex-spaceBetween flex-row-center row-line pageItem" style="height:100rpx;border-top:1px solid #eee">
+            <input class="flex1 " type="number" placeholder="请输入新的手机号" bindinput="checkPhone" />
+        </view>
+        <view class="flex flex-spaceBetween flex-row-center row-line pageItem" style="height:100rpx;">
+            <input class="flex1 " type="number" placeholder="请输入验证码" bindinput="checkPass" />
+            <view class="flex0 send-ma {{ maStatus ? 'login-active' : ''}}" disabled="{{disabled}}" bindtap="getVerificationCodeNew">
+                <text class="mobile-ma">{{yanzhengma}}</text>	
+            </view> 
+        </view>
+    </view>
+    <view class="pad-send">
+		<view class="send" bindtap="modifyMobile">
+			<text>下一步</text>
+		</view>
+	</view>
+</view>
+
+<!-- 消息提醒 -->
+<template is="showToast" data="{{showToast: showToast}}" />
+
+<!-- 绑定新手机成功弹窗提醒 -->
+
+<view wx:if="{{modifySuccess}}" class="container" style="position:relative">
+    <view class="mask"></view>
+    <view style="position:absolute;top:0;left:0;bottom:0;right:0;z-index:1000" class="flex flex-all-center">
+        <view style="background:#fff;width:626rpx;font-size:32rpx;overflow:hiddem" class="border-radius4">
+            <view class="flex flex-all-center" style="height:64rpx;background:rgb(236,234,237);color:rgb(253,152,0);">小贴士!</view>
+            <view class="flex flex flex-all-center" style="height:564rpx">
+                <view class="flex flex-all-center" > 
+                    <image src="../../images/images/check_ok.png" style="width:92rpx;height:92rpx;"/>
+                    <view class="mt20 font-15 color1 font-bold">手机号码修改成功</view>
+                    <view class="mt20 font-12">
+                        <text>您的手机号:</text>
+                        <text style="color:red;">{{newMobile}}</text>
+                    </view>
+                </view>
+                <view class="pad-send" style="width:522rpx">
+                    <view class="send" bindtap="finish">
+                        <text>完成</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+
+

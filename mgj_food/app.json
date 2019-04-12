@@ -11,7 +11,8 @@
     "pages/goods/cartDetail/cartDetail",
     "pages/goods/refundDetail/refundDetail",
     "pages/searchGoods/searchGoods",
-    "pages/webView/webView"
+    "pages/webView/webView",
+    "pages/modifyMobile/modifyMobile"
   ],
   "window": {
     "backgroundTextStyle": "light",

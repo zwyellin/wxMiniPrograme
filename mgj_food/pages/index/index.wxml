@@ -31,41 +31,38 @@
 		</navigator>
 	</view>
 	<!-- 轮播图 开始 -->
-	<swiper 
-			wx:if="{{!isAgentId && !isSwipper}}"
-		    class="swiper-banner"
-		    indicator-dots="{{swiper.indicatorDots}}" 
-		    autoplay="{{swiper.autoplay}}" 
-		    interval="{{swiper.interval}}" 
-		    duration="{{swiper.duration}}"
-		    circular="{{true}}">
-		    <block 
-		      wx:for="{{swiper.imgUrls}}" 
-		      wx:for-index="idx" 
-		      wx:for-item="item" 
-		      wx:key="id">
-		      <swiper-item>
-		        <image wx:if="{{swiper.imageShow}}" bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" bindload="imageLoad" />
-		        <image wx:if="{{!swiper.imageShow}}" bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" />
-		      </swiper-item>
-		    </block>
+	<swiper wx:if="{{!isAgentId && !isSwipper}}"
+		class="swiper-banner"
+		indicator-dots="{{swiper.indicatorDots}}" 
+		autoplay="{{swiper.autoplay}}" 
+		interval="{{swiper.interval}}" 
+		duration="{{swiper.duration}}"
+		circular="{{true}}">
+		<block 
+			wx:for="{{swiper.imgUrls}}" 
+			wx:for-index="idx" 
+			wx:for-item="item" 
+			wx:key="id">
+			<swiper-item>
+			<image wx:if="{{swiper.imageShow}}" bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" bindload="imageLoad" />
+			<image wx:if="{{!swiper.imageShow}}" bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" />
+			</swiper-item>
+		</block>
 	</swiper>
+	<!--针对一张图片的优化 -->
+	<view class="swiper-banner" wx:if="{{!isAgentId && isSwipper}}">
+		<block 
+			wx:for="{{swiper.imgUrls}}" 
+			wx:for-index="idx" 
+			wx:for-item="item" 
+			wx:key="id">
+			<image bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" />
+		</block>
+	</view>
 	<!-- 轮播图 结束 -->
 
-	<view class="page">
+	<!-- <official-account></official-account> -->
 
-		
-		<view class="swiper-banner" wx:if="{{!isAgentId && isSwipper}}">
-			<block 
-		      wx:for="{{swiper.imgUrls}}" 
-		      wx:for-index="idx" 
-		      wx:for-item="item" 
-		      wx:key="id">
-				<image bindtap="bannerMerchant" data-item="{{item}}" src="{{item.picUrl}}" class="slide-image" width="100%" />
-			</block>
-		</view>
-	</view>
-	
 	<view wx:if="{{!isAgentId}}" >
 		<!-- 外卖分类 开始 -->
 		<view class="class-block flex">
@@ -73,12 +70,22 @@
 				wx:for="{{initClassList}}" 
 			    wx:for-index="index" 
 			    wx:for-item="item" 
-			    wx:key="index">
-				<image wx:if="{{item.graySwitch === 0}}" class="class-icon" src="{{item.picUrl}}" ></image>
-				<image wx:if="{{item.graySwitch === 1}}" class="class-icon" src="{{item.grayUrl}}" ></image>
-				<view class="class-text">
-					<text>{{item.name}}</text>
-				</view>	
+				wx:key="index">
+					<!--添加获取form-id-->
+					<form bindsubmit="formSubmit" report-submit="{{true}}" bindreset="formReset">
+						<button form-type="submit" data-x="1" style="padding: 0 !important;margin: 0 !important;border-radius: 0;line-height: normal;display:inline-block;font-size:26rpx">
+							<image wx:if="{{item.graySwitch === 0}}" class="class-icon" src="{{item.picUrl}}" ></image>
+							<image wx:if="{{item.graySwitch === 1}}" class="class-icon" src="{{item.grayUrl}}" ></image>
+							<view class="class-text">
+								<text>{{item.name}}</text>
+							</view>
+						</button>
+					</form>
+					<!-- <image wx:if="{{item.graySwitch === 0}}" class="class-icon" src="{{item.picUrl}}" ></image>
+							<image wx:if="{{item.graySwitch === 1}}" class="class-icon" src="{{item.grayUrl}}" ></image>
+							<view class="class-text">
+								<text>{{item.name}}</text>
+					</view> -->
 			</view>
 		</view>
 		<!-- 外卖分类 结束 -->

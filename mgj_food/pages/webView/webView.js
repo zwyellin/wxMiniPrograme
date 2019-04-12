@@ -14,10 +14,12 @@ Page({
    */
   onLoad: function (options) {
     let {src}=options;
-    // src="https://www.saibaojt.com//horsegj/dist/html/shareredbag/redbag.html?shareRedBagRulesId=3095&scheme=mgjofficial&sharedUserId=1919&from=singlemessage"
-    console.log("现在在网页page",src)
+   src="https://www.saibaojt.com//horsegj/dist/html/shareredbag/redbag.html?shareRedBagRulesId=3095&scheme=mgjofficial&sharedUserId=1919&from=singlemessage"
+   let src1="https://prelaunch.horsegj.com";
+   let src2="https://wxapi.horsegj.com" 
+   console.log("现在在网页page",src)
     this.setData({
-      webViewSrc:src
+      webViewSrc:src2
     })
   },
   getMsg(){
@@ -31,7 +33,11 @@ Page({
  
 
   // 
-  submit(e){
-    console.log('form发生了submit事件，携带数据为：', e.detail)
+  formSubmit(e){
+    console.log('form发生了submit事件，携带数据为：', e.detail);
+    this.xx(e);
   },
+  xx(e){
+    console.log("被电击了",e)
+  }
 })

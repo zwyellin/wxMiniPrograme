@@ -15,7 +15,9 @@ Page({
 		cashbackAmtSum:0,
 		type:0,
 		isInit:true,//用于分享结果列表，标识是不是第一次发送请求
-		loading:false
+		loading:false,
+
+		imageFinishLoad:false
 	},
 	onLoad(){
 		this.findInviterCodeUrl();
@@ -28,6 +30,12 @@ Page({
 				});
 			}
 		});
+	},
+	imageFinishLoad(e){
+		console.log(e);
+		this.setData({
+			imageFinishLoad:true
+		})
 	},
 	findInviterCodeUrl(){
 		wxRequest({

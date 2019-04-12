@@ -1,6 +1,10 @@
 const { buttonClicked} = require('../../utils/util.js');
 const app = getApp();
 let merchantObj = {
+	// 用于获取form-id
+	formSubmit(e){
+		console.log('form发生了submit事件，携带数据为：', e.detail);
+	},
 	moveDown(e){
 		let { item, index,linearArrayIndex } = e.currentTarget.dataset;
 		console.log("moveDown click ",e,linearArrayIndex)

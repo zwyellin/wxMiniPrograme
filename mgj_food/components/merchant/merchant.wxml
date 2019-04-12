@@ -1,58 +1,63 @@
 <import src="../star/star.wxml" />
 <wxs module="fixed" src="../../utils/star.wxs"></wxs>
 <template name="merchant">
-	<view class="goods-wrapper clearfix" 
+	<view 
 		wx:for="{{dataList}}" 
       	wx:for-index="index"
       	wx:for-item="item"
       	wx:key="id"
       	data-id="{{item.id}}"
       	bindtap="quickPage">	
-		<view class="icon">
-			<image class="icon-image" src="{{item.logo}}" />
-			<view wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</view>
-			<image wx:if="{{item.status === 0}}" class="merchant-status" src="/images/merchant/pause_business_new.png"></image>
-			<image wx:if="{{item.status != 0 && item.businessStatus === 1}}" class="merchant-status" src="/images/merchant/rest_business.png"></image>
-			<image wx:if="{{item.isBrandMerchant === 1}}" class="merchant-brand" src="/images/images/brand.png"></image>
-		</view>
-		<view class="content">
-			<view class="name">
-				<view class="name-txt"><text>{{item.name}}</text></view>
-				<image wx:if="{{item.hasVisualRestaurant == 1}}" class="extra-img fr" src="/images/images/can_see.png"></image>
-			</view>
-			<view class="desc clearfix">
-				<view class="fl desc-content">
-					<template is="star-AttrScore" data="{{size,item,AttrName:'averageScore'}}"></template>
-					<text class="desc-count">{{fixed.fomatFloat(item.averageScore,1)}}分</text>
-					<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
+		<!--添加获取form-id-->
+		<form bindsubmit="formSubmit" report-submit="{{true}}" bindreset="formReset" style="width:100%">
+			<button form-type="submit" data-x="1" style="text-align:left;margin: 0 !important;border-radius: 0;line-height: normal;width:100%;" class="goods-wrapper clearfix" >
+				<view class="icon">
+					<image class="icon-image" src="{{item.logo}}" />
+					<view wx:if="{{fixed.getMerchantCount(item.id,cartObject) > 0}}" class="icon-num">{{fixed.getMerchantCount(item.id,cartObject)}}</view>
+					<image wx:if="{{item.status === 0}}" class="merchant-status" src="/images/merchant/pause_business_new.png"></image>
+					<image wx:if="{{item.status != 0 && item.businessStatus === 1}}" class="merchant-status" src="/images/merchant/rest_business.png"></image>
+					<image wx:if="{{item.isBrandMerchant === 1}}" class="merchant-brand" src="/images/images/brand.png"></image>
 				</view>
-				<view class="fr">
-					<text style="font-size: 26rpx;color: #666;font-weight: 500">{{fixed.round(item.distance)}}km</text>
+				<view class="content">
+					<view class="name">
+						<view class="name-txt"><text>{{item.name}}</text></view>
+						<image wx:if="{{item.hasVisualRestaurant == 1}}" class="extra-img fr" src="/images/images/can_see.png"></image>
+					</view>
+					<view class="desc clearfix">
+						<view class="fl desc-content">
+							<template is="star-AttrScore" data="{{size,item,AttrName:'averageScore'}}"></template>
+							<text class="desc-count">{{fixed.fomatFloat(item.averageScore,1)}}分</text>
+							<text class="desc-count-dan">月售{{item.monthSaled}}单</text>
+						</view>
+						<view class="fr">
+							<text style="font-size: 26rpx;color: #666;font-weight: 500">{{fixed.round(item.distance)}}km</text>
+						</view>
+					</view>
+					<view class="extra">
+						<text class="count">起送价￥{{item.minPrice}}</text>
+						<text class="count">|</text>
+						<text>{{(item.shipFee - item.merchantAssumeAmt) > 0 ? '配送费￥'+(item.shipFee - item.merchantAssumeAmt) : '免配送费'}}</text>
+						<text wx:if="{{item.merchantAssumeAmt > 0 && item.shipFee - item.merchantAssumeAmt!=0 }}" style="color:#999;margin-left:8rpx;text-decoration:line-through">￥{{item.shipFee}}</text>
+						<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
+					</view>
+					<view class="cartcontrol-wrapper"  style="overflow: hidden;height: {{item.isHeight}}"
+					data-item="{{item}}" data-linear-array-index="{{linearArrayIndex}}" data-index="{{index}}"  catchtap="moveDown">
+						<view class="cartcontrol-content flex"
+							wx:for="{{item.promotionActivityList}}" 
+							wx:for-index="idx" 
+							wx:for-item="promotion"
+							wx:key='activity+"idx"'>
+							<image class="bran" src="{{promotion.promoImg}}"></image>
+							<text class="name">{{promotion.promoName}}</text>
+						</view>
+					</view>
+					<view wx:if="{{item.promotionActivityList.length>2}}" class="cartcontrol-down" data-item="{{item}}" data-linear-array-index="{{linearArrayIndex}}" data-index="{{index}}"  catchtap="moveDown">
+						<text class="font-12" style="margin-right: 10rpx;color:#666">{{item.promotionActivityList.length}}个活动</text>
+						<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
+					</view>
 				</view>
-			</view>
-			<view class="extra">
-				<text class="count">起送价￥{{item.minPrice}}</text>
-				<text class="count">|</text>
-				<text>{{(item.shipFee - item.merchantAssumeAmt) > 0 ? '配送费￥'+(item.shipFee - item.merchantAssumeAmt) : '免配送费'}}</text>
-				<text wx:if="{{item.merchantAssumeAmt > 0 && item.shipFee - item.merchantAssumeAmt!=0 }}" style="color:#999;margin-left:8rpx;text-decoration:line-through">￥{{item.shipFee}}</text>
-				<text class="fr" style="font-size: 26rpx;color:#999">{{item.avgDeliveryTime}}分钟</text>
-			</view>
-			<view class="cartcontrol-wrapper"  style="overflow: hidden;height: {{item.isHeight}}"
-			data-item="{{item}}" data-linear-array-index="{{linearArrayIndex}}" data-index="{{index}}"  catchtap="moveDown">
-				<view class="cartcontrol-content flex"
-					wx:for="{{item.promotionActivityList}}" 
-      				wx:for-index="idx" 
-      				wx:for-item="promotion"
-      				wx:key='activity+"idx"'>
-					<image class="bran" src="{{promotion.promoImg}}"></image>
-					<text class="name">{{promotion.promoName}}</text>
-				</view>
-			</view>
-			<view wx:if="{{item.promotionActivityList.length>2}}" class="cartcontrol-down" data-item="{{item}}" data-linear-array-index="{{linearArrayIndex}}" data-index="{{index}}"  catchtap="moveDown">
-				<text class="font-12" style="margin-right: 10rpx;color:#666">{{item.promotionActivityList.length}}个活动</text>
-				<image src="/images/images/down_1.png" class="arrow_down" width="100%" />
-			</view>
-		</view>
+			</button>
+		</form>
 	</view>
 </template>
 

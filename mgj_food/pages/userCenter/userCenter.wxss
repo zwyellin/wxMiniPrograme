@@ -1,16 +1,16 @@
 /* userCerter.wxss */
-@import "../goods/cartItem/cartItem.wxss"
+@import "../goods/cartItem/cartItem.wxss";
 .page-usercenter {
   background:#f4f4f4
 }
 .no-login {
-  padding:20rpx 28rpx 40rpx 28rpx;
+  padding:20rpx 28rpx 0rpx 28rpx;
   background: #fff;
 }
 .no-login-content {
   width: 100%;
   display: table-cell;
-  padding-bottom: 60rpx;
+  padding-bottom: 30rpx;
 }
 .no-login-img {
   width: 120rpx;
@@ -47,9 +47,10 @@
   line-height: 88rpx;
 }
 .header-img {
-  height: 42rpx;
-  width: 42rpx;
+  height: 40rpx;
+  width: 37rpx;
   margin: 0;
+  border-radius:0 !important;
 }
 .header-txt {
   font-size: 28rpx;

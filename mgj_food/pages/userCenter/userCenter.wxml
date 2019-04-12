@@ -9,6 +9,7 @@
   		</view>
   	</view>
   	<view  wx:if="{{loginsuccess === true}}">
+	  	<!--头像姓名等-->
 		<view class="no-login">
 	  		<view class="no-login-content">
 		  		<image wx:if="{{avatarUrl}}" class="no-login-img" src="{{avatarUrl}}"></image>
@@ -22,46 +23,67 @@
 		  			</view>
 		  		</view>
 	  		</view>
-	  		<view class="user-center">
-	  			<view class="user-message">
-	  				<view style="color:#ff9300"><text style="margin-right:6rpx;font-size: 44rpx">{{userMessage.balance}}</text><text style="font-size: 28rpx" >元</text></view>
-	  				<view class="font-12 mt10"><text >我的余额</text></view>
-	  			</view>
-	  			<navigator class="user-message" url="/goods/userredBag/userredBag" >
-	  				<view style="color:#ff9300"><text style="margin-right:6rpx;font-size: 44rpx">{{userMessage.redBagCount+userMessage.couponsCount}}</text><text style="font-size: 28rpx" >个</text></view>
-	  				<view class="font-12 mt10"><text>我的红包</text></view>
-	  			</navigator>
-	  			<navigator class="user-message" url="/other/firends/person/person">
-	  				<view style="color:#ff9300"><text style="margin-right:6rpx;font-size: 44rpx">{{cashbackAmtSum}}</text><text style="font-size: 28rpx" >元</text></view>
-	  				<view class="font-12 mt10"><text>我的返利</text></view>
-				</navigator>	
-	  		</view>
 	  	</view>
+		  <!-- 红包信息 -->
+		<view class="user-center mt20 padding-20" style="background:#fff">
+			<view class="user-message">
+				<view style="color:#ff9300"><text style="margin-right:6rpx;font-size: 44rpx">{{userMessage.balance}}</text><text style="font-size: 28rpx" >元</text></view>
+				<view class="font-12 mt10"><text >我的余额</text></view>
+			</view>
+			<navigator class="user-message" url="/goods/userredBag/userredBag" >
+				<view style="color:#ff9300"><text style="margin-right:6rpx;font-size: 44rpx">{{userMessage.redBagCount+userMessage.couponsCount}}</text><text style="font-size: 28rpx" >个</text></view>
+				<view class="font-12 mt10"><text>我的红包</text></view>
+			</navigator>
+			<navigator class="user-message" url="/other/firends/person/person">
+				<view style="color:#ff9300"><text style="margin-right:6rpx;font-size: 44rpx">{{cashbackAmtSum}}</text><text style="font-size: 28rpx" >元</text></view>
+				<view class="font-12 mt10"><text>我的返利</text></view>
+			</navigator>	
+		</view>
 	  	<view class="mt20">
+		  <!-- 收货地址 -->
 	  		<view class="order-header" bindtap="getAddress">
 				<view class="header-text">
-					<image class="header-img" src="/images/images/map_1.png" ></image>
+					<image class="header-img" src="../../images/images/map_2.png" ></image>
 		  			<text class="header-txt">收货地址</text>
 		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>
 			</view>
+			<!-- 修改手机 -->
+			<navigator class="order-header" url="/pages/modifyMobile/modifyMobile">
+				<view class="header-text">
+					<image class="header-img" src="../../images/images/alterMobile.png" ></image>
+		  			<text class="header-txt">修改手机</text>
+		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
+				</view>
+			</navigator>
+			<!-- 服务中心 -->
 			<navigator class="order-header" url="/other/firends/service/service">
 				<view class="header-text">
-					<image class="header-img" src="/images/images/server.png" ></image>
+					<image class="header-img" src="../../images/images/serviceCenter.png" ></image>
 		  			<text class="header-txt">服务中心</text>
 		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>
 			</navigator>
+			<!-- 邀请好友 -->
 			<navigator class="order-header" url="/other/firends/shareFirend/shareFirend">
 				<view class="header-text">
-					<image class="header-img" src="/images/images/tabbar-pcenter.png" ></image>
+					<image class="header-img" src="../../images/images/shareFriends.png" ></image>
 		  			<text class="header-txt">邀请好友</text>
 		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>
 			</navigator>
+			<!-- 用户服务协议 -->
+			<navigator class="order-header" url="/other/firends/shareFirend/shareFirend">
+				<view class="header-text">
+					<image class="header-img" src="../../images/images/serviceContract.png" ></image>
+		  			<text class="header-txt">用户服务协议</text>
+		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
+				</view>
+			</navigator>
+			<!-- 下载app -->
 			<navigator class="order-header" url="/other/firends/load/load">
 				<view class="header-text">
-					<image class="header-img" src="/images/images/load.png" ></image>
+					<image class="header-img" src="../../images/images/downApp.png" ></image>
 		  			<text class="header-txt">下载app</text>
 		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>

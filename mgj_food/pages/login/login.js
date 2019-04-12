@@ -10,11 +10,45 @@ Page({
 		maStatus:false,
 		yanzhengma:'获取验证码',        //验证码
 		currentTime:60, //倒计时 
+
+		mobileBindShow:false,//没有登录，则显示微信登录，微信登录后没有绑定手机号码，则置为true
+		show:false //内容是否显示，避免一开始微信登录缓一下
 	},
 	onLoad(options) {
 		this.setData({
 			switch:options.switch
 		});
+		// 是否获得授权，如果已经授权，则直接调至绑定手机
+		wx.getSetting({
+			success: (res) => {
+				if (res.authSetting["scope.userInfo"] ==true) {
+					this.getuserInfo()
+				}else{//未授权,显示微信登录界面
+					this.setData({
+						show:true
+					})
+				}
+			},
+			fail:()=>{
+				this.setData({
+					show:true
+				})
+			}
+		})
+	},
+	getuserInfo(){
+		wx.getUserInfo({
+			success:(e)=>{
+				console.log("已经授权，直接获取到了用户信息")
+				this.bindGetUserInfo(e);
+			},
+			fail:(e)=>{
+				console.log("未授权,显示微信登录界面",e)
+				this.setData({
+					show:true
+				})
+			}
+		})
 	},
 	onShow(){
 		let that = this;
@@ -102,6 +136,100 @@ Page({
 			password:pass
 		});
 	},
+	// 登录后处理逻辑
+	loginAfter(res){
+		let that = this;
+		if (res.data.code === 0) {
+			let delayTime=2000;
+			wx.showToast({
+				title:"登录成功",
+				icon:"success",
+				duration:delayTime
+			})
+			let loginMessage = res.data.value;
+			let telephone = loginMessage.mobile;
+			app.globalData.token = loginMessage.token;
+			app.globalData.userId = loginMessage.id;
+			wx.setStorageSync('loginstatus',true);//记录登录状态
+			wx.setStorageSync('loginMessage',loginMessage);//缓存用户信息
+			// 
+			// wx.setNavigationBarTitle({//修改回来标题
+			// 	title:"微信授权登录"
+			// }) 
+			if (this.data.switch === 'usercenter') {
+				let pages = getCurrentPages();
+					let prevPage = pages[pages.length - 2];
+					wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过个人中心页登录领取过平台红包
+					setTimeout(()=>{
+						wx.switchTab({
+							url:'/pages/userCenter/userCenter',
+							success : function(){
+								that.setData({
+								switch:''
+							});
+							prevPage.setData({
+								loginsuccess:true,
+							});
+							}
+					});
+					},delayTime)
+			} else if (this.data.switch === 'cartitem') {
+				let pages = getCurrentPages();
+					let prevPage = pages[pages.length - 2];
+					wx.setStorageSync('isloginGetPlatformRedBag',true);     // 是否通过订单页登录领取过平台红包
+					setTimeout(()=>{
+						wx.switchTab({
+							url:'/pages/goods/cartItem/cartItem',
+							success : function(){
+								that.setData({
+								switch:''
+							});
+							prevPage.setData({
+								loginsuccess:true,
+							});
+							}
+					});
+					},delayTime)
+			} else if(this.data.switch === 'homepage'){
+				wx.setStorageSync('isloginGetPlatformRedBag',true);    // 是否通过首页登录领取过平台红包
+				setTimeout(()=>{
+					wx.navigateBack({
+						delta: 1,
+						success : function(){
+							that.setData({
+							switch:''
+						});	
+						}
+				});
+				},delayTime)
+			} else if(this.data.switch === 'shop'){
+				wx.setStorageSync('isloginGetPlatformRedBag',true);    // 是否通过首页登录领取过平台红包
+				wx.setStorageSync('isloginGetDiscountUserNum',true);
+				setTimeout(()=>{
+					wx.navigateBack({
+						delta: 1,
+						success : function(){
+							that.setData({
+							switch:''
+						});	
+						}
+				});
+				},delayTime)
+			} else {
+				setTimeout(()=>{
+					wx.navigateBack({
+						delta: 1,
+						fail : function(err){
+							console.log(err);
+						}
+				});
+				},delayTime)
+			}	
+		} else {
+			let msg = res.data.value;
+			feedbackApi.showToast({title:msg});
+		}
+	},
 	login(){//登录
 		if(this.data.phone === ''){
 			feedbackApi.showToast({title: '手机号不能为空'});
@@ -116,89 +244,23 @@ Page({
 			return;
 		}
 		wxRequest({
-        	url:'/merchant/userClient?m=checkLoginCode',
+        	url:'/merchant/appletClient?m=wxBindingMobile',
         	method:'POST',
         	data:{
 			    imei: "mgjwm"+this.data.phone,
         		params:{
-        			code:this.data.password,
-        			mobile:this.data.phone,
+					encryptedData: this.data.wxInfo.encryptedData,
+					mobile:this.data.phone,
+					smsCode:this.data.password,
+					iv:this.data.wxInfo.iv,
+        			bizType:1,//这边区分建材
         			latitude: app.globalData.latitude,
-        			longitude: app.globalData.longitude
+					longitude: app.globalData.longitude,
+					key:app.globalData.openId 
         		},	
         	},
         }).then(res=>{
-        	let that = this;
-        	if (res.data.code === 0) {
-        		let loginMessage = res.data.value.appUser;
-        		let telephone = loginMessage.mobile;
-        		app.globalData.token = loginMessage.token;
-        		app.globalData.userId = loginMessage.id;
-        		wx.setStorageSync('loginstatus',true);//记录登录状态
-        		wx.setStorageSync('loginMessage',loginMessage);//缓存用户信息
-				if (this.data.switch === 'usercenter') {
-					let pages = getCurrentPages();
-	    			let prevPage = pages[pages.length - 2];
-	    			wx.setStorageSync('isloginGetPlatformRedBag',true);// 是否通过个人中心页登录领取过平台红包
-					wx.switchTab({
-				  		url:'/pages/userCenter/userCenter',
-				  		success : function(){
-				  			that.setData({
-								switch:''
-							});
-							prevPage.setData({
-								loginsuccess:true,
-							});
-				  		}
-					});
-				} else if (this.data.switch === 'cartitem') {
-					let pages = getCurrentPages();
-	    			let prevPage = pages[pages.length - 2];
-	    			wx.setStorageSync('isloginGetPlatformRedBag',true);     // 是否通过订单页登录领取过平台红包
-					wx.switchTab({
-				  		url:'/pages/goods/cartItem/cartItem',
-				  		success : function(){
-				  			that.setData({
-								switch:''
-							});
-							prevPage.setData({
-								loginsuccess:true,
-							});
-				  		}
-					});
-				} else if(this.data.switch === 'homepage'){
-					wx.setStorageSync('isloginGetPlatformRedBag',true);    // 是否通过首页登录领取过平台红包
-					wx.navigateBack({
-				  		delta: 1,
-				  		success : function(){
-				  			that.setData({
-								switch:''
-							});	
-				  		}
-					});
-				} else if(this.data.switch === 'shop'){
-					wx.setStorageSync('isloginGetPlatformRedBag',true);    // 是否通过首页登录领取过平台红包
-					wx.setStorageSync('isloginGetDiscountUserNum',true);
-					wx.navigateBack({
-				  		delta: 1,
-				  		success : function(){
-				  			that.setData({
-								switch:''
-							});	
-				  		}
-					});
-				} else {
-					wx.navigateBack({
-				  		delta: 1,
-				  		fail : function(err){
-				  			console.log(err);
-				  		}
-					});
-				}	
-        	} else {
-        		let msg = res.data.value;
-        		feedbackApi.showToast({title:msg});
-        	}
+					this.loginAfter(res);
         });	
 	},
 	getCode(){
@@ -269,86 +331,99 @@ Page({
 	},
 	// 微信登录
 	WXlogin(){
+		wx.showToast({
+			title:"请稍后",
+			icon:"loading",
+			duration:20000
+		})
 		console.log("进入微信登录函数")
 		wx.login({ //登录
 			success: ress => {
-			 wx.setStorageSync('codeWX', ress.code)
-			  var key = null
+			  wx.setStorageSync('codeWX', ress.code)
+			  console.log("获取的code:",ress.code)
 			  wxRequest({
 				url:'/merchant/appletClient?m=appletLoginBefore',
 				method:'POST',
 				data:{
+					imei: wx.getStorageSync('codeWX'),
 					params:{
 						code:ress.code,	
-						imei: wx.getStorageSync('codeWX'),
 						bizType:1,//这边区分建材
 					},	
 				},
-				}).then(getKey=>{// 获取key
+				}).then(res=>{// 获取key
 					// 发送 res.code 到后台换取 openId, sessionKey, unionId
-					getKey=getKey.data;
-					if (getKey.success) {
-						console.log("已经获取到了key")
-						key = getKey.value.key;
-						app.globalData.openId = key;
-						//console.log(e.detail.userInfo)
-						// 存储code
-						//wx.setStorageSync('code', key)
-						wx.getUserInfo({
-						success: function (e) {
-							console.log("登录中获取用户信息")
-							//wx.setStorageSync('wxInfo', e.userInfo)
-							var params = {
-							encryptedData: e.encryptedData,
-							iv: e.iv,
-							key,
-							code: key,
-							longitude: app.globalData.longitude,
-							latitude: app.globalData.latitude,
-							bizType:1,//这边区分建材
-							};
-							wxRequest({
-								url:'/merchant/appletClient?m=appletLogin',
-								method:'POST',
-								data:{
-									params:params,
-									imei: wx.getStorageSync('codeWX'),
-								},
-								}).then(data=>{// 获取key
-								//console.log(data)
-								if (data.success) {
-									// if (app.globalData.isLoginId) {
-									// wx.navigateTo({
-									// 	url: app.globalData.isLoginUrl
-									// });
-									// } else {
-									// wx.switchTab({
-									// 	url: '../index/index',
-									// });
-									// }
-									// 存储登录信息
-									//app.globalData.userInfo = data.value
-									//wx.setStorageSync('userInfo', data.value)
-									//app.globalData.userInfo = wx.getStorageSync("userInfo")
-									//wx.setStorageSync('token', data.value.token)
-								}
-							})
-						},
-						fail:()=>{//获取用户信息接口失败
-							wx.showToast({
-								title:"请授权",
-								icon:"loading"
-							})
-						}
-					})
+					if (res.data.success) {
+						let value=res.data.value;
+						console.log("已经获取到openId:",value)
+						app.globalData.openId = value.key;
+						// 请求登录获取用户信息
+						this.appletLogin()
 					}
 				})
 
 			}
 		});
 	},
+	appletLogin(){
+		let e=this.data.wxInfo;
+		let params = {
+			encryptedData: e.encryptedData,
+			iv: e.iv,
+			key:app.globalData.openId,
+			code: app.globalData.openId,
+			longitude: app.globalData.longitude,
+			latitude: app.globalData.latitude,
+			bizType:1,//这边区分建材
+			};
+		return wxRequest({
+			url:'/merchant/appletClient?m=appletLogin',
+			method:'POST',
+			data:{
+				params:params,
+				imei: wx.getStorageSync('codeWX'),
+			},
+			}).then(res=>{
+				wx.hideToast();
+				console.log("appletLogin函数执行完毕",res)
+				if(res.data.code==0){//请求成功
+					//1.没有绑定手机号码，则进行下一步，绑定手机号码。再appletLogin登录
+					//2.绑定了手机号码，登录成功
+					let loginMessage = res.data.value;
+					let mobile=loginMessage.mobile;
+					console.log("登录成功，手机号码为:",mobile)
+					if(mobile=="" || mobile==null){
+						this.setData({//页面显示手机号码绑定
+							mobileBindShow:true,
+							show:true
+						})
+						// wx.setNavigationBarTitle({//修改标题
+						// 	title:"绑定手机号"
+						// })
+					}else{
+						this.loginAfter(res);
+					}
+				}else{
+					feedbackApi.showToast({title:res.data.value});
+					// 返回上一页
+					wx.switchTab({
+						url:'/pages/userCenter/userCenter',
+					});
+				}
+			});
+	},
 	bindGetUserInfo(e){
-		console.log("获取用户信息",e);
+		// 事件触发的e.detail==getuserInfo回调返回来的e,so
+		let wxInfo="";
+		if(e.detail==undefined){
+			wxInfo=e;
+		}else{
+			wxInfo=e.detail;
+		}
+		this.data.wxInfo=wxInfo;
+		wx.setStorageSync('wxInfo',wxInfo);
+		app.globalData.wxInfo=wxInfo;
+		console.log("获取用户信息",wxInfo);
 		this.WXlogin();
 	}
 });

@@ -1,19 +1,38 @@
 <import src="../../components/showToast/showToast.wxml" />
-<view class="container page-login">
-	<view class="login-tip font-12">
-		<text>为保证送餐员能联系到你，请验证您的账户绑定手机号</text>
-	</view>
-	<view class="pad mt20 font-14">
-		<view class="flex mobile">
-			<label class="form-label">手机号：</label>
-			<input type="number" placeholder="请输入手机号" maxlength="11" bindinput="checkPhone" />
+
+
+<view wx:if="{{!mobileBindShow && show}}" style="position:relative">
+	<image src="../../images/images/login-bg.png" style="width:100%;height:1190rpx;" />
+	<view style="position:absolute;top:0;left:0;width:100%;height:100%;text-align:center">
+		<image src="../../images/images/mgj.png" style="margin-top:200rpx;width:192rpx;height:202rpx;"/>
+		<button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="bg-button-color"
+		style="margin:200rpx 80rpx 60rpx 80rpx;color:#fff;border-radius:50rpx;font-size:36rpx;">微信登录</button>
+		<view class="flex flex-row-center" style="justify-content: center;font-size:26rpx;color:#999;"> 
+			<image src="../../images/images/check.png" style="width:26rpx;height:26rpx;"/>
+			<text style="margin-left:20rpx">已阅读并同意</text><text>《用户服务协议》</text>
 		</view>
-		<view class="send-ma {{ maStatus ? 'login-active' : ''}}" disabled="{{disabled}}" bindtap="getVerificationCode">
-			<text class="mobile-ma">{{yanzhengma}}</text>	
-			<!-- <text>{{time}}</text> -->
-		</view>  
-		<view class="flex get-ma">
-			<input type="number" placeholder="请输入收到的验证码" bindinput="checkPass" />
+	</view>
+ 
+</view>
+
+<view wx:if="{{mobileBindShow && show}}" class="container" style="background:#fff;padding:40rpx;">
+	<view style="margin-top:80rpx;">
+		<view style="font-size:42rpx;font-weight:bold;color:#222;">绑定手机</view>
+		<text style="font-size:28rpx;color:#999;">为保证送餐员能联系到你，请先绑定手机号</text>
+	</view>
+	<view style="margin-top:80rpx;font-size:28rpx;">
+		<view class="flex flex-row-center row-line">
+			<label class="form-label color1">手机号：</label>
+			<input type="number" placeholder="请输入手机号" maxlength="11" bindinput="checkPhone"  />
+		</view>
+		<view class="flex flex-row-center flex-spaceBetween row-line" style="margin-top:40rpx;">
+			<view class="flex flex-row-center">
+				<label class="flex0 form-label color1">验证码：</label>
+				<input class="flex1 " type="number" placeholder="请输入验证码" bindinput="checkPass" />
+			</view>
+			<view class="flex0 send-ma {{ maStatus ? 'login-active' : ''}}" disabled="{{disabled}}" bindtap="getVerificationCode">
+				<text class="mobile-ma">{{yanzhengma}}</text>	
+			</view> 
 		</view>
 	</view>
 	<view class="pad-send">
@@ -21,9 +40,5 @@
 			<text>登录</text>
 		</view>
 	</view>
-	
-	<!-- 先屏蔽微信登录功能，js中有实现部分功能 -->
-	<!-- <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">微信登录</button> -->
-
-	<template is="showToast" data="{{showToast: showToast}}" />
 </view>
+	<template is="showToast" data="{{showToast: showToast}}" />

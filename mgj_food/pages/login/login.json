@@ -1,7 +1,7 @@
 {
   "navigationBarBackgroundColor": "#fff",
   "navigationBarTextStyle": "black",
-  "navigationBarTitleText": "手机验证",
+  "navigationBarTitleText": "微信授权登录",
   "backgroundColor": "#eeeeee",
   "backgroundTextStyle": "light"
 }
