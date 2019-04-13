@@ -7,10 +7,10 @@
 		<image src="../../images/images/mgj.png" style="margin-top:200rpx;width:192rpx;height:202rpx;"/>
 		<button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="bg-button-color"
 		style="margin:200rpx 80rpx 60rpx 80rpx;color:#fff;border-radius:50rpx;font-size:36rpx;">微信登录</button>
-		<view class="flex flex-row-center" style="justify-content: center;font-size:26rpx;color:#999;"> 
+		<!-- <view class="flex flex-row-center" style="justify-content: center;font-size:26rpx;color:#999;"> 
 			<image src="../../images/images/check.png" style="width:26rpx;height:26rpx;"/>
 			<text style="margin-left:20rpx">已阅读并同意</text><text>《用户服务协议》</text>
-		</view>
+		</view> -->
 	</view>
  
 </view>
@@ -30,13 +30,13 @@
 				<label class="flex0 form-label color1">验证码：</label>
 				<input class="flex1 " type="number" placeholder="请输入验证码" bindinput="checkPass" />
 			</view>
-			<view class="flex0 send-ma {{ maStatus ? 'login-active' : ''}}" disabled="{{disabled}}" bindtap="getVerificationCode">
+			<view class="flex0 send-ma {{ maStatus ? 'login-active' : ''}}"  bindtap="getVerificationCode">
 				<text class="mobile-ma">{{yanzhengma}}</text>	
 			</view> 
 		</view>
 	</view>
 	<view class="pad-send">
-		<view class="send" bindtap="login">
+		<view class="send" bindtap="bindingMobile">
 			<text>登录</text>
 		</view>
 	</view>

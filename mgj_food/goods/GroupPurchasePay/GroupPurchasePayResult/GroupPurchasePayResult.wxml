@@ -9,7 +9,7 @@
     <view class="orderMsg padding-lr-20">
         <!-- 店家 -->
         <view class="font-16 flex flex-row-center flex-spaceBetween" style="line-height:4;border-bottom:1px dashed #e5e5e5;font-size:36rpx;">
-            {{groupPurchaseOrder.groupPurchaseMerchantName}}
+            {{groupPurchaseOrder.groupPurchaseMerchantName || ''}}
             <button style="background: transparent;margin:0;border:1px solid #ff9900;color:#ff9900;padding:0 44rpx;line-height:2.5;font-size:26rpx;"
             catch:tap="finishBtnTap">完成</button>
         </view>
@@ -74,13 +74,13 @@
             <view style="position:relative" wx:if="{{promotionList.hascoupons}}">
                 <!--背景图-->
                 <image src="../../../images/merchant/honbaobg.png" style="width:640rpx;height:454rpx;"/>
-                <view  style="position:absolute;top:140rpx;left:0;right:0;bottom:0;">
-                    <view style="width:100%;text-align:center;font-size:36rpx;">
-                        <text style="display:inline-block;padding:10rpx;">无门槛自动抵扣，有效期{{promotionList.coupons.expirationTime}}天</text>
+                <view  style="position:absolute;top:144rpx;left:0;right:0;bottom:0;">
+                    <view style="width:100%;text-align:center;font-size:28rpx;">
+                        <text style="display:inline-block;padding:10rpx 20rpx;background:#ba2d1b;border-radius:8rpx;">无门槛等同现金使用，有效期{{promotionList.coupons.expirationTime}}天</text>
                     </view>
-                    <view style="position:relative;margin-top:40rpx;text-align:center;">
+                    <view style="position:relative;margin-top:44rpx;text-align:center;">
                         <image src="../../../images/merchant/daijinquan.png" style="width:371rpx;height:133rpx;padding:14rpx 0;" />
-                        <view style="position:absolute;top:0;left:0;right:0;bottom:0;font-size:36rpx;padding:50rpx 40rpx;color:#ca2d2c">
+                        <view style="position:absolute;top:0;left:0;right:0;bottom:0;font-size:44rpx;padding:50rpx 40rpx;color:#ca2d2c">
                             <text style="font-size:22rpx;">￥</text>{{promotionList.coupons.couponsAmt}}
                         </view>
                     </view>
@@ -88,22 +88,23 @@
             </view>
             <!-- 店铺红包 -->
             <scroll-view class="mt20"  wx:if="{{promotionList.merchantRedBags.length>0}}"
-            style="max-height:560rpx;padding:20rpx 0;text-align:center;width:640rpx;background:red;" scroll-y="true">
+            style="max-height:560rpx;padding:20rpx 0 14rpx 0;text-align:center;width:640rpx;background:red;" scroll-y="true">
                 <view wx:for="{{promotionList.merchantRedBags}}" style="position:relative" wx:key="index">
                    <image src="../../../images/merchant/honbao.png" style="width:604rpx;height:160rpx;"/>
-                   <view style="position:absolute;top:0;left:0;right:0;bottom:0;font-size:36rpx;padding:20rpx 40rpx;color:#ca2d2c" class="flex flex-spaceBetween flex-row-center">
+                   <view style="position:absolute;top:0;left:0;right:0;bottom:0;font-size:36rpx;padding:20rpx 40rpx;color:#ca2d2c;" 
+                   class="flex flex-spaceBetween flex-row-center">
                         <!-- 左边 -->
                         <view style="width:170rpx">
                             <view style="font-size:22rpx;color:red">
-                             ￥<text style="font-size:36rpx">{{item.amt}}</text>
+                             ￥<text style="font-size:44rpx">{{item.amt}}</text>
                             </view>
                             <view style="font-size:24rpx;color:#666">{{item.restrictAmt==0 ? '下单即可使用':'满'+item.restrictAmt+'元可用'}}</view>
                         </view>
                         <!-- 右边 -->
-                        <view class="flex1 flex flex-spaceBetween flex-row-center">
+                        <view class="flex1 flex flex-spaceBetween flex-row-center" style="text-align:left">
                             <!-- 左边 -->
                             <view style="padding-left:20rpx">
-                                <view style="color:#333;font-size:32rpx;">{{item.name}}</view>
+                                <view style="color:#333;font-size:32rpx;">{{item.merchantName}}</view>
                                 <view  style="color:#666;font-size:24rpx;">有效期至:{{item.expirationTime}}</view>
                             </view>
                             <button style="margin:0;padding:0 18rpx;line-height:2.5;font-size:26rpx;background:red;color:white;border-radius:50rpx;" 

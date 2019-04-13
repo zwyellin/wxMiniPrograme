@@ -9,7 +9,7 @@
         </view>
         <view class="flex flex-spaceBetween flex-row-center row-line pageItem" style="height:100rpx;">
             <input class="flex1 " type="number" placeholder="请输入验证码" bindinput="checkPass" />
-            <view class="flex0 send-ma login-active" disabled="{{disabled}}" bindtap="getVerificationCode">
+            <view class="flex0 send-ma login-active"  bindtap="getVerificationCode">
                 <text class="mobile-ma">{{yanzhengma}}</text>	
             </view> 
         </view>
@@ -26,11 +26,11 @@
 <view class="container page " wx:if="{{newMobileBindShow}}">
     <view class="font-14" style="background:#fff">
         <view class="flex flex-spaceBetween flex-row-center row-line pageItem" style="height:100rpx;border-top:1px solid #eee">
-            <input class="flex1 " type="number" placeholder="请输入新的手机号" bindinput="checkPhone" />
+            <input class="flex1 " type="number" placeholder="请输入新的手机号" maxlength="11" bindinput="checkPhone" />
         </view>
         <view class="flex flex-spaceBetween flex-row-center row-line pageItem" style="height:100rpx;">
             <input class="flex1 " type="number" placeholder="请输入验证码" bindinput="checkPass" />
-            <view class="flex0 send-ma {{ maStatus ? 'login-active' : ''}}" disabled="{{disabled}}" bindtap="getVerificationCodeNew">
+            <view class="flex0 send-ma {{ maStatus ? 'login-active' : ''}}"  bindtap="getVerificationCodeNew">
                 <text class="mobile-ma">{{yanzhengma}}</text>	
             </view> 
         </view>
@@ -47,10 +47,10 @@
 
 <!-- 绑定新手机成功弹窗提醒 -->
 
-<view wx:if="{{modifySuccess}}" class="container" style="position:relative">
+<view wx:if="{{modifySuccess}}"   class="container" style="position:fixed;top:0;left:0;width:100%;height:100%">
     <view class="mask"></view>
     <view style="position:absolute;top:0;left:0;bottom:0;right:0;z-index:1000" class="flex flex-all-center">
-        <view style="background:#fff;width:626rpx;font-size:32rpx;overflow:hiddem" class="border-radius4">
+        <view style="background:#fff;width:626rpx;font-size:32rpx;overflow:hidden" class="border-radius4">
             <view class="flex flex-all-center" style="height:64rpx;background:rgb(236,234,237);color:rgb(253,152,0);">小贴士!</view>
             <view class="flex flex flex-all-center" style="height:564rpx">
                 <view class="flex flex-all-center" > 

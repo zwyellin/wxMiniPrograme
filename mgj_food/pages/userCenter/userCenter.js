@@ -25,7 +25,6 @@ Page({
 
   },
   onShow () {
-    console.log("show")
     this.findCustomerAndComplainPhoneByUserXY();
     let loginMessage = wx.getStorageSync('loginMessage');
     let loginStatus = wx.getStorageSync('loginstatus');
@@ -34,7 +33,7 @@ Page({
       // 	wx.setStorageSync('wxInfo',wxInfo);
       // app.globalData.wxInfo=wxInfo;
       let wxInfo=wx.getStorageSync('wxInfo');
-      console.log("wxInfo",wxInfo)
+      console.log("userCenterShow页面。wxInfo",wxInfo)
       if (wxInfo && wxInfo.userInfo) {
         let userInfo=wxInfo.userInfo;
         let avatarUrl = userInfo.avatarUrl;
@@ -136,7 +135,15 @@ Page({
     });
   },
   loginOut(){
-    wx.setStorageSync('loginstatus',false);
+    try {
+       // 清除，要清除三个
+       wx.clearStorageSync()
+       this.globalData.token = '';
+       this.globalData.userId =null ;
+       console.log("已清除全都缓存")
+    } catch (e) {
+      // Do something when catch error
+    }
     this.setData({
       loginsuccess:false
     });

@@ -7,9 +7,9 @@ App({
     this.updataApp();
     let loginMessage = wx.getStorageSync('loginMessage');
     let shoppingCart = wx.getStorageSync('shoppingCart');
-    // if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
-    //   this.findAppUserByToken();
-    // }
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
+      this.findAppUserByToken1();//检测用户信息，是否过期或者，更改
+    }
     if (shoppingCart) {
       wx.removeStorageSync('shoppingCart');
     }
@@ -54,6 +54,60 @@ App({
       });
     }
   },
+  findAppUserByToken1(){//监测是否过期或者更改了账户，如手机上解绑了微信
+    let loginMessage = wx.getStorageSync('loginMessage');
+    wx.request({
+      url:this.globalData.domain+'/merchant/userClient?m=findAppUserByToken',
+      method:'POST',
+      data:{
+        imei: "mgjwm1-"+loginMessage.mobile,
+        token: loginMessage.token
+      },
+      success:(res)=>{
+        var value = res.data.value;
+        if (res.data.code === 0) {
+          console.log("app.js token查用户",value);
+          //通过token查到该token(手机)对应的账户，并检测wxBinded
+          // @wxBinded:1已绑定；非1未绑定
+          if(value.wxBinded!=1){
+            // 因为页面比app晚加载出来，所以延迟弹窗及跳转
+            setTimeout(() => {
+              wx.showModal({
+                title: '账户信息',
+                content: '您的账户已解绑手机，请重新登录',
+                showCancel:false,
+                success: (res)=> {
+                  if (res.confirm) {// 
+                    try {
+                      // 清除，要清除三个
+                      wx.clearStorageSync();
+                      this.globalData.token = '';
+                      this.globalData.userId =null ;
+                      console.log("已清除全都缓存")
+                    } catch (e) {
+                      // Do something when catch error
+                    }
+                    wx.switchTab({
+                      url:'/pages/userCenter/userCenter',
+                    });
+                  }
+                }
+              })
+            }, 5000);
+          }
+        }
+      },
+      fail:function(err){
+        try {
+          console.log("清除缓存记录")
+          wx.clearStorageSync()
+        } catch (e) {
+          // Do something when catch error
+        }
+      }
+    })
+  },
+  // index.js有调用该函数
   findAppUserByToken(cb){
     var that = this;
     if (this.globalData.token) {
@@ -178,16 +232,17 @@ App({
 	},
   updataApp() {//版本更新
     if (wx.canIUse('getUpdateManager')) {
-      console.log("检查版本更新")
       const updateManager = wx.getUpdateManager();
       updateManager.onCheckForUpdate((res)=> {
-        console.log(res.hasUpdate)
+        console.log("是否有新版本:",res.hasUpdate)
       });
       updateManager.onUpdateReady(()=> {
-        // 
         try {
-          console.log("清除缓存记录")
+          console.log("版本更新,清除缓存记录")
+          // 清除，要清除三个
           wx.clearStorageSync()
+          this.globalData.token = '';
+          this.globalData.userId =null;
         } catch (e) {
           // Do something when catch error
         }
@@ -205,9 +260,6 @@ App({
       updateManager.onUpdateFailed(()=> {
         console.log('新版本下载失败');
       });
-
-      // 方式二
-      // updateManager.applyUpdate();
     }
   },
   globalData: {

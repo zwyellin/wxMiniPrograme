@@ -73,13 +73,13 @@
 				</view>
 			</navigator>
 			<!-- 用户服务协议 -->
-			<navigator class="order-header" url="/other/firends/shareFirend/shareFirend">
+			<!-- <navigator class="order-header" url="/other/firends/shareFirend/shareFirend">
 				<view class="header-text">
 					<image class="header-img" src="../../images/images/serviceContract.png" ></image>
 		  			<text class="header-txt">用户服务协议</text>
 		  			<image class="header-img1 fr" style="margin-top: 42rpx" src="../../images/images/down.png" ></image>
 				</view>
-			</navigator>
+			</navigator> -->
 			<!-- 下载app -->
 			<navigator class="order-header" url="/other/firends/load/load">
 				<view class="header-text">

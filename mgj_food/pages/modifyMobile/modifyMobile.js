@@ -42,6 +42,10 @@ Page({
   },
   // 请求发送验证码
   getVerificationCode(){
+    if(this.data.disabled){
+      feedbackApi.showToast({title: '您已发送了验证码'});
+      return
+    }
     this.getCode();
     this.getCodeMa(this.data.oldMobile);
 		this.setData({
@@ -67,6 +71,10 @@ Page({
 	},
   // 新手机发送验证码
   getVerificationCodeNew(){
+    if(this.data.disabled){
+      feedbackApi.showToast({title: '您已发送了验证码'});
+      return
+    }
 		if(this.data.newMobile === ''){
 			feedbackApi.showToast({title: '手机号不能为空'});
 			return;
@@ -97,7 +105,7 @@ Page({
 	        	that.setData({
 	          		yanzhengma: '获取验证码',
 	          		currentTime:60,
-	         		disabled: false   
+	         		  disabled: false   
 	        	});
 	     	}
 	    }, 1000);
@@ -187,13 +195,20 @@ Page({
   finish(){
     let res=this.data.modifySuccessObj;
     let loginMessage = res.data.value;
-    let telephone = loginMessage.mobile;
+    // 账户更新或销毁，要清除重置这四剑客
     app.globalData.token = loginMessage.token;
     app.globalData.userId = loginMessage.id;
     wx.setStorageSync('loginstatus',true);//记录登录状态
     wx.setStorageSync('loginMessage',loginMessage);//缓存用户信息
-    wx.navigateBack({
-      delta: 1,
+    //关闭弹窗，延迟返回 
+    this.setData({
+      modifySuccess:false
+    },()=>{
+      setTimeout(() => {
+        wx.navigateBack({
+          delta: 1,
+        })
+      }, 1000);
     })
   }
 })
