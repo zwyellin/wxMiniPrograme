@@ -33,7 +33,6 @@ Page({
       // 	wx.setStorageSync('wxInfo',wxInfo);
       // app.globalData.wxInfo=wxInfo;
       let wxInfo=wx.getStorageSync('wxInfo');
-      console.log("userCenterShow页面。wxInfo",wxInfo)
       if (wxInfo && wxInfo.userInfo) {
         let userInfo=wxInfo.userInfo;
         let avatarUrl = userInfo.avatarUrl;
@@ -60,6 +59,8 @@ Page({
           this.getPlatformRedBag();
           wx.setStorageSync('isloginGetPlatformRedBag',false);
       }
+    }else{//有可能清空缓存，则渲染到页面
+      this.loginOut();
     }
   },
   //获取客服电话
@@ -138,9 +139,9 @@ Page({
     try {
        // 清除，要清除三个
        wx.clearStorageSync()
-       this.globalData.token = '';
-       this.globalData.userId =null ;
-       console.log("已清除全都缓存")
+       app.globalData.token = '';
+       app.globalData.userId =null ;
+       console.log("userCenter 已清除全都缓存")
     } catch (e) {
       // Do something when catch error
     }

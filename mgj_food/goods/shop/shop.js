@@ -91,7 +91,6 @@ Page(Object.assign({}, merchantShop,shopSearch,{
 	onLoad(options) {
 		//初始化工作
 		this.data.isonLoadRun=true;//标识 onload是否执行
-
 		let { merchantid,sharedUserId,search} = options;
 		const scene = decodeURIComponent(options.scene);//,分割 id:merchantid,sharedUserId
 		console.log("options",options);

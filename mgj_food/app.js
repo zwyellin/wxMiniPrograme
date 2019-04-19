@@ -5,11 +5,7 @@ App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
     this.updataApp();
-    let loginMessage = wx.getStorageSync('loginMessage');
     let shoppingCart = wx.getStorageSync('shoppingCart');
-    if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
-      this.findAppUserByToken1();//检测用户信息，是否过期或者，更改
-    }
     if (shoppingCart) {
       wx.removeStorageSync('shoppingCart');
     }
@@ -36,6 +32,12 @@ App({
       }
     });
   },
+  onShow(){
+    let loginMessage = wx.getStorageSync('loginMessage');
+    if (loginMessage && typeof loginMessage == "object" && loginMessage.token) {
+      this.findAppUserByToken1();//检测用户信息，是否过期或者，更改
+    }
+  },
   getUserInfo:function(cb){
     var that = this;
     if(this.globalData.userInfo){
@@ -60,7 +62,7 @@ App({
       url:this.globalData.domain+'/merchant/userClient?m=findAppUserByToken',
       method:'POST',
       data:{
-        imei: "mgjwm1-"+loginMessage.mobile,
+        imei: "mgjwm"+loginMessage.mobile,
         token: loginMessage.token
       },
       success:(res)=>{
@@ -78,22 +80,28 @@ App({
                 showCancel:false,
                 success: (res)=> {
                   if (res.confirm) {// 
-                    try {
-                      // 清除，要清除三个
-                      wx.clearStorageSync();
-                      this.globalData.token = '';
-                      this.globalData.userId =null ;
-                      console.log("已清除全都缓存")
-                    } catch (e) {
-                      // Do something when catch error
+                    let pages = getCurrentPages();
+                    let reg=/userCenter/;
+                    if(!reg.test(pages[pages.length-1].route)){//防止跳转之前已经在userCenter页，则会出错
+                      try {
+                        // 清除，要清除三个
+                        wx.clearStorageSync();
+                        this.globalData.token = '';
+                        this.globalData.userId =null ;
+                        console.log("app.js 已清除全都缓存")
+                      } catch (e) {
+                        // Do something when catch error
+                      }
+                      wx.switchTab({
+                        url:'/pages/userCenter/userCenter',
+                      });
+                    }else{//如果当前页面在userCenter页面。如果之前跳转过userCener页面，onShow页面也会重新渲染
+                      pages[pages.length-1].loginOut();
                     }
-                    wx.switchTab({
-                      url:'/pages/userCenter/userCenter',
-                    });
                   }
                 }
               })
-            }, 5000);
+            }, 0);
           }
         }
       },
