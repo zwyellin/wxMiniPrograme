@@ -1,5 +1,5 @@
-<!--pages/webView/webView.wxml-->
-<!-- <web-view wx:if="{{!webViewErr}}" src="{{webViewSrc}}" bindmessage="getMsg" bindload="webViewLoad" binderror="webViewErr"></web-view>
+pages/webView/webView.wxml-->
+<web-view wx:if="{{!webViewErr}}" src="{{webViewSrc}}" bindmessage="getMsg" bindload="webViewLoad" binderror="webViewErr"></web-view>
 
 <view wx:else class="container page">
     <view class="padding-tb-40" style="text-align:center">
@@ -9,12 +9,4 @@
         <text>网址:</text>
         <text selectable="{{true}}">{{webViewSrc}}</text>
     </view>
-</view>  -->
-
-<view catch:tap="xx">
-<form bindsubmit="formSubmit"  bindreset="formReset">
-    <button form-type="submit" data-x="1" style="padding: 0 !important;margin: 0 !important;border-radius: 0;line-height: normal;display:inline-block;">
-        <image   style="width:100rpx;height:100rpx;background:red"/>
-    </button>
-</form>
-</view>
+</view> 

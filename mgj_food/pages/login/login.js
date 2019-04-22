@@ -97,7 +97,6 @@ Page({
         	url:'/merchant/userClient?m=findAppUserByToken',
         	method:'POST',
         	data:{
-			    imei: "mgjwm"+loginMessage.mobile,
 			    token: loginMessage.token
         	},
         });

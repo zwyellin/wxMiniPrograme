@@ -62,7 +62,6 @@ App({
       url:this.globalData.domain+'/merchant/userClient?m=findAppUserByToken',
       method:'POST',
       data:{
-        imei: "mgjwm"+loginMessage.mobile,
         token: loginMessage.token
       },
       success:(res)=>{
@@ -127,7 +126,6 @@ App({
           url:this.globalData.domain+'/merchant/userClient?m=findAppUserByToken',
           method:'POST',
           data:{
-            imei: "mgjwm"+loginMessage.mobile,
             token: loginMessage.token
           },
           success:function(res){

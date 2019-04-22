@@ -14,12 +14,12 @@ Page({
    */
   onLoad: function (options) {
     let {src}=options;
-   src="https://www.saibaojt.com//horsegj/dist/html/shareredbag/redbag.html?shareRedBagRulesId=3095&scheme=mgjofficial&sharedUserId=1919&from=singlemessage"
+   src="https://www.saibaojt.com/appDownload.html";////horsegj/dist/html/shareredbag/redbag.html?shareRedBagRulesId=3095&scheme=mgjofficial&sharedUserId=1919&from=singlemessage
    let src1="https://prelaunch.horsegj.com";
    let src2="https://wxapi.horsegj.com" 
    console.log("现在在网页page",src)
     this.setData({
-      webViewSrc:src2
+      webViewSrc:src
     })
   },
   getMsg(){
